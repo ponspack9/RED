@@ -31,6 +31,7 @@ public://METHODS
 	void normalize();
 	void zero();
 	type distance_to(const vec3 &vec);
+	void printScreen();
 
 
 public://OPERATORS

@@ -31,8 +31,12 @@ vec3<type>::vec3(const vec3 &vec)
 template<class type>
 bool vec3<type>::is_zero()
 {
-	(this->x = 0 && this->y = 0 && this->z = 0)
-	? return true : return false;
+	if (this->x = 0 && this->y = 0 && this->z = 0) {
+		return true;
+	}
+	else {
+		return false;
+	}
 }
 
 template<class type>
@@ -58,6 +62,12 @@ type vec3<type>::distance_to(const vec3 &vec)
 	return type(sqrt((vec.x-this->x)^2
 					+(vec.y-this->y)^2
 					+(vec.z-this->z)^2));
+}
+
+template<class type>
+void vec3<type>::printScreen()
+{
+	cout << this->x << " , " << this->y << " , " << this->z << endl;
 }
 
 template<typename type>
@@ -142,7 +152,11 @@ vec3<type> vec3<type>::operator=(type num)
 template<typename type>
 bool vec3<type>::operator==(const vec3 & vec)
 {
-	(this->x = vec.x && this->y = vec.y && this->z = vec.z) 
-	? return true : return false;
+	if (this->x = vec.x && this->y = vec.y && this->z = vec.z){
+	return true;
+	}
+	else {
+		return false;
+	}
 }
 
