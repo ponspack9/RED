@@ -27,7 +27,7 @@ public:
 
 public://METHODS
 
-	bool is_zero(const vec3 &vec);
+	bool is_zero();
 	void normalize();
 	void zero();
 	type distance_to(const vec3 &vec);

@@ -52,6 +52,8 @@ void vec3<type>::zero()
 template<class type>
 type vec3<type>::distance_to(const vec3 &vec)
 {
-	return type();
+	return type(sqrt((vec.x-this->x)^2
+					+(vec.y-this->y)^2
+					+(vec.z-this->z)^2));
 }
 
