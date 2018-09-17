@@ -3,7 +3,7 @@
 
 #include<cstdio>
 #include<cstdlib>
-#include <iostream>
+#include<iostream>
 
 using namespace std;
 
@@ -35,9 +35,22 @@ public://METHODS
 
 public://OPERATORS
 
+	vec3 operator+(const vec3 &vec);
+	vec3 operator+(type num);
 
+	vec3 operator-(const vec3 &vec);
+	vec3 operator-(type num);
 
+	void operator +=(const vec3 &vec);
+	void operator +=(type num);
 
+	void operator -=(const vec3 &vec);
+	void operator -=(type num);
+
+	vec3 operator =(const vec3 &vec);
+	vec3 operator =(type num);
+
+	bool operator==(const vec3 &vec);
 };
 
 #endif // !VEC3_H_
