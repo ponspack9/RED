@@ -3,12 +3,11 @@
 
 #include<cstdio>
 #include<cstdlib>
+#include <iostream>
 
 using namespace std;
 
-template<class type>
-
-class vec3 {
+template<class type> class vec3 {
 
 private:
 
@@ -17,23 +16,30 @@ private:
 public:
 
 	/*CONSTRUCTORS*/
-	vec3() : x(0), y(0), z(0) {}
+	vec3();
 
-	vec3(type x_, type y_, type z_) : x(x_), y(y_), z(z_) {}
+	vec3(type x_, type y_, type z_);
 
-	vec3(const vec3 &vec) : x(vec.x), y(vec.y), z(vec.z) {}
+	vec3(const vec3 &vec);
 
 	/*DESTRUCTOR*/
 	~vec3() {}
 
 public://METHODS
 
+	bool is_zero(const vec3 &vec);
+	void normalize();
+	void zero();
+	type distance_to(const vec3 &vec);
 
 
 public://OPERATORS
 
 
+
+
 };
 
 #endif // !VEC3_H_
+
 
