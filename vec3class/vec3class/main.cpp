@@ -1,12 +1,13 @@
 #include "vec3.h"
 
 
+
 int main(){
 
 	cout << "TEST" << endl;
 
 	vec3<int> v1;
-	vec3<int> v2(5,2,-2);
+	vec3<int> v2(5, 2, -2);
 	vec3<int> v3(v2);
 
 	cout << "v1:";
@@ -16,8 +17,6 @@ int main(){
 	cout << "v3:";
 	v3.printScreen();
 	cout << endl;
-
-
 
 	system("pause");
 	return 0;
