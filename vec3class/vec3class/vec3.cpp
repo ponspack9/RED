@@ -70,36 +70,34 @@ void vec3<type>::printScreen()
 
 template<typename type>
 vec3<type> vec3<type>::operator+(const vec3 & vec)
-{
-	vec3<type> v1 = new vec3<type>;
-	v1.x = x + vec.x;
-	v1.y = y + vec.y;
-	v1.z = z + vec.z;
-	return v1;
+{	
+	return vec3(x + vec.x,
+				z + vec.z,
+				y + vec.y);
 }
 
 template<class type>
 vec3<type> vec3<type>::operator+(type num)
 {
-	vec3<type> v1 = new vec3<type>;
-	return vec3(v1.x - num, v1.y - num, v1.z - num);
+	return vec3(x + num,
+				y + num,
+				z + num);
 }
 
 template<typename type>
 vec3<type> vec3<type>::operator-(const vec3 & vec)
 {
-	vec3<type> v1 = new vec3<type>;
-	v1.x = x - vec.x;
-	v1.y = y - vec.y;
-	v1.z = z - vec.z;
-	return v1;
+	return vec3(x - vec.x,
+				z - vec.z,
+				y - vec.y);
 }
 
 template<class type>
 vec3<type> vec3<type>::operator-(type num)
 {
-	vec3<type> v1 = new vec3<type>;
-	return vec3(v1.x - num, v1.y - num, v1.z - num);
+	return vec3(x - num,
+				y - num,
+				z - num);
 }
 
 template<typename type>
