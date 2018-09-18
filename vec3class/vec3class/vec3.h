@@ -36,7 +36,6 @@ public://METHODS
 	void printScreen();
 	type module();
 
-
 public://OPERATORS
 
 	vec3 operator+(const vec3 &vec);

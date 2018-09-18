@@ -1,33 +1,29 @@
 #include "vec3.h"
 
-
 //CONSTRUCTORS DEFINITION
 
-
 template<class type>
-vec3<type>::vec3():
+vec3<type>::vec3() :
 	x(0),
 	y(0),
 	z(0)
 {}
 
 template<class type>
-vec3<type>::vec3(type x_, type y_, type z_):		
-		x(x_),
-		y(y_),
-		z(z_)
-{}		  
+vec3<type>::vec3(type x_, type y_, type z_) :
+	x(x_),
+	y(y_),
+	z(z_)
+{}
 
 template<class type>
-vec3<type>::vec3(const vec3 &vec):
+vec3<type>::vec3(const vec3 &vec) :
 	x(vec.x),
 	y(vec.y),
 	z(vec.z)
 {}
 
-
 //METHODS DEFINITION
-
 
 template<class type>
 bool vec3<type>::is_zero()
@@ -45,7 +41,7 @@ void vec3<type>::normalize()
 {
 	type aux = module();
 	if (aux != 0) {
-		x = x / aux; 
+		x = x / aux;
 		y = y / aux;
 		z = z / aux;
 	}
@@ -62,9 +58,9 @@ void vec3<type>::zero()
 template<class type>
 type vec3<type>::distance_to(const vec3 &vec)
 {
-	return type(sqrt((vec.x-x)*(vec.x - x)
-					+(vec.y-y)*(vec.y - y)
-					+(vec.z-z)*(vec.z - z)));
+	return type(sqrt((vec.x - x)*(vec.x - x)
+		+ (vec.y - y)*(vec.y - y)
+		+ (vec.z - z)*(vec.z - z)));
 }
 
 template<class type>
@@ -76,43 +72,41 @@ void vec3<type>::printScreen()
 template<class type>
 type vec3<type>::module()
 {
-	return type(sqrt(x*x + y*y + z*z));
+	return type(sqrt(x*x + y * y + z * z));
 }
-
 
 //OPERATORS DEFINITION
 
-
 template<typename type>
 vec3<type> vec3<type>::operator+(const vec3 & vec)
-{	
+{
 	return vec3(x + vec.x,
-				z + vec.z,
-				y + vec.y);
+		z + vec.z,
+		y + vec.y);
 }
 
 template<class type>
 vec3<type> vec3<type>::operator+(type num)
 {
 	return vec3(x + num,
-				y + num,
-				z + num);
+		y + num,
+		z + num);
 }
 
 template<typename type>
 vec3<type> vec3<type>::operator-(const vec3 & vec)
 {
 	return vec3(x - vec.x,
-				z - vec.z,
-				y - vec.y);
+		z - vec.z,
+		y - vec.y);
 }
 
 template<class type>
 vec3<type> vec3<type>::operator-(type num)
 {
 	return vec3(x - num,
-				y - num,
-				z - num);
+		y - num,
+		z - num);
 }
 
 template<typename type>
@@ -163,15 +157,13 @@ vec3<type> vec3<type>::operator=(type num)
 template<typename type>
 bool vec3<type>::operator==(const vec3 & vec)
 {
-	if (this->x == vec.x && this->y == vec.y && this->z == vec.z){
-	return true;
+	if (this->x == vec.x && this->y == vec.y && this->z == vec.z) {
+		return true;
 	}
 	else {
 		return false;
 	}
 }
-
-
 
 int main() {
 
