@@ -24,7 +24,7 @@ public:
 	vec3(const vec3 &vec);
 
 	/*DESTRUCTOR*/
-	~vec3() {}
+	~vec3(){}
 
 public://METHODS
 
@@ -32,7 +32,9 @@ public://METHODS
 	void normalize();
 	void zero();
 	type distance_to(const vec3 &vec);
+
 	void printScreen();
+	type module();
 
 
 public://OPERATORS
