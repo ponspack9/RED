@@ -28,6 +28,8 @@ public:
 	// Called before quitting
 	bool CleanUp();
 
+	bool DoLoad();
+
 	// Blit
 	void SetViewPort(const SDL_Rect& rect);
 	void ResetViewPort();

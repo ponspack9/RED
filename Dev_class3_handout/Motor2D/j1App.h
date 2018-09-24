@@ -44,17 +44,20 @@ public:
 	const char* GetTitle() const;
 	const char* GetOrganization() const;
 
-	// TODO 1: Create methods to save and load
+	// DONE TODO 1: Create methods to save and load
 	// that can be called anytime, even if they 
 	// will one execute by the very end of the frame
-	// Load / Save
+	// Load / SAVE
 
-	bool Save();
-
-	bool Load();
+	pugi::xml_parse_result LoadXML(pugi::xml_document & doc, const char* path);
 
 	bool do_save = false;
+
 	bool do_load = false;
+
+	pugi::xml_node save_node;
+	pugi::xml_node load_node;
+		
 
 private:
 
@@ -76,6 +79,11 @@ private:
 	// Call modules after each loop iteration
 	bool PostUpdate();
 
+	bool Save();
+
+	bool Load();
+
+
 public:
 
 	// Modules
@@ -93,7 +101,6 @@ private:
 	float				dt;
 	pugi::xml_document	config_doc;
 	pugi::xml_document	save_game_doc;
-	//pugi::xml_node		renderer;
 	pugi::xml_node		config;
 	pugi::xml_node		app_config;
 	int					argc;

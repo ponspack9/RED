@@ -87,6 +87,23 @@ bool j1Render::CleanUp()
 	return true;
 }
 
+bool j1Render::DoLoad()
+{
+
+	LOG("LOADING RENDER MADAFAKACKAKAKCKA");
+
+	pugi::xml_node render_node = App->load_node.child("renderer");
+	pugi::xml_node camera_node = render_node.child("camera");
+
+
+	camera.x = camera_node.attribute("x").as_int();
+	camera.y = camera_node.attribute("y").as_int();
+
+	return true;
+}
+
+
+
 // TODO 6: Create a method to load the state
 // for now it will be camera's x and y
 

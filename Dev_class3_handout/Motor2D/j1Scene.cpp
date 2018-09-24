@@ -43,10 +43,9 @@ bool j1Scene::PreUpdate()
 // Called each loop iteration
 bool j1Scene::Update(float dt)
 {
-	// TODO 2: Call load / save methods when pressing l/s
+	// DONE TODO 2: Call load / save methods when pressing l/s
 	if (App->input->GetKey(SDL_SCANCODE_S) == KEY_REPEAT)
 		App->do_save = true;
-
 	if (App->input->GetKey(SDL_SCANCODE_L) == KEY_REPEAT)
 		App->do_load = true;
 

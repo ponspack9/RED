@@ -59,16 +59,15 @@ public:
 		return true;
 	}
 
-	// TODO 3: Create new virtual methods to Load and Save
-	virtual bool real_Save()
-	{
+	virtual bool DoSave() {
 		return true;
 	}
 
-	virtual bool real_Load()
-	{
+	virtual bool DoLoad() {
 		return true;
 	}
+
+	// DONE TODO 3: Create new virtual methods to Load and SAVE
 
 public:
 
