@@ -91,7 +91,9 @@ private:
 	p2List<j1Module*>	modules;
 	uint				frames;
 	float				dt;
-	pugi::xml_document	config_file;
+	pugi::xml_document	config_doc;
+	pugi::xml_document	save_game_doc;
+	//pugi::xml_node		renderer;
 	pugi::xml_node		config;
 	pugi::xml_node		app_config;
 	int					argc;

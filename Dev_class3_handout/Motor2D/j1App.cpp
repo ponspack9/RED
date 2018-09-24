@@ -50,7 +50,7 @@ j1App::~j1App()
 
 	modules.clear();
 
-	config_file.reset();
+	config_doc.reset();
 }
 
 void j1App::AddModule(j1Module* module)
@@ -127,7 +127,7 @@ bool j1App::LoadConfig()
 {
 	bool ret = true;
 
-	pugi::xml_parse_result result = config_file.load_file("config.xml");
+	pugi::xml_parse_result result = config_doc.load_file("config.xml");
 
 	if(result == NULL)
 	{
@@ -136,7 +136,7 @@ bool j1App::LoadConfig()
 	}
 	else
 	{
-		config = config_file.child("config");
+		config = config_doc.child("config");
 		app_config = config.child("app");
 	}
 
@@ -288,6 +288,8 @@ bool j1App::Save()
 
 bool j1App::Load()
 {
+
+	pugi::xml_parse_result result = save_game_doc.load_file("saveGame.xml");
 	bool ret = true;
 	p2List_item<j1Module*>* item;
 	j1Module* pModule = NULL;
