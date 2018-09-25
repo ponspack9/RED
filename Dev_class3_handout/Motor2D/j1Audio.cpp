@@ -176,13 +176,13 @@ bool j1Audio::PlayFx(unsigned int id, int repeat)
 
 void j1Audio::SetVolume(Uint8 volume)
 {
-	if (App->input->GetKey(SDL_SCANCODE_KP_MINUS) == KEY_DOWN)
+	if (App->input->GetKey(SDL_SCANCODE_KP_MINUS) == KEY_REPEAT)
 	{
 		volume -= 2;
 		if (volume <= 0) 
 			volume = 0;		
 	}
-	if (App->input->GetKey(SDL_SCANCODE_KP_PLUS) == KEY_DOWN)
+	if (App->input->GetKey(SDL_SCANCODE_KP_PLUS) == KEY_REPEAT)
 	{
 		volume += 2;
 		if (volume >= MIX_MAX_VOLUME)
