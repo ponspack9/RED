@@ -30,6 +30,8 @@ public:
 
 	bool DoLoad();
 
+	bool DoSave();
+
 	// Blit
 	void SetViewPort(const SDL_Rect& rect);
 	void ResetViewPort();

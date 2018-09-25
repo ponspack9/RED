@@ -191,9 +191,9 @@ void j1App::FinishUpdate()
 bool j1App::Save() {
 
 	pugi::xml_parse_result result = LoadXML(save_game_doc, "save_game.xml");
+
 	bool ret = true;
 	p2List_item<j1Module*>* item;
-	//item = modules.start;
 	j1Module* pModule = NULL;
 
 	if (result) {
@@ -207,11 +207,10 @@ bool j1App::Save() {
 			if (pModule->active == false) {
 				continue;
 			}
-			//render->DoLoad(); //ALL MODULES TO CALL NOW ONLY RENDER
 			ret = pModule->DoSave();
 		}
 	}
-
+	save_game_doc.save_file("save_game.xml");
 	do_save = false;
 	return true;
 }

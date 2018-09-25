@@ -101,6 +101,25 @@ bool j1Render::DoLoad()
 
 	return true;
 }
+/*Best books best articles of Huizinga Schell Juul Caillois Crawford Miere Adams Salen Zimmerman Koster*/
+bool j1Render::DoSave()
+{
+
+	LOG("SAVING RENDER MUDAJAFASDG");
+	pugi::xml_node render_node = App->save_node.child("renderer");
+	pugi::xml_node camera_node = render_node.child("camera");
+
+	camera_node.attribute("x") = camera.x;
+	camera_node.attribute("y") = camera.y;
+
+	if (camera_node.attribute("x") == NULL) {
+		LOG("NUUUULLLL");
+	}
+	LOG("cameraX: %d - %d \n camerY: %d - %d", camera.x, camera_node.attribute("x").value(), camera.y,camera_node.attribute("y").value());
+
+	int a = 1;
+	return true;
+}
 
 
 
