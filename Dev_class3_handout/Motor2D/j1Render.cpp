@@ -92,7 +92,7 @@ bool j1Render::DoLoad()
 
 	LOG("LOADING RENDER MADAFAKACKAKAKCKA");
 
-	pugi::xml_node render_node = App->load_node.child("renderer");
+	pugi::xml_node render_node = App->save_node.child("renderer");
 	pugi::xml_node camera_node = render_node.child("camera");
 
 

@@ -56,7 +56,6 @@ public:
 	bool do_load = false;
 
 	pugi::xml_node save_node;
-	pugi::xml_node load_node;
 		
 
 private:

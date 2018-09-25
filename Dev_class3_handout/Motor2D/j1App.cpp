@@ -205,13 +205,29 @@ bool j1App::Save() {
 bool j1App::Load()
 {
 	pugi::xml_parse_result result = LoadXML(save_game_doc, "save_game.xml");
+	bool ret = true;
+	p2List_item<j1Module*>* item;
+	//item = modules.start;
+	j1Module* pModule = NULL;
+
 	if (result) {
-		load_node = save_game_doc.child("save");
-		render->DoLoad(); //ALL MODULES TO CALL NOW ONLY RENDER
+
+		save_node = save_game_doc.child("save");
+
+		for (item = modules.start; item != NULL && ret == true; item = item->next)
+	{
+			pModule = item->data;
+
+			if (pModule->active == false) {
+			continue;
+			}
+	//render->DoLoad(); //ALL MODULES TO CALL NOW ONLY RENDER
+			ret = pModule->DoLoad();
+		}
 	}
 
 	do_load = false;
-	return true;
+	return ret;
 }
 
 // Call modules before each loop iteration
@@ -219,7 +235,7 @@ bool j1App::PreUpdate()
 {
 	bool ret = true;
 	p2List_item<j1Module*>* item;
-	item = modules.start;
+	//item = modules.start;
 	j1Module* pModule = NULL;
 
 	for(item = modules.start; item != NULL && ret == true; item = item->next)
@@ -230,7 +246,7 @@ bool j1App::PreUpdate()
 			continue;
 		}
 
-		ret = item->data->PreUpdate();
+		ret = pModule->PreUpdate();
 	}
 
 	return ret;
@@ -241,7 +257,7 @@ bool j1App::DoUpdate()
 {
 	bool ret = true;
 	p2List_item<j1Module*>* item;
-	item = modules.start;
+
 	j1Module* pModule = NULL;
 
 	for(item = modules.start; item != NULL && ret == true; item = item->next)
@@ -252,7 +268,7 @@ bool j1App::DoUpdate()
 			continue;
 		}
 
-		ret = item->data->Update(dt);
+		ret = pModule->Update(dt);
 	}
 
 	return ret;
@@ -273,7 +289,7 @@ bool j1App::PostUpdate()
 			continue;
 		}
 
-		ret = item->data->PostUpdate();
+		ret = pModule->PostUpdate();
 	}
 
 	return ret;
