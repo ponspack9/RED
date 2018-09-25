@@ -190,13 +190,27 @@ void j1App::FinishUpdate()
 
 bool j1App::Save() {
 
-	//pugi::xml_parse_result result = LoadXML(save_game_file, "save_game.xml");
-	//if (result == NULL) {
-	//	LOG("Could not load map xml file save_game.xml. pugi error: %s", result.description());
-	//}
-	//else {
-	//	render->DoSave(); //ALL MODULES TO CALL NOW ONLY RENDER
-	//}
+	pugi::xml_parse_result result = LoadXML(save_game_doc, "save_game.xml");
+	bool ret = true;
+	p2List_item<j1Module*>* item;
+	//item = modules.start;
+	j1Module* pModule = NULL;
+
+	if (result) {
+
+		save_node = save_game_doc.child("save");
+
+		for (item = modules.start; item != NULL && ret == true; item = item->next)
+		{
+			pModule = item->data;
+
+			if (pModule->active == false) {
+				continue;
+			}
+			//render->DoLoad(); //ALL MODULES TO CALL NOW ONLY RENDER
+			ret = pModule->DoSave();
+		}
+	}
 
 	do_save = false;
 	return true;

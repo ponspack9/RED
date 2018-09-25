@@ -49,7 +49,6 @@ public:
 	// will one execute by the very end of the frame
 	// Load / SAVE
 
-	pugi::xml_parse_result LoadXML(pugi::xml_document & doc, const char* path);
 
 	bool do_save = false;
 
@@ -59,6 +58,8 @@ public:
 		
 
 private:
+	//Load Save File
+	pugi::xml_parse_result LoadXML(pugi::xml_document & doc, const char* path);
 
 	// Load config file
 	bool LoadConfig();
@@ -78,8 +79,10 @@ private:
 	// Call modules after each loop iteration
 	bool PostUpdate();
 
+	//Saving iteration
 	bool Save();
 
+	//Saving iteration
 	bool Load();
 
 
