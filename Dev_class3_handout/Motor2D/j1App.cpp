@@ -17,12 +17,12 @@ j1App::j1App(int argc, char* args[]) : argc(argc), args(args)
 {
 	frames = 0;
 
-	input = new j1Input();
-	win = new j1Window();
-	render = new j1Render();
-	tex = new j1Textures();
-	audio = new j1Audio();
-	scene = new j1Scene();
+	input	= new j1Input();
+	win		= new j1Window();
+	render	= new j1Render();
+	tex		= new j1Textures();
+	audio	= new j1Audio();
+	scene	= new j1Scene();
 
 	// Ordered for awake / Start / Update
 	// Reverse order of CleanUp
@@ -64,17 +64,16 @@ bool j1App::Awake()
 {
 	bool ret = LoadConfig();
 
-
 	// self-config
 	title.create(app_config.child("title").child_value());
 	organization.create(app_config.child("organization").child_value());
 
-	if(ret == true)
+	if(ret)
 	{
 		p2List_item<j1Module*>* item;
 		item = modules.start;
 
-		while(item != NULL && ret == true)
+		while(item != NULL && ret)
 		{
 			ret = item->data->Awake(config.child(item->data->name.GetString()));
 			item = item->next;
@@ -91,7 +90,7 @@ bool j1App::Start()
 	p2List_item<j1Module*>* item;
 	item = modules.start;
 
-	while(item != NULL && ret == true)
+	while(item != NULL && ret)
 	{
 		ret = item->data->Start();
 		item = item->next;
@@ -106,16 +105,16 @@ bool j1App::Update()
 	bool ret = true;
 	PrepareUpdate();
 
-	if(input->GetWindowEvent(WE_QUIT) == true)
+	if(input->GetWindowEvent(WE_QUIT))
 		ret = false;
 
-	if(ret == true)
+	if(ret)
 		ret = PreUpdate();
 
-	if(ret == true)
+	if(ret)
 		ret = DoUpdate();
 
-	if(ret == true)
+	if(ret)
 		ret = PostUpdate();
 
 	FinishUpdate();
@@ -123,26 +122,6 @@ bool j1App::Update()
 }
 
 
-// ---------------------------------------------
-//bool j1App::LoadConfig()
-//{
-//	bool ret = true;
-//
-//	pugi::xml_parse_result result = config_file.load_file("config.xml");
-//	
-//	if(result == NULL)
-//	{
-//		LOG("Could not load map xml file config.xml. pugi error: %s", result.description());
-//		ret = false;
-//	}
-//	else
-//	{
-//		config = config_file.child("config");
-//		app_config = config.child("app");
-//	}
-//
-//	return ret;
-//}
 bool j1App::LoadConfig()
 {
 	pugi::xml_parse_result result = LoadXML(config_doc,"config.xml");
@@ -200,7 +179,7 @@ bool j1App::Save() {
 
 		save_node = save_game_doc.child("save");
 
-		for (item = modules.start; item != NULL && ret == true; item = item->next)
+		for (item = modules.start; item != NULL && ret; item = item->next)
 		{
 			pModule = item->data;
 
@@ -212,7 +191,7 @@ bool j1App::Save() {
 	}
 	save_game_doc.save_file("save_game.xml");
 	do_save = false;
-	return true;
+	return ret;
 }
 
 bool j1App::Load()
@@ -220,21 +199,19 @@ bool j1App::Load()
 	pugi::xml_parse_result result = LoadXML(save_game_doc, "save_game.xml");
 	bool ret = true;
 	p2List_item<j1Module*>* item;
-	//item = modules.start;
 	j1Module* pModule = NULL;
 
 	if (result) {
 
 		save_node = save_game_doc.child("save");
 
-		for (item = modules.start; item != NULL && ret == true; item = item->next)
+		for (item = modules.start; item != NULL && ret; item = item->next)
 	{
 			pModule = item->data;
 
 			if (pModule->active == false) {
 			continue;
 			}
-	//render->DoLoad(); //ALL MODULES TO CALL NOW ONLY RENDER
 			ret = pModule->DoLoad();
 		}
 	}
@@ -251,7 +228,7 @@ bool j1App::PreUpdate()
 	//item = modules.start;
 	j1Module* pModule = NULL;
 
-	for(item = modules.start; item != NULL && ret == true; item = item->next)
+	for(item = modules.start; item != NULL && ret; item = item->next)
 	{
 		pModule = item->data;
 
@@ -273,7 +250,7 @@ bool j1App::DoUpdate()
 
 	j1Module* pModule = NULL;
 
-	for(item = modules.start; item != NULL && ret == true; item = item->next)
+	for(item = modules.start; item != NULL && ret; item = item->next)
 	{
 		pModule = item->data;
 
@@ -294,7 +271,7 @@ bool j1App::PostUpdate()
 	p2List_item<j1Module*>* item;
 	j1Module* pModule = NULL;
 
-	for(item = modules.start; item != NULL && ret == true; item = item->next)
+	for(item = modules.start; item != NULL && ret; item = item->next)
 	{
 		pModule = item->data;
 
@@ -315,7 +292,7 @@ bool j1App::CleanUp()
 	p2List_item<j1Module*>* item;
 	item = modules.end;
 
-	while(item != NULL && ret == true)
+	while(item != NULL && ret)
 	{
 		ret = item->data->CleanUp();
 		item = item->prev;
