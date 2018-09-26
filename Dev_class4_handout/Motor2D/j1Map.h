@@ -31,14 +31,14 @@ struct Map
 		LEFT_DOWN,
 		LEFT_UP,
 		_ERROR
-	};
+	}order;
 	
 	enum orientation
 	{
 		ISOMETRIC,
 		ORTHOGONAL,
 		_ERROR
-	};
+	}orientation;
 
 	float version = 1.0;
 	Uint w = 50,
@@ -73,13 +73,15 @@ public:
 
 private:
 
+	bool LoadMap();
 
 public:
-
 	// TODO 1: Add your struct for map info as public for now
-
+	struct Map* map;
+	
 private:
 
+	p2List<j1Module*>	attributes;
 	pugi::xml_document	map_file;
 	p2SString			folder;
 	bool				map_loaded;

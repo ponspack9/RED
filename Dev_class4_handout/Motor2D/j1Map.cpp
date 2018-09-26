@@ -85,3 +85,21 @@ bool j1Map::Load(const char* file_name)
 	return ret;
 }
 
+bool j1Map::LoadMap()
+{	
+	bool ret = true;
+	pugi::xml_node map_root;
+	map_root = map_file.child("map");
+
+	map->version = map_root.attribute("version").as_int();
+	map->orientation = map_root.attribute("orientation").internal_object;
+	map->order = map_root.attribute("renderorder").internal_object;
+	map->w = map_root.attribute("width").as_int();
+	map->h = map_root.attribute("height").as_int();
+	map->tile_w = map_root.attribute("tilewidth").as_int();
+	map->tile_h = map_root.attribute("tileheight").as_int();
+	map->nextobjectid = map_root.attribute("nextobjectid").as_int();
+	
+	return ret;
+}
+
