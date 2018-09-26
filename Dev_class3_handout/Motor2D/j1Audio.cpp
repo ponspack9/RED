@@ -3,7 +3,6 @@
 #include "j1App.h"
 #include "j1FileSystem.h"
 #include "j1Audio.h"
-#include "j1Input.h"
 
 #include "SDL/include/SDL.h"
 #include "SDL_mixer\include\SDL_mixer.h"
@@ -173,20 +172,3 @@ bool j1Audio::PlayFx(unsigned int id, int repeat)
 
 	return ret;
 }
-
-void j1Audio::SetVolume(Uint8 volume)
-{
-	if (App->input->GetKey(SDL_SCANCODE_KP_MINUS) == KEY_REPEAT)
-	{
-		volume -= 2;
-		if (volume <= 0) 
-			volume = 0;		
-	}
-	if (App->input->GetKey(SDL_SCANCODE_KP_PLUS) == KEY_REPEAT)
-	{
-		volume += 2;
-		if (volume >= MIX_MAX_VOLUME)
-			volume = MIX_MAX_VOLUME;
-	}
-}
-

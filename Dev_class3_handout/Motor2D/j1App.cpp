@@ -164,6 +164,7 @@ void j1App::FinishUpdate()
 	// DONE TODO 1: This is a good place to call load / Save functions
 	if (do_save) Save();
 	if (do_load) Load();
+
 }
 
 bool j1App::Save() {
