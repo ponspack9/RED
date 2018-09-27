@@ -28,6 +28,7 @@ j1App::j1App(int argc, char* args[]) : argc(argc), args(args)
 
 	// Ordered for awake / Start / Update
 	// Reverse order of CleanUp
+	// RENDER last to swap buffer
 	AddModule(input);
 	AddModule(win);
 	AddModule(tex);
@@ -35,7 +36,6 @@ j1App::j1App(int argc, char* args[]) : argc(argc), args(args)
 	///AddModule(map);
 	AddModule(scene);
 
-	// render last to swap buffer
 	AddModule(render);
 }
 
@@ -52,8 +52,6 @@ j1App::~j1App()
 	}
 
 	modules.clear();
-
-	//config_doc.reset();
 }
 
 void j1App::AddModule(j1Module* module)
@@ -78,6 +76,7 @@ bool j1App::Awake()
 	if (result != NULL)
 	{
 		config		= config_doc.child("config");
+
 		app_config	= config.child("app");
 		file_system = config.child("file_system");
 
@@ -91,8 +90,7 @@ bool j1App::Awake()
 		// END CONFIGURATION
 
 		// Awakening all modules
-		p2List_item<j1Module*>* item;
-		item = modules.start;
+		p2List_item<j1Module*>* item = modules.start;
 
 		while(item != NULL && ret)
 		{
@@ -238,19 +236,14 @@ bool j1App::LoadGameFile()
 bool j1App::PreUpdate()
 {
 	bool ret = true;
-	p2List_item<j1Module*>* item;
-	//item = modules.start;
-	j1Module* pModule = NULL;
-
-	for(item = modules.start; item != NULL && ret; item = item->next)
+	p2List_item<j1Module*>* item = modules.start;
+	
+	while (item != NULL && ret)
 	{
-		pModule = item->data;
-
-		if(pModule->active == false) {
-			continue;
+		if (item->data->active) {
+			ret = item->data->PreUpdate();
 		}
-
-		ret = pModule->PreUpdate();
+		item = item->next;
 	}
 
 	return ret;
@@ -260,19 +253,14 @@ bool j1App::PreUpdate()
 bool j1App::DoUpdate()
 {
 	bool ret = true;
-	p2List_item<j1Module*>* item;
+	p2List_item<j1Module*>* item = modules.start;
 
-	j1Module* pModule = NULL;
-
-	for(item = modules.start; item != NULL && ret; item = item->next)
+	while (item != NULL && ret)
 	{
-		pModule = item->data;
-
-		if(pModule->active == false) {
-			continue;
+		if (item->data->active) {
+			ret = item->data->Update(dt);
 		}
-
-		ret = pModule->Update(dt);
+		item = item->next;
 	}
 
 	return ret;
@@ -282,18 +270,14 @@ bool j1App::DoUpdate()
 bool j1App::PostUpdate()
 {
 	bool ret = true;
-	p2List_item<j1Module*>* item;
-	j1Module* pModule = NULL;
-
-	for(item = modules.start; item != NULL && ret; item = item->next)
+	p2List_item<j1Module*>* item = modules.start;
+	
+	while (item != NULL && ret)
 	{
-		pModule = item->data;
-
-		if(pModule->active == false) {
-			continue;
+		if (item->data->active) {
+			ret = item->data->PostUpdate();
 		}
-
-		ret = pModule->PostUpdate();
+		item = item->next;
 	}
 
 	return ret;
@@ -303,9 +287,8 @@ bool j1App::PostUpdate()
 bool j1App::CleanUp()
 {
 	bool ret = true;
-	p2List_item<j1Module*>* item;
-	item = modules.end;
-
+	p2List_item<j1Module*>* item = modules.end;
+	
 	while(item != NULL && ret)
 	{
 		ret = item->data->CleanUp();
