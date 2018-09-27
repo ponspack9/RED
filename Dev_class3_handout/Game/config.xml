@@ -5,7 +5,7 @@
     <title>Game Development Testbed</title>
     <organization>UPC</organization>
   </app>
-	
+
   <renderer>
     <vsync value="false"/>
   </renderer>
@@ -17,5 +17,15 @@
     <resizable value="false"/>
     <fullscreen_window value="false"/>
   </window>
+
+  <file_system>
+    <path>data.zip</path>
+    <load_path>save_game.xml</load_path>
+    <save_path>save_game.xml</save_path>
+  </file_system>
+
+  <map>
+    <folder>maps/</folder>
+  </map>
 
 </config>

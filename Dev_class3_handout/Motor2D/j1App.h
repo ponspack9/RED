@@ -54,13 +54,9 @@ public:
 	void SaveGame() const;
 	void GetSaveGames(p2List<p2SString>& list_to_fill) const;
 
-	
-
-	pugi::xml_node save_node; // TO CLEAN
-		
 
 private:
-	//Load saveFile
+	//Load XML, LOGs the result also returning it
 	pugi::xml_parse_result LoadXML(pugi::xml_document & doc, const char* path);
 
 	// Call modules before each loop iteration
@@ -107,14 +103,11 @@ private:
 	p2SString			title;
 	p2SString			organization;
 
-	pugi::xml_document	save_game_doc;
+	p2SString			load_path;
+	mutable p2SString	save_path;
 
-	//Flag booleans to check if player requested saving or loading
-	mutable bool want_to_save = false;
-	bool want_to_load = false;
-
-	p2SString load_path;
-	mutable p2SString save_path;
+	mutable bool		want_to_save;
+	bool				want_to_load;
 
 };
 

@@ -87,37 +87,27 @@ bool j1Render::CleanUp()
 	return true;
 }
 
-bool j1Render::DoLoad()
+bool j1Render::Load(pugi::xml_node& node)
 {
 
 	LOG("LOADING RENDER MADAFAKACKAKAKCKA");
-
-	pugi::xml_node render_node = App->save_node.child("renderer");
-	pugi::xml_node camera_node = render_node.child("camera");
-
-
-	camera.x = camera_node.attribute("x").as_int();
-	camera.y = camera_node.attribute("y").as_int();
+	
+	camera.x = node.child("camera").attribute("x").as_int();
+	camera.y = node.child("camera").attribute("y").as_int();
 
 	return true;
 }
 /*Best books best articles of Huizinga Schell Juul Caillois Crawford Miere Adams Salen Zimmerman Koster*/
-bool j1Render::DoSave()
+bool j1Render::Save(pugi::xml_node& node)
 {
 
 	LOG("SAVING RENDER MUDAJAFASDG");
-	pugi::xml_node render_node = App->save_node.child("renderer");
-	pugi::xml_node camera_node = render_node.child("camera");
+	pugi::xml_node cam = node.append_child("camera");
 
-	camera_node.attribute("x") = camera.x;
-	camera_node.attribute("y") = camera.y;
+	cam.append_attribute("x") = camera.x;
+	cam.append_attribute("y") = camera.y;
+	LOG("cameraX: %d - %d \n camerY: %d - %d", camera.x, cam.attribute("x").value(), camera.y,cam.attribute("y").value());
 
-	if (camera_node.attribute("x") == NULL) {
-		LOG("NUUUULLLL");
-	}
-	LOG("cameraX: %d - %d \n camerY: %d - %d", camera.x, camera_node.attribute("x").value(), camera.y,camera_node.attribute("y").value());
-
-	int a = 1;
 	return true;
 }
 

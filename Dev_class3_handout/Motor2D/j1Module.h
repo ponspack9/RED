@@ -59,11 +59,11 @@ public:
 		return true;
 	}
 
-	virtual bool DoSave() {
+	virtual bool Save(pugi::xml_node& node) {
 		return true;
 	}
 
-	virtual bool DoLoad() {
+	virtual bool Load(pugi::xml_node& node) {
 		return true;
 	}
 

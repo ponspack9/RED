@@ -71,16 +71,22 @@ bool j1App::Awake()
 	pugi::xml_document	config_doc;
 	pugi::xml_node		config;
 	pugi::xml_node		app_config;
+	pugi::xml_node		file_system;
 
 	pugi::xml_parse_result result = LoadXML(config_doc, "config.xml");
 
 	if (result != NULL)
 	{
-		config = config_doc.child("config");
-		app_config = config.child("app");
+		config		= config_doc.child("config");
+		app_config	= config.child("app");
+		file_system = config.child("file_system");
 
 		title.create(app_config.child("title").child_value());
 		organization.create(app_config.child("organization").child_value());
+
+		load_path.create(file_system.child("load_path").child_value());
+		save_path.create(file_system.child("save_path").child_value());
+		LOG("LOADPAAAAAAAAAAAAAAAAATH: %s", load_path.GetString());
 	
 		// END CONFIGURATION
 
@@ -165,14 +171,17 @@ void j1App::FinishUpdate()
 }
 
 bool j1App::SaveGameFile() {
+	pugi::xml_document	save_game_doc;
+	pugi::xml_node save_node; // TO CLEAN
 
-	pugi::xml_parse_result result = LoadXML(save_game_doc, "save_game.xml");
+	pugi::xml_parse_result result = LoadXML(save_game_doc, save_path.GetString());
 
 	bool ret = true;
 	p2List_item<j1Module*>* item;
 	j1Module* pModule = NULL;
 
 	if (result) {
+		LOG("Loading new Game State from %s...", save_path.GetString());
 
 		save_node = save_game_doc.child("save");
 
@@ -183,7 +192,7 @@ bool j1App::SaveGameFile() {
 			if (pModule->active == false) {
 				continue;
 			}
-			ret = pModule->DoSave();
+			//ret = pModule->Save();
 		}
 	}
 	save_game_doc.save_file("save_game.xml");
@@ -193,24 +202,31 @@ bool j1App::SaveGameFile() {
 
 bool j1App::LoadGameFile()
 {
-	pugi::xml_parse_result result = LoadXML(save_game_doc, "save_game.xml");
-	bool ret = true;
-	p2List_item<j1Module*>* item;
-	j1Module* pModule = NULL;
+	pugi::xml_document	save_game_doc;
+	pugi::xml_node		save_node;
+	pugi::xml_parse_result result = LoadXML(save_game_doc, load_path.GetString());
 
-	if (result) {
+	bool ret = result != NULL;
+
+	p2List_item<j1Module*>* item = modules.start;
+
+	if (ret) {
+		LOG("Loading new Game State from %s...", load_path.GetString());
 
 		save_node = save_game_doc.child("save");
 
-		for (item = modules.start; item != NULL && ret; item = item->next)
-	{
-			pModule = item->data;
-
-			if (pModule->active == false) {
-			continue;
+		while (item != NULL && ret)
+		{
+			if (item->data->active) {
+				ret = item->data->Load(save_node.child(item->data->name.GetString()));
 			}
-			ret = pModule->DoLoad();
+			item = item->next;
 		}
+
+		if (ret)
+			LOG("...finished loading");
+		else
+			LOG("...loading process interrupted with error on module %s", (item != NULL) ? item->data->name.GetString() : "unknown -> NULL pointer");
 	}
 
 	want_to_load = false;
