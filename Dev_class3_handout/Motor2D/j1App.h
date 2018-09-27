@@ -63,9 +63,6 @@ private:
 	//Load saveFile
 	pugi::xml_parse_result LoadXML(pugi::xml_document & doc, const char* path);
 
-	// Load config file
-	bool LoadConfig();
-
 	// Call modules before each loop iteration
 	void PrepareUpdate();
 
@@ -112,10 +109,6 @@ private:
 
 	pugi::xml_document	save_game_doc;
 
-	pugi::xml_document	config_doc;
-	pugi::xml_node		config;
-	pugi::xml_node		app_config;
-	
 	//Flag booleans to check if player requested saving or loading
 	mutable bool want_to_save = false;
 	bool want_to_load = false;

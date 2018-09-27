@@ -65,14 +65,26 @@ void j1App::AddModule(j1Module* module)
 // Called before render is available
 bool j1App::Awake()
 {
-	bool ret = LoadConfig();
+	bool ret = true;
 
-	// self-config
-	title.create(app_config.child("title").child_value());
-	organization.create(app_config.child("organization").child_value());
+		// BEGIN CONFIGURATION
+	pugi::xml_document	config_doc;
+	pugi::xml_node		config;
+	pugi::xml_node		app_config;
 
-	if(ret)
+	pugi::xml_parse_result result = LoadXML(config_doc, "config.xml");
+
+	if (result != NULL)
 	{
+		config = config_doc.child("config");
+		app_config = config.child("app");
+
+		title.create(app_config.child("title").child_value());
+		organization.create(app_config.child("organization").child_value());
+	
+		// END CONFIGURATION
+
+		// Awakening all modules
 		p2List_item<j1Module*>* item;
 		item = modules.start;
 
@@ -124,20 +136,6 @@ bool j1App::Update()
 	return ret;
 }
 
-
-bool j1App::LoadConfig()
-{
-	pugi::xml_parse_result result = LoadXML(config_doc,"config.xml");
-
-	if (result != NULL)
-	{
-		config = config_doc.child("config");
-		app_config = config.child("app");
-	}
-
-	return true;
-}
-
 pugi::xml_parse_result j1App::LoadXML(pugi::xml_document& doc, const char* path)
 {
 	pugi::xml_parse_result result = doc.load_file(path);
@@ -145,6 +143,9 @@ pugi::xml_parse_result j1App::LoadXML(pugi::xml_document& doc, const char* path)
 	if (result == NULL)
 	{
 		LOG("Could not load map xml file %s pugi error: %s",path, result.description());
+	}
+	else {
+		LOG("%s loaded successfully", path);
 	}
 
 	return result;
