@@ -40,18 +40,14 @@ public:
 	void AddModule(j1Module* module);
 
 	// Exposing some properties for reading
-	int GetArgc() const;
+	int			GetArgc() const;
 	const char* GetArgv(int index) const;
 	const char* GetTitle() const;
 	const char* GetOrganization() const;
 
-	// DONE TODO 1: Create methods to save and load
-	// that can be called anytime, even if they 
-	// will one execute by the very end of the frame
-	// Load / SAVE
-
 	void LoadGame();
 	void SaveGame() const;
+	//TO BE IMPLEMENTED
 	void GetSaveGames(p2List<p2SString>& list_to_fill) const;
 
 
@@ -74,10 +70,10 @@ private:
 	// Call modules after each loop iteration
 	bool PostUpdate();
 
-	//Saving iteration
+	//Saving iteration ONLY SAVING ACTIVE MODULES
 	bool SaveGameFile();
 
-	//Loading iteration
+	//Loading iteration ONLY LOADING ACTIVE MODULES
 	bool LoadGameFile();
 
 

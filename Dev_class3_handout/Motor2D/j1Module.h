@@ -59,15 +59,15 @@ public:
 		return true;
 	}
 
+	// Called on finish update from App
 	virtual bool Save(pugi::xml_node& node) {
 		return true;
 	}
 
+	// Called on finish update from App
 	virtual bool Load(pugi::xml_node& node) {
 		return true;
 	}
-
-	// DONE TODO 3: Create new virtual methods to Load and SAVE
 
 public:
 

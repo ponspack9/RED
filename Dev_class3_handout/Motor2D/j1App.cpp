@@ -86,7 +86,7 @@ bool j1App::Awake()
 
 		load_path.create(file_system.child("load_path").child_value());
 		save_path.create(file_system.child("save_path").child_value());
-		LOG("LOADPAAAAAAAAAAAAAAAAATH: %s", load_path.GetString());
+		LOG("LoadPath: %s", load_path.GetString());
 	
 		// END CONFIGURATION
 
@@ -108,8 +108,7 @@ bool j1App::Awake()
 bool j1App::Start()
 {
 	bool ret = true;
-	p2List_item<j1Module*>* item;
-	item = modules.start;
+	p2List_item<j1Module*>* item = modules.start;
 
 	while(item != NULL && ret)
 	{
@@ -148,7 +147,7 @@ pugi::xml_parse_result j1App::LoadXML(pugi::xml_document& doc, const char* path)
 
 	if (result == NULL)
 	{
-		LOG("Could not load map xml file %s pugi error: %s",path, result.description());
+		LOG("Could not load xml file %s pugi error: %s",path, result.description());
 	}
 	else {
 		LOG("%s loaded successfully", path);
@@ -170,41 +169,43 @@ void j1App::FinishUpdate()
 	if (want_to_load) LoadGameFile();
 }
 
-bool j1App::SaveGameFile() {
-	pugi::xml_document	save_game_doc;
-	pugi::xml_node save_node; // TO CLEAN
+bool j1App::SaveGameFile() 
+{
+	LOG("Saving new Game State to %s...", save_path.GetString());
 
-	pugi::xml_parse_result result = LoadXML(save_game_doc, save_path.GetString());
+	pugi::xml_document		save_game_doc; 
+	pugi::xml_node			save_node;
+	p2List_item<j1Module*>* item = modules.start;
 
 	bool ret = true;
-	p2List_item<j1Module*>* item;
-	j1Module* pModule = NULL;
 
-	if (result) {
-		LOG("Loading new Game State from %s...", save_path.GetString());
+	save_node = save_game_doc.append_child("save");
 
-		save_node = save_game_doc.child("save");
-
-		for (item = modules.start; item != NULL && ret; item = item->next)
-		{
-			pModule = item->data;
-
-			if (pModule->active == false) {
-				continue;
-			}
-			//ret = pModule->Save();
+	while (item != NULL && ret)
+	{
+		if (item->data->active) {
+			ret = item->data->Save(save_node.append_child(item->data->name.GetString()));
 		}
+		item = item->next;
 	}
-	save_game_doc.save_file("save_game.xml");
+
+	if (ret) {
+		save_game_doc.save_file(save_path.GetString());
+		LOG("...finished saving");
+	}
+	else
+		LOG("...saving process interrupted with error on module %s", (item != NULL) ? item->data->name.GetString() : "unknown -> NULL pointer");
+	
+	save_game_doc.reset();
 	want_to_save = false;
 	return ret;
 }
 
 bool j1App::LoadGameFile()
 {
-	pugi::xml_document	save_game_doc;
-	pugi::xml_node		save_node;
-	pugi::xml_parse_result result = LoadXML(save_game_doc, load_path.GetString());
+	pugi::xml_document		save_game_doc;
+	pugi::xml_node			save_node;
+	pugi::xml_parse_result	result = LoadXML(save_game_doc, load_path.GetString());
 
 	bool ret = result != NULL;
 
