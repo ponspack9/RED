@@ -6,6 +6,6 @@
 	<audio />
 	<scene />
 	<renderer>
-		<camera x="-319" y="-159" />
+		<camera x="437" y="718" />
 	</renderer>
 </save>

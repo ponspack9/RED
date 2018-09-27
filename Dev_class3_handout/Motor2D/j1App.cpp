@@ -1,5 +1,4 @@
 #include <iostream> 
-#include <sstream> 
 
 #include "p2Defs.h"
 #include "p2Log.h"
@@ -10,12 +9,14 @@
 #include "j1Textures.h"
 #include "j1Audio.h"
 #include "j1Scene.h"
+///#include "j1Map.h"
 #include "j1App.h"
 
 // Constructor
 j1App::j1App(int argc, char* args[]) : argc(argc), args(args)
 {
 	frames = 0;
+	want_to_save = want_to_load = false;
 
 	input	= new j1Input();
 	win		= new j1Window();
@@ -23,6 +24,7 @@ j1App::j1App(int argc, char* args[]) : argc(argc), args(args)
 	tex		= new j1Textures();
 	audio	= new j1Audio();
 	scene	= new j1Scene();
+	///map	= new j1Map();
 
 	// Ordered for awake / Start / Update
 	// Reverse order of CleanUp
@@ -30,6 +32,7 @@ j1App::j1App(int argc, char* args[]) : argc(argc), args(args)
 	AddModule(win);
 	AddModule(tex);
 	AddModule(audio);
+	///AddModule(map);
 	AddModule(scene);
 
 	// render last to swap buffer
@@ -50,7 +53,7 @@ j1App::~j1App()
 
 	modules.clear();
 
-	config_doc.reset();
+	//config_doc.reset();
 }
 
 void j1App::AddModule(j1Module* module)
@@ -126,12 +129,7 @@ bool j1App::LoadConfig()
 {
 	pugi::xml_parse_result result = LoadXML(config_doc,"config.xml");
 
-	if (result == NULL)
-	{
-		LOG("Could not load map xml file config.xml. pugi error: %s", result.description());
-		return false;
-	}
-	else
+	if (result != NULL)
 	{
 		config = config_doc.child("config");
 		app_config = config.child("app");
@@ -161,13 +159,11 @@ void j1App::PrepareUpdate()
 // ---------------------------------------------
 void j1App::FinishUpdate()
 {
-	// DONE TODO 1: This is a good place to call load / Save functions
-	if (do_save) Save();
-	if (do_load) Load();
-
+	if (want_to_save) SaveGameFile();
+	if (want_to_load) LoadGameFile();
 }
 
-bool j1App::Save() {
+bool j1App::SaveGameFile() {
 
 	pugi::xml_parse_result result = LoadXML(save_game_doc, "save_game.xml");
 
@@ -190,11 +186,11 @@ bool j1App::Save() {
 		}
 	}
 	save_game_doc.save_file("save_game.xml");
-	do_save = false;
+	want_to_save = false;
 	return ret;
 }
 
-bool j1App::Load()
+bool j1App::LoadGameFile()
 {
 	pugi::xml_parse_result result = LoadXML(save_game_doc, "save_game.xml");
 	bool ret = true;
@@ -216,7 +212,7 @@ bool j1App::Load()
 		}
 	}
 
-	do_load = false;
+	want_to_load = false;
 	return ret;
 }
 
@@ -328,11 +324,24 @@ const char* j1App::GetOrganization() const
 	return organization.GetString();
 }
 
+void j1App::LoadGame()
+{
+	// we should be checking if that file actually exist
+	// from the "GetSaveGames" list
+	want_to_load = true;
+}
 
-// DONE TODO 4: Create a simulation of the xml file to read 
+void j1App::SaveGame() const
+{
+	// we should be checking if that file actually exist
+	// from the "GetSaveGames" list ... should we overwrite ?
 
-// DONE TODO 5: Create a method to actually load an xml file
-// then call all the modules to load themselves
+	want_to_save = true;
+}
 
-// TODO 7: Create a method to save the current state
+void j1App::GetSaveGames(p2List<p2SString>& list_to_fill) const
+{
+	// need to add functionality to file_system module for this to work
+}
+
 

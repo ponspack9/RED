@@ -12,6 +12,7 @@ class j1Render;
 class j1Textures;
 class j1Audio;
 class j1Scene;
+///class j1Map; 
 
 class j1App
 {
@@ -49,16 +50,17 @@ public:
 	// will one execute by the very end of the frame
 	// Load / SAVE
 
+	void LoadGame();
+	void SaveGame() const;
+	void GetSaveGames(p2List<p2SString>& list_to_fill) const;
 
-	bool do_save = false;
+	
 
-	bool do_load = false;
-
-	pugi::xml_node save_node;
+	pugi::xml_node save_node; // TO CLEAN
 		
 
 private:
-	//Load Save File
+	//Load saveFile
 	pugi::xml_parse_result LoadXML(pugi::xml_document & doc, const char* path);
 
 	// Load config file
@@ -80,10 +82,10 @@ private:
 	bool PostUpdate();
 
 	//Saving iteration
-	bool Save();
+	bool SaveGameFile();
 
-	//Saving iteration
-	bool Load();
+	//Loading iteration
+	bool LoadGameFile();
 
 
 public:
@@ -95,21 +97,31 @@ public:
 	j1Textures*			tex;
 	j1Audio*			audio;
 	j1Scene*			scene;
+	///j1Map*			map;
 
 private:
 
 	p2List<j1Module*>	modules;
 	uint				frames;
 	float				dt;
-	pugi::xml_document	config_doc;
-	pugi::xml_document	save_game_doc;
-	pugi::xml_node		config;
-	pugi::xml_node		app_config;
 	int					argc;
 	char**				args;
 
 	p2SString			title;
 	p2SString			organization;
+
+	pugi::xml_document	save_game_doc;
+
+	pugi::xml_document	config_doc;
+	pugi::xml_node		config;
+	pugi::xml_node		app_config;
+	
+	//Flag booleans to check if player requested saving or loading
+	mutable bool want_to_save = false;
+	bool want_to_load = false;
+
+	p2SString load_path;
+	mutable p2SString save_path;
 
 };
 
