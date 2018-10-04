@@ -7,6 +7,6 @@
 	<map />
 	<scene />
 	<renderer>
-		<camera x="266" y="110" />
+		<camera x="333" y="63" />
 	</renderer>
 </save>

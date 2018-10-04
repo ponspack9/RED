@@ -24,7 +24,7 @@ j1App::j1App(int argc, char* args[]) : argc(argc), args(args)
 	tex		= new j1Textures();
 	audio	= new j1Audio();
 	scene	= new j1Scene();
-	map	= new j1Map();
+	map		= new j1Map();
 
 	// Ordered for awake / Start / Update
 	// Reverse order of CleanUp

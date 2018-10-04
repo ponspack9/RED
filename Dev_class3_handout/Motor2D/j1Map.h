@@ -6,8 +6,17 @@
 #include "p2Point.h"
 #include "j1Module.h"
 
-// TODO 1: Create a struct for the map layer
+// TODO DONE 1: Create a struct for the map layer
 // ----------------------------------------------------
+struct MapLayer {
+	p2SString name;
+	uint width;
+	uint height;
+	uint * data = nullptr;
+	inline uint Get(int x, int y) const;
+};
+
+
 
 	// TODO 6: Short function to get the value of x,y
 
@@ -51,7 +60,8 @@ struct MapData
 	SDL_Color			background_color;
 	MapTypes			type;
 	p2List<TileSet*>	tilesets;
-	// TODO 2: Add a list/array of layers to the map!
+	p2List<MapLayer*>	map_layers;
+	// TODO DONE 2: Add a list/array of layers to the map!
 };
 
 // ----------------------------------------------------
@@ -63,6 +73,8 @@ public:
 
 	// Destructor
 	virtual ~j1Map();
+
+	//bool Start();
 
 	// Called before render is available
 	bool Awake(pugi::xml_node& conf);
@@ -85,7 +97,7 @@ private:
 	bool LoadTilesetDetails(pugi::xml_node& tileset_node, TileSet* set);
 	bool LoadTilesetImage(pugi::xml_node& tileset_node, TileSet* set);
 	// TODO 3: Create a method that loads a single laye
-	// bool LoadLayer(pugi::xml_node& node, MapLayer* layer);
+	bool LoadLayer(pugi::xml_node& node, MapLayer* layer);
 
 public:
 
