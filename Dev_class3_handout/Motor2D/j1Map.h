@@ -12,15 +12,8 @@ struct MapLayer {
 	p2SString name;
 	uint width;
 	uint height;
-	uint * data;
-
-	MapLayer() {
-		if (data) delete[] data;
-	}
-
-	inline uint Get(uint x, uint y) const {
-		return x + y * width;
-	}
+	uint * data = nullptr;
+	inline uint Get(int x, int y) const;
 };
 
 
@@ -80,6 +73,8 @@ public:
 
 	// Destructor
 	virtual ~j1Map();
+
+	//bool Start();
 
 	// Called before render is available
 	bool Awake(pugi::xml_node& conf);

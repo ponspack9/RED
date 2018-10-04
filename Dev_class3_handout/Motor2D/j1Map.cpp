@@ -15,6 +15,7 @@ j1Map::j1Map() : j1Module(), map_loaded(false)
 j1Map::~j1Map()
 {}
 
+
 // Called before render is available
 bool j1Map::Awake(pugi::xml_node& config)
 {
@@ -276,12 +277,12 @@ bool j1Map::LoadMap()
 bool j1Map::LoadTilesetDetails(pugi::xml_node& tileset_node, TileSet* set)
 {
 	bool ret = true;
-	set->name.create(tileset_node.attribute("name").as_string());
-	set->firstgid = tileset_node.attribute("firstgid").as_int();
-	set->tile_width = tileset_node.attribute("tilewidth").as_int();
-	set->tile_height = tileset_node.attribute("tileheight").as_int();
-	set->margin = tileset_node.attribute("margin").as_int();
-	set->spacing = tileset_node.attribute("spacing").as_int();
+	set->name.create	  ( tileset_node.attribute("name").as_string());
+	set->firstgid		  = tileset_node.attribute("firstgid").as_int();
+	set->tile_width		  = tileset_node.attribute("tilewidth").as_int();
+	set->tile_height	  = tileset_node.attribute("tileheight").as_int();
+	set->margin			  = tileset_node.attribute("margin").as_int();
+	set->spacing		  = tileset_node.attribute("spacing").as_int();
 	pugi::xml_node offset = tileset_node.child("tileoffset");
 
 	if(offset != NULL)
@@ -359,3 +360,7 @@ bool j1Map::LoadLayer(pugi::xml_node & node, MapLayer * layer)
 	return true;
 }
 
+inline uint MapLayer::Get(int x, int y) const
+{
+	return x + (y * width);
+}
