@@ -22,18 +22,18 @@ j1Scene::~j1Scene()
 bool j1Scene::Awake()
 {
 	LOG("Loading Scene");
-	bool ret = true;
 
-	return ret;
+	return true;
 }
 
 // Called before the first frame
 bool j1Scene::Start()
 {
 	//img = App->tex->Load("textures/test.png");
-	App->audio->PlayMusic("audio/music/music_sadpiano.ogg");
-	App->map->Load("hello2.tmx");
-	return true;
+	bool ret = App->audio->PlayMusic("audio/music/music_sadpiano.ogg");
+	if (ret) App->map->Load("hello2.tmx");
+
+	return ret;
 }
 
 // Called each loop iteration
@@ -51,24 +51,29 @@ bool j1Scene::Update(float dt)
 	if (App->input->GetKey(SDL_SCANCODE_L) == KEY_DOWN)
 		App->LoadGame();
 
-	if(App->input->GetKey(SDL_SCANCODE_UP) == KEY_REPEAT)
+	if (App->input->GetKey(SDL_SCANCODE_UP) == KEY_REPEAT)
 		App->render->camera.y -= 1;
 
-	if(App->input->GetKey(SDL_SCANCODE_DOWN) == KEY_REPEAT)
+	if (App->input->GetKey(SDL_SCANCODE_DOWN) == KEY_REPEAT)
 		App->render->camera.y += 1;
 
-	if(App->input->GetKey(SDL_SCANCODE_LEFT) == KEY_REPEAT)
+	if (App->input->GetKey(SDL_SCANCODE_LEFT) == KEY_REPEAT)
 		App->render->camera.x -= 1;
 
-	if(App->input->GetKey(SDL_SCANCODE_RIGHT) == KEY_REPEAT)
+	if (App->input->GetKey(SDL_SCANCODE_RIGHT) == KEY_REPEAT)
 		App->render->camera.x += 1;
 
 	App->map->Draw();
+	int x, y;
+	App->input->GetMousePosition(x, y);
+	
 
-	p2SString title("Map:%dx%d Tiles:%dx%d Tilesets:%d",
+	// Loading info to title FLASHES WINDOW ICON IN TASK BAR
+	p2SString title("Map:%dx%d Tiles:%dx%d Tilesets:%d MouseX: %d MouseY: %d",
 		App->map->data.width, App->map->data.height,
 		App->map->data.tile_width, App->map->data.tile_height,
-		App->map->data.tilesets.count());
+		App->map->data.tilesets.count(),
+		x, y);
 
 	App->win->SetTitle(title.GetString());
 

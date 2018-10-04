@@ -50,10 +50,10 @@ public:
 	//TO BE IMPLEMENTED
 	void GetSaveGames(p2List<p2SString>& list_to_fill) const;
 
-
-private:
 	//Load XML, LOGs the result also returning it
 	pugi::xml_parse_result LoadXML(pugi::xml_document & doc, const char* path);
+
+private:
 
 	// Call modules before each loop iteration
 	void PrepareUpdate();

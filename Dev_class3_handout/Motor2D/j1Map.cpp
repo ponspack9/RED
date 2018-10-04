@@ -11,33 +11,45 @@ j1Map::j1Map() : j1Module(), map_loaded(false)
 	name.create("map");
 }
 
-// Destructor
 j1Map::~j1Map()
 {}
 
+SDL_Rect TileSet::GetTileRect(int id) const
+{
+	int relative_id = id - firstgid;
+	SDL_Rect rect;
 
-// Called before render is available
+	rect.w = tile_width;
+	rect.h = tile_height;
+	rect.x = margin + ((rect.w + spacing) * (relative_id % num_tiles_width));
+	rect.y = margin + ((rect.h + spacing) * (relative_id / num_tiles_width));
+
+	return rect;
+}
+
+inline uint MapLayer::Get(int x, int y) const
+{
+	return x + (y * width);
+}
+
 bool j1Map::Awake(pugi::xml_node& config)
 {
 	LOG("Loading Map Parser");
-	bool ret = true;
 
 	folder.create(config.child("folder").child_value());
 
-	return ret;
+	return true;
 }
 
 void j1Map::Draw()
 {
-	if(map_loaded == false)
+	if(!map_loaded)
 		return;
 
-	// TODO 5: Prepare the loop to draw all tilesets + Blit
-
-	p2List_item<TileSet*>* item; //Sprites_Layer
+	p2List_item<TileSet*>* item;
 	item = data.tilesets.start;
 
-	p2List_item<MapLayer*>* layer; //Map
+	p2List_item<MapLayer*>* layer; 
 	layer = data.map_layers.start;
 
 	for (int y = 0; y < data.height; ++y) {
@@ -54,33 +66,9 @@ void j1Map::Draw()
 			}
 		}
 	}
-		// TODO 9: Complete the draw function
 
 }
 
-
-iPoint j1Map::MapToWorld(int x, int y) const
-{
-	iPoint ret;
-
-	ret.x = x * data.tile_width;
-	ret.y = y * data.tile_height;
-
-	return ret;
-}
-
-SDL_Rect TileSet::GetTileRect(int id) const
-{
-	int relative_id = id - firstgid;
-	SDL_Rect rect;
-	rect.w = tile_width;
-	rect.h = tile_height;
-	rect.x = margin + ((rect.w + spacing) * (relative_id % num_tiles_width));
-	rect.y = margin + ((rect.h + spacing) * (relative_id / num_tiles_width));
-	return rect;
-}
-
-// Called before quitting
 bool j1Map::CleanUp()
 {
 	LOG("Unloading map");
@@ -96,7 +84,6 @@ bool j1Map::CleanUp()
 	}
 	data.tilesets.clear();
 
-	// TODO 2: clean up all layer data
 	// Remove all layers
 	p2List_item<MapLayer*>* layer;
 	layer = data.map_layers.start;
@@ -108,72 +95,60 @@ bool j1Map::CleanUp()
 	}
 	data.map_layers.clear();
 
-
-	// Clean up the pugui tree
 	map_file.reset();
 
 	return true;
 }
 
-// Load new map
+iPoint j1Map::MapToWorld(int x, int y) const
+{
+	iPoint pos;
+
+	pos.x = x * data.tile_width;
+	pos.y = y * data.tile_height;
+
+	return pos;
+}
+
 bool j1Map::Load(const char* file_name)
 {
-	bool ret = true;
-	p2SString tmp("%s%s", folder.GetString(), file_name);
+	pugi::xml_parse_result result = App->LoadXML(map_file, PATH(folder.GetString(),file_name));
 
-	pugi::xml_parse_result result = map_file.load_file(tmp.GetString());
+	bool ret = (result != NULL);
 
-	if(result == NULL)
-	{
-		LOG("Could not load map xml file %s . pugi error: %s", file_name, result.description());
-		ret = false;
-	}
-
-	// Load general info ----------------------------------------------
-	if(ret == true)
+	// Load general info (ERROR handled by LoadXML)
+	if(ret)
 	{
 		ret = LoadMap();
-	}
-
-	// Load all tilesets info ----------------------------------------------
-	pugi::xml_node tileset;
-	for(tileset = map_file.child("map").child("tileset"); tileset && ret; tileset = tileset.next_sibling("tileset"))
-	{
-		TileSet* set = new TileSet();
-
-		if(ret == true)
+	
+		// Load all tilesets info
+		pugi::xml_node tileset = map_file.child("map").child("tileset");
+		for(tileset; tileset && ret; tileset = tileset.next_sibling("tileset"))
 		{
-			ret = LoadTilesetDetails(tileset, set);
+			TileSet* set = new TileSet();
+
+			if(ret)	ret = LoadTilesetDetails(tileset, set);
+			if(ret)	ret = LoadTilesetImage(tileset, set);
+			if(ret) data.tilesets.add(set);
+
 		}
 
-		if(ret == true)
+		// Load layer info 
+		pugi::xml_node layer = map_file.child("map").child("layer");
+		for (layer; layer && ret; layer = layer.next_sibling("layer"))
 		{
-			ret = LoadTilesetImage(tileset, set);
+			MapLayer* set = new MapLayer();
+
+			if (ret) ret = LoadLayer(layer, set);
+			if (ret) data.map_layers.add(set);
 		}
-
-		data.tilesets.add(set);
 	}
+	 map_loaded = ret;
 
-	// TODO 4: Iterate all layers and load each of them
-	// Load layer info ----------------------------------------------
-	pugi::xml_node layer;
-	for (layer = map_file.child("map").child("layer"); layer && ret; layer = layer.next_sibling("layer"))
+	// Logs => data has been loaded properly
+	if(map_loaded)
 	{
-		MapLayer* set = new MapLayer();
-
-		if (ret == true)
-		{
-			ret = LoadLayer(layer, set);
-		}
-
-		data.map_layers.add(set);
-	}
-
-
-
-
-	if(ret == true)
-	{
+		//Logging map info
 		LOG("Successfully parsed map XML file: %s", file_name);
 		LOG("width: %d height: %d", data.width, data.height);
 		LOG("tile_width: %d tile_height: %d", data.tile_width, data.tile_height);
@@ -189,9 +164,7 @@ bool j1Map::Load(const char* file_name)
 			item = item->next;
 		}
 
-		// TODO 4: Add info here about your loaded layers
-		// Adapt this vcode with your own variables
-		
+		// Logging layers info
 		p2List_item<MapLayer*>* item_layer = data.map_layers.start;
 		while(item_layer != NULL)
 		{
@@ -203,36 +176,28 @@ bool j1Map::Load(const char* file_name)
 		}
 	}
 
-	map_loaded = ret;
-
-	return ret;
+	return map_loaded;
 }
 
-// Load map general properties
 bool j1Map::LoadMap()
 {
-	bool ret = true;
 	pugi::xml_node map = map_file.child("map");
+	bool ret = map != NULL;
 
-	if(map == NULL)
+	if(ret)
 	{
-		LOG("Error parsing map xml file: Cannot find 'map' tag.");
-		ret = false;
-	}
-	else
-	{
-		data.width = map.attribute("width").as_int();
-		data.height = map.attribute("height").as_int();
-		data.tile_width = map.attribute("tilewidth").as_int();
-		data.tile_height = map.attribute("tileheight").as_int();
-		p2SString bg_color(map.attribute("backgroundcolor").as_string());
+		data.width			= map.attribute("width").as_int();
+		data.height			= map.attribute("height").as_int();
+		data.tile_width		= map.attribute("tilewidth").as_int();
+		data.tile_height	= map.attribute("tileheight").as_int();
+		p2SString bg_color	( map.attribute("backgroundcolor").as_string());
 
 		data.background_color.r = 0;
 		data.background_color.g = 0;
 		data.background_color.b = 0;
 		data.background_color.a = 0;
 
-		if(bg_color.Length() > 0)
+		if (bg_color.Length() > 0)
 		{
 			p2SString red, green, blue;
 			bg_color.SubString(1, 2, red);
@@ -242,33 +207,25 @@ bool j1Map::LoadMap()
 			int v = 0;
 
 			sscanf_s(red.GetString(), "%x", &v);
-			if(v >= 0 && v <= 255) data.background_color.r = v;
+			if (v >= 0 && v <= 255) data.background_color.r = v;
 
 			sscanf_s(green.GetString(), "%x", &v);
-			if(v >= 0 && v <= 255) data.background_color.g = v;
+			if (v >= 0 && v <= 255) data.background_color.g = v;
 
 			sscanf_s(blue.GetString(), "%x", &v);
-			if(v >= 0 && v <= 255) data.background_color.b = v;
+			if (v >= 0 && v <= 255) data.background_color.b = v;
 		}
 
 		p2SString orientation(map.attribute("orientation").as_string());
 
-		if(orientation == "orthogonal")
-		{
-			data.type = MAPTYPE_ORTHOGONAL;
-		}
-		else if(orientation == "isometric")
-		{
-			data.type = MAPTYPE_ISOMETRIC;
-		}
-		else if(orientation == "staggered")
-		{
-			data.type = MAPTYPE_STAGGERED;
-		}
-		else
-		{
-			data.type = MAPTYPE_UNKNOWN;
-		}
+		if		(orientation == "orthogonal")	data.type = MAPTYPE_ORTHOGONAL;
+		else if (orientation == "isometric")	data.type = MAPTYPE_ISOMETRIC;
+		else if (orientation == "staggered")	data.type = MAPTYPE_STAGGERED;
+		else									data.type = MAPTYPE_UNKNOWN;
+	}
+	else
+	{
+		LOG("Error parsing map xml file: Cannot find 'map' tag.");
 	}
 
 	return ret;
@@ -276,91 +233,102 @@ bool j1Map::LoadMap()
 
 bool j1Map::LoadTilesetDetails(pugi::xml_node& tileset_node, TileSet* set)
 {
-	bool ret = true;
-	set->name.create	  ( tileset_node.attribute("name").as_string());
-	set->firstgid		  = tileset_node.attribute("firstgid").as_int();
-	set->tile_width		  = tileset_node.attribute("tilewidth").as_int();
-	set->tile_height	  = tileset_node.attribute("tileheight").as_int();
-	set->margin			  = tileset_node.attribute("margin").as_int();
-	set->spacing		  = tileset_node.attribute("spacing").as_int();
-	pugi::xml_node offset = tileset_node.child("tileoffset");
+	bool ret = tileset_node != NULL;
+	if (ret){
+		set->name.create	  ( tileset_node.attribute("name").as_string());
+		set->firstgid		  = tileset_node.attribute("firstgid").as_int();
+		set->tile_width		  = tileset_node.attribute("tilewidth").as_int();
+		set->tile_height	  = tileset_node.attribute("tileheight").as_int();
+		set->margin			  = tileset_node.attribute("margin").as_int();
+		set->spacing		  = tileset_node.attribute("spacing").as_int();
+		pugi::xml_node offset = tileset_node.child("tileoffset");
 
-	if(offset != NULL)
-	{
-		set->offset_x = offset.attribute("x").as_int();
-		set->offset_y = offset.attribute("y").as_int();
+		if(offset != NULL)
+		{
+			set->offset_x = offset.attribute("x").as_int();
+			set->offset_y = offset.attribute("y").as_int();
+		}
+		else
+		{
+			set->offset_x = 0;
+			set->offset_y = 0;
+		}
 	}
 	else
 	{
-		set->offset_x = 0;
-		set->offset_y = 0;
-	}
+		LOG("ERROR loading tileset details: node is NULL");
+	} 
 
 	return ret;
 }
 
 bool j1Map::LoadTilesetImage(pugi::xml_node& tileset_node, TileSet* set)
 {
-	bool ret = true;
-	pugi::xml_node image = tileset_node.child("image");
+	bool ret = tileset_node != NULL;
 
-	if(image == NULL)
-	{
-		LOG("Error parsing tileset xml file: Cannot find 'image' tag.");
-		ret = false;
+	if (ret) {
+		pugi::xml_node image = tileset_node.child("image");
+		ret = (image != NULL);
+
+		if (ret) {
+
+			set->texture = App->tex->Load(PATH(folder.GetString(), image.attribute("source").as_string()));
+			int w, h;
+			SDL_QueryTexture(set->texture, NULL, NULL, &w, &h);
+			set->tex_width = image.attribute("width").as_int();
+
+			if (set->tex_width <= 0)
+			{
+				set->tex_width = w;
+			}
+
+			set->tex_height = image.attribute("height").as_int();
+
+			if (set->tex_height <= 0)
+			{
+				set->tex_height = h;
+			}
+
+			set->num_tiles_width = set->tex_width / set->tile_width;
+			set->num_tiles_height = set->tex_height / set->tile_height;
+		}
+		else
+		{
+			LOG("Error parsing tileset xml file: Cannot find 'image' tag.");
+		}
 	}
 	else
 	{
-		set->texture = App->tex->Load(PATH(folder.GetString(), image.attribute("source").as_string()));
-		int w, h;
-		SDL_QueryTexture(set->texture, NULL, NULL, &w, &h);
-		set->tex_width = image.attribute("width").as_int();
-
-		if(set->tex_width <= 0)
-		{
-			set->tex_width = w;
-		}
-
-		set->tex_height = image.attribute("height").as_int();
-
-		if(set->tex_height <= 0)
-		{
-			set->tex_height = h;
-		}
-
-		set->num_tiles_width = set->tex_width / set->tile_width;
-		set->num_tiles_height = set->tex_height / set->tile_height;
+		LOG("ERROR loading tileset image: node is NULL");
 	}
 
 	return ret;
 }
 
-// TODO 3: Create the definition for a function that loads a single layer
 bool j1Map::LoadLayer(pugi::xml_node & node, MapLayer * layer)
 {
-	layer->name		= node.attribute("name").as_string();
-	layer->height	= node.attribute("height").as_int();
-	layer->width	= node.attribute("width").as_int();
-	layer->data		= new uint[layer->width*layer->height];
-	
-	memset(layer->data, 0, (sizeof(uint))*layer->width*layer->height);
+	bool ret = node != NULL;
 
-	int i = 0;
-	/*pugi::xml_node i_node = map_file.child("map").child("layer").child("data").child("tile");
+	if (ret) {
+		layer->name = node.attribute("name").as_string();
+		layer->height = node.attribute("height").as_int();
+		layer->width = node.attribute("width").as_int();
+		layer->data = new uint[layer->width*layer->height];
 
-	for (; i_node; i_node = i_node.next_sibling("tile")) {
-		layer->data[i++] = i_node.attribute("gid").as_uint();
-	}*/
+		memset(layer->data, 0, (sizeof(uint))*layer->width*layer->height);
 
-	for (node = map_file.child("map").child("layer").child("data").child("tile"); node; node = node.next_sibling("tile"))
+		int i = 0;
+		pugi::xml_node inode = map_file.child("map").child("layer").child("data").child("tile");
+
+		for (inode; inode; inode = inode.next_sibling("tile"))
+		{
+			layer->data[i++] = inode.attribute("gid").as_uint();
+		}
+	}
+	else
 	{
-		layer->data[i++] = node.attribute("gid").as_uint();
+		LOG("ERROR loading layer: node is NULL");
 	}
 
-	return true;
-}
-
-inline uint MapLayer::Get(int x, int y) const
-{
-	return x + (y * width);
+	return ret;
 }

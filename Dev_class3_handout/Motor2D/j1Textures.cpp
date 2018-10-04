@@ -39,8 +39,7 @@ bool j1Textures::Awake(pugi::xml_node& config)
 bool j1Textures::Start()
 {
 	LOG("start textures");
-	bool ret = true;
-	return ret;
+	return true;
 }
 
 // Called before quitting

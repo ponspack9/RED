@@ -21,8 +21,11 @@ public:
 	// Called before quitting
 	bool CleanUp();
 
-	// Changae title
+	// Change title
 	void SetTitle(const char* new_title);
+
+	// Get Title
+	const p2SString GetTitle() const;
 
 	// Retrive window size
 	void GetWindowSize(uint& width, uint& height) const;

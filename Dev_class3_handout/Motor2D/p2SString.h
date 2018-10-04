@@ -171,6 +171,19 @@ public:
 
 		return(*this);
 	}
+	const p2SString operator + (const p2SString& string)
+	{
+
+		p2SString tmp;
+		unsigned int size = string.Length() + Length() + 1;
+
+		tmp.str = new char[size];
+
+		strcpy_s(tmp.str, size, str);
+		strcat_s(tmp.str, size, string.str);
+
+		return tmp;
+	}
 	
 	const p2SString& operator+= (const p2SString& string)
 	{
