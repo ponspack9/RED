@@ -64,18 +64,7 @@ bool j1Scene::Update(float dt)
 		App->render->camera.x += 1;
 
 	App->map->Draw();
-	int x, y;
-	App->input->GetMousePosition(x, y);
-	
-
-	// Loading info to title FLASHES WINDOW ICON IN TASK BAR
-	p2SString title("Map:%dx%d Tiles:%dx%d Tilesets:%d MouseX: %d MouseY: %d",
-		App->map->data.width, App->map->data.height,
-		App->map->data.tile_width, App->map->data.tile_height,
-		App->map->data.tilesets.count(),
-		x, y);
-
-	App->win->SetTitle(title.GetString());
+	App->win->SetTitle(App->map->DebugToString().GetString());
 
 	return true;
 }

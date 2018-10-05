@@ -19,7 +19,8 @@ struct MapLayer {
 	uint width;
 	uint height;
 	uint * data = nullptr;
-	inline uint Get(int x, int y) const;
+	// Translates 2 dimension to the id of the one dimension array
+	inline uint GetMapId(int x, int y) const;
 };
 
 struct TileSet
@@ -78,6 +79,14 @@ public:
 
 	// Translates x,y coordinates from map positions to world positions
 	iPoint MapToWorld(int x, int y) const;
+
+	void MapToWorldRef(int & x, int & y) const;
+
+	iPoint WorldToMap(int x, int y) const;
+
+	void WorldToMapRef(int & x, int & y) const;
+
+	p2SString DebugToString() const;
 
 private:
 

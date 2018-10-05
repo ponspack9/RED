@@ -3,6 +3,7 @@
 #include "j1App.h"
 #include "j1Render.h"
 #include "j1Textures.h"
+#include "j1Input.h"
 #include "j1Map.h"
 #include <math.h>
 
@@ -27,7 +28,7 @@ SDL_Rect TileSet::GetTileRect(int id) const
 	return rect;
 }
 
-inline uint MapLayer::Get(int x, int y) const
+inline uint MapLayer::GetMapId(int x, int y) const
 {
 	return x + (y * width);
 }
@@ -51,18 +52,19 @@ void j1Map::Draw()
 
 	p2List_item<MapLayer*>* layer; 
 	layer = data.map_layers.start;
+	for (layer; layer; layer = layer->next) {
+		for (int y = 0; y < data.height; ++y) {
+			for (int x = 0; x < data.width; ++x) {
 
-	for (int y = 0; y < data.height; ++y) {
-		for (int x = 0; x < data.width; ++x) {
+				uint id = layer->data->GetMapId(x, y);
 
-			uint id = layer->data->Get(x, y);
+				id = layer->data->data[id];
 
-			id = layer->data->data[id];
-
-			if (id != 0) {
-				SDL_Rect *rect = &item->data->GetTileRect(id);
-				iPoint pos = MapToWorld(x, y);
-				App->render->Blit(item->data->texture, pos.x, pos.y, rect);
+				if (id != 0) {
+					SDL_Rect *rect = &item->data->GetTileRect(id);
+					iPoint pos = MapToWorld(x, y);
+					App->render->Blit(item->data->texture, pos.x, pos.y, rect);
+				}
 			}
 		}
 	}
@@ -108,6 +110,48 @@ iPoint j1Map::MapToWorld(int x, int y) const
 	pos.y = y * data.tile_height;
 
 	return pos;
+}
+
+void j1Map::MapToWorldRef(int &x, int &y) const
+{
+	x = x * data.tile_width;
+	y = y * data.tile_height;
+}
+
+iPoint j1Map::WorldToMap(int x, int y) const 
+{
+	iPoint pos;
+
+	pos.x = x / data.tile_width;
+	pos.y = y / data.tile_height;
+
+	return pos;
+}
+
+void j1Map::WorldToMapRef(int &x, int &y) const
+{
+	x = x / data.tile_width;
+	y = y / data.tile_height;
+}
+
+p2SString j1Map::DebugToString() const
+{
+	int x, y;
+	App->input->GetMousePosition(x, y);
+	iPoint map_pos = WorldToMap(x, y);
+	int map_id  = data.map_layers.start->data->GetMapId(map_pos.x, map_pos.y);
+	int tile_id = data.map_layers.start->data->data[map_id];
+
+	// Loading info to title FLASHES WINDOW ICON IN TASK BAR
+	p2SString ret_string("Map: %dx%d Tiles: %dx%d Tilesets: %d Mouse [%d,%d] Rect [%d,%d] MapID: %d TilesetID: %d ",
+		data.width, data.height,
+		data.tile_width, data.tile_height,
+		data.tilesets.count(),
+		x, y,
+		map_pos.x,map_pos.y, 
+		map_id,tile_id);
+
+	return ret_string;
 }
 
 bool j1Map::Load(const char* file_name)
