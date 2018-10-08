@@ -102,7 +102,7 @@ public:
 
 private:
 
-	pugi::xml_document	map_file;
+	pugi::xml_document	map_doc;
 	p2SString			folder;
 	bool				map_loaded;
 };

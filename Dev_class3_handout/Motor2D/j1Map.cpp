@@ -97,7 +97,7 @@ bool j1Map::CleanUp()
 	}
 	data.map_layers.clear();
 
-	map_file.reset();
+	map_doc.reset();
 
 	return true;
 }
@@ -156,7 +156,7 @@ p2SString j1Map::DebugToString() const
 
 bool j1Map::Load(const char* file_name)
 {
-	pugi::xml_parse_result result = App->LoadXML(map_file, PATH(folder.GetString(),file_name));
+	pugi::xml_parse_result result = App->LoadXML(map_doc, PATH(folder.GetString(),file_name));
 
 	bool ret = (result != NULL);
 
@@ -166,7 +166,7 @@ bool j1Map::Load(const char* file_name)
 		ret = LoadMap();
 	
 		// Load all tilesets info
-		pugi::xml_node tileset = map_file.child("map").child("tileset");
+		pugi::xml_node tileset = map_doc.child("map").child("tileset");
 		for(tileset; tileset && ret; tileset = tileset.next_sibling("tileset"))
 		{
 			TileSet* set = new TileSet();
@@ -178,7 +178,7 @@ bool j1Map::Load(const char* file_name)
 		}
 
 		// Load layer info 
-		pugi::xml_node layer = map_file.child("map").child("layer");
+		pugi::xml_node layer = map_doc.child("map").child("layer");
 		for (layer; layer && ret; layer = layer.next_sibling("layer"))
 		{
 			MapLayer* set = new MapLayer();
@@ -225,7 +225,7 @@ bool j1Map::Load(const char* file_name)
 
 bool j1Map::LoadMap()
 {
-	pugi::xml_node map = map_file.child("map");
+	pugi::xml_node map = map_doc.child("map");
 	bool ret = map != NULL;
 
 	if(ret)
@@ -362,7 +362,7 @@ bool j1Map::LoadLayer(pugi::xml_node & node, MapLayer * layer)
 		memset(layer->data, 0, (sizeof(uint))*layer->width*layer->height);
 
 		int i = 0;
-		pugi::xml_node inode = map_file.child("map").child("layer").child("data").child("tile");
+		pugi::xml_node inode = map_doc.child("map").child("layer").child("data").child("tile");
 
 		for (inode; inode; inode = inode.next_sibling("tile"))
 		{
