@@ -58,13 +58,13 @@ bool j1Scene::Update(float dt)
 		App->render->camera.y += 1;
 
 	if (App->input->GetKey(SDL_SCANCODE_LEFT) == KEY_REPEAT)
-		App->render->camera.x -= 1;
-
-	if (App->input->GetKey(SDL_SCANCODE_RIGHT) == KEY_REPEAT)
 		App->render->camera.x += 1;
 
+	if (App->input->GetKey(SDL_SCANCODE_RIGHT) == KEY_REPEAT)
+		App->render->camera.x -= 1;
+
 	App->map->Draw();
-	App->win->SetTitle(App->map->DebugToString().GetString());
+	
 
 	return true;
 }
@@ -72,12 +72,7 @@ bool j1Scene::Update(float dt)
 // Called each loop iteration
 bool j1Scene::PostUpdate()
 {
-	bool ret = true;
-
-	if(App->input->GetKey(SDL_SCANCODE_ESCAPE) == KEY_DOWN)
-		ret = false;
-
-	return ret;
+	return true;
 }
 
 // Called before quitting

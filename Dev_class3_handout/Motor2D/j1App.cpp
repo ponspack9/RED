@@ -10,6 +10,7 @@
 #include "j1Audio.h"
 #include "j1Scene.h"
 #include "j1Map.h"
+#include "j1Debug.h"
 #include "j1App.h"
 
 // Constructor
@@ -25,6 +26,7 @@ j1App::j1App(int argc, char* args[]) : argc(argc), args(args)
 	audio	= new j1Audio();
 	scene	= new j1Scene();
 	map		= new j1Map();
+	debug	= new j1Debug();
 
 	// Ordered for awake / Start / Update
 	// Reverse order of CleanUp
@@ -36,6 +38,7 @@ j1App::j1App(int argc, char* args[]) : argc(argc), args(args)
 	AddModule(map);
 	AddModule(scene);
 
+	AddModule(debug);
 	AddModule(render);
 }
 

@@ -139,17 +139,20 @@ p2SString j1Map::DebugToString() const
 	int x, y;
 	App->input->GetMousePosition(x, y);
 	iPoint map_pos = WorldToMap(x, y);
+	
 	int map_id  = data.map_layers.start->data->GetMapId(map_pos.x, map_pos.y);
-	int tile_id = data.map_layers.start->data->data[map_id];
+	int tile_id = data.map_layers.start->data->data[map_id + abs(App->render->camera.x/data.tile_width)];
 
 	// Loading info to title FLASHES WINDOW ICON IN TASK BAR
-	p2SString ret_string("Map: %dx%d Tiles: %dx%d Tilesets: %d Mouse [%d,%d] Rect [%d,%d] MapID: %d TilesetID: %d ",
+	p2SString ret_string("Map: %dx%d Tiles: %dx%d Tilesets: %d Mouse [%d,%d] Rect [%d,%d] MapID: %d TilesetID: %d Camera.x: %d offsetX: %d",
 		data.width, data.height,
 		data.tile_width, data.tile_height,
 		data.tilesets.count(),
 		x, y,
 		map_pos.x,map_pos.y, 
-		map_id,tile_id);
+		map_id,tile_id,
+		App->render->camera.x,
+		abs(App->render->camera.x / data.tile_width));
 
 	return ret_string;
 }
