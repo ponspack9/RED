@@ -33,12 +33,12 @@ bool j1Debug::Update(float dt)
 
 	if (App->input->GetKey(SDL_SCANCODE_F1) == KEY_DOWN) 
 	{
-		//App->RestartGame();
+		App->RestartGame();
 	}
 
 	if (App->input->GetKey(SDL_SCANCODE_F2) == KEY_DOWN)
 	{
-		//App->RestartLevel();
+		App->RestartLevel();
 	}
 
 	if (App->input->GetKey(SDL_SCANCODE_F5) == KEY_DOWN)
@@ -59,7 +59,7 @@ bool j1Debug::Update(float dt)
 
 	if (App->input->GetKey(SDL_SCANCODE_F10) == KEY_DOWN)
 	{
-		//Fucking god mode cusi
+		//FUCKING GOD MODE CUSI
 
 	}
 

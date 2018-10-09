@@ -54,6 +54,12 @@ public:
 	//Load XML, LOGs the result also returning it
 	pugi::xml_parse_result LoadXML(pugi::xml_document & doc, const char* path);
 
+	//Restarts the game from the very first level
+	bool RestartGame();
+
+	//Restarts the current level
+	bool RestartLevel();
+
 private:
 
 	// Call modules before each loop iteration
@@ -76,13 +82,6 @@ private:
 
 	//Loading iteration ONLY LOADING ACTIVE MODULES
 	bool LoadGameFile();
-
-	//Restarts the game from the very first level
-	bool RestartGame();
-
-	//Restarts de current level
-	bool RestartLevel();
-
 
 public:
 
