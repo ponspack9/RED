@@ -7,6 +7,7 @@
 #include "j1Render.h"
 #include "j1Window.h"
 #include "j1Scene.h"
+#include "j1Collision.h"
 #include "j1Map.h"
 
 j1Scene::j1Scene() : j1Module()
@@ -32,6 +33,8 @@ bool j1Scene::Start()
 	//img = App->tex->Load("textures/test.png");
 	bool ret = App->audio->PlayMusic("audio/music/music_sadpiano.ogg");
 	if (ret) App->map->Load("hello2.tmx");
+
+	App->collision->AddCollider(SDL_Rect({ 0,0,20,20 }),COLLIDER_PLAYER);
 
 	return ret;
 }

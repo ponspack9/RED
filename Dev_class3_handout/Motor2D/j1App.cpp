@@ -11,6 +11,7 @@
 #include "j1Scene.h"
 #include "j1Map.h"
 #include "j1Debug.h"
+#include "j1Collision.h"
 #include "j1App.h"
 
 // Constructor
@@ -19,14 +20,15 @@ j1App::j1App(int argc, char* args[]) : argc(argc), args(args)
 	frames = 0;
 	want_to_save = want_to_load = false;
 
-	input	= new j1Input();
-	win		= new j1Window();
-	render	= new j1Render();
-	tex		= new j1Textures();
-	audio	= new j1Audio();
-	scene	= new j1Scene();
-	map		= new j1Map();
-	debug	= new j1Debug();
+	input		= new j1Input();
+	win			= new j1Window();
+	render		= new j1Render();
+	tex			= new j1Textures();
+	audio		= new j1Audio();
+	scene		= new j1Scene();
+	map			= new j1Map();
+	debug		= new j1Debug();
+	collision   = new j1Collision();
 
 	// Ordered for awake / Start / Update
 	// Reverse order of CleanUp
@@ -37,8 +39,9 @@ j1App::j1App(int argc, char* args[]) : argc(argc), args(args)
 	AddModule(audio);
 	AddModule(map);
 	AddModule(scene);
-
 	AddModule(debug);
+	AddModule(collision);
+
 	AddModule(render);
 }
 

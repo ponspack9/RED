@@ -28,11 +28,6 @@ SDL_Rect TileSet::GetTileRect(int id) const
 	return rect;
 }
 
-inline uint MapLayer::GetMapId(int x, int y) const
-{
-	return x + (y * width);
-}
-
 bool j1Map::Awake(pugi::xml_node& config)
 {
 	LOG("Loading Map Parser");
@@ -50,25 +45,47 @@ void j1Map::Draw()
 	p2List_item<TileSet*>* item;
 	item = data.tilesets.start;
 
-	p2List_item<MapLayer*>* layer; 
-	layer = data.map_layers.start;
-	for (layer; layer; layer = layer->next) {
-		for (int y = 0; y < data.height; ++y) {
-			for (int x = 0; x < data.width; ++x) {
+	p2List_item<MapLayer*>* layer = data.map_layers.start;
 
-				uint id = layer->data->GetMapId(x, y);
+	for (layer; layer; layer = layer->next)
+	{
+		for (int y = 0; y < data.height; ++y)
+		{
+			for (int x = 0; x < data.width; ++x)
+			{
+				int tile_id = layer->data->GetMapId(x, y);
+				if (tile_id > 0)
+				{
+					TileSet* tileset = GetTilesetFromTileId(tile_id);
+					if (tileset != nullptr)
+					{
+						SDL_Rect r = tileset->GetTileRect(tile_id);
+						iPoint pos = MapToWorld(x, y);
 
-				id = layer->data->data[id];
-
-				if (id != 0) {
-					SDL_Rect *rect = &item->data->GetTileRect(id);
-					iPoint pos = MapToWorld(x, y);
-					App->render->Blit(item->data->texture, pos.x, pos.y, rect);
+						App->render->Blit(tileset->texture, pos.x, pos.y, &r);
+					}
 				}
 			}
 		}
 	}
 
+}
+
+TileSet* j1Map::GetTilesetFromTileId(int id) const
+{
+	// TODO 3: This may be better in a single calculation
+
+	p2List_item<TileSet*>* item = data.tilesets.end;
+
+	for (item; item != nullptr; item = item->prev)
+	{
+		if (id >= item->data->firstgid)
+		{
+			return item->data;
+		}
+	}
+
+	return nullptr;
 }
 
 bool j1Map::CleanUp()
@@ -104,34 +121,51 @@ bool j1Map::CleanUp()
 
 iPoint j1Map::MapToWorld(int x, int y) const
 {
-	iPoint pos;
+	iPoint ret;
 
-	pos.x = x * data.tile_width;
-	pos.y = y * data.tile_height;
+	if (data.type == MAPTYPE_ORTHOGONAL)
+	{
+		ret.x = x * data.tile_width;
+		ret.y = y * data.tile_height;
+	}
+	else if (data.type == MAPTYPE_ISOMETRIC)
+	{
+		ret.x = (x - y) * (data.tile_width * 0.5f);
+		ret.y = (x + y) * (data.tile_height * 0.5f);
+	}
+	else
+	{
+		LOG("Unknown map type");
+		ret.x = x; ret.y = y;
+	}
 
-	return pos;
-}
-
-void j1Map::MapToWorldRef(int &x, int &y) const
-{
-	x = x * data.tile_width;
-	y = y * data.tile_height;
+	return ret;
 }
 
 iPoint j1Map::WorldToMap(int x, int y) const 
 {
-	iPoint pos;
+	iPoint ret(0, 0);
 
-	pos.x = x / data.tile_width;
-	pos.y = y / data.tile_height;
+	if (data.type == MAPTYPE_ORTHOGONAL)
+	{
+		ret.x = x / data.tile_width;
+		ret.y = y / data.tile_height;
+	}
+	else if (data.type == MAPTYPE_ISOMETRIC)
+	{
 
-	return pos;
-}
+		float half_width = data.tile_width * 0.5f;
+		float half_height = data.tile_height * 0.5f;
+		ret.x = int((x / half_width + y / half_height) / 2);
+		ret.y = int((y / half_height - (x / half_width)) / 2);
+	}
+	else
+	{
+		LOG("Unknown map type");
+		ret.x = x; ret.y = y;
+	}
 
-void j1Map::WorldToMapRef(int &x, int &y) const
-{
-	x = x / data.tile_width;
-	y = y / data.tile_height;
+	return ret;
 }
 
 p2SString j1Map::DebugToString() const
@@ -140,17 +174,17 @@ p2SString j1Map::DebugToString() const
 	App->input->GetMousePosition(x, y);
 	iPoint map_pos = WorldToMap(x, y);
 	
-	int map_id  = data.map_layers.start->data->GetMapId(map_pos.x, map_pos.y);
-	int tile_id = data.map_layers.start->data->data[map_id + abs(App->render->camera.x/data.tile_width)];
+	//int map_id  = data.map_layers.start->data->GetMapId(map_pos.x, map_pos.y);
+	//int tile_id = data.map_layers.start->data->data[map_id + abs(App->render->camera.x/data.tile_width)];
 
 	// Loading info to title FLASHES WINDOW ICON IN TASK BAR
-	p2SString ret_string("Map: %dx%d Tiles: %dx%d Tilesets: %d Mouse [%d,%d] Rect [%d,%d] MapID: %d TilesetID: %d Camera.x: %d offsetX: %d",
+	p2SString ret_string("Map: %dx%d Tiles: %dx%d Tilesets: %d Mouse [%d,%d] Rect [%d,%d] Camera.x: %d offsetX: %d",
 		data.width, data.height,
 		data.tile_width, data.tile_height,
 		data.tilesets.count(),
 		x, y,
 		map_pos.x,map_pos.y, 
-		map_id,tile_id,
+		//map_id,tile_id, MapID: %d TilesetID: %d
 		App->render->camera.x,
 		abs(App->render->camera.x / data.tile_width));
 

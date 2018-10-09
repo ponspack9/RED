@@ -14,13 +14,27 @@ enum MapTypes
 	MAPTYPE_STAGGERED
 };
 
+struct Properties {
+	bool draw;	 
+};
+
 struct MapLayer {
-	p2SString name;
-	uint width;
-	uint height;
-	uint * data = nullptr;
+	p2SString	name;
+	uint		width;
+	uint		height;
+	uint*		data;
+	Properties	properties;
+
 	// Translates 2 dimension to the id of the one dimension array
-	inline uint GetMapId(int x, int y) const;
+	~MapLayer()
+	{
+		RELEASE(data);
+	}
+
+	inline uint GetMapId(int x, int y) const
+	{
+		return data[(y*width) + x];
+	}
 };
 
 struct TileSet
@@ -71,6 +85,7 @@ public:
 	// Called each loop iteration
 	void Draw();
 
+
 	// Called before quitting
 	bool CleanUp();
 
@@ -80,11 +95,9 @@ public:
 	// Translates x,y coordinates from map positions to world positions
 	iPoint MapToWorld(int x, int y) const;
 
-	void MapToWorldRef(int & x, int & y) const;
-
 	iPoint WorldToMap(int x, int y) const;
 
-	void WorldToMapRef(int & x, int & y) const;
+	TileSet * GetTilesetFromTileId(int id) const;
 
 	p2SString DebugToString() const;
 
