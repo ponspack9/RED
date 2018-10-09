@@ -11,9 +11,15 @@ public:
 
 	~j1Debug();
 
+	bool Awake(pugi::xml_node& config);
+
 	bool PostUpdate();
 
 	bool Update(float dt);
+
+public:
+
+	bool show_colliders;
 
 };
 

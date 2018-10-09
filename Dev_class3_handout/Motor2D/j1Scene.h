@@ -15,7 +15,7 @@ public:
 	virtual ~j1Scene();
 
 	// Called before render is available
-	bool Awake();
+	bool Awake(pugi::xml_node& config);
 
 	// Called before the first frame
 	bool Start();
@@ -34,6 +34,10 @@ public:
 
 private:
 	SDL_Texture* img;
+
+	//p2SString map;
+	//p2List<p2SString>* maps_path;
+	p2List_item<p2SString>* current_map;
 };
 
 #endif // __j1SCENE_H__

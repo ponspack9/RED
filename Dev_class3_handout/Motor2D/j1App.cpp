@@ -342,6 +342,8 @@ void j1App::SaveGame() const
 {
 	// we should be checking if that file actually exist
 	// from the "GetSaveGames" list ... should we overwrite ?
+	p2List<p2SString> saved_games;
+	GetSaveGames(saved_games);
 
 	want_to_save = true;
 }

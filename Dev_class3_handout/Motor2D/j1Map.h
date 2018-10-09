@@ -14,8 +14,10 @@ enum MapTypes
 	MAPTYPE_STAGGERED
 };
 
+//TO TEST
 struct Properties {
-	bool draw;	 
+	bool draw;
+	bool collider;
 };
 
 struct MapLayer {
@@ -80,7 +82,7 @@ public:
 	virtual ~j1Map();
 
 	// Called before render is available
-	bool Awake(pugi::xml_node& conf);
+	bool Awake(pugi::xml_node& config);
 
 	// Called each loop iteration
 	void Draw();
@@ -110,7 +112,7 @@ private:
 	bool LoadLayer(pugi::xml_node& node, MapLayer* layer);
 
 public:
-
+	
 	MapData data;
 
 private:
@@ -118,6 +120,8 @@ private:
 	pugi::xml_document	map_doc;
 	p2SString			folder;
 	bool				map_loaded;
+
+	p2List<p2SString>	maps_path;
 };
 
 #endif // __j1MAP_H__

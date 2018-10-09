@@ -20,8 +20,9 @@ j1Scene::~j1Scene()
 {}
 
 // Called before render is available
-bool j1Scene::Awake()
+bool j1Scene::Awake(pugi::xml_node& config)
 {
+	
 	LOG("Loading Scene");
 
 	return true;
@@ -34,7 +35,7 @@ bool j1Scene::Start()
 	bool ret = App->audio->PlayMusic("audio/music/music_sadpiano.ogg");
 	if (ret) App->map->Load("hello2.tmx");
 
-	App->collision->AddCollider(SDL_Rect({ 0,0,20,20 }),COLLIDER_PLAYER);
+	App->collision->AddCollider(SDL_Rect({ 0,0,32,32 }),COLLIDER_PLAYER);
 
 	return ret;
 }

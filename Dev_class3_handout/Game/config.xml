@@ -6,6 +6,9 @@
     <organization>UPC</organization>
   </app>
 
+  <debug>
+  </debug>
+  
   <renderer>
     <vsync value="true"/>
   </renderer>
@@ -25,7 +28,11 @@
   </file_system>
 
   <map>
-    <folder>maps/</folder>
+    <folder>maps</folder>
+    <level>level0.tmx</level>
+    <level>level1.tmx</level>
+    <level>level2.tmx</level>
+    <level>level3.tmx</level>
   </map>
 
 </config>

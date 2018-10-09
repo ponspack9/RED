@@ -52,13 +52,12 @@ public:
 	bool CleanUp();
 
 	Collider* AddCollider(SDL_Rect rect, COLLIDER_TYPE type, j1Module* callback = nullptr);
-	void DebugDraw();
+	void Draw();
 
 private:
 
 	Collider * colliders[MAX_COLLIDERS];
 	bool matrix[COLLIDER_MAX][COLLIDER_MAX];
-	bool debug = false;
 };
 
 #endif // __j1COLLISION_H__

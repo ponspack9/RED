@@ -5,6 +5,7 @@
 #include "j1Window.h"
 #include "j1Render.h"
 #include "j1Map.h"
+#include "j1Collision.h"
 #include "j1Debug.h"
 
 
@@ -16,6 +17,13 @@ j1Debug::j1Debug()
 
 j1Debug::~j1Debug()
 {
+}
+
+bool j1Debug::Awake(pugi::xml_node & config)
+{
+	show_colliders = false;
+
+	return true;
 }
 
 bool j1Debug::PostUpdate()
@@ -53,7 +61,7 @@ bool j1Debug::Update(float dt)
 
 	if (App->input->GetKey(SDL_SCANCODE_F9) == KEY_DOWN)
 	{
-		//View colliders/logic
+		show_colliders = !show_colliders;
 
 	}
 

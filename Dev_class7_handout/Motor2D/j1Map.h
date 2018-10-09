@@ -12,6 +12,8 @@
 // ----------------------------------------------------
 struct Properties
 {
+	bool draw;
+	bool navigable;
 };
 
 // ----------------------------------------------------
@@ -122,6 +124,7 @@ private:
 	pugi::xml_document	map_file;
 	p2SString			folder;
 	bool				map_loaded;
+	p2List<p2SString>	maps_path;
 };
 
 #endif // __j1MAP_H__

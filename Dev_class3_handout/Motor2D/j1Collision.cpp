@@ -3,6 +3,7 @@
 #include "j1Render.h"
 #include "j1Scene.h"
 #include "j1Collision.h"
+#include "j1Debug.h"
 #include "p2Log.h"
 
 j1Collision::j1Collision()
@@ -69,7 +70,6 @@ bool j1Collision::PreUpdate()
 	return true;
 }
 bool j1Collision::Start() {
-	debug = true;
 	return true;
 }
 
@@ -77,12 +77,12 @@ bool j1Collision::Start() {
 bool j1Collision::Update(float dt)
 {
 
-	if (debug) DebugDraw();
+	if (App->debug->show_colliders) Draw();
 
 	return true;
 }
 
-void j1Collision::DebugDraw()
+void j1Collision::Draw()
 {
 	Uint8 alpha = 80;
 	for (uint i = 0; i < MAX_COLLIDERS; ++i)
@@ -90,7 +90,7 @@ void j1Collision::DebugDraw()
 		if (colliders[i] == nullptr)
 			continue;
 
-		LOG("x: %d y: %d w: %d h: %d", colliders[i]->rect.x, colliders[i]->rect.y, colliders[i]->rect.w, colliders[i]->rect.h);
+		//LOG("x: %d y: %d w: %d h: %d", colliders[i]->rect.x, colliders[i]->rect.y, colliders[i]->rect.w, colliders[i]->rect.h);
 
 			switch (colliders[i]->type)
 			{
@@ -104,7 +104,7 @@ void j1Collision::DebugDraw()
 				App->render->DrawQuad(colliders[i]->rect, 255, 255, 0, alpha);
 				break;
 			case COLLIDER_DEATH:
-				App->render->DrawQuad(colliders[i]->rect, 255, 255, 0, alpha);
+				App->render->DrawQuad(colliders[i]->rect, 255, 0, 255, alpha);
 				break;
 			}
 	}
