@@ -33,7 +33,7 @@
 - [ ] F2 - Start from the beginning of the current level
 - [ ] F5 - Save the current state
 - [ ] F6 - Load the previous state (even across levels)
-- [ ] F9 - View colliders/logic
+- [x] F9 - View colliders/logic
 - [ ] F10 - God mode
 
-- [ ] Vsync ON
+- [x] Vsync ON

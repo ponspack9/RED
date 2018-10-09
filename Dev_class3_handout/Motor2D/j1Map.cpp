@@ -40,7 +40,7 @@ bool j1Map::Awake(pugi::xml_node& config)
 	int i = 0;
 	for (level_node; level_node; level_node = level_node.next_sibling("level")) {
 		p2SString level_path(level_node.child_value());
-		maps_path.add(PATH(folder.GetString(),level_path.GetString()));
+		maps_path.add(level_path.GetString());
 		
 		LOG("%s", maps_path[i++].GetString());
 	}

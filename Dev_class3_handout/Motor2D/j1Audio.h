@@ -32,6 +32,13 @@ public:
 	// Play a previously loaded WAV
 	bool PlayFx(unsigned int fx, int repeat = 0);
 
+public:
+
+	//TODO : see module map for reference
+	p2SString			folder;
+	p2List<p2SString>	tracks_path;
+	p2List<p2SString>	fxs_path;
+
 private:
 
 	_Mix_Music*			music;

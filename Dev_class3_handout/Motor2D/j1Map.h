@@ -113,7 +113,8 @@ private:
 
 public:
 	
-	MapData data;
+	MapData				data;
+	p2List<p2SString>	maps_path;
 
 private:
 
@@ -121,7 +122,6 @@ private:
 	p2SString			folder;
 	bool				map_loaded;
 
-	p2List<p2SString>	maps_path;
 };
 
 #endif // __j1MAP_H__

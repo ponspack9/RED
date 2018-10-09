@@ -2,8 +2,8 @@
 
 <config>
   <app>
-    <title>Game Development Testbed</title>
-    <organization>UPC</organization>
+    <title>KIKIME</title>
+    <organization>ORISO</organization>
   </app>
 
   <debug>
@@ -27,12 +27,27 @@
     <save_path>save_game.xml</save_path>
   </file_system>
 
+  <audio>
+    <music>
+      <folder>audio/music</folder>
+      <track>music_sadpiano.ogg</track>
+      <track>music_happypiano.ogg</track> <!--Does not exist, just for testing-->
+    </music>
+    <fx>
+      <folder>audio/fx</folder>
+      <sound name="hello">hello_man.wav</sound>
+      <sound name="shoot">pew.wav</sound> <!--Does not exist, just for testing-->
+      <sound name="miau"> miau.wav</sound> <!--Does not exist, just for testing-->
+      <sound name="die">  die.wav</sound>   <!--Does not exist, just for testing-->
+    </fx>
+  </audio>
+
   <map>
     <folder>maps</folder>
-    <level>level0.tmx</level>
-    <level>level1.tmx</level>
-    <level>level2.tmx</level>
-    <level>level3.tmx</level>
+    <level>hello2.tmx</level>
+    <level>level1.tmx</level><!--Does not exist, just for testing-->
+    <level>level2.tmx</level><!--Does not exist, just for testing-->
+    <level>level3.tmx</level><!--Does not exist, just for testing-->
   </map>
 
 </config>
