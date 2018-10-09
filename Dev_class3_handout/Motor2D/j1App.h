@@ -77,6 +77,12 @@ private:
 	//Loading iteration ONLY LOADING ACTIVE MODULES
 	bool LoadGameFile();
 
+	//Restarts the game from the very first level
+	bool RestartGame();
+
+	//Restarts de current level
+	bool RestartLevel();
+
 
 public:
 

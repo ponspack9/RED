@@ -349,3 +349,18 @@ void j1App::GetSaveGames(p2List<p2SString>& list_to_fill) const
 }
 
 
+bool j1App::RestartGame()
+{
+	bool ret = true;
+
+	return ret;
+}
+
+bool j1App::RestartLevel()
+{
+	bool ret = true;
+
+	return ret;
+}
+
+
