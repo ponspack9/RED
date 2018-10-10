@@ -41,14 +41,12 @@
 
 ### Thursday Questions  ###
 
--  Perque algunes parts del mapa no carreguen bé o carreguen desordenades? i com ho podem fer per arreglarho?
+-  Perque algunes parts del mapa no carreguen bÃ© o carreguen desordenades? i com ho podem fer per arreglarho?
 
 -  Background? and the same as previous question...
 
--  kiki, do you love me?
+-  Resolucio de la window?
 
--  puedes estrangularme pofabo?
+-  Player com el project 1, tema textures i animations? (no hardcoded) 
 
--  nos vamos a magisterio?
-
--  em trobo com el cul vaig a dormir :')
+-  what defines the limits, the map height and width, window..?
