@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <map version="1.1" tiledversion="2018.09.12" orientation="orthogonal" renderorder="right-down" width="100" height="40" tilewidth="32" tileheight="32" infinite="0" nextlayerid="4" nextobjectid="172">
  <properties>
-  <property name="Colider" type="bool" value="true"/>
+  <property name="Collider" type="bool" value="true"/>
  </properties>
  <tileset firstgid="1" name="platformPack_tilesheet" tilewidth="32" tileheight="32" tilecount="392" columns="28">
   <image source="platformPack_tilesheet.png" width="896" height="448"/>

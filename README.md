@@ -38,3 +38,17 @@
 - [ ] F10 - God mode
 
 - [x] Vsync ON
+
+### Thursday Questions  ###
+
+-  Perque algunes parts del mapa no carreguen bé o carreguen desordenades? i com ho podem fer per arreglarho?
+
+-  Background? and the same as previous question...
+
+-  kiki, do you love me?
+
+-  puedes estrangularme pofabo?
+
+-  nos vamos a magisterio?
+
+-  em trobo com el cul vaig a dormir :')
