@@ -5,7 +5,7 @@
 #include "j1Textures.h"
 #include "j1Input.h"
 #include "j1Map.h"
-#include <math.h>
+#include <cmath>
 
 j1Map::j1Map() : j1Module(), map_loaded(false)
 {
