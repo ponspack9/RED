@@ -23,7 +23,7 @@ j1Debug::~j1Debug()
 
 bool j1Debug::Awake(pugi::xml_node & config)
 {
-	show_colliders = false;
+	show_colliders = true;
 
 	return true;
 }

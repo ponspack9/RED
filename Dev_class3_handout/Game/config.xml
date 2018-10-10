@@ -51,8 +51,8 @@
     <folder>maps</folder>
     <level>MapLvl1.tmx</level>
     <level>MapLvl2.tmx</level>
-    <level>MapLvl3.tmx</level><!--Does not exist, just for testing-->
-    <level>MapLvl4.tmx</level><!--Does not exist, just for testing-->
+    <!-- <level>MapLvl3.tmx</level><!-Does not exist, just for testing-->
+    <!--<level>MapLvl4.tmx</level><!-Does not exist, just for testing-->
   </map>
 
 </config>

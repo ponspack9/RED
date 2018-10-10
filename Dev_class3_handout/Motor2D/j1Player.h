@@ -24,6 +24,7 @@ public:
 
 	SDL_Rect player_rect;
 	iPoint position;
+	int speed;
 
 
 	Collider* player_collider;
