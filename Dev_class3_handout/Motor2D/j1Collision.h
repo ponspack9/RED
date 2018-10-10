@@ -2,7 +2,7 @@
 #define __j1COLLISION_H__
 
 #define MAX_COLLIDERS 50
-
+#include "SDL/include/SDL.h"
 #include "j1Module.h"
 
 enum COLLIDER_TYPE
