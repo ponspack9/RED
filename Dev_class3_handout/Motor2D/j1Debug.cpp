@@ -51,8 +51,11 @@ bool j1Debug::Update(float dt)
 	}
 	if (App->input->GetKey(SDL_SCANCODE_F3) == KEY_DOWN)
 	{
-		//App->RestartLevel();
-		App->map->current_map = App->map->current_map->next;
+		if (App->map->current_map->next != NULL)
+			App->map->current_map = App->map->current_map->next;
+		else
+			App->map->current_map = App->map->maps_path.start;
+
 		App->fade->FadeToBlack(App->scene, App->scene);
 	}
 

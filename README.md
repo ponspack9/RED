@@ -31,6 +31,7 @@
 
 - [ ] F1 - Start from the very first level
 - [ ] F2 - Start from the beginning of the current level
+- [x] F3 - Next level
 - [ ] F5 - Save the current state
 - [ ] F6 - Load the previous state (even across levels)
 - [x] F9 - View colliders/logic
