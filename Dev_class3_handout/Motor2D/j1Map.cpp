@@ -197,7 +197,7 @@ p2SString j1Map::DebugToString() const
 		map_pos.x,map_pos.y, 
 		//map_id,tile_id, MapID: %d TilesetID: %d
 		App->render->camera.x,
-		abs(App->render->camera.x / data.tile_width));
+		(data.tile_width > 0) ? abs(App->render->camera.x / data.tile_width): -5000);
 
 	return ret_string;
 }

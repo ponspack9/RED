@@ -44,10 +44,10 @@
 
   <map>
     <folder>maps</folder>
-    <level>hello2.tmx</level>
-    <level>level1.tmx</level><!--Does not exist, just for testing-->
-    <level>level2.tmx</level><!--Does not exist, just for testing-->
-    <level>level3.tmx</level><!--Does not exist, just for testing-->
+    <level>lvl1.tmx</level>
+    <level>lvl2.tmx</level><!--Does not exist, just for testing-->
+    <level>MapLvl3.tmx</level><!--Does not exist, just for testing-->
+    <level>MapLvl4.tmx</level><!--Does not exist, just for testing-->
   </map>
 
 </config>
