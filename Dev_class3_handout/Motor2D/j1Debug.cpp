@@ -6,6 +6,8 @@
 #include "j1Render.h"
 #include "j1Map.h"
 #include "j1Collision.h"
+#include "j1Scene.h"
+#include "j1FadeToBlack.h"
 #include "j1Debug.h"
 
 
@@ -43,10 +45,15 @@ bool j1Debug::Update(float dt)
 	{
 		App->RestartGame();
 	}
-
 	if (App->input->GetKey(SDL_SCANCODE_F2) == KEY_DOWN)
 	{
 		App->RestartLevel();
+	}
+	if (App->input->GetKey(SDL_SCANCODE_F3) == KEY_DOWN)
+	{
+		//App->RestartLevel();
+		App->map->current_map = App->map->current_map->next;
+		App->fade->FadeToBlack(App->scene, App->scene);
 	}
 
 	if (App->input->GetKey(SDL_SCANCODE_F5) == KEY_DOWN)

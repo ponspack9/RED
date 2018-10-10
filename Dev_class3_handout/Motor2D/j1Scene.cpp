@@ -33,8 +33,8 @@ bool j1Scene::Start()
 {
 	//img = App->tex->Load("textures/test.png");
 	bool ret = App->audio->PlayMusic("audio/music/music_sadpiano.ogg");
-	if (ret) App->map->Load(App->map->maps_path.start->data.GetString());
-
+	if (ret) App->map->Load(App->map->current_map->data.GetString());
+	
 	App->collision->AddCollider(SDL_Rect({ 0,0,32,32 }),COLLIDER_PLAYER);
 
 	return ret;

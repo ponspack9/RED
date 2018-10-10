@@ -44,6 +44,7 @@ bool j1Map::Awake(pugi::xml_node& config)
 		
 		LOG("%s", maps_path[i++].GetString());
 	}
+	current_map = maps_path.start;
 
 	return true;
 }
