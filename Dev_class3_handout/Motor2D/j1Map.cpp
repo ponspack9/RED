@@ -60,7 +60,7 @@ void j1Map::Draw()
 
 	for (layer; layer; layer = layer->next)
 	{
-		LOG("LAYER NAMEEEEEEEEEEE: %s", layer->data->name.GetString());
+		//LOG("LAYER NAMEEEEEEEEEEE: %s", layer->data->name.GetString());
 		for (int y = 0; y < data.height; ++y)
 		{
 			for (int x = 0; x < data.width; ++x)

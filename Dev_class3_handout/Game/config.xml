@@ -42,8 +42,8 @@
       <folder>audio/fx</folder>
       <sound name="hello">hello_man.wav</sound>
       <sound name="shoot">pew.wav</sound> <!--Does not exist, just for testing-->
-      <sound name="miau"> miau.wav</sound> <!--Does not exist, just for testing-->
-      <sound name="die">  die.wav</sound>   <!--Does not exist, just for testing-->
+      <sound name="life">lifeup.wav</sound> <!--Does not exist, just for testing-->
+      <sound name="die">die.wav</sound>   <!--Does not exist, just for testing-->
     </fx>
   </audio>
 
