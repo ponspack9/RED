@@ -24,6 +24,16 @@ struct Properties {
 	bool collider;
 };
 
+struct ImageLayer {
+	p2SString		name;
+	SDL_Texture*	texture;
+	int				tex_width;
+	int				tex_height;
+	int				offset_x;
+	int				offset_y;
+	float			parallax_speed;
+};
+
 struct MapLayer {
 	p2SString	name;
 	uint		width;
@@ -74,6 +84,7 @@ struct MapData
 	MapTypes			type;
 	p2List<TileSet*>	tilesets;
 	p2List<MapLayer*>	map_layers;
+	p2List<ImageLayer*> image_layers;
 };
 
 class j1Map : public j1Module
@@ -114,7 +125,7 @@ private:
 	bool LoadTilesetDetails(pugi::xml_node& tileset_node, TileSet* set);
 	bool LoadTilesetImage(pugi::xml_node& tileset_node, TileSet* set);
 	bool LoadLayer(pugi::xml_node& node, MapLayer* layer);
-	//bool LoadBackground();
+	bool LoadImageLayer(pugi::xml_node& node, ImageLayer* layer);
 
 public:
 	

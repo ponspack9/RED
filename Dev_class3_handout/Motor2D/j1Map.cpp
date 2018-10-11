@@ -52,6 +52,13 @@ void j1Map::Draw()
 {
 	if(!map_loaded)
 		return;
+	//Draw background
+	p2List_item<ImageLayer*>* imagelayer = data.image_layers.start;
+	for (imagelayer; imagelayer; imagelayer = imagelayer->next)
+	{
+		SDL_Rect r = { 0,0,imagelayer->data->tex_width,imagelayer->data->tex_height };
+		App->render->Blit(imagelayer->data->texture, imagelayer->data->offset_x, imagelayer->data->offset_y, &r, imagelayer->data->parallax_speed);
+	}
 
 	p2List_item<TileSet*>* item;
 	item = data.tilesets.start;
@@ -99,125 +106,6 @@ void j1Map::Draw()
 
 
 
-TileSet* j1Map::GetTilesetFromTileId(int id) const
-{
-	p2List_item<TileSet*>* item = data.tilesets.end;
-
-	for (item; item != nullptr; item = item->prev)
-	{
-		if (id >= item->data->firstgid)
-		{
-			return item->data;
-		}
-	}
-
-	return nullptr;
-}
-
-bool j1Map::CleanUp()
-{
-	LOG("Unloading map");
-
-	// Remove all tilesets
-	p2List_item<TileSet*>* item;
-	item = data.tilesets.start;
-
-	while(item != NULL)
-	{
-		RELEASE(item->data);
-		item = item->next;
-	}
-	data.tilesets.clear();
-
-	// Remove all layers
-	p2List_item<MapLayer*>* layer;
-	layer = data.map_layers.start;
-
-	while (layer != NULL)
-	{
-		layer->data->~MapLayer();
-		//RELEASE(layer->data);
-		layer = layer->next;
-	}
-	data.map_layers.clear();
-
-	map_doc.reset();
-
-	return true;
-}
-
-iPoint j1Map::MapToWorld(int x, int y) const
-{
-	iPoint ret;
-
-	if (data.type == MAPTYPE_ORTHOGONAL)
-	{
-		ret.x = x * data.tile_width;
-		ret.y = y * data.tile_height;
-	}
-	else if (data.type == MAPTYPE_ISOMETRIC)
-	{
-		ret.x = (x - y) * (data.tile_width * 0.5f);
-		ret.y = (x + y) * (data.tile_height * 0.5f);
-	}
-	else
-	{
-		LOG("Unknown map type");
-		ret.x = x; ret.y = y;
-	}
-
-	return ret;
-}
-
-iPoint j1Map::WorldToMap(int x, int y) const 
-{
-	iPoint ret(0, 0);
-
-	if (data.type == MAPTYPE_ORTHOGONAL)
-	{
-		ret.x = x / data.tile_width;
-		ret.y = y / data.tile_height;
-	}
-	else if (data.type == MAPTYPE_ISOMETRIC)
-	{
-
-		float half_width = data.tile_width * 0.5f;
-		float half_height = data.tile_height * 0.5f;
-		ret.x = int((x / half_width + y / half_height) / 2);
-		ret.y = int((y / half_height - (x / half_width)) / 2);
-	}
-	else
-	{
-		LOG("Unknown map type");
-		ret.x = x; ret.y = y;
-	}
-
-	return ret;
-}
-
-p2SString j1Map::DebugToString() const
-{
-	int x, y;
-	App->input->GetMousePosition(x, y);
-	iPoint map_pos = WorldToMap(x, y);
-	
-	//int map_id  = data.map_layers.start->data->GetMapId(map_pos.x, map_pos.y);
-	//int tile_id = data.map_layers.start->data->data[map_id + abs(App->render->camera.x/data.tile_width)];
-
-	// Loading info to title FLASHES WINDOW ICON IN TASK BAR
-	p2SString ret_string("Map: %dx%d Tiles: %dx%d Tilesets: %d Mouse [%d,%d] Rect [%d,%d] Camera.x: %d offsetX: %d",
-		data.width, data.height,
-		data.tile_width, data.tile_height,
-		data.tilesets.count(),
-		x, y,
-		map_pos.x,map_pos.y, 
-		//map_id,tile_id, MapID: %d TilesetID: %d
-		App->render->camera.x,
-		(data.tile_width > 0) ? abs(App->render->camera.x / data.tile_width): -5000);
-
-	return ret_string;
-}
-
 bool j1Map::Load(const char* file_name)
 {
 	pugi::xml_parse_result result = App->LoadXML(map_doc, PATH(folder.GetString(),file_name));
@@ -241,15 +129,15 @@ bool j1Map::Load(const char* file_name)
 			if(ret) data.tilesets.add(set);
 
 		}
-		//// Load background info 
-		//pugi::xml_node imagelayer = map_doc.child("imagelayer");
-		//for (imagelayer; imagelayer && ret; imagelayer = imagelayer.next_sibling("imagelayer"))
-		//{
-		//	MapLayer* set = new MapLayer();
+		// Load background info 
+		pugi::xml_node imagelayer = map_doc.child("map").child("imagelayer");
+		for (imagelayer; imagelayer && ret; imagelayer = imagelayer.next_sibling("imagelayer"))
+		{
+			ImageLayer* set = new ImageLayer();
 
-		//	if (ret) ret = LoadLayer(layer, set);
-		//	if (ret) data.map_layers.add(set);
-		//}
+			if (ret) ret = LoadImageLayer(imagelayer,set);
+			if (ret) data.image_layers.add(set);
+		}
 
 		// Load layer info 
 		pugi::xml_node layer = map_doc.child("map").child("layer");
@@ -451,4 +339,181 @@ bool j1Map::LoadLayer(pugi::xml_node & node, MapLayer * layer)
 	}
 
 	return ret;
+}
+
+bool j1Map::LoadImageLayer(pugi::xml_node & node, ImageLayer * set)
+{
+	bool ret = node != NULL;
+
+	if (ret) {
+		pugi::xml_node image = node.child("image");
+		ret = (image != NULL);
+
+		if (ret) {
+
+			set->texture = App->tex->Load(PATH(folder.GetString(), image.attribute("source").as_string()));
+			int w, h;
+			SDL_QueryTexture(set->texture, NULL, NULL, &w, &h);
+			set->tex_width = image.attribute("width").as_int();
+
+			if (set->tex_width <= 0)
+			{
+				set->tex_width = w;
+			}
+
+			set->tex_height = image.attribute("height").as_int();
+
+			if (set->tex_height <= 0)
+			{
+				set->tex_height = h;
+			}
+					
+		}
+		else
+		{
+			LOG("Error parsing tileset xml file: Cannot find 'image' tag.");
+		}
+
+		pugi::xml_node prop = node.child("properties");
+		ret = (prop != NULL);
+		if (ret) {
+			set->parallax_speed = prop.first_child().attribute("value").as_float();
+			//This needs to be iterated with a for trhough all properties
+			//set->offset_x = offset.attribute("offsetx").as_int();
+			//set->offset_y = offset.attribute("offsetx").as_int();
+			set->offset_x = 0;
+			set->offset_y = 0;
+		}
+		else
+		{
+			LOG("Error parsing tileset xml file: Cannot find 'properties' tag.");
+		}
+	}
+	else
+	{
+		LOG("ERROR loading tileset image: node is NULL");
+	}
+
+	return ret;
+
+}
+
+TileSet* j1Map::GetTilesetFromTileId(int id) const
+{
+	p2List_item<TileSet*>* item = data.tilesets.end;
+
+	for (item; item != nullptr; item = item->prev)
+	{
+		if (id >= item->data->firstgid)
+		{
+			return item->data;
+		}
+	}
+
+	return nullptr;
+}
+
+bool j1Map::CleanUp()
+{
+	LOG("Unloading map");
+
+	// Remove all tilesets
+	p2List_item<TileSet*>* item;
+	item = data.tilesets.start;
+
+	while(item != NULL)
+	{
+		RELEASE(item->data);
+		item = item->next;
+	}
+	data.tilesets.clear();
+
+	// Remove all layers
+	p2List_item<MapLayer*>* layer;
+	layer = data.map_layers.start;
+
+	while (layer != NULL)
+	{
+		layer->data->~MapLayer();
+		//RELEASE(layer->data);
+		layer = layer->next;
+	}
+	data.map_layers.clear();
+
+	map_doc.reset();
+	map_loaded = false;
+
+	return true;
+}
+
+iPoint j1Map::MapToWorld(int x, int y) const
+{
+	iPoint ret;
+
+	if (data.type == MAPTYPE_ORTHOGONAL)
+	{
+		ret.x = x * data.tile_width;
+		ret.y = y * data.tile_height;
+	}
+	else if (data.type == MAPTYPE_ISOMETRIC)
+	{
+		ret.x = (x - y) * (data.tile_width * 0.5f);
+		ret.y = (x + y) * (data.tile_height * 0.5f);
+	}
+	else
+	{
+		LOG("Unknown map type");
+		ret.x = x; ret.y = y;
+	}
+
+	return ret;
+}
+
+iPoint j1Map::WorldToMap(int x, int y) const 
+{
+	iPoint ret(0, 0);
+
+	if (data.type == MAPTYPE_ORTHOGONAL)
+	{
+		ret.x = x / data.tile_width;
+		ret.y = y / data.tile_height;
+	}
+	else if (data.type == MAPTYPE_ISOMETRIC)
+	{
+
+		float half_width = data.tile_width * 0.5f;
+		float half_height = data.tile_height * 0.5f;
+		ret.x = int((x / half_width + y / half_height) / 2);
+		ret.y = int((y / half_height - (x / half_width)) / 2);
+	}
+	else
+	{
+		LOG("Unknown map type");
+		ret.x = x; ret.y = y;
+	}
+
+	return ret;
+}
+
+p2SString j1Map::DebugToString() const
+{
+	int x, y;
+	App->input->GetMousePosition(x, y);
+	iPoint map_pos = WorldToMap(x, y);
+	
+	//int map_id  = data.map_layers.start->data->GetMapId(map_pos.x, map_pos.y);
+	//int tile_id = data.map_layers.start->data->data[map_id + abs(App->render->camera.x/data.tile_width)];
+
+	// Loading info to title FLASHES WINDOW ICON IN TASK BAR
+	p2SString ret_string("Map: %dx%d Tiles: %dx%d Tilesets: %d Mouse [%d,%d] Rect [%d,%d] Camera.x: %d offsetX: %d",
+		data.width, data.height,
+		data.tile_width, data.tile_height,
+		data.tilesets.count(),
+		x, y,
+		map_pos.x,map_pos.y, 
+		//map_id,tile_id, MapID: %d TilesetID: %d
+		App->render->camera.x,
+		(data.tile_width > 0) ? abs(App->render->camera.x / data.tile_width): -5000);
+
+	return ret_string;
 }

@@ -17,7 +17,7 @@
   <properties>
    <property name="parallax_speed" type="float" value="2"/>
   </properties>
- </imagelayer>
+ </imagelayer> 
  <layer name="Tile_Layer_1" width="100" height="40">
   <data>
    <tile gid="121"/>
