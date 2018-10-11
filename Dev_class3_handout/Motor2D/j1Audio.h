@@ -37,6 +37,8 @@ public:
 	//TODO : see module map for reference
 	p2SString			folder_music;
 	p2SString			folder_fx;
+	//p2List<p2SString>	tracks_path;
+	//p2List<p2SString>	fx_path;
 	p2List<p2SString>	tracks_path;
 	p2List<p2SString>	fx_path;
 	
