@@ -88,7 +88,7 @@ void j1Map::Draw()
 						if (flipped_horizontally)	angle += 180;
 						if (flipped_vertically)		angle += 360;
 						if (flipped_diagonally)		angle += 270;
-						App->render->Blit(tileset->texture, pos.x, pos.y, &r,NULL,angle);
+						App->render->Blit(tileset->texture, pos.x, pos.y, &r,1,angle);
 					}
 				}
 			}
@@ -101,8 +101,6 @@ void j1Map::Draw()
 
 TileSet* j1Map::GetTilesetFromTileId(int id) const
 {
-	// TODO 3: This may be better in a single calculation
-
 	p2List_item<TileSet*>* item = data.tilesets.end;
 
 	for (item; item != nullptr; item = item->prev)
@@ -137,7 +135,8 @@ bool j1Map::CleanUp()
 
 	while (layer != NULL)
 	{
-		RELEASE(layer->data);
+		layer->data->~MapLayer();
+		//RELEASE(layer->data);
 		layer = layer->next;
 	}
 	data.map_layers.clear();
@@ -229,6 +228,7 @@ bool j1Map::Load(const char* file_name)
 	if(ret)
 	{
 		ret = LoadMap();
+		//if (ret) = LoadBackground();
 	
 		// Load all tilesets info
 		pugi::xml_node tileset = map_doc.child("map").child("tileset");
@@ -241,6 +241,15 @@ bool j1Map::Load(const char* file_name)
 			if(ret) data.tilesets.add(set);
 
 		}
+		//// Load background info 
+		//pugi::xml_node imagelayer = map_doc.child("imagelayer");
+		//for (imagelayer; imagelayer && ret; imagelayer = imagelayer.next_sibling("imagelayer"))
+		//{
+		//	MapLayer* set = new MapLayer();
+
+		//	if (ret) ret = LoadLayer(layer, set);
+		//	if (ret) data.map_layers.add(set);
+		//}
 
 		// Load layer info 
 		pugi::xml_node layer = map_doc.child("map").child("layer");
@@ -257,10 +266,12 @@ bool j1Map::Load(const char* file_name)
 	// Logs => data has been loaded properly
 	if(map_loaded)
 	{
+		world_limits = { data.width * data.tile_width, data.height * data.tile_width };
 		//Logging map info
 		LOG("Successfully parsed map XML file: %s", file_name);
 		LOG("width: %d height: %d", data.width, data.height);
 		LOG("tile_width: %d tile_height: %d", data.tile_width, data.tile_height);
+		LOG("world_limits: %d , %d", world_limits.x, world_limits.y);
 
 		p2List_item<TileSet*>* item = data.tilesets.start;
 		while(item != NULL)
@@ -299,7 +310,7 @@ bool j1Map::LoadMap()
 		data.height			= map.attribute("height").as_int();
 		data.tile_width		= map.attribute("tilewidth").as_int();
 		data.tile_height	= map.attribute("tileheight").as_int();
-		p2SString bg_color	( map.attribute("backgroundcolor").as_string());
+		p2SString bg_color	( map.attribute("trans").as_string());
 
 		data.background_color.r = 0;
 		data.background_color.g = 0;
@@ -424,7 +435,7 @@ bool j1Map::LoadLayer(pugi::xml_node & node, MapLayer * layer)
 		layer->width = node.attribute("width").as_int();
 		layer->data = new uint[layer->width*layer->height];
 
-		memset(layer->data, 0, (sizeof(uint))*layer->width*layer->height);
+		memset(layer->data, 1, (sizeof(uint))*layer->width*layer->height);
 
 		int i = 0;
 		pugi::xml_node inode = map_doc.child("map").child("layer").child("data").child("tile");

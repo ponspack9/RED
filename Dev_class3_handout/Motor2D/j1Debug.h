@@ -19,6 +19,7 @@ public:
 
 public:
 
+	iPoint zero;
 	bool show_colliders;
 
 };

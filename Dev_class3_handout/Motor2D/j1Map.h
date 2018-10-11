@@ -114,12 +114,14 @@ private:
 	bool LoadTilesetDetails(pugi::xml_node& tileset_node, TileSet* set);
 	bool LoadTilesetImage(pugi::xml_node& tileset_node, TileSet* set);
 	bool LoadLayer(pugi::xml_node& node, MapLayer* layer);
+	//bool LoadBackground();
 
 public:
 	
 	MapData						data;
 	p2List<p2SString>			maps_path;
 	p2List_item<p2SString>*		current_map;
+	iPoint						world_limits;
 
 private:
 

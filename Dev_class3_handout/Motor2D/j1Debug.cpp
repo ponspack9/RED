@@ -82,6 +82,7 @@ bool j1Debug::Update(float dt)
 		//FUCKING GOD MODE CUSI
 
 	}
+	//Magic
 
 	App->win->SetTitle(App->map->DebugToString().GetString());
 	return true;

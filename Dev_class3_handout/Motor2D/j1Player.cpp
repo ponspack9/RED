@@ -20,6 +20,8 @@ bool j1Player::Awake(pugi::xml_node & config)
 	//This need to be loaded from config, in the player child
 	player_rect = { 0,0,64,64 };
 	player_collider = App->collision->AddCollider(player_rect,COLLIDER_PLAYER, this);
+
+	position = { 50,50 };
 	speed = 3;
 	return true;
 }
