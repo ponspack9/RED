@@ -65,7 +65,18 @@ void j1Map::Draw()
 		{
 			for (int x = 0; x < data.width; ++x)
 			{
+
 				int tile_id = layer->data->GetMapId(x, y);
+
+				bool flipped_horizontally	= (tile_id & FLIPPED_HORIZONTALLY_FLAG);
+				bool flipped_vertically		= (tile_id & FLIPPED_VERTICALLY_FLAG);
+				bool flipped_diagonally		= (tile_id & FLIPPED_DIAGONALLY_FLAG);
+
+
+				tile_id &= ~(FLIPPED_HORIZONTALLY_FLAG |
+					FLIPPED_VERTICALLY_FLAG |
+					FLIPPED_DIAGONALLY_FLAG);
+
 				if (tile_id > 0)
 				{
 					TileSet* tileset = GetTilesetFromTileId(tile_id);
@@ -73,8 +84,11 @@ void j1Map::Draw()
 					{
 						SDL_Rect r = tileset->GetTileRect(tile_id);
 						iPoint pos = MapToWorld(x, y);
-
-						App->render->Blit(tileset->texture, pos.x, pos.y, &r);
+						double angle = 0;
+						if (flipped_horizontally)	angle += 180;
+						if (flipped_vertically)		angle += 360;
+						if (flipped_diagonally)		angle += 270;
+						App->render->Blit(tileset->texture, pos.x, pos.y, &r,NULL,angle);
 					}
 				}
 			}
@@ -82,6 +96,8 @@ void j1Map::Draw()
 	}
 
 }
+
+
 
 TileSet* j1Map::GetTilesetFromTileId(int id) const
 {

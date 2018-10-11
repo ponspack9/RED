@@ -6,6 +6,10 @@
 #include "p2Point.h"
 #include "j1Module.h"
 
+const unsigned FLIPPED_HORIZONTALLY_FLAG = 0x80000000;
+const unsigned FLIPPED_VERTICALLY_FLAG = 0x40000000;
+const unsigned FLIPPED_DIAGONALLY_FLAG = 0x20000000;
+
 enum MapTypes
 {
 	MAPTYPE_UNKNOWN = 0,
