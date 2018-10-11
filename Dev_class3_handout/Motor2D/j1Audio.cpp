@@ -73,7 +73,6 @@ bool j1Audio::Awake(pugi::xml_node& config)
 
 		fx_path.add(fx_node.attribute("name").as_string());
 		
-
 		fx_path.add(fx_node.child_value());
 
 		LOG("Loading fx path %s  i: %d", fx_path[i].GetString(),i-1);

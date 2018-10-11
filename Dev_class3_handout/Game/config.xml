@@ -57,4 +57,9 @@
     <!--<level>MapLvl4.tmx</level><!-Does not exist, just for testing-->
   </map>
 
+  <player>
+    <player_rect x="0" y="0" width="64" height="64"/>
+    <speed scrollspeed="3" jumpspeed="5"/>
+  </player>
+
 </config>

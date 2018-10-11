@@ -4,6 +4,14 @@
 #include "SDL/include/SDL.h"
 #include "j1Module.h"
 
+struct Player
+{
+	iPoint position;
+	fPoint speed;
+	SDL_Rect player_rect;
+	bool godmode = false;
+};
+
 
 class j1Player : public j1Module
 {
@@ -19,15 +27,23 @@ public:
 	//bool CleanUp();
 
 	void Draw();
+	void Move();
+	void Jump();
 
 public:
 
-	SDL_Rect player_rect;
-	iPoint position;
-	int speed;
-
+	bool on_top;
+	bool on_floor;
+	bool dead = false;
+	bool move_left;
+	bool move_right;
+	bool is_jumping;
+	
+	float aux_speed_y;
 
 	Collider* player_collider;
+
+	Player data;
 };
 
 #endif 

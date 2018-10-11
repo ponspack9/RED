@@ -13,16 +13,26 @@ j1Player::j1Player()
 
 j1Player::~j1Player()
 {
+
 }
 
 bool j1Player::Awake(pugi::xml_node & config)
 {
-	//This need to be loaded from config, in the player child
-	player_rect = { 0,0,64,64 };
-	player_collider = App->collision->AddCollider(player_rect,COLLIDER_PLAYER, this);
+	pugi::xml_node player_node = config.child("player");
 
-	position = { 50,50 };
-	speed = 3;
+	data.position.x=player_node.child("player_rect").attribute("x").as_int();
+	data.position.y=player_node.child("player_rect").attribute("y").as_int();
+
+	data.player_rect.x = data.position.x;
+	data.player_rect.y = data.position.y;
+	data.player_rect.w = player_node.child("player_rect").attribute("width").as_int();
+	data.player_rect.h = player_node.child("player_rect").attribute("height").as_int();
+	
+	player_collider = App->collision->AddCollider(data.player_rect,COLLIDER_PLAYER, this);
+
+	data.speed.x = player_node.child("speed").attribute("scrollspeed").as_int();
+	data.speed.y = player_node.child("speed").attribute("jumpspeed").as_int();
+	
 	return true;
 }
 
@@ -34,23 +44,9 @@ bool j1Player::Start()
 
 bool j1Player::Update(float dt)
 {
-	if (App->input->GetKey(SDL_SCANCODE_W) == KEY_REPEAT)
-	{
-		position.y -= speed;
-	}
-	if (App->input->GetKey(SDL_SCANCODE_S) == KEY_REPEAT)
-	{
-		position.y += speed;
-	}
-	if (App->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT)
-	{
-		position.x += speed;
-	}
-	if (App->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT)
-	{
-		position.x -= speed;
-	}
-	player_collider->SetPos(position.x, position.y);
+	Move();
+		
+	player_collider->SetPos(data.position.x, data.position.y);
 	Draw();
 	return true;
 }
@@ -58,6 +54,63 @@ bool j1Player::Update(float dt)
 void j1Player::Draw()
 {
 	
+
+}
+
+void j1Player::Move()
+{
+
+	if (App->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT)
+		move_right = true;
+	
+	if (App->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT)
+		move_left = true;		
+	
+	if (App->input->GetKey(SDL_SCANCODE_W) == KEY_REPEAT)
+	{
+		bool is_juming = true;
+		//data.position.y -= data.speed.y;
+	}
+	//if (App->input->GetKey(SDL_SCANCODE_S) == KEY_REPEAT)
+	//{
+	//	data.position.y += data.speed.y;
+	//}
+
+	if (is_jumping)
+		Jump();
+	
+	if (move_right)
+	{
+		data.position.x += data.speed.x;
+	}
+	if (move_left)
+	{
+		data.position.x -= data.speed.x;
+	}
+
+}
+
+void j1Player::Jump()
+{	
+	bool on_top = false;
+	aux_speed_y = data.speed.y;
+	
+	if (is_jumping && !move_left && !move_right)
+	{
+		
+	}
+	if (is_jumping && move_left && !move_right)
+	{
+
+	}
+	if (is_jumping && !move_left && move_right)
+	{
+
+	}
+	if (is_jumping && move_left && move_right)
+	{
+
+	}
 
 }
 
