@@ -39,8 +39,7 @@ bool j1Map::Awake(pugi::xml_node& config)
 	pugi::xml_node level_node = config.child("level");
 	int i = 0;
 	for (level_node; level_node; level_node = level_node.next_sibling("level")) {
-		p2SString level_path(level_node.child_value());
-		maps_path.add(level_path.GetString());
+		maps_path.add(level_node.child_value());
 		
 		LOG("%s", maps_path[i++].GetString());
 	}
@@ -61,6 +60,7 @@ void j1Map::Draw()
 
 	for (layer; layer; layer = layer->next)
 	{
+		LOG("LAYER NAMEEEEEEEEEEE: %s", layer->data->name.GetString());
 		for (int y = 0; y < data.height; ++y)
 		{
 			for (int x = 0; x < data.width; ++x)

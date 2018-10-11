@@ -4014,6 +4014,9 @@
   </data>
  </layer>
  <objectgroup name="Coliders" offsetx="-0.5" offsety="-0.5">
+  <properties>
+   <property name="is_collider" type="bool" value="true"/>
+  </properties>
   <object id="1" x="0" y="0">
    <polyline points="0,0 256,0 256,576 192,576 192,256 64,256 64,576 0,576 0,0"/>
   </object>
@@ -4456,7 +4459,7 @@
   </object>
   <object id="171" x="160" y="256">
    <properties>
-    <property name="Colider" type="bool" value="false"/>
+    <property name="Collider" type="bool" value="false"/>
    </properties>
    <polygon points="0,0 32,0 15,35.5"/>
   </object>
