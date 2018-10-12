@@ -111,6 +111,28 @@ void j1Collision::Draw()
 				break;
 			}
 	}
+
+	p2List_item<PolyLine*>* line = polylines.start;
+	SDL_SetRenderDrawColor(App->render->renderer, 255, 0, 0, SDL_ALPHA_OPAQUE);
+	int a = App->collision->n_lines;
+	for (line; line != polylines.end->prev; line = line->next) {
+		p2List_item<iPoint>* p = line->data->points.start;
+		int offsetx = line->data->start.x + App->render->camera.x;
+		int offsety = line->data->start.y + App->render->camera.y;
+		SDL_RenderDrawLine(App->render->renderer, p->data.x + offsetx, p->data.y + offsety,
+					p->next->data.x + offsetx, p->next->data.y + offsety);
+
+		for (int i=0;i<line->data->points.count()-1;i++){
+
+			SDL_RenderDrawLine(App->render->renderer, p->data.x + offsetx, p->data.y + offsety, 
+				p->next->data.x + offsetx, p->next->data.y + offsety);
+			//int a = 1;
+			p = p->next;
+		}
+		SDL_RenderDrawLine(App->render->renderer, p->data.x + offsetx, p->data.y + offsety,
+			line->data->points.start->data.x + offsetx, line->data->points.start->data.y + offsety);
+
+	}
 }
 
 // Called before quitting

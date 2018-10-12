@@ -17,9 +17,13 @@ public:
 
 	bool Update(float dt);
 
+
 public:
 
+	iPoint camera_motion;
+	iPoint last_motion;
 	iPoint zero;
+	bool start_motion;
 	bool show_colliders;
 
 };

@@ -5,6 +5,7 @@
 #include "j1Textures.h"
 #include "j1Input.h"
 #include "j1Map.h"
+#include "j1Collision.h"
 #include <cmath>
 
 j1Map::j1Map() : j1Module(), map_loaded(false)
@@ -108,8 +109,6 @@ void j1Map::Draw()
 
 }
 
-
-
 bool j1Map::Load(const char* file_name)
 {
 	pugi::xml_parse_result result = App->LoadXML(map_doc, PATH(folder.GetString(),file_name));
@@ -151,6 +150,79 @@ bool j1Map::Load(const char* file_name)
 
 			if (ret) ret = LoadLayer(layer, set);
 			if (ret) data.map_layers.add(set);
+		}
+
+		pugi::xml_node objectgroup = map_doc.child("map").child("objectgroup");
+		LOG("OBJECTGROUP NAME: %s", objectgroup.attribute("name").as_string());
+
+		pugi::xml_node object = objectgroup.child("object");
+		pugi::xml_node polyobject = object.child("polygon");
+
+		for (object; object; object = object.next_sibling("object")) {
+			bool rotation = false;
+			double alpha = 0;
+
+			polyobject = object.child("polyline");
+			if (polyobject == NULL) {
+				polyobject = object.child("polygon");
+				if (polyobject == NULL)	continue;
+				else {
+					// TO DELETE
+					rotation = true;
+					alpha = object.attribute("rotation").as_double();
+				}
+			}
+			PolyLine* p = new PolyLine();
+			iPoint start = { object.attribute("x").as_int(), object.attribute("y").as_int() };
+			p->start = start;
+
+			//polyobject = object.child("polygon");
+			p2SString s(polyobject.attribute("points").as_string());
+
+			
+			//Deal with the string to find each point
+			uint size = s.GetCapacity();
+			const char* c = s.GetString();
+			char* buffer = new char(); // Up to 6 digit number
+
+			iPoint ret;
+			int j = 0;
+			for (uint i = 0; i < size; i++) {
+				
+				char k = c[i];
+				if (c[i] == ',') {
+					// FUCKING EXCEPTION uint ret = s.SubString(i, till, substring);
+					ret.x = atoi(buffer);
+					//reset buffer and j
+					while (j > 0) {
+						buffer[--j] = 0;
+					}
+				}
+				else if (c[i] == ' ') {
+					ret.y = atoi(buffer);
+					//reset buffer and j
+					while (j > 0) {
+						buffer[--j] = 0;
+					}
+					// Had finished parsing one point, time to add it
+					if (rotation) {
+						//ret.x = p->start.x * cos(alpha) - p->start.y * sin(alpha);
+						//ret.y = p->start.x * sin(alpha) + p->start.y * cos(alpha);
+						p->points.add(ret);
+					}
+					else {
+						p->points.add(ret);
+					}
+
+				}
+				else {
+					buffer[j++] = c[i];
+				}
+			}
+			App->collision->polylines.add(p);
+			App->collision->n_lines += 1;
+			
+					// END DEALING OBJECT NODE
 		}
 	}
 	 map_loaded = ret;

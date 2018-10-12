@@ -4,6 +4,10 @@
 #define MAX_COLLIDERS 50
 #include "SDL/include/SDL.h"
 #include "j1Module.h"
+#include "p2Point.h"
+#include "p2List.h"
+
+
 
 enum COLLIDER_TYPE
 {
@@ -14,7 +18,6 @@ enum COLLIDER_TYPE
 
 	COLLIDER_MAX
 };
-
 struct Collider
 {
 	SDL_Rect rect;
@@ -40,10 +43,13 @@ struct Collider
 	}
 
 	bool CheckCollision(const SDL_Rect& r) const;
-
-
-
 };
+
+struct PolyLine {
+	p2List<iPoint>  points;
+	iPoint			 start;
+};
+
 
 class j1Collision : public j1Module
 {
@@ -60,6 +66,9 @@ public:
 	Collider* AddCollider(SDL_Rect rect, COLLIDER_TYPE type, j1Module* callback = nullptr);
 	void Draw();
 
+	p2List<PolyLine*>	polylines;
+	int n_lines = 0;
+	
 private:
 
 	Collider * colliders[MAX_COLLIDERS];
