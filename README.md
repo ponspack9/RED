@@ -16,16 +16,16 @@
 ## Levels
 
 - [ ] Level 1
-  - [ ] Tiled editor:
-    - [ ] Background (Parallax)
-    - [ ] Player position
-	- [ ] Tile collisions
+    - [x] Tiles
+    - [x] Background (Parallax)
+    - [ ] Player positions (start,end)
+    - [ ] Colliders
+    
 - [ ] Level 2
-  - [ ] Tiled editor:
-    - [ ] Background (Parallax)
-    - [ ] Player position
-	- [ ] Tile collisions
-- [ ] Memory leaks  
+    - [x] Tiles
+    - [x] Background (Parallax)
+    - [ ] Player positions
+    - [ ] Colliders
 
 ## Debug
 
@@ -37,16 +37,5 @@
 - [x] F9 - View colliders/logic
 - [ ] F10 - God mode
 
+- [x] Memory leaks  
 - [x] Vsync ON
-
-### Thursday Questions  ###
-
--  Perque algunes parts del mapa no carreguen bé o carreguen desordenades? i com ho podem fer per arreglarho?
-
--  Background? and the same as previous question...
-
--  Resolucio de la window?
-
--  Player com el project 1, tema textures i animations? (no hardcoded) 
-
--  what defines the limits, the map height and width, window..?
