@@ -15,6 +15,6 @@
 	</player>
 	<fade />
 	<renderer>
-		<camera x="0" y="0" />
+		<camera x="-397" y="-1" />
 	</renderer>
 </save>
