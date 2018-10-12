@@ -15,6 +15,7 @@ j1Collision::j1Collision()
 	matrix[COLLIDER_PLAYER][COLLIDER_GROUND] = true;
 	matrix[COLLIDER_PLAYER][COLLIDER_DEATH] = true;
 
+	name.create("collisions");
 }
 
 // Destructor

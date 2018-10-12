@@ -8,12 +8,12 @@
 	<scene>
 		<current current_map="MapLvl1.tmx" />
 	</scene>
-	<:anonymous />
-	<:anonymous />
-	<:anonymous>
+	<debug />
+	<collisions />
+	<player>
 		<position x="0" y="0" />
-	</:anonymous>
-	<:anonymous />
+	</player>
+	<fade />
 	<renderer>
 		<camera x="0" y="0" />
 	</renderer>

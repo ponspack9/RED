@@ -10,7 +10,7 @@
 
 j1FadeToBlack::j1FadeToBlack()
 {
-	
+	name.create("fade");
 }
 
 j1FadeToBlack::~j1FadeToBlack()

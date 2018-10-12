@@ -14,6 +14,7 @@
 
 j1Debug::j1Debug()
 {
+	name.create("debug");
 }
 
 
