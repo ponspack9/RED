@@ -92,8 +92,8 @@ bool j1Render::Load(pugi::xml_node& node)
 
 	LOG("Loading RENDER");
 	
-	camera.x = node.child("camera").attribute("x").as_int();
-	camera.y = node.child("camera").attribute("y").as_int();
+	camera.x = node.child("renderer").child("camera").attribute("x").as_int();
+	camera.y = node.child("renderer").child("camera").attribute("y").as_int();
 
 	return true;
 }

@@ -32,6 +32,9 @@ public:
 	// Called before quitting
 	bool CleanUp();
 
+	bool Save(pugi::xml_node& node);
+	bool Load(pugi::xml_node& node);
+
 private:
 
 	//p2SString map;

@@ -178,15 +178,30 @@ void j1Player::Jump()
 	}
 
 }
+bool j1Player::Load(pugi::xml_node & node)
+{
+	LOG("Loading PLAYER");
+
+	data.position.x = node.child("player").child("position").attribute("x").as_int();
+	data.position.y = node.child("player").child("position").attribute("y").as_int();
+
+	return true;
+}
+
 
 bool j1Player::Save(pugi::xml_node & node)
 {
+	LOG("Saving PLAYER");
+
+	pugi::xml_node pl_node = node.append_child("position");
+
+	pl_node.append_attribute("x") = data.position.x;
+	pl_node.append_attribute("y") = data.position.y;
+
+	LOG("playerX: %d - %d \n playerY: %d - %d", data.position.x, pl_node.attribute("x").as_int(), data.position.y, pl_node.attribute("y").as_int());
+
 	return true;
 }
 
-bool j1Player::Load(pugi::xml_node & node)
-{
-	return true;
-}
 
 

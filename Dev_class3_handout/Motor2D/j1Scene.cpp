@@ -90,3 +90,24 @@ bool j1Scene::CleanUp()
 	App->map->CleanUp();
 	return true;
 }
+
+bool j1Scene::Save(pugi::xml_node & node)
+{
+	LOG("Saving SCENE");
+
+	pugi::xml_node map_node = node.append_child("current");
+		
+	map_node.append_attribute("current_map") = App->map->current_map->data.GetString();
+	
+	LOG("current map %s - %s", App->map->current_map->data.GetString(), node.child("scene").child("current").attribute("current_map").as_string());
+	return true;
+}
+
+bool j1Scene::Load(pugi::xml_node & node)
+{
+	LOG("Loading SCENE");
+
+	App->map->current_map->data = node.child("scene").child("current").attribute("current_map").as_string();
+
+	return true;
+}

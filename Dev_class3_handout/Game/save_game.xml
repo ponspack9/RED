@@ -5,11 +5,16 @@
 	<textures />
 	<audio />
 	<map />
-	<scene />
+	<scene>
+		<current current_map="MapLvl1.tmx" />
+	</scene>
+	<:anonymous />
+	<:anonymous />
+	<:anonymous>
+		<position x="0" y="0" />
+	</:anonymous>
+	<:anonymous />
 	<renderer>
-		<camera x="333" y="63" />
+		<camera x="0" y="0" />
 	</renderer>
-  <player>
-    <position x="0" y="0"/>
-  </player>
 </save>
