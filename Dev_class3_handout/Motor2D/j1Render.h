@@ -43,6 +43,9 @@ public:
 	// Set background color
 	void SetBackgroundColor(SDL_Color color);
 
+	bool MoveCamera(const int & vel_x, const int &vel_y);
+
+
 public:
 
 	SDL_Renderer*	renderer;

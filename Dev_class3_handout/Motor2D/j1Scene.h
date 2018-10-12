@@ -37,9 +37,6 @@ public:
 
 private:
 
-	//p2SString map;
-	//p2List<p2SString>* maps_path;
-	p2List_item<p2SString>* current_map;
 };
 
 #endif // __j1SCENE_H__

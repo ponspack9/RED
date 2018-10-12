@@ -108,9 +108,7 @@ bool j1Debug::Update(float dt)
 
 		last_motion -= final;
 		if (last_motion != zero) {
-			App->render->camera.x += final.x;
-			App->render->camera.y += final.y;
-
+			App->render->MoveCamera(final.x, final.y);
 		}
 
 		last_motion = { final.x, final.y };

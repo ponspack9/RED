@@ -3,6 +3,7 @@
 #include "j1App.h"
 #include "j1Window.h"
 #include "j1Render.h"
+#include "j1Map.h"
 
 #define VSYNC true
 
@@ -113,6 +114,31 @@ bool j1Render::Save(pugi::xml_node& node)
 void j1Render::SetBackgroundColor(SDL_Color color)
 {
 	background = color;
+}
+
+bool j1Render::MoveCamera(const int & vel_x, const int & vel_y)
+{
+	int x = App->map->world_limits.x - viewport.w;
+	int y = App->map->world_limits.y - viewport.h;
+
+	if (abs(camera.x + vel_x) <  x && camera.x + vel_x < 0) {
+		//Camera can move x axis
+		camera.x += vel_x;
+		if (abs(camera.y + vel_y) < y && camera.y + vel_y < 0){
+			// Camera can move both axis
+			camera.y += vel_y;
+			return true;
+		}
+		return true;
+
+	}
+	else if (abs(camera.y + vel_y) < y && camera.y + vel_y < 0) {
+			//Camera can move y axis
+			camera.y += vel_y;
+			return true;
+	}
+	
+	return false;
 }
 
 void j1Render::SetViewPort(const SDL_Rect& rect)
