@@ -373,9 +373,18 @@ bool j1App::RestartGame()
 
 bool j1App::RestartLevel()
 {
-	App->map->current_map->prev;
-	App->map->current_map->next;
-	App->fade->FadeToBlack(App->scene, App->scene);
+	if (App->map->current_map->prev != NULL)
+	{
+		App->map->current_map->prev;
+		App->map->current_map->next;
+		App->fade->FadeToBlack(App->scene, App->scene);
+	}
+	if(App->map->current_map->next != NULL)
+	{
+		App->map->current_map->next;
+		App->map->current_map->prev;
+		App->fade->FadeToBlack(App->scene, App->scene);
+	}
 
 	return true;
 }
