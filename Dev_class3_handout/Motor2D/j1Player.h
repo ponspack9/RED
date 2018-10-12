@@ -32,14 +32,15 @@ public:
 
 public:
 
-	bool on_top;
-	bool on_floor;
+	bool on_top=false;
+	bool on_floor=true;
 	bool dead = false;
 	bool move_left;
 	bool move_right;
 	bool is_jumping;
 	
 	float aux_speed_y;
+	int aux_ypos;
 
 	Collider* player_collider;
 

@@ -59,7 +59,7 @@ void j1Player::Draw()
 
 void j1Player::Move()
 {
-
+	
 	if (App->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT)
 		move_right = true;
 	
@@ -69,47 +69,106 @@ void j1Player::Move()
 	if (App->input->GetKey(SDL_SCANCODE_W) == KEY_REPEAT)
 	{
 		bool is_juming = true;
-		//data.position.y -= data.speed.y;
+		
 	}
 	//if (App->input->GetKey(SDL_SCANCODE_S) == KEY_REPEAT)
 	//{
 	//	data.position.y += data.speed.y;
 	//}
 
-	if (is_jumping)
+	if (is_jumping && on_floor) 
 		Jump();
 	
 	if (move_right)
-	{
 		data.position.x += data.speed.x;
-	}
+	
 	if (move_left)
-	{
 		data.position.x -= data.speed.x;
-	}
 
+	if (!is_jumping && !on_floor)
+	{
+		on_top = true;
+		data.position.y += aux_speed_y;
+		aux_speed_y += 0.1;
+		if (aux_speed_y == data.speed.y)
+		{
+			data.position.y += aux_speed_y;
+		}
+	}
 }
 
 void j1Player::Jump()
 {	
-	bool on_top = false;
+	on_top = false;
+	on_floor = false;
 	aux_speed_y = data.speed.y;
+	aux_ypos = data.position.y;
 	
 	if (is_jumping && !move_left && !move_right)
 	{
+		data.position.y -= aux_speed_y;
+		aux_speed_y -= 0.1;
+		if (aux_speed_y == 0)
+		{
+			on_top = true;
+			data.position.y += aux_speed_y;
+			aux_speed_y += 0.1;
+			if (aux_speed_y == data.speed.y)
+			{
+				data.position.y += aux_speed_y;
+			}
+		
+		}
 		
 	}
 	if (is_jumping && move_left && !move_right)
 	{
+		data.position.x -= data.speed.x;
+		data.position.y -= aux_speed_y;
+		aux_speed_y -= 0.1;
+		if (aux_speed_y == 0)
+		{
+			on_top = true;
+			data.position.y += aux_speed_y;
+			aux_speed_y += 0.1;
+			if (aux_speed_y == data.speed.y)
+			{
+				data.position.y += aux_speed_y;
+			}
 
+		}
 	}
 	if (is_jumping && !move_left && move_right)
 	{
+		data.position.x -= data.speed.x;
+		data.position.y -= aux_speed_y;
+		aux_speed_y -= 0.1;
+		if (aux_speed_y == 0)
+		{
+			on_top = true;
+			data.position.y += aux_speed_y;
+			aux_speed_y += 0.1;
+			if (aux_speed_y == data.speed.y)
+			{
+				data.position.y += aux_speed_y;
+			}
 
+		}
 	}
 	if (is_jumping && move_left && move_right)
 	{
-
+		data.position.y -= aux_speed_y;
+		aux_speed_y -= 0.1;
+		if (aux_speed_y == 0)
+		{
+			on_top = true;
+			data.position.y += aux_speed_y;
+			aux_speed_y += 0.1;
+		}
+		if (aux_speed_y == data.speed.y)
+		{
+			data.position.y += aux_speed_y;
+		}
 	}
 
 }
