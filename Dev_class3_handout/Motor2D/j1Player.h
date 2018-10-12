@@ -48,6 +48,7 @@ public:
 	Collider* player_collider;
 
 	Player data;
+	pugi::xml_node player_node
 };
 
 #endif 

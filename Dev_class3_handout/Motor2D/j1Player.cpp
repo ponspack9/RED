@@ -20,11 +20,7 @@ j1Player::~j1Player()
 
 bool j1Player::Awake(pugi::xml_node & config)
 {
-	pugi::xml_node player_node = config.child("player");
-
-	data.position.x = player_node.child("position").attribute("x").as_int();
-	data.position.y = player_node.child("position").attribute("y").as_int();
-
+	player_node = config.child("player");
 
 	data.player_rect.x = data.position.x;
 	data.player_rect.y = data.position.y;
@@ -45,6 +41,8 @@ bool j1Player::Awake(pugi::xml_node & config)
 
 bool j1Player::Start()
 {
+	data.position.x = player_node.child("position").attribute("x").as_int();
+	data.position.y = player_node.child("position").attribute("y").as_int();
 
 	return true;
 }
