@@ -15,6 +15,11 @@ j1Map::j1Map() : j1Module(), map_loaded(false)
 j1Map::~j1Map()
 {}
 
+ImageLayer::~ImageLayer()
+{
+	App->tex->UnLoad(texture);
+}
+
 SDL_Rect TileSet::GetTileRect(int id) const
 {
 	int relative_id = id - firstgid;
@@ -440,8 +445,19 @@ bool j1Map::CleanUp()
 	}
 	data.map_layers.clear();
 
+	p2List_item<ImageLayer*>* imagelayer;
+	imagelayer = data.image_layers.start;
+
+	while (layer != NULL)
+	{
+		imagelayer->data->~ImageLayer();
+		RELEASE(imagelayer->data);
+		imagelayer = imagelayer->next;
+	}
+	data.image_layers.clear();
+
 	map_doc.reset();
-	map_loaded = false;
+	//map_loaded = false;
 
 	return true;
 }

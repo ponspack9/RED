@@ -32,6 +32,9 @@ struct ImageLayer {
 	int				offset_x;
 	int				offset_y;
 	float			parallax_speed;
+	
+	~ImageLayer();
+
 };
 
 struct MapLayer {

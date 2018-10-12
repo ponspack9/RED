@@ -56,13 +56,17 @@ bool j1Collision::PreUpdate()
 
 			if (c1->CheckCollision(c2->rect))
 			{
-				if (matrix[c1->type][c2->type] && c1->callback)
-					LOG("COLLIDED first if");
-					//c1->callback->OnCollision(c1, c2);
+				if (matrix[c1->type][c2->type] && c1->callback) {
 
-				if (matrix[c2->type][c1->type] && c2->callback)
-					LOG("COLLIDED second if");
+					//LOG("COLLIDED first if");
+					//c1->callback->OnCollision(c1, c2);
+				}
+
+				if (matrix[c2->type][c1->type] && c2->callback) {
+
+					//LOG("COLLIDED second if");
 					//c2->callback->OnCollision(c2, c1);
+				}	
 			}
 		}
 	}
