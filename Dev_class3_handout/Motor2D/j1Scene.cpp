@@ -39,6 +39,7 @@ bool j1Scene::Start()
 
 	//Two debug colliders,one at the beginning of the map and at the end
 	App->collision->AddCollider(SDL_Rect({ 0,0,32,32 }), COLLIDER_GROUND);
+	//App->collision->AddCollider(SDL_Rect({ 0,0,32,32 }), COLLIDER_PLAYER);
 
 	int real_w = App->map->data.width *32;
 	int real_h = App->map->data.height *32;

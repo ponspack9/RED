@@ -55,14 +55,14 @@ j1App::j1App(int argc, char* args[]) : argc(argc), args(args)
 j1App::~j1App()
 {
 	// release modules
-	p2List_item<j1Module*>* item = modules.end;
+	 item = modules.end;
 
 	while(item != NULL)
 	{
 		RELEASE(item->data);
 		item = item->prev;
 	}
-
+	item->~p2List_item();
 	modules.clear();
 }
 
@@ -102,7 +102,7 @@ bool j1App::Awake()
 		// END CONFIGURATION
 
 		// Awakening all modules
-		p2List_item<j1Module*>* item = modules.start;
+		item = modules.start;
 
 		while(item != NULL && ret)
 		{
@@ -118,7 +118,7 @@ bool j1App::Awake()
 bool j1App::Start()
 {
 	bool ret = true;
-	p2List_item<j1Module*>* item = modules.start;
+	item = modules.start;
 
 	while(item != NULL && ret)
 	{
@@ -185,7 +185,7 @@ bool j1App::SaveGameFile()
 
 	pugi::xml_document		save_game_doc; 
 	pugi::xml_node			save_node;
-	p2List_item<j1Module*>* item = modules.start;
+	item = modules.start;
 
 	bool ret = true;
 
@@ -219,7 +219,7 @@ bool j1App::LoadGameFile()
 
 	bool ret = result != NULL;
 
-	p2List_item<j1Module*>* item = modules.start;
+	item = modules.start;
 
 	if (ret) {
 		LOG("Loading new Game State from %s...", load_path.GetString());
@@ -248,7 +248,7 @@ bool j1App::LoadGameFile()
 bool j1App::PreUpdate()
 {
 	bool ret = true;
-	p2List_item<j1Module*>* item = modules.start;
+	item = modules.start;
 	
 	while (item != NULL && ret)
 	{
@@ -265,7 +265,7 @@ bool j1App::PreUpdate()
 bool j1App::DoUpdate()
 {
 	bool ret = true;
-	p2List_item<j1Module*>* item = modules.start;
+	item = modules.start;
 
 	while (item != NULL && ret)
 	{
@@ -282,7 +282,7 @@ bool j1App::DoUpdate()
 bool j1App::PostUpdate()
 {
 	bool ret = true;
-	p2List_item<j1Module*>* item = modules.start;
+	item = modules.start;
 	
 	while (item != NULL && ret)
 	{
@@ -299,11 +299,12 @@ bool j1App::PostUpdate()
 bool j1App::CleanUp()
 {
 	bool ret = true;
-	p2List_item<j1Module*>* item = modules.end;
+	item = modules.end;
 	
 	while(item != NULL && ret)
 	{
 		ret = item->data->CleanUp();
+		RELEASE(item->data);
 		item = item->prev;
 	}
 

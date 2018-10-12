@@ -18,8 +18,7 @@ j1Collision::j1Collision()
 }
 
 // Destructor
-j1Collision::~j1Collision()
-{}
+j1Collision::~j1Collision(){}
 
 bool j1Collision::PreUpdate()
 {
@@ -121,11 +120,7 @@ bool j1Collision::CleanUp()
 
 	for (uint i = 0; i < MAX_COLLIDERS; ++i)
 	{
-		if (colliders[i] != nullptr)
-		{
-			delete colliders[i];
-			colliders[i] = nullptr;
-		}
+		RELEASE(colliders[i]);
 	}
 
 	return true;

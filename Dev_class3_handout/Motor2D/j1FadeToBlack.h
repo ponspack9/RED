@@ -14,6 +14,8 @@ public:
 	bool Start();
 	bool Update(float dt);
 	bool FadeToBlack(j1Module* j1_off, j1Module* j1_on, float time = 2.0f);
+	bool CleanUp();
+
 
 private:
 

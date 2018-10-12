@@ -33,7 +33,6 @@ public:
 	bool CleanUp();
 
 private:
-	SDL_Texture* img;
 
 	//p2SString map;
 	//p2List<p2SString>* maps_path;

@@ -29,6 +29,10 @@ struct Collider
 		callback(callback)
 	{}
 
+	~Collider() {
+		//RELEASE(callback);
+	}
+
 	void SetPos(int x, int y)
 	{
 		rect.x = x;
@@ -36,6 +40,8 @@ struct Collider
 	}
 
 	bool CheckCollision(const SDL_Rect& r) const;
+
+
 
 };
 

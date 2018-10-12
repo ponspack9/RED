@@ -51,8 +51,10 @@ bool j1Textures::CleanUp()
 	for(item = textures.start; item != NULL; item = item->next)
 	{
 		SDL_DestroyTexture(item->data);
+		RELEASE(item->data);
 	}
 
+	item->~p2List_item();
 	textures.clear();
 	IMG_Quit();
 	return true;

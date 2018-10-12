@@ -32,8 +32,6 @@ struct ImageLayer {
 	int				offset_x;
 	int				offset_y;
 	float			parallax_speed;
-	
-	~ImageLayer();
 
 };
 
@@ -45,11 +43,6 @@ struct MapLayer {
 	Properties	properties;
 
 	// Translates 2 dimension to the id of the one dimension array
-	~MapLayer()
-	{
-		RELEASE(data);
-	}
-
 	inline uint GetMapId(int x, int y) const
 	{
 		return data[(y*width) + x];
@@ -75,6 +68,7 @@ struct TileSet
 	int					num_tiles_height;
 	int					offset_x;
 	int					offset_y;
+
 };
 
 struct MapData

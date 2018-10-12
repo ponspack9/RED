@@ -83,3 +83,11 @@ bool j1FadeToBlack::FadeToBlack(j1Module* j1_off, j1Module* j1_on, float time)
 
 	return ret;
 }
+
+bool j1FadeToBlack::CleanUp() {
+
+	/*delete to_enable;
+	delete to_disable;*/
+
+	return true;
+}

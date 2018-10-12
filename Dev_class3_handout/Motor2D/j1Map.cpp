@@ -15,10 +15,10 @@ j1Map::j1Map() : j1Module(), map_loaded(false)
 j1Map::~j1Map()
 {}
 
-ImageLayer::~ImageLayer()
-{
-	App->tex->UnLoad(texture);
-}
+//ImageLayer::~ImageLayer()
+//{
+//	App->tex->UnLoad(texture);
+//}
 
 SDL_Rect TileSet::GetTileRect(int id) const
 {
@@ -64,9 +64,7 @@ void j1Map::Draw()
 		SDL_Rect r = { 0,0,imagelayer->data->tex_width,imagelayer->data->tex_height };
 		App->render->Blit(imagelayer->data->texture, imagelayer->data->offset_x, imagelayer->data->offset_y, &r, imagelayer->data->parallax_speed);
 	}
-
-	p2List_item<TileSet*>* item;
-	item = data.tilesets.start;
+	//imagelayer->~p2List_item();
 
 	p2List_item<MapLayer*>* layer = data.map_layers.start;
 
@@ -106,6 +104,7 @@ void j1Map::Draw()
 			}
 		}
 	}
+	//layer->~p2List_item();
 
 }
 
@@ -132,8 +131,8 @@ bool j1Map::Load(const char* file_name)
 			if(ret)	ret = LoadTilesetDetails(tileset, set);
 			if(ret)	ret = LoadTilesetImage(tileset, set);
 			if(ret) data.tilesets.add(set);
-
 		}
+		
 		// Load background info 
 		pugi::xml_node imagelayer = map_doc.child("map").child("imagelayer");
 		for (imagelayer; imagelayer && ret; imagelayer = imagelayer.next_sibling("imagelayer"))
@@ -176,6 +175,7 @@ bool j1Map::Load(const char* file_name)
 			LOG("spacing: %d margin: %d", s->spacing, s->margin);
 			item = item->next;
 		}
+		item->~p2List_item();
 
 		// Logging layers info
 		p2List_item<MapLayer*>* item_layer = data.map_layers.start;
@@ -187,6 +187,7 @@ bool j1Map::Load(const char* file_name)
 			LOG("tile width: %d tile height: %d", l->width, l->height);
 			item_layer = item_layer->next;
 		}
+		item_layer->~p2List_item();
 	}
 
 	return map_loaded;
@@ -422,42 +423,49 @@ bool j1Map::CleanUp()
 {
 	LOG("Unloading map");
 
-	// Remove all tilesets
-	p2List_item<TileSet*>* item;
-	item = data.tilesets.start;
+	// Remove all tilesets /////////////////
+	p2List_item<TileSet*>* tileset;
+	tileset = data.tilesets.start;
 
-	while(item != NULL)
+	while(tileset != NULL)
 	{
-		RELEASE(item->data);
-		item = item->next;
+		App->tex->UnLoad(tileset->data->texture);
+		RELEASE(tileset->data);
+		tileset = tileset->next;
 	}
 	data.tilesets.clear();
+	tileset->~p2List_item();
 
-	// Remove all layers
+
+	// Remove all maplayers /////////////////
 	p2List_item<MapLayer*>* layer;
 	layer = data.map_layers.start;
 
 	while (layer != NULL)
 	{
-		layer->data->~MapLayer();
-		//RELEASE(layer->data);
+		RELEASE_ARRAY(layer->data->data);
+		RELEASE(layer->data);
 		layer = layer->next;
 	}
 	data.map_layers.clear();
+	layer->~p2List_item();
 
+
+	//Remove image layers /////////////////
 	p2List_item<ImageLayer*>* imagelayer;
 	imagelayer = data.image_layers.start;
 
-	while (layer != NULL)
+	while (imagelayer != NULL)
 	{
-		imagelayer->data->~ImageLayer();
+		App->tex->UnLoad(imagelayer->data->texture);
 		RELEASE(imagelayer->data);
 		imagelayer = imagelayer->next;
 	}
 	data.image_layers.clear();
+	imagelayer->~p2List_item();
 
 	map_doc.reset();
-	//map_loaded = false;
+	map_loaded = false;
 
 	return true;
 }
