@@ -15,6 +15,7 @@
 #include "j1FadeToBlack.h"
 #include "j1Player.h"
 #include "j1App.h"
+#include "j1FileSystem.h"
 
 // Constructor
 j1App::j1App(int argc, char* args[]) : argc(argc), args(args)
@@ -213,9 +214,9 @@ bool j1App::SaveGameFile()
 
 bool j1App::LoadGameFile()
 {
-	pugi::xml_document		save_game_doc;
-	pugi::xml_node			save_node;
-	pugi::xml_parse_result	result = LoadXML(save_game_doc, load_path.GetString());
+		pugi::xml_document		save_game_doc;
+		pugi::xml_node			save_node;
+		pugi::xml_parse_result	result = LoadXML(save_game_doc, load_path.GetString());
 
 	bool ret = result != NULL;
 
@@ -358,21 +359,25 @@ void j1App::SaveGame() const
 void j1App::GetSaveGames(p2List<p2SString>& list_to_fill) const
 {
 	// need to add functionality to file_system module for this to work
+
 }
 
 
 bool j1App::RestartGame()
 {
-	bool ret = true;
+	App->map->current_map = App->map->maps_path.start;
+	App->fade->FadeToBlack(App->scene, App->scene);
 
-	return ret;
+	return true;
 }
 
 bool j1App::RestartLevel()
 {
-	bool ret = true;
+	App->map->current_map->prev;
+	App->map->current_map->next;
+	App->fade->FadeToBlack(App->scene, App->scene);
 
-	return ret;
+	return true;
 }
 
 

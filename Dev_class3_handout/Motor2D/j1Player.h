@@ -30,6 +30,9 @@ public:
 	void Move();
 	void Jump();
 
+	bool Save(pugi::xml_node& node);
+	bool Load(pugi::xml_node& node);
+
 public:
 
 	bool on_top=false;

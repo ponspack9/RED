@@ -58,8 +58,10 @@
   </map>
 
   <player>
-    <player_rect x="0" y="0" width="64" height="64"/>
+    <position x="0" y="0"/>
+    <rect width="64" height="64"/>
     <speed scrollspeed="3" jumpspeed="5"/>
+    <flags auxspeed="0"/>
   </player>
 
 </config>

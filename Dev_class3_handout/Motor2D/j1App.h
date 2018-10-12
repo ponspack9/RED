@@ -114,7 +114,7 @@ private:
 
 	p2SString			load_path;
 	mutable p2SString	save_path;
-
+	
 	mutable bool		want_to_save;
 	bool				want_to_load;
 

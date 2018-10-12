@@ -9,4 +9,7 @@
 	<renderer>
 		<camera x="333" y="63" />
 	</renderer>
+  <player>
+    <position x="0" y="0"/>
+  </player>
 </save>
