@@ -540,8 +540,10 @@ bool j1Map::CleanUp()
 	imagelayer->~p2List_item();
 
 	//Removes all colliders
-	App->collision->CleanColliders();
-	App->collision->CleanPolylines();
+	if (App->collision->active) {
+		App->collision->CleanColliders();
+		App->collision->CleanPolylines();
+	}
 
 
 
