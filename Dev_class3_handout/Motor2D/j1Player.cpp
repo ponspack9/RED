@@ -23,12 +23,12 @@ bool j1Player::Awake(pugi::xml_node & config)
 	player_node = config.child("player");
 
 	//LVL 1 INITIAL POSITION
-	data.init_pos1.x = player_node.child("lvl1").attribute("x").as_int();
-	data.init_pos1.y = player_node.child("lvl1").attribute("y").as_int();
+	data.init_pos1.x = player_node.child("lvl1").attribute("x").as_float();
+	data.init_pos1.y = player_node.child("lvl1").attribute("y").as_float();
 
 	//LVL 2 INITIAL POSITION
-	data.init_pos2.x = player_node.child("lvl2").attribute("x").as_int();
-	data.init_pos2.y = player_node.child("lvl2").attribute("y").as_int();
+	data.init_pos2.x = player_node.child("lvl2").attribute("x").as_float();
+	data.init_pos2.y = player_node.child("lvl2").attribute("y").as_float();
 
 	//PLAYER RECT DIMENSIONS
 	data.player_rect.w = player_node.child("rect").attribute("width").as_uint();
@@ -38,8 +38,8 @@ bool j1Player::Awake(pugi::xml_node & config)
 	player_collider = App->collision->AddCollider(data.player_rect,COLLIDER_PLAYER, this);
 
 	//SCROLL AND JUMPSPEED (CONST)
-	data.speed.x = player_node.child("speed").attribute("scrollspeed").as_int();
-	data.speed.y = player_node.child("speed").attribute("jumpspeed").as_int();
+	data.speed.x = player_node.child("speed").attribute("scrollspeed").as_float();
+	data.speed.y = player_node.child("speed").attribute("jumpspeed").as_float();
 
 	//FLAG SPEED USED TO MOVE
 	aux_speed_y = player_node.child("flags").attribute("auxspeed").as_int();
