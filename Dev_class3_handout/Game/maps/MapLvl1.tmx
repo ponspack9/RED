@@ -4134,9 +4134,6 @@
   <object id="455" x="0" y="640">
    <polyline points="0,0 32,0 32,64 0,64"/>
   </object>
-  <object id="478" x="448" y="416">
-   <polyline points="0,0 36.9091,16.5455 0,32"/>
-  </object>
   <object id="493" x="32" y="928">
    <polyline points="0,0 -32,0"/>
   </object>
