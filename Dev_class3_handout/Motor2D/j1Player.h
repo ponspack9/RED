@@ -6,7 +6,10 @@
 
 struct Player
 {
-	iPoint position;
+	fPoint position;
+	iPoint init_pos1;
+	iPoint init_pos2;
+
 	fPoint speed;
 	SDL_Rect player_rect;
 	bool godmode = false;

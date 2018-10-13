@@ -22,15 +22,26 @@ bool j1Player::Awake(pugi::xml_node & config)
 {
 	player_node = config.child("player");
 
-	data.player_rect.x = data.position.x;
-	data.player_rect.y = data.position.y;
-	data.player_rect.w = player_node.child("rect").attribute("width").as_int();
-	data.player_rect.h = player_node.child("rect").attribute("height").as_int();
+	//LVL 1 INITIAL POSITION
+	data.init_pos1.x = player_node.child("lvl1").attribute("x").as_int();
+	data.init_pos1.y = player_node.child("lvl1").attribute("y").as_int();
+
+	//LVL 2 INITIAL POSITION
+	data.init_pos2.x = player_node.child("lvl2").attribute("x").as_int();
+	data.init_pos2.y = player_node.child("lvl2").attribute("y").as_int();
+
+	//PLAYER RECT DIMENSIONS
+	data.player_rect.w = player_node.child("rect").attribute("width").as_uint();
+	data.player_rect.h = player_node.child("rect").attribute("height").as_uint();
 	
+	//PL. COLLIDER
 	player_collider = App->collision->AddCollider(data.player_rect,COLLIDER_PLAYER, this);
 
+	//SCROLL AND JUMPSPEED (CONST)
 	data.speed.x = player_node.child("speed").attribute("scrollspeed").as_int();
 	data.speed.y = player_node.child("speed").attribute("jumpspeed").as_int();
+
+	//FLAG SPEED USED TO MOVE
 	aux_speed_y = player_node.child("flags").attribute("auxspeed").as_int();
 	
 	LOG("%d  %d", data.player_rect.h, data.player_rect.w);
@@ -41,8 +52,13 @@ bool j1Player::Awake(pugi::xml_node & config)
 
 bool j1Player::Start()
 {
-	data.position.x = player_node.child("position").attribute("x").as_int();
-	data.position.y = player_node.child("position").attribute("y").as_int();
+	//PLACING PLAYER AT INITIAL POS
+	data.position.x = data.init_pos1.x;
+	data.position.y = data.init_pos1.y;
+
+	//PLACING PLAYER RECT
+	data.player_rect.x = data.position.x;
+	data.player_rect.y = data.position.y;
 
 	return true;
 }
@@ -58,7 +74,7 @@ bool j1Player::Update(float dt)
 
 void j1Player::Draw()
 {
-	//App->render->DrawQuad(data.player_rect, 255, 0, 0);
+	App->render->DrawQuad(data.player_rect, 255, 0, 0);
 
 }
 
@@ -73,7 +89,7 @@ void j1Player::Move()
 	
 	if (App->input->GetKey(SDL_SCANCODE_W) == KEY_REPEAT)
 	{
-		bool is_jumping = true;		
+		is_jumping = true;		
 	}
 	//if (App->input->GetKey(SDL_SCANCODE_S) == KEY_REPEAT)
 	//{
@@ -196,7 +212,10 @@ bool j1Player::Save(pugi::xml_node & node)
 	pl_node.append_attribute("x") = data.position.x;
 	pl_node.append_attribute("y") = data.position.y;
 
-	LOG("playerX: %d - %d \n playerY: %d - %d", data.position.x, pl_node.attribute("x").as_int(), data.position.y, pl_node.attribute("y").as_int());
+	//pl_node.append_attribute("x") = data.init_pos1.x;
+	//pl_node.append_attribute("y") = data.init_pos1.y;
+
+	LOG("playerX: %d - %d \n playerY: %d - %d", data.init_pos1.x, pl_node.attribute("x").as_int(), data.init_pos1.y, pl_node.attribute("y").as_int());
 
 	return true;
 }

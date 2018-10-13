@@ -57,6 +57,7 @@ bool j1Debug::Update(float dt)
 	{
 		if (App->map->current_map->next != NULL)
 			App->map->current_map = App->map->current_map->next;
+			App->
 		else
 			App->map->current_map = App->map->maps_path.start;
 
