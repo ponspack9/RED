@@ -45,6 +45,8 @@ public:
 
 	virtual void OnCollision(Collider*, Collider*) {}
 
+	virtual void OnCollisionLine(Collider*, int, int, int, int){}
+
 	// Called before render is available
 	virtual bool Awake(pugi::xml_node&)
 	{
