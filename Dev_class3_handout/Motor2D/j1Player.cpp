@@ -30,14 +30,15 @@ bool j1Player::Awake(pugi::xml_node & config)
 	init_pos2.x = player_node.child("lvl2").attribute("x").as_float();
 	init_pos2.y = player_node.child("lvl2").attribute("y").as_float();
 
-	//PLAYER RECT DIMENSIONS
+	////PLAYER RECT DIMENSIONS
 	player_rect.w = player_node.child("rect").attribute("width").as_uint();
 	player_rect.h = player_node.child("rect").attribute("height").as_uint();
 	
 	//PL. COLLIDER
 	player_collider = App->collision->AddCollider(player_rect, COLLIDER_PLAYER, this);
-	SDL_Rect shade = { player_collider->rect.x,player_collider->rect.y,player_collider->rect.w,player_collider->rect.h + 5 };
-	shade_collider  = App->collision->AddCollider(shade,COLLIDER_PLAYER, this);
+	//SDL_Rect shade = { player_collider->rect.x,player_collider->rect.y,
+						//player_collider->rect.w, 5 };
+	//shade_collider  = App->collision->AddCollider(shade,COLLIDER_PLAYER, this);
 
 	//SCROLL AND JUMPSPEED (CONST)
 	speed.x = player_node.child("speed").attribute("scrollspeed").as_float();
@@ -45,7 +46,7 @@ bool j1Player::Awake(pugi::xml_node & config)
 
 	gravity = player_node.child("gravity").attribute("value").as_float();
 	
-	LOG("%d  %d", player_rect.h, player_rect.w);
+	//LOG("%d  %d", player_rect.h, player_rect.w);
 	LOG("%d  %d", speed.x, speed.y);
 
 	return true;
@@ -64,6 +65,9 @@ bool j1Player::Start()
 	max_speed_y = speed.y;
 	on_floor = false;
 	is_jumping = false;
+	r = 255;
+	g = 0;
+	b = 0;
 
 	return true;
 }
@@ -79,14 +83,15 @@ bool j1Player::Update(float dt)
 
 void j1Player::Draw()
 {
-	App->render->DrawQuad(player_rect, 255, 0, 0);
+	App->render->DrawQuad(player_rect, r,g,b);
+	g = 0;
 
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////
 void j1Player::Move()
 {
-	if (!have_collided && on_floor)on_floor = false;
+	if (!have_collided && on_floor) on_floor = false;
 	float dx = 0;
 	float dy = 0;
 	
@@ -110,12 +115,6 @@ void j1Player::Move()
 		}
 	}*/
 
-	if (App->input->GetKey(SDL_SCANCODE_W) == KEY_DOWN)
-	{
-		Jump();
-		LOG("JUMP");
-
-	}
 
 	if (is_jumping)
 	{
@@ -124,14 +123,14 @@ void j1Player::Move()
 	}
 	else if (!on_floor)
 	{
-		/*if (abs(speed.y + gravity) <= max_speed_y)
-		{*/		
-	dy += gravity;
-	on_floor = false;
-	LOG("Gravitiy falling");
-			
-		//}
-		//position.y += speed.y;
+		dy += gravity;
+		//on_floor = false;
+	}
+	if (App->input->GetKey(SDL_SCANCODE_W) == KEY_DOWN && on_floor)
+	{
+		Jump();
+		LOG("JUMP");
+
 	}
 
 	position.x += dx;
@@ -141,14 +140,10 @@ void j1Player::Move()
 	player_rect.y = position.y;
 
 	player_collider->SetPos(position.x, position.y);
-	shade_collider->SetPos(position.x, position.y);
+	//shade_collider->SetPos(position.x, position.y+ player_collider->rect.h);
 
 	have_collided = false;
 
-	/*player_rect.x = position.x;
-	player_rect.y = position.y;*/
-
-	//player_collider->SetPos(position.x, position.y);
 
 //	/if (is_jumping && !move_left && !move_right)
 //	/{
@@ -283,12 +278,18 @@ void j1Player::OnCollision(Collider * c1, Collider * c2)
 		on_floor = true;
 		//last_collision = COLLIDER_FLOOR;
 	}
+	if (c1->type == COLLIDER_PLAYER && c2->type == COLLIDER_WALL) {
+
+		can_keep_moving = false;
+	}
+
 
 }
 
 void j1Player::OnCollisionLine(Collider * c, int x1, int y1, int x2, int y2)
 {
-
+	//LOG("COLLISION LINE");
+	g = 255;
 }
 
 

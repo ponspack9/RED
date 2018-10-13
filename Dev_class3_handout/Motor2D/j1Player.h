@@ -56,6 +56,8 @@ public:
 	Collider* shade_collider;
 
 	COLLIDER_TYPE last_collision;
+
+	int r, g, b;
 };
 
 #endif 

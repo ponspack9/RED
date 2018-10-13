@@ -111,6 +111,8 @@ bool j1Collision::PreUpdate()
 				if (c1->CheckRectLineCollision(p->data.x + offsetx, p->data.y + offsety,
 					p->next->data.x + offsetx, p->next->data.y + offsety)) {
 					//LOG("COLLISION WITH LINE");
+					c1->callback->OnCollisionLine(c1, p->data.x + offsetx, p->data.y + offsety,
+						p->next->data.x + offsetx, p->next->data.y + offsety);
 				}
 				p = p->next;
 			}
