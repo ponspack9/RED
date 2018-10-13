@@ -152,7 +152,7 @@ bool j1Map::Load(const char* file_name)
 			if (ret) data.map_layers.add(set);
 		}
 
-		//BEGIN TRIP POLYLINE -> TO IMPROVE
+		//BEGIN TRIP POLYLINE -> TO IMPROVE (cant make it work with a matrix of int[][] (see optimization branch)
 
 		pugi::xml_node objectgroup = map_doc.child("map").child("objectgroup");
 		LOG("OBJECTGROUP NAME: %s", objectgroup.attribute("name").as_string());
@@ -179,7 +179,7 @@ bool j1Map::Load(const char* file_name)
 						}
 						SDL_Rect r = { object.attribute("x").as_int() , object.attribute("y").as_int() ,
 									   object.attribute("width").as_int() ,object.attribute("height").as_int() };
-						App->collision->AddCollider(r, COLLIDER_PLAYER);
+						App->collision->AddCollider(r, COLLIDER_DEATH);
 						continue;
 					}
 					//ellipse
