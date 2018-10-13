@@ -58,11 +58,10 @@
   </map>
 
   <player>
-    <lvl1 x="50" y="50"/>
+    <lvl1 x="300" y="300"/>
     <lvl2 x="50" y="50"/>
     <rect width="64" height="64"/>
     <speed scrollspeed="3" jumpspeed="5"/>
-    <flags auxspeed="0"/>
   </player>
 
 </config>

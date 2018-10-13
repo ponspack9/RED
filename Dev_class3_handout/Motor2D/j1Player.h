@@ -31,22 +31,24 @@ public:
 
 	void Draw();
 	void Move();
-	void Jump();
 
 	bool Save(pugi::xml_node& node);
 	bool Load(pugi::xml_node& node);
 
+	void OnCollision(Collider* c1, Collider* c2);
+
+	void OnCollisionLine(Collider* c, int x1, int y1, int x2, int y2);
+
 public:
 
-	bool on_top=false;
-	bool on_floor=true;
-	bool dead = false;
+	bool on_top;
+	bool on_floor;
+	bool dead;
 	bool move_left;
 	bool move_right;
 	bool is_jumping;
 	
-	float aux_speed_y;
-	int aux_ypos;
+	int max_speed_y;
 
 	Collider* player_collider;
 

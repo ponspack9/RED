@@ -40,9 +40,6 @@ bool j1Player::Awake(pugi::xml_node & config)
 	//SCROLL AND JUMPSPEED (CONST)
 	data.speed.x = player_node.child("speed").attribute("scrollspeed").as_float();
 	data.speed.y = player_node.child("speed").attribute("jumpspeed").as_float();
-
-	//FLAG SPEED USED TO MOVE
-	aux_speed_y = player_node.child("flags").attribute("auxspeed").as_int();
 	
 	LOG("%d  %d", data.player_rect.h, data.player_rect.w);
 	LOG("%d  %d", data.speed.x, data.speed.y);
@@ -59,6 +56,8 @@ bool j1Player::Start()
 	//PLACING PLAYER RECT
 	data.player_rect.x = data.position.x;
 	data.player_rect.y = data.position.y;
+
+	max_speed_y = data.speed.y;
 
 	return true;
 }
@@ -78,129 +77,153 @@ void j1Player::Draw()
 
 }
 
+////////////////////////////////////////////////////////////////////////////////////////////
 void j1Player::Move()
 {
-	
-	if (App->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT)
-		move_right = true;
-	
-	if (App->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT)
-		move_left = true;		
-	
-	if (App->input->GetKey(SDL_SCANCODE_W) == KEY_REPEAT)
-	{
-		is_jumping = true;		
-	}
-	//if (App->input->GetKey(SDL_SCANCODE_S) == KEY_REPEAT)
-	//{
-	//	data.position.y += data.speed.y;
-	//}
+	move_left = false;
+	move_right = false;
+	is_jumping = false;
 
-	if (is_jumping && on_floor) 
-		Jump();
-	
-	if (move_right)
-	{
-		data.position.x += data.speed.x;
-		move_right = false;
-	}
-	
-	if (move_left)
-	{
-		data.position.x -= data.speed.x;
-		move_left = false;
-	}
-
-	if (!is_jumping && !on_floor)
-	{
-		on_top = true;
-		data.position.y += aux_speed_y;
-		aux_speed_y += 0.1;
-		if (aux_speed_y == data.speed.y)
-		{
-			data.position.y += aux_speed_y;
-		}
-	}
-
-	data.player_rect.x = data.position.x;
-	data.player_rect.y = data.position.y;
-}
-
-void j1Player::Jump()
-{	
 	on_top = false;
 	on_floor = false;
-	aux_speed_y = data.speed.y;
-	aux_ypos = data.position.y;
 	
-	if (is_jumping && !move_left && !move_right)
+	if (App->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT) 
 	{
-		data.position.y -= aux_speed_y;
-		aux_speed_y -= 0.1;
-		if (aux_speed_y == 0)
+		move_right = true;
+		move_left = false;
+
+		if (move_right)
 		{
-			on_top = true;
-			data.position.y += aux_speed_y;
-			aux_speed_y += 0.1;
-			if (aux_speed_y == data.speed.y)
-			{
-				data.position.y += aux_speed_y;
-			}
+			data.position.x += data.speed.x;
+			move_right = false;
+		}
+	}
+
+	
+	if (App->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT)
+	{
+		move_right = false;
+		move_left = true;
+
+		if (move_left)
+		{
+			data.position.x -= data.speed.x;
+			move_left = false;
+		}
+	}
+
+	if (App->input->GetKey(SDL_SCANCODE_S) == KEY_REPEAT)
+	{
+		if (!on_floor)
+		{
+			data.position.y += (data.speed.y + 2);
+			data.speed.y += 0.2;
+		}
+	}
+
+	if (App->input->GetKey(SDL_SCANCODE_W) == KEY_DOWN)
+	{
+		is_jumping = true;	
+		data.position.y -= data.speed.y;
+		data.speed.y -= 0.2;
+
+		if (data.speed.y <= 0)
+		{
+			data.position.y += data.speed.y;
+			data.speed.y += 0.2;
+		}
+		if(abs(data.speed.y) >= max_speed_y)
+		{
+			data.position.y += data.speed.y;
+		}
 		
-		}
-		
 	}
-	if (is_jumping && move_left && !move_right)
-	{
-		data.position.x -= data.speed.x;
-		data.position.y -= aux_speed_y;
-		aux_speed_y -= 0.1;
-		if (aux_speed_y == 0)
-		{
-			on_top = true;
-			data.position.y += aux_speed_y;
-			aux_speed_y += 0.1;
-			if (aux_speed_y == data.speed.y)
-			{
-				data.position.y += aux_speed_y;
-			}
+	
+	
+	data.player_rect.x = data.position.x;
+	data.player_rect.y = data.position.y;
 
-		}
-	}
-	if (is_jumping && !move_left && move_right)
-	{
-		data.position.x -= data.speed.x;
-		data.position.y -= aux_speed_y;
-		aux_speed_y -= 0.1;
-		if (aux_speed_y == 0)
-		{
-			on_top = true;
-			data.position.y += aux_speed_y;
-			aux_speed_y += 0.1;
-			if (aux_speed_y == data.speed.y)
-			{
-				data.position.y += aux_speed_y;
-			}
-
-		}
-	}
-	if (is_jumping && move_left && move_right)
-	{
-		data.position.y -= aux_speed_y;
-		aux_speed_y -= 0.1;
-		if (aux_speed_y == 0)
-		{
-			on_top = true;
-			data.position.y += aux_speed_y;
-			aux_speed_y += 0.1;
-		}
-		if (aux_speed_y == data.speed.y)
-		{
-			data.position.y += aux_speed_y;
-		}
-	}
-
+//	/if (is_jumping && !move_left && !move_right)
+//	/{
+//	/	data.position.y -= aux_speed_y;
+//	/	aux_speed_y -= 0.2;
+//	/	if (aux_speed_y == 0)
+//	/	{
+//	/		on_top = true;
+//	/		data.position.y += aux_speed_y;
+//	/		aux_speed_y += 0.2;
+//	/		if (aux_speed_y == data.speed.y)
+//	/		{
+//	/			data.position.y += aux_speed_y;
+//	/		}
+//  /
+//	/	}
+//  /
+//	/}
+//	/if (is_jumping && move_left && !move_right)
+//	/{
+//	/	data.position.x -= data.speed.x;
+//	/	data.position.y -= aux_speed_y;
+//	/	aux_speed_y -= 0.2;
+//	/	if (aux_speed_y == 0)
+//	/	{
+//	/		on_top = true;
+//	/		data.position.y += aux_speed_y;
+//	/		aux_speed_y += 0.1;
+//	/		if (aux_speed_y == data.speed.y)
+//	/		{
+//	/			data.position.y += aux_speed_y;
+//	/		}
+//  /
+//	/	}
+//	/}
+//	/if (is_jumping && !move_left && move_right)
+//	/{
+//	/	data.position.x -= data.speed.x;
+//	/	data.position.y -= aux_speed_y;
+//	/	aux_speed_y -= 0.1;
+//	/	if (aux_speed_y == 0)
+//	/	{
+//	/		on_top = true;
+//	/		data.position.y += aux_speed_y;
+//	/		aux_speed_y += 0.1;
+//	/		if (aux_speed_y == data.speed.y)
+//	/		{
+//	/			data.position.y += aux_speed_y;
+//	/		}
+//  /
+//	/	}
+//	/}
+//	/if (is_jumping && move_left && move_right)
+//	/{
+//	/	data.position.y -= aux_speed_y;
+//	/	aux_speed_y -= 0.1;
+//	/	if (aux_speed_y == 0)
+//	/	{
+//	/		on_top = true;
+//	/		data.position.y += aux_speed_y;
+//	/		aux_speed_y += 0.1;
+//	/	}
+//	/	if (aux_speed_y == data.speed.y)
+//	/	{
+//	/		data.position.y += aux_speed_y;
+//	/	}
+//  /
+//  /
+//	///if (!is_jumping && !on_floor)
+//	///{
+//	///	on_top = true;
+//	///	data.position.y += aux_speed_y;
+//	///	aux_speed_y += 0.1;
+//	///	if (aux_speed_y == data.speed.y)
+//	///	{
+//	///		data.position.y += aux_speed_y;
+//	///	}
+//	///}
+//  //
 }
+
+///////////////////////////////////////////////////////////////////////////////
 bool j1Player::Load(pugi::xml_node & node)
 {
 	LOG("Loading PLAYER");
@@ -227,6 +250,16 @@ bool j1Player::Save(pugi::xml_node & node)
 	LOG("playerX: %d - %d \n playerY: %d - %d", data.init_pos1.x, pl_node.attribute("x").as_int(), data.init_pos1.y, pl_node.attribute("y").as_int());
 
 	return true;
+}
+
+void j1Player::OnCollision(Collider * c1, Collider * c2)
+{
+
+}
+
+void j1Player::OnCollisionLine(Collider * c, int x1, int y1, int x2, int y2)
+{
+
 }
 
 
