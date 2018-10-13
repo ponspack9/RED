@@ -368,11 +368,6 @@ bool j1App::RestartGame()
 	App->map->current_map = App->map->maps_path.start;
 	App->fade->FadeToBlack(App->scene, App->scene);
 
-	App->player->data.position.x = App->player->data.init_pos1.x;
-	App->player->data.position.y = App->player->data.init_pos1.y;
-	App->render->camera.x = 0;
-	App->render->camera.y = 0;
-
 	return true;
 }
 
@@ -383,22 +378,12 @@ bool j1App::RestartLevel()
 		App->map->current_map->prev;
 		App->map->current_map->next;
 		App->fade->FadeToBlack(App->scene, App->scene);
-
-		App->player->data.position.x = App->player->data.init_pos1.x;
-		App->player->data.position.y = App->player->data.init_pos1.y;
-		App->render->camera.x = 0;
-		App->render->camera.y = 0;
 	}
 	if(App->map->current_map->next != NULL)
 	{
 		App->map->current_map->next;
 		App->map->current_map->prev;
 		App->fade->FadeToBlack(App->scene, App->scene);		
-
-		App->player->data.position.x = App->player->data.init_pos2.x;
-		App->player->data.position.y = App->player->data.init_pos2.y;
-		App->render->camera.x = 0;
-		App->render->camera.y = 0;
 	}
 
 	return true;

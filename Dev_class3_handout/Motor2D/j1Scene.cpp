@@ -9,6 +9,7 @@
 #include "j1Scene.h"
 #include "j1Collision.h"
 #include "j1Map.h"
+#include "j1Player.h"
 
 j1Scene::j1Scene() : j1Module()
 {
@@ -45,6 +46,21 @@ bool j1Scene::Start()
 	int real_h = App->map->data.height *32;
 	//App->map->MapToWorld(real_w,real_h);
 	App->collision->AddCollider(SDL_Rect({ real_w-32,real_h-32,32,32 }), COLLIDER_GROUND);
+
+	//need to be better
+	if (App->map->current_map->prev != NULL) 
+	{
+		App->player->data.position.x = App->player->data.init_pos2.x;
+		App->player->data.position.y = App->player->data.init_pos2.y;
+	}
+	if (App->map->current_map->next != NULL)
+	{
+		App->player->data.position.x = App->player->data.init_pos1.x;
+		App->player->data.position.y = App->player->data.init_pos1.y;
+	}
+
+	App->render->camera.x = 0;
+	App->render->camera.y = 0;
 
 	int a = 1;
 	return ret;
