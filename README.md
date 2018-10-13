@@ -19,7 +19,7 @@
     - [x] Tiles
     - [x] Background (Parallax)
     - [ ] Player positions (start,end)
-    - [ ] Colliders
+    - [x] Colliders
     
 - [ ] Level 2
     - [x] Tiles

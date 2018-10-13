@@ -12,8 +12,24 @@ j1Collision::j1Collision()
 		colliders[i] = nullptr;
 
 	matrix[COLLIDER_PLAYER][COLLIDER_PLAYER] = false;
-	matrix[COLLIDER_PLAYER][COLLIDER_GROUND] = true;
-	matrix[COLLIDER_PLAYER][COLLIDER_DEATH] = true;
+	matrix[COLLIDER_PLAYER][COLLIDER_FLOOR]	 = true;
+	matrix[COLLIDER_PLAYER][COLLIDER_WALL]   = true;
+	matrix[COLLIDER_PLAYER][COLLIDER_DEATH]  = true;
+
+	matrix[COLLIDER_FLOOR][COLLIDER_PLAYER]  = true;
+	matrix[COLLIDER_FLOOR][COLLIDER_FLOOR]   = false;
+	matrix[COLLIDER_FLOOR][COLLIDER_WALL]    = false;
+	matrix[COLLIDER_FLOOR][COLLIDER_DEATH]   = false;
+
+	matrix[COLLIDER_WALL][COLLIDER_PLAYER]   = true;
+	matrix[COLLIDER_WALL][COLLIDER_FLOOR]    = false;
+	matrix[COLLIDER_WALL][COLLIDER_WALL]     = false;
+	matrix[COLLIDER_WALL][COLLIDER_DEATH]    = false;
+
+	matrix[COLLIDER_DEATH][COLLIDER_PLAYER]  = true;
+	matrix[COLLIDER_DEATH][COLLIDER_FLOOR]   = false;
+	matrix[COLLIDER_DEATH][COLLIDER_WALL]    = false;
+	matrix[COLLIDER_DEATH][COLLIDER_DEATH]   = false;
 
 	name.create("collisions");
 }
@@ -92,7 +108,7 @@ bool j1Collision::PreUpdate()
 
 				if (c1->CheckRectLineCollision(p->data.x + offsetx, p->data.y + offsety,
 					p->next->data.x + offsetx, p->next->data.y + offsety)) {
-					LOG("COLLISION WITH LINE");
+					//LOG("COLLISION WITH LINE");
 				}
 				p = p->next;
 			}
@@ -136,8 +152,11 @@ void j1Collision::Draw()
 			case COLLIDER_PLAYER:
 				App->render->DrawQuad(colliders[i]->rect, 255, 0, 0, alpha);
 				break;
-			case COLLIDER_GROUND:
-				App->render->DrawQuad(colliders[i]->rect, 255, 255, 0, alpha);
+			case COLLIDER_FLOOR:
+				App->render->DrawQuad(colliders[i]->rect, 0, 255, 0, alpha);
+				break;
+			case COLLIDER_WALL:
+				App->render->DrawQuad(colliders[i]->rect, 0, 0, 255, alpha);
 				break;
 			case COLLIDER_DEATH:
 				App->render->DrawQuad(colliders[i]->rect, 255, 0, 255, alpha);

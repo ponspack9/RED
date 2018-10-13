@@ -185,11 +185,19 @@ bool j1Map::Load(const char* file_name)
 							SDL_Rect r = { object.attribute("x").as_int() , object.attribute("y").as_int() ,
 										   object.attribute("width").as_int() ,object.attribute("height").as_int() };
 							if (group_name == "Colliders") {
-								App->collision->AddCollider(r, COLLIDER_GROUND);
+								App->collision->AddCollider(r, COLLIDER_FLOOR);
 							}
-							else
+							else if (group_name == "Colliders_death")
 							{
 								App->collision->AddCollider(r, COLLIDER_DEATH);
+							}
+							else if (group_name == "Colliders_wall")
+							{
+								App->collision->AddCollider(r, COLLIDER_WALL);
+							}
+							else if (group_name == "Colliders_floor")
+							{
+								App->collision->AddCollider(r, COLLIDER_FLOOR);
 							}
 							continue;
 						}
