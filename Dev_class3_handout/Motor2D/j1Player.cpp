@@ -121,6 +121,9 @@ void j1Player::Move()
 			data.position.y += aux_speed_y;
 		}
 	}
+
+	data.player_rect.x = data.position.x;
+	data.player_rect.y = data.position.y;
 }
 
 void j1Player::Jump()
