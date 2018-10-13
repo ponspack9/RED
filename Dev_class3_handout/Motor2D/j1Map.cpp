@@ -199,6 +199,12 @@ bool j1Map::Load(const char* file_name)
 							{
 								App->collision->AddCollider(r, COLLIDER_FLOOR);
 							}
+							else if (group_name == "Collider_start") {
+								App->collision->AddCollider(r, COLLIDER_START);
+							}
+							else if (group_name == "Collider_end") {
+								App->collision->AddCollider(r, COLLIDER_END);
+							}
 							continue;
 						}
 						//ellipse

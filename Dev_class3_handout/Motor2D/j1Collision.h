@@ -16,6 +16,8 @@ enum COLLIDER_TYPE
 	COLLIDER_FLOOR,
 	COLLIDER_WALL,
 	COLLIDER_DEATH,
+	COLLIDER_START,
+	COLLIDER_END,
 
 	COLLIDER_MAX
 };
@@ -75,11 +77,11 @@ public:
 
 	p2List<PolyLine*>	polylines;
 	int n_lines = 0;
-	
+
 private:
 
 	Collider * colliders[MAX_COLLIDERS];
-	bool matrix[COLLIDER_MAX][COLLIDER_MAX];
+	bool matrix[COLLIDER_MAX][COLLIDER_MAX] = { false };
 };
 
 #endif // __j1COLLISION_H__

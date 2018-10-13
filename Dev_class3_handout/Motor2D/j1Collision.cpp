@@ -15,8 +15,10 @@ j1Collision::j1Collision()
 	matrix[COLLIDER_PLAYER][COLLIDER_FLOOR]	 = true;
 	matrix[COLLIDER_PLAYER][COLLIDER_WALL]   = true;
 	matrix[COLLIDER_PLAYER][COLLIDER_DEATH]  = true;
+	matrix[COLLIDER_PLAYER][COLLIDER_START]  = false;
+	matrix[COLLIDER_PLAYER][COLLIDER_END]    = true;
 
-	matrix[COLLIDER_FLOOR][COLLIDER_PLAYER]  = true;
+	/*matrix[COLLIDER_FLOOR][COLLIDER_PLAYER]  = true;
 	matrix[COLLIDER_FLOOR][COLLIDER_FLOOR]   = false;
 	matrix[COLLIDER_FLOOR][COLLIDER_WALL]    = false;
 	matrix[COLLIDER_FLOOR][COLLIDER_DEATH]   = false;
@@ -29,7 +31,7 @@ j1Collision::j1Collision()
 	matrix[COLLIDER_DEATH][COLLIDER_PLAYER]  = true;
 	matrix[COLLIDER_DEATH][COLLIDER_FLOOR]   = false;
 	matrix[COLLIDER_DEATH][COLLIDER_WALL]    = false;
-	matrix[COLLIDER_DEATH][COLLIDER_DEATH]   = false;
+	matrix[COLLIDER_DEATH][COLLIDER_DEATH]   = false;*/
 
 	name.create("collisions");
 }
@@ -161,7 +163,14 @@ void j1Collision::Draw()
 			case COLLIDER_DEATH:
 				App->render->DrawQuad(colliders[i]->rect, 255, 0, 255, alpha);
 				break;
+			case COLLIDER_START:
+				App->render->DrawQuad(colliders[i]->rect, 255, 255, 255, alpha);
+				break;
+			case COLLIDER_END:
+				App->render->DrawQuad(colliders[i]->rect, 0, 0, 0, alpha);
+				break;
 			}
+
 	}
 
 	p2List_item<PolyLine*>* line = polylines.start;
