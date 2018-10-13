@@ -118,8 +118,6 @@ private:
 	mutable bool		want_to_save;
 	bool				want_to_load;
 
-	//To not repeat it so many times
-	p2List_item<j1Module*>* item;
 };
 
 extern j1App* App;

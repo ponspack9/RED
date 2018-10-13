@@ -115,6 +115,8 @@ public:
 
 	p2SString DebugToString() const;
 
+	void CleanMap();
+
 private:
 
 	// Load map general properties

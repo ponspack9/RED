@@ -179,8 +179,9 @@ bool j1Collision::CleanUp()
 void j1Collision::CleanColliders()
 {
 	for (uint i = 0; i < MAX_COLLIDERS; ++i)
-		if (colliders[i] == nullptr)
-			colliders[i]->to_delete = true;
+		if (colliders[i] != nullptr) {
+			colliders[i] = nullptr;
+		}
 }
 
 void j1Collision::CleanPolylines()
@@ -191,7 +192,7 @@ void j1Collision::CleanPolylines()
 
 	while (line != NULL) {
 		line->data->points.clear();
-		//RELEASE(line->data);
+		RELEASE(line->data);
 		line = line->next;
 	}
 	polylines.clear();

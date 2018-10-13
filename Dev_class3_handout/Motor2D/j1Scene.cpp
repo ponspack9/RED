@@ -103,7 +103,7 @@ bool j1Scene::PostUpdate()
 bool j1Scene::CleanUp()
 {
 	LOG("Freeing scene");
-	App->map->CleanUp();
+	App->map->CleanMap();
 	return true;
 }
 

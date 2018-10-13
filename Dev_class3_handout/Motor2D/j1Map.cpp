@@ -539,13 +539,6 @@ bool j1Map::CleanUp()
 	data.image_layers.clear();
 	imagelayer->~p2List_item();
 
-	//Removes all colliders
-	if (App->collision->active) {
-		App->collision->CleanColliders();
-		App->collision->CleanPolylines();
-	}
-
-
 
 	map_doc.reset();
 	map_loaded = false;
@@ -623,4 +616,56 @@ p2SString j1Map::DebugToString() const
 		(data.tile_width > 0) ? abs(App->render->camera.x / data.tile_width): -5000);
 
 	return ret_string;
+}
+
+void j1Map::CleanMap()
+{
+	LOG("Unloading map");
+
+	// Remove all tilesets /////////////////
+	p2List_item<TileSet*>* tileset;
+	tileset = data.tilesets.start;
+
+	while (tileset != NULL)
+	{
+		App->tex->UnLoad(tileset->data->texture);
+		RELEASE(tileset->data);
+		tileset = tileset->next;
+	}
+	data.tilesets.clear();
+	tileset->~p2List_item();
+
+
+	// Remove all maplayers /////////////////
+	p2List_item<MapLayer*>* layer;
+	layer = data.map_layers.start;
+
+	while (layer != NULL)
+	{
+		RELEASE_ARRAY(layer->data->data);
+		RELEASE(layer->data);
+		layer = layer->next;
+	}
+	data.map_layers.clear();
+	layer->~p2List_item();
+
+
+	//Remove image layers /////////////////
+	p2List_item<ImageLayer*>* imagelayer;
+	imagelayer = data.image_layers.start;
+
+	while (imagelayer != NULL)
+	{
+		App->tex->UnLoad(imagelayer->data->texture);
+		RELEASE(imagelayer->data);
+		imagelayer = imagelayer->next;
+	}
+	data.image_layers.clear();
+	imagelayer->~p2List_item();
+
+	//Removes all colliders
+	if (App->collision->active) {
+		App->collision->CleanColliders();
+		App->collision->CleanPolylines();
+	}
 }
