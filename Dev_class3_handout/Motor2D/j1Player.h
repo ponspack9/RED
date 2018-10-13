@@ -3,18 +3,7 @@
 
 #include "SDL/include/SDL.h"
 #include "j1Module.h"
-
-struct Player
-{
-	fPoint position;
-	iPoint init_pos1;
-	iPoint init_pos2;
-
-	fPoint speed;
-	SDL_Rect player_rect;
-	bool godmode = false;
-};
-
+#include "j1Collision.h"
 
 class j1Player : public j1Module
 {
@@ -42,8 +31,10 @@ public:
 
 public:
 
+	bool have_collided;
 	bool on_top;
 	bool on_floor;
+	bool colliding_floor;
 	bool dead;
 	bool move_left;
 	bool move_right;
@@ -53,9 +44,18 @@ public:
 	float gravity;
 	float jumpspeed;
 
-	Collider* player_collider;
+	fPoint position;
+	iPoint init_pos1;
+	iPoint init_pos2;
 
-	Player data;
+	fPoint speed;
+	SDL_Rect player_rect;
+	bool godmode = false;
+
+	Collider* player_collider;
+	Collider* shade_collider;
+
+	COLLIDER_TYPE last_collision;
 };
 
 #endif 

@@ -3,6 +3,7 @@
 #include "j1App.h"
 #include "j1Window.h"
 #include "j1Render.h"
+#include "j1Player.h"
 #include "j1Map.h"
 
 #define VSYNC true
@@ -70,6 +71,7 @@ bool j1Render::PreUpdate()
 
 bool j1Render::Update(float dt)
 {
+	FollowPlayer();
 	return true;
 }
 
@@ -139,6 +141,11 @@ bool j1Render::MoveCamera(const int & vel_x, const int & vel_y)
 	}
 	
 	return false;
+}
+
+void j1Render::FollowPlayer()
+{
+	//if (App->player->)
 }
 
 void j1Render::SetViewPort(const SDL_Rect& rect)

@@ -45,6 +45,8 @@ public:
 
 	bool MoveCamera(const int & vel_x, const int &vel_y);
 
+	void FollowPlayer();
+
 
 public:
 

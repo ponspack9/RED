@@ -48,16 +48,16 @@ bool j1Scene::Start()
 	//App->collision->AddCollider(SDL_Rect({ real_w-32,real_h-32,32,32 }), COLLIDER_GROUND);
 
 	//need to be better
-	if (App->map->current_map->prev != NULL) 
+	/*if (App->map->current_map->prev != NULL) 
 	{
-		App->player->data.position.x = App->player->data.init_pos2.x;
-		App->player->data.position.y = App->player->data.init_pos2.y;
+		App->player->position.x = App->player->init_pos2.x;
+		App->player->position.y = App->player->init_pos2.y;
 	}
 	if (App->map->current_map->next != NULL)
-	{
-		App->player->data.position.x = App->player->data.init_pos1.x;
-		App->player->data.position.y = App->player->data.init_pos1.y;
-	}
+	{*/
+	App->player->position.x = App->map->start_collider->rect.x;
+	App->player->position.y = App->map->start_collider->rect.y;
+	//}
 
 	App->render->camera.x = 0;
 	App->render->camera.y = 0;

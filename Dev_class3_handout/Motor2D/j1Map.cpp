@@ -156,14 +156,13 @@ bool j1Map::Load(const char* file_name)
 
 		pugi::xml_node objectgroup = map_doc.child("map").child("objectgroup");
 		//LOG("OBJECTGROUP NAME: %s", objectgroup.attribute("name").as_string());
-		int a = 0;
+
 		for (objectgroup; objectgroup; objectgroup = objectgroup.next_sibling("objectgroup"))
 		{
 			p2SString group_name ( objectgroup.attribute("name").as_string());
 			//LOG("OBJECTGROUP NAME: %s", objectgroup.attribute("name").as_string());
 			pugi::xml_node object = objectgroup.child("object");
 			pugi::xml_node polyobject = object.child("polygon");
-			a++;
 			
 			for (object; object; object = object.next_sibling("object")) {
 				bool rotation = false;
@@ -200,10 +199,10 @@ bool j1Map::Load(const char* file_name)
 								App->collision->AddCollider(r, COLLIDER_FLOOR);
 							}
 							else if (group_name == "Collider_start") {
-								App->collision->AddCollider(r, COLLIDER_START);
+								start_collider = App->collision->AddCollider(r, COLLIDER_START);
 							}
 							else if (group_name == "Collider_end") {
-								App->collision->AddCollider(r, COLLIDER_END);
+								end_collider = App->collision->AddCollider(r, COLLIDER_END);
 							}
 							continue;
 						}
