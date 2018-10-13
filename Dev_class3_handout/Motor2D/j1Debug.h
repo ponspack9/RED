@@ -26,6 +26,9 @@ public:
 	bool start_motion;
 	bool show_colliders;
 
+	bool debug_bool = false;
+	Collider * debug_col;
+
 };
 
 #endif

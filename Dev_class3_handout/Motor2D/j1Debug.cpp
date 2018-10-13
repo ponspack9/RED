@@ -8,6 +8,7 @@
 #include "j1Collision.h"
 #include "j1Scene.h"
 #include "j1FadeToBlack.h"
+#include "j1Player.h"
 #include "j1Debug.h"
 
 
@@ -85,6 +86,25 @@ bool j1Debug::Update(float dt)
 		//FUCKING GOD MODE CUSI
 
 	}
+	//////////////// spawn a debug cvollider in mousepos
+	if (App->input->GetMouseButtonDown(SDL_BUTTON_RIGHT) == KEY_DOWN) {
+		LOG("RIGHT CLICK");
+		
+		if (!debug_col) {
+			int x, y;
+			App->input->GetMousePosition(x, y);
+			SDL_Rect r{ x,y,32,32 };
+			debug_col = App->collision->AddCollider(r, COLLIDER_PLAYER, App->player);
+			debug_bool = true;
+		}
+	}
+	if (debug_bool) {
+		int x, y;
+		App->input->GetMousePosition(x, y);
+		debug_col->SetPos(x, y);
+	}
+	/////////////////
+
 	//Magic
 	if (App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KEY_DOWN) {
 		LOG("CLICK");
