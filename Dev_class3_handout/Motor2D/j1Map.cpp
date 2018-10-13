@@ -152,6 +152,8 @@ bool j1Map::Load(const char* file_name)
 			if (ret) data.map_layers.add(set);
 		}
 
+		//BEGIN TRIP POLYLINE -> TO IMPROVE
+
 		pugi::xml_node objectgroup = map_doc.child("map").child("objectgroup");
 		LOG("OBJECTGROUP NAME: %s", objectgroup.attribute("name").as_string());
 
@@ -163,57 +165,58 @@ bool j1Map::Load(const char* file_name)
 			double alpha = 0;
 
 			polyobject = object.child("polyline");
+
 			if (polyobject == NULL) {
 				polyobject = object.child("polygon");
-				if (polyobject == NULL)	continue;
-				else {
-					// TO DELETE
-					rotation = true;
-					alpha = object.attribute("rotation").as_double();
+
+				if (polyobject == NULL) {
+					polyobject = object.child("ellipse");
+
+					if (polyobject == NULL) {
+						//ITS A QUAD
+						if (object.attribute("id").as_int() == 407) {
+							int a = 1;
+						}
+						SDL_Rect r = { object.attribute("x").as_int() , object.attribute("y").as_int() ,
+									   object.attribute("width").as_int() ,object.attribute("height").as_int() };
+						App->collision->AddCollider(r, COLLIDER_PLAYER);
+						continue;
+					}
+					//ellipse
+
 				}
 			}
 			PolyLine* p = new PolyLine();
 			iPoint start = { object.attribute("x").as_int(), object.attribute("y").as_int() };
 			p->start = start;
+			LOG("id: %d [ %d,%d ]",object.attribute("id").as_int(), start.x,start.y);
 
-			//polyobject = object.child("polygon");
 			p2SString s(polyobject.attribute("points").as_string());
 
 			
 			//Deal with the string to find each point
-			uint size = s.GetCapacity();
-			const char* c = s.GetString();
-			char* buffer = new char(); // Up to 6 digit number
+			const char* c = polyobject.attribute("points").as_string();
+			char* buffer = new char();
 
 			iPoint ret;
 			int j = 0;
-			for (uint i = 0; i < size; i++) {
+			for (uint i = 0; i <= strlen(c); i++) {
 				
 				char k = c[i];
-				if (c[i] == ',') {
-					// FUCKING EXCEPTION uint ret = s.SubString(i, till, substring);
+				if (k == ',') {
 					ret.x = atoi(buffer);
-					//reset buffer and j
+					//LOG("x: %d , ", ret.x);
 					while (j > 0) {
 						buffer[--j] = 0;
 					}
 				}
-				else if (c[i] == ' ') {
+				else if (k == ' ' || k == '\0') {
 					ret.y = atoi(buffer);
-					//reset buffer and j
+					//LOG("y: %d , ", ret.y);
 					while (j > 0) {
 						buffer[--j] = 0;
 					}
-					// Had finished parsing one point, time to add it
-					if (rotation) {
-						//ret.x = p->start.x * cos(alpha) - p->start.y * sin(alpha);
-						//ret.y = p->start.x * sin(alpha) + p->start.y * cos(alpha);
-						p->points.add(ret);
-					}
-					else {
-						p->points.add(ret);
-					}
-
+					p->points.add(ret);					// Had finished parsing one point, time to add it
 				}
 				else {
 					buffer[j++] = c[i];
@@ -222,7 +225,7 @@ bool j1Map::Load(const char* file_name)
 			App->collision->polylines.add(p);
 			App->collision->n_lines += 1;
 			
-					// END DEALING OBJECT NODE
+		// END DEALING OBJECT NODE
 		}
 	}
 	 map_loaded = ret;
@@ -535,6 +538,12 @@ bool j1Map::CleanUp()
 	}
 	data.image_layers.clear();
 	imagelayer->~p2List_item();
+
+	//Removes all colliders
+	App->collision->CleanColliders();
+	App->collision->CleanPolylines();
+
+
 
 	map_doc.reset();
 	map_loaded = false;

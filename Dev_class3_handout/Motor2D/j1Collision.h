@@ -1,7 +1,7 @@
 #ifndef __j1COLLISION_H__
 #define __j1COLLISION_H__
 
-#define MAX_COLLIDERS 50
+#define MAX_COLLIDERS 150
 #include "SDL/include/SDL.h"
 #include "j1Module.h"
 #include "p2Point.h"
@@ -64,6 +64,9 @@ public:
 	bool Start();
 	bool Update(float dt);
 	bool CleanUp();
+
+	void CleanColliders();
+	void CleanPolylines();
 
 	Collider* AddCollider(SDL_Rect rect, COLLIDER_TYPE type, j1Module* callback = nullptr);
 	void Draw();

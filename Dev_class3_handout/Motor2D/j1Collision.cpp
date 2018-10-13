@@ -120,8 +120,6 @@ void j1Collision::Draw()
 		p2List_item<iPoint>* p = line->data->points.start;
 		int offsetx = line->data->start.x + App->render->camera.x;
 		int offsety = line->data->start.y + App->render->camera.y;
-		SDL_RenderDrawLine(App->render->renderer, p->data.x + offsetx, p->data.y + offsety,
-					p->next->data.x + offsetx, p->next->data.y + offsety);
 
 		for (int i=0;i<line->data->points.count()-1;i++){
 
@@ -132,7 +130,7 @@ void j1Collision::Draw()
 		}
 		SDL_RenderDrawLine(App->render->renderer, p->data.x + offsetx, p->data.y + offsety,
 			line->data->points.start->data.x + offsetx, line->data->points.start->data.y + offsety);
-
+		int a = 1;
 	}
 }
 
@@ -141,12 +139,34 @@ bool j1Collision::CleanUp()
 {
 	LOG("Freeing all colliders");
 
+	CleanColliders();
+
+	CleanPolylines();
+
+	return true;
+}
+
+void j1Collision::CleanColliders()
+{
 	for (uint i = 0; i < MAX_COLLIDERS; ++i)
 	{
 		RELEASE(colliders[i]);
 	}
+}
 
-	return true;
+void j1Collision::CleanPolylines()
+{
+	//Remove all lines
+	p2List_item<PolyLine*>* line;
+	line = polylines.start;
+
+	while (line != NULL) {
+		line->data->points.clear();
+		RELEASE(line->data);
+		line = line->next;
+	}
+	polylines.clear();
+	line->~p2List_item();
 }
 
 Collider* j1Collision::AddCollider(SDL_Rect rect, COLLIDER_TYPE type, j1Module* callback)
