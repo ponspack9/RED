@@ -20,7 +20,7 @@ j1Player::~j1Player()
 
 bool j1Player::Awake(pugi::xml_node & config)
 {
-	player_node = config.child("player");
+	pugi::xml_node player_node = config;
 
 	//LVL 1 INITIAL POSITION
 	data.init_pos1.x = player_node.child("lvl1").attribute("x").as_float();
@@ -100,10 +100,16 @@ void j1Player::Move()
 		Jump();
 	
 	if (move_right)
+	{
 		data.position.x += data.speed.x;
+		move_right = false;
+	}
 	
 	if (move_left)
+	{
 		data.position.x -= data.speed.x;
+		move_left = false;
+	}
 
 	if (!is_jumping && !on_floor)
 	{
