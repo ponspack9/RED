@@ -92,8 +92,9 @@ void j1Player::Draw()
 void j1Player::Move()
 {
 	if (!have_collided && on_floor) on_floor = false;
-	float dx = 0;
-	float dy = 0;
+	if (!have_collided && on_wall) on_wall = false;
+	dx = 0;
+	dy = 0;
 	
 	if (App->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT) 
 	{
@@ -140,6 +141,8 @@ void j1Player::Move()
 	player_rect.y = position.y;
 
 	player_collider->SetPos(position.x, position.y);
+
+	App->render->MoveCamera(-dx, -dy);
 	//shade_collider->SetPos(position.x, position.y+ player_collider->rect.h);
 
 	have_collided = false;
@@ -235,7 +238,7 @@ bool j1Player::Jump()
 		return true;
 	}
 	else {
-		position.y -= jumpspeed;
+		dy -= jumpspeed;
 		jumpspeed -= 0.2;
 
 	}
@@ -280,7 +283,8 @@ void j1Player::OnCollision(Collider * c1, Collider * c2)
 	}
 	if (c1->type == COLLIDER_PLAYER && c2->type == COLLIDER_WALL) {
 
-		can_keep_moving = false;
+		on_wall = true;
+		//owall = false;
 	}
 
 

@@ -85,13 +85,13 @@ bool j1Collision::PreUpdate()
 			{
 				if (matrix[c1->type][c2->type] && c1->callback) {
 					
-					//LOG("COLLIDED first if");
+					LOG("COLLIDED first if");
 					c1->callback->OnCollision(c1, c2);
 				}
 
 				if (matrix[c2->type][c1->type] && c2->callback) {
 
-					//LOG("COLLIDED second if");
+					LOG("COLLIDED second if");
 					c2->callback->OnCollision(c2, c1);
 				}	
 			}
@@ -248,12 +248,42 @@ Collider* j1Collision::AddCollider(SDL_Rect rect, COLLIDER_TYPE type, j1Module* 
 
 bool Collider::CheckCollision(const SDL_Rect& r) const
 {
-
+	//return CheckLineLine(rect.x, rect.y + rect.h, rect.x + rect.w, rect.y + rect.h, r.x, r.y+r.h, r.w+r.x, r.h+r.y);
 	if ((r.x > rect.x + rect.w) || (r.y > rect.y + rect.h)) { return false; }
 
 	if ((rect.x > r.x + r.w) || (rect.y > r.y + r.h)) { return false; }
+	//float w = (rect.x + rect.w + r.w+r.x)/2;
+	//float h = (rect.h + rect.y + r.y+r.h)/2;
+	//float dx = ((rect.w + rect.x) / 2) - ((r.w+r.x) / 2); //center of rect
+	//float dy = ((rect.h + rect.y) / 2) - ((r.h+r.y) / 2); //center of rect
+	//
+	//if (abs(dx) <= w && abs(dy) <= h) {
+	//	//Collision
+	//	/*float wy = ;
+	//	float hx = h * dx;*/
+	//	float wy = w * dy;
+	//	float hx = h * dx;
 
-	return true;
+	//	if (wy < hx)
+	//		if (wy > -hx) {
+	//			return true;
+	//			/* collision at the top */
+	//		}
+	//		else {
+	//			/* on the left */
+	//		}
+	//	else if (wy < -hx) {
+	//			/* on the right */
+	//	}
+	//	else {
+	//			/* at the bottom */
+	//		
+	//	}
+	//}
+	//return false;
+	///*return rect.y + rect.h > r.y && rect.y + rect.h < r.y + r.h
+	//	&& rect.x+rect.w >r.x && rect.x+rect.w < r.x+r.w;
+	//return true;*/
 }
 
 bool Collider::CheckRectLineCollision(int x1, int y1, int x2, int y2) const

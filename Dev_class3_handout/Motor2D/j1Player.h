@@ -34,12 +34,14 @@ public:
 	bool have_collided;
 	bool on_top;
 	bool on_floor;
+	bool on_wall;
 	bool colliding_floor;
 	bool dead;
 	bool move_left;
 	bool move_right;
 	bool is_jumping;
-	
+	float dx = 0;
+	float dy = 0;
 	int max_speed_y;
 	float gravity;
 	float jumpspeed;

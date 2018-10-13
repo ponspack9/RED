@@ -145,7 +145,7 @@ bool j1Render::MoveCamera(const int & vel_x, const int & vel_y)
 
 void j1Render::FollowPlayer()
 {
-	//if (App->player->)
+	
 }
 
 void j1Render::SetViewPort(const SDL_Rect& rect)
