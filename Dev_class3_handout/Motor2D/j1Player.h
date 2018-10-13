@@ -31,6 +31,7 @@ public:
 
 	void Draw();
 	void Move();
+	bool Jump();
 
 	bool Save(pugi::xml_node& node);
 	bool Load(pugi::xml_node& node);
@@ -49,6 +50,8 @@ public:
 	bool is_jumping;
 	
 	int max_speed_y;
+	float gravity;
+	float jumpspeed;
 
 	Collider* player_collider;
 

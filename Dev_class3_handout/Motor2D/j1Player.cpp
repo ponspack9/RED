@@ -40,6 +40,8 @@ bool j1Player::Awake(pugi::xml_node & config)
 	//SCROLL AND JUMPSPEED (CONST)
 	data.speed.x = player_node.child("speed").attribute("scrollspeed").as_float();
 	data.speed.y = player_node.child("speed").attribute("jumpspeed").as_float();
+
+	gravity = player_node.child("gravity").attribute("grav").as_float();
 	
 	LOG("%d  %d", data.player_rect.h, data.player_rect.w);
 	LOG("%d  %d", data.speed.x, data.speed.y);
@@ -80,12 +82,6 @@ void j1Player::Draw()
 ////////////////////////////////////////////////////////////////////////////////////////////
 void j1Player::Move()
 {
-	move_left = false;
-	move_right = false;
-	is_jumping = false;
-
-	on_top = false;
-	on_floor = false;
 	
 	if (App->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT) 
 	{
@@ -117,31 +113,33 @@ void j1Player::Move()
 		if (!on_floor)
 		{
 			data.position.y += (data.speed.y + 2);
-			data.speed.y += 0.2;
+			data.speed.y += gravity;
 		}
 	}
 
 	if (App->input->GetKey(SDL_SCANCODE_W) == KEY_DOWN)
 	{
-		is_jumping = true;	
-		data.position.y -= data.speed.y;
-		data.speed.y -= 0.2;
-
-		if (data.speed.y <= 0)
-		{
-			data.position.y += data.speed.y;
-			data.speed.y += 0.2;
-		}
-		if(abs(data.speed.y) >= max_speed_y)
-		{
-			data.position.y += data.speed.y;
-		}
-		
+		Jump();
 	}
 	
+	if (!is_jumping && !on_floor)
+	{
+		if (abs(data.speed.y + gravity) <= max_speed_y)
+		{		
+			data.speed.y += gravity;
+		}
+		data.position.y += data.speed.y;
+	}
+
+	if (is_jumping)
+	{
+		is_jumping = Jump();
+	}
 	
 	data.player_rect.x = data.position.x;
 	data.player_rect.y = data.position.y;
+
+	player_collider->SetPos(data.position.x, data.position.y);
 
 //	/if (is_jumping && !move_left && !move_right)
 //	/{
@@ -223,7 +221,22 @@ void j1Player::Move()
 //  //
 }
 
-///////////////////////////////////////////////////////////////////////////////
+bool j1Player::Jump()
+{
+	if (!is_jumping)
+	{
+		is_jumping = true;
+		jumpspeed = 5;
+		on_floor = false;
+		return true;
+	}
+
+	data.position.y -= jumpspeed;
+	jumpspeed -= gravity;
+
+	return (jumpspeed<=0);
+}
+
 bool j1Player::Load(pugi::xml_node & node)
 {
 	LOG("Loading PLAYER");
@@ -254,6 +267,8 @@ bool j1Player::Save(pugi::xml_node & node)
 
 void j1Player::OnCollision(Collider * c1, Collider * c2)
 {
+	if (c1->type == COLLIDER_PLAYER && c2->type == COLLIDER_FLOOR)
+		on_floor = true;
 
 }
 
