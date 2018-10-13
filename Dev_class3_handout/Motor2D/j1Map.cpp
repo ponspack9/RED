@@ -155,78 +155,91 @@ bool j1Map::Load(const char* file_name)
 		//BEGIN TRIP POLYLINE -> TO IMPROVE (cant make it work with a matrix of int[][] (see optimization branch)
 
 		pugi::xml_node objectgroup = map_doc.child("map").child("objectgroup");
-		LOG("OBJECTGROUP NAME: %s", objectgroup.attribute("name").as_string());
+		//LOG("OBJECTGROUP NAME: %s", objectgroup.attribute("name").as_string());
+		int a = 0;
+		for (objectgroup; objectgroup; objectgroup = objectgroup.next_sibling("objectgroup"))
+		{
+			p2SString group_name ( objectgroup.attribute("name").as_string());
+			//LOG("OBJECTGROUP NAME: %s", objectgroup.attribute("name").as_string());
+			pugi::xml_node object = objectgroup.child("object");
+			pugi::xml_node polyobject = object.child("polygon");
+			a++;
+			
+			for (object; object; object = object.next_sibling("object")) {
+				bool rotation = false;
+				double alpha = 0;
 
-		pugi::xml_node object = objectgroup.child("object");
-		pugi::xml_node polyobject = object.child("polygon");
-
-		for (object; object; object = object.next_sibling("object")) {
-			bool rotation = false;
-			double alpha = 0;
-
-			polyobject = object.child("polyline");
-
-			if (polyobject == NULL) {
-				polyobject = object.child("polygon");
+				polyobject = object.child("polyline");
 
 				if (polyobject == NULL) {
-					polyobject = object.child("ellipse");
+					polyobject = object.child("polygon");
 
 					if (polyobject == NULL) {
-						//ITS A QUAD
-						if (object.attribute("id").as_int() == 407) {
-							int a = 1;
+						polyobject = object.child("ellipse");
+
+						if (polyobject == NULL) {
+							//ITS A QUAD
+							if (object.attribute("id").as_int() == 407) {
+								int a = 1;
+							}
+							SDL_Rect r = { object.attribute("x").as_int() , object.attribute("y").as_int() ,
+										   object.attribute("width").as_int() ,object.attribute("height").as_int() };
+							if (group_name == "Colliders") {
+								App->collision->AddCollider(r, COLLIDER_GROUND);
+							}
+							else
+							{
+								App->collision->AddCollider(r, COLLIDER_DEATH);
+							}
+							continue;
 						}
-						SDL_Rect r = { object.attribute("x").as_int() , object.attribute("y").as_int() ,
-									   object.attribute("width").as_int() ,object.attribute("height").as_int() };
-						App->collision->AddCollider(r, COLLIDER_DEATH);
-						continue;
-					}
-					//ellipse
+						//ellipse
 
+					}
 				}
+				PolyLine* p = new PolyLine();
+				iPoint start = { object.attribute("x").as_int(), object.attribute("y").as_int() };
+				p->start = start;
+				//LOG("id: %d [ %d,%d ]", object.attribute("id").as_int(), start.x, start.y);
+
+				p2SString s(polyobject.attribute("points").as_string());
+
+
+				//Deal with the string to find each point
+				const char* c = polyobject.attribute("points").as_string();
+				char* buffer = new char();
+
+				iPoint ret;
+				int j = 0;
+				for (uint i = 0; i <= strlen(c); i++) {
+
+					char k = c[i];
+					if (k == ',') {
+						ret.x = atoi(buffer);
+						//LOG("x: %d , ", ret.x);
+						while (j > 0) {
+							buffer[--j] = 0;
+						}
+					}
+					else if (k == ' ' || k == '\0') {
+						ret.y = atoi(buffer);
+						//LOG("y: %d , ", ret.y);
+						while (j > 0) {
+							buffer[--j] = 0;
+						}
+						p->points.add(ret);					// Had finished parsing one point, time to add it
+					}
+					else {
+						buffer[j++] = c[i];
+					}
+				}
+				App->collision->polylines.add(p);
+				App->collision->n_lines += 1;
+
+				// END DEALING OBJECT NODE
 			}
-			PolyLine* p = new PolyLine();
-			iPoint start = { object.attribute("x").as_int(), object.attribute("y").as_int() };
-			p->start = start;
-			LOG("id: %d [ %d,%d ]",object.attribute("id").as_int(), start.x,start.y);
-
-			p2SString s(polyobject.attribute("points").as_string());
-
-			
-			//Deal with the string to find each point
-			const char* c = polyobject.attribute("points").as_string();
-			char* buffer = new char();
-
-			iPoint ret;
-			int j = 0;
-			for (uint i = 0; i <= strlen(c); i++) {
-				
-				char k = c[i];
-				if (k == ',') {
-					ret.x = atoi(buffer);
-					//LOG("x: %d , ", ret.x);
-					while (j > 0) {
-						buffer[--j] = 0;
-					}
-				}
-				else if (k == ' ' || k == '\0') {
-					ret.y = atoi(buffer);
-					//LOG("y: %d , ", ret.y);
-					while (j > 0) {
-						buffer[--j] = 0;
-					}
-					p->points.add(ret);					// Had finished parsing one point, time to add it
-				}
-				else {
-					buffer[j++] = c[i];
-				}
-			}
-			App->collision->polylines.add(p);
-			App->collision->n_lines += 1;
-			
-		// END DEALING OBJECT NODE
 		}
+		//LOG("AAAAAAAAAAAAAAAAAA: %d", a);
 	}
 	 map_loaded = ret;
 
