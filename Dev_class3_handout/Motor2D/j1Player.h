@@ -35,11 +35,12 @@ public:
 	SDL_Texture* graphics = nullptr;
 	Animation* current_animation = nullptr;
 	Animation idle;
-	Animation walk;		//TODO
-	Animation jump;		//TODO
+	Animation walk;		
+	Animation jump;		
+	float def_anim_speed;
 
 	bool have_collided;
-	bool on_top;
+	bool level_finished;
 	bool on_floor;
 	bool on_wall;
 	bool colliding_floor;

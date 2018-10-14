@@ -34,24 +34,19 @@ bool j1Player::Awake(pugi::xml_node & config)
 	
 	//PL. COLLIDER
 	player_collider = App->collision->AddCollider(player_rect, COLLIDER_PLAYER, this);
-	//SDL_Rect shade = { player_collider->rect.x,player_collider->rect.y,
-						//player_collider->rect.w, 5 };
-	//shade_collider  = App->collision->AddCollider(shade,COLLIDER_PLAYER, this);
 
 	//SCROLL AND JUMPSPEED (CONST)
 	speed.x = player_node.child("speed").attribute("scrollspeed").as_float();
 	speed.y = player_node.child("speed").attribute("jumpspeed").as_float();
+	def_anim_speed = player_node.child("speed").attribute("defaultAnimationSpeed").as_float();
 
 	gravity = player_node.child("gravity").attribute("value").as_float();
 
-	texture_path = (player_node.child("TextureAtlas").attribute("imagePath").as_string());
-	LOG("texturepath: %s", texture_path.GetString());
-
-	
+	// Parsing animations ----------------
 	pugi::xml_node textureAtlas = player_node.child("TextureAtlas");
+	texture_path = (textureAtlas.attribute("imagePath").as_string());
 	SDL_Rect r;
-	float animSpeed = 0.1;
-	
+	float node_speed = -1;
 	// IDLE
 	pugi::xml_node n = textureAtlas.child("idle");
 	for (n; n; n = n.next_sibling("idle")) {
@@ -61,12 +56,33 @@ bool j1Player::Awake(pugi::xml_node & config)
 		r.h = n.attribute("height").as_int();
 		idle.PushBack(r);
 	}
-	animSpeed = n.attribute("speed").as_float();
-	idle.speed = (animSpeed <= 0) ? 0.05 : animSpeed;
+	node_speed = n.attribute("speed").as_float();
+	idle.speed = (node_speed <= 0) ? def_anim_speed : node_speed;
 
 	// WALK
+	n = textureAtlas.child("walk");
+	for (n; n; n = n.next_sibling("walk")) {
+		r.x = n.attribute("x").as_int();
+		r.y = n.attribute("y").as_int();
+		r.w = n.attribute("width").as_int();
+		r.h = n.attribute("height").as_int();
+		walk.PushBack(r);
+	}
+	node_speed = n.attribute("speed").as_float();
+	walk.speed = (node_speed <= 0) ? def_anim_speed : node_speed;
 
 	// JUMP
+	n = textureAtlas.child("jump");
+	for (n; n; n = n.next_sibling("jump")) {
+		r.x = n.attribute("x").as_int();
+		r.y = n.attribute("y").as_int();
+		r.w = n.attribute("width").as_int();
+		r.h = n.attribute("height").as_int();
+		jump.PushBack(r);
+	}
+	node_speed = n.attribute("speed").as_float();
+	jump.speed = (node_speed <= 0) ? def_anim_speed : node_speed;
+	// End parsing animations -----------------
 
 	//LOG("%d  %d", player_rect.h, player_rect.w);
 	LOG("%d  %d", speed.x, speed.y);
@@ -83,13 +99,12 @@ bool j1Player::Start()
 	position.y = App->map->start_collider->rect.y;
 
 	current_animation = &idle;
-	//PLACING PLAYER RECT
-	/*player_rect.x = position.x;
-	player_rect.y = position.y;*/
 
 	max_speed_y = speed.y;
+	level_finished = false;
 	on_floor = false;
 	is_jumping = false;
+
 	r = 255;
 	g = 0;
 	b = 0;
@@ -111,6 +126,7 @@ bool j1Player::Update(float dt)
 bool j1Player::CleanUp()
 {
 	App->tex->UnLoad(graphics);
+	//player_collider->to_delete = true;
 	return true;
 }
 
@@ -293,7 +309,9 @@ void j1Player::OnCollision(Collider * c1, Collider * c2)
 		on_wall = true;
 		//owall = false;
 	}
-
+	if (c1->type == COLLIDER_PLAYER && c2->type == COLLIDER_END && !level_finished) {
+		level_finished = true;
+	}
 
 }
 

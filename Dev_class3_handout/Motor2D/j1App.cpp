@@ -306,7 +306,7 @@ bool j1App::CleanUp()
 	{
 		LOG("Cleaning... %s", item->data->name.GetString());
 		ret = item->data->CleanUp();
-		RELEASE(item->data);
+		//RELEASE(item->data);
 		item = item->prev;
 
 	}
@@ -377,6 +377,16 @@ bool j1App::RestartLevel()
 {
 	App->fade->FadeToBlack(App->scene, App->scene);
 	return true;
+}
+
+bool j1App::NextLevel() {
+	if (App->map->current_map->next != NULL)
+		App->map->current_map = App->map->current_map->next;
+	else
+		App->map->current_map = App->map->maps_path.start;
+
+	LOG("Next level: %s", App->map->current_map->data.GetString());
+	return App->fade->FadeToBlack(App->scene, App->scene);
 }
 
 

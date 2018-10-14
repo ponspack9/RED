@@ -63,6 +63,8 @@ public:
 	//Restarts the current level
 	bool RestartLevel();
 
+	bool NextLevel();
+
 private:
 
 	// Call modules before each loop iteration

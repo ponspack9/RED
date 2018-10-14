@@ -222,7 +222,7 @@ void j1Collision::CleanPolylines()
 
 	while (line != NULL) {
 		line->data->points.clear();
-		RELEASE(line->data);
+		//RELEASE(line->data);
 		line = line->next;
 	}
 	polylines.clear();

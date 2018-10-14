@@ -98,7 +98,7 @@ bool j1Audio::CleanUp()
 	p2List_item<Mix_Chunk*>* item;
 	for (item = fx.start; item != NULL; item = item->next) {
 		Mix_FreeChunk(item->data);
-		RELEASE(item->data);
+		//RELEASE(item->data);
 	}
 
 	item->~p2List_item();
@@ -184,7 +184,7 @@ unsigned int j1Audio::LoadFx(const char* path)
 		fx.add(chunk);
 		ret = fx.count();
 	}
-	RELEASE(chunk);
+	//RELEASE(chunk);
 	return ret;
 }
 

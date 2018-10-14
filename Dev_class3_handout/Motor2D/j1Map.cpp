@@ -531,7 +531,7 @@ bool j1Map::CleanUp()
 	while(tileset != NULL)
 	{
 		App->tex->UnLoad(tileset->data->texture);
-		RELEASE(tileset->data);
+		//RELEASE(tileset->data);
 		tileset = tileset->next;
 	}
 	data.tilesets.clear();
@@ -545,7 +545,7 @@ bool j1Map::CleanUp()
 	while (layer != NULL)
 	{
 		RELEASE_ARRAY(layer->data->data);
-		RELEASE(layer->data);
+		//RELEASE(layer->data);
 		layer = layer->next;
 	}
 	data.map_layers.clear();
@@ -559,7 +559,7 @@ bool j1Map::CleanUp()
 	while (imagelayer != NULL)
 	{
 		App->tex->UnLoad(imagelayer->data->texture);
-		RELEASE(imagelayer->data);
+		//RELEASE(imagelayer->data);
 		imagelayer = imagelayer->next;
 	}
 	data.image_layers.clear();
@@ -655,7 +655,7 @@ void j1Map::CleanMap()
 	while (tileset != NULL)
 	{
 		App->tex->UnLoad(tileset->data->texture);
-		RELEASE(tileset->data);
+		//RELEASE(tileset->data);
 		tileset = tileset->next;
 	}
 	data.tilesets.clear();
@@ -669,7 +669,7 @@ void j1Map::CleanMap()
 	while (layer != NULL)
 	{
 		RELEASE_ARRAY(layer->data->data);
-		RELEASE(layer->data);
+		//RELEASE(layer->data);
 		layer = layer->next;
 	}
 	data.map_layers.clear();
@@ -683,7 +683,7 @@ void j1Map::CleanMap()
 	while (imagelayer != NULL)
 	{
 		App->tex->UnLoad(imagelayer->data->texture);
-		RELEASE(imagelayer->data);
+		//RELEASE(imagelayer->data);
 		imagelayer = imagelayer->next;
 	}
 	data.image_layers.clear();

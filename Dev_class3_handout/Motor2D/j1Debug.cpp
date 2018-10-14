@@ -56,13 +56,7 @@ bool j1Debug::Update(float dt)
 	// Next level
 	if (App->input->GetKey(SDL_SCANCODE_F3) == KEY_DOWN)
 	{
-		if (App->map->current_map->next != NULL)
-			App->map->current_map = App->map->current_map->next;
-		else
-			App->map->current_map = App->map->maps_path.start;
-
-		LOG("Next level: %s", App->map->current_map->data.GetString());
-		App->fade->FadeToBlack(App->scene, App->scene);
+		App->NextLevel();
 	}
 
 	if (App->input->GetKey(SDL_SCANCODE_F5) == KEY_DOWN)

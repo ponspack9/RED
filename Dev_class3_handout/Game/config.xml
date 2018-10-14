@@ -60,7 +60,7 @@
   <player>
     <lvl1 x="300" y="300"/>
     <rect width="64" height="64"/>
-    <speed scrollspeed="3" jumpspeed="5"/>
+    <speed scrollspeed="3" jumpspeed="5" defaultAnimationSpeed="0.05"/>
     <gravity value="2"/>
     <TextureAtlas imagePath="textures/player/sprites.png">
       <SubTexture height="38" width="64" y="0" x="0"      name="player_01"/>
