@@ -60,6 +60,9 @@ bool j1Player::Awake(pugi::xml_node & config)
 	node_speed = n.attribute("speed").as_float();
 	idle.speed = (node_speed <= 0) ? def_anim_speed : node_speed;
 
+	player_rect.w = idle.GetCurrentFrame().w;
+	player_rect.h = idle.GetCurrentFrame().h;
+
 	// WALK
 	n = textureAtlas.child("walk");
 	for (n; n; n = n.next_sibling("walk"))
@@ -187,6 +190,18 @@ void j1Player::Draw()
 
 }
 
+bool j1Player::MovePlayer(float vel_x, float vel_y)
+{
+	if (position.x + vel_x > 0) {
+		position.x += dx;
+		player_rect.x = position.x;
+	}
+	position.y += dy;
+	player_rect.y = position.y;
+
+	return false;
+}
+
 
 void j1Player::Move()
 {
@@ -236,7 +251,7 @@ void j1Player::Move()
 	if (App->input->GetKey(SDL_SCANCODE_W) == KEY_DOWN && on_floor)
 	{
 		Jump();
-		LOG("JUMP");
+		//LOG("JUMP");
 	}
 
 	if (is_jumping)
@@ -254,7 +269,7 @@ void j1Player::Move()
 		//Moving left
 		if (dx < 0) {
 			left = (position.x <= wall->rect.x + wall->rect.w) && wall->type != COLLIDER_FLOOR;
-			LOG("LEEEEEEEEEEEEEEEEEEEEEEEFT");
+			//LOG("LEEEEEEEEEEEEEEEEEEEEEEEFT");
 
 
 
@@ -266,9 +281,8 @@ void j1Player::Move()
 		//Moving right
 		else if (dx > 0) {
 			right = (position.x + player_collider->rect.w >= wall->rect.x) && wall->type != COLLIDER_FLOOR;
-			LOG("RIIIIIIIIIIIGHT");
+			//LOG("RIIIIIIIIIIIGHT");
 		}
-
 
 		//Moving up
 		if (dy < 0) {
@@ -281,12 +295,12 @@ void j1Player::Move()
 	}
 
 	//Actually moving
-	position.x += dx;
-	position.y += dy;
+	//position.x += dx;
+	//position.y += dy;
 
-	//MovePlayer(-dx, -dy);
+	MovePlayer(dx, dy);
 
-	player_rect.x = position.x;
+	//player_rect.x = position.x;
 	player_rect.y = position.y;
 
 	have_collided = false;
@@ -297,13 +311,13 @@ bool j1Player::Jump()
 	if (!is_jumping)
 	{
 		is_jumping = true;
-		jumpspeed = 20;
+		jumpspeed = 15;
 		on_floor = false;
 		return true;
 	}
 	else {
 		dy -= jumpspeed;
-		jumpspeed -= gravity;
+		jumpspeed -= gravity/2;
 
 	}
 	return (jumpspeed >= 0);
