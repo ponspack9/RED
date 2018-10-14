@@ -15,7 +15,7 @@
  <imagelayer id="2" name="bg_buildings">
   <image source="bgLvl1_buildings.png" width="3200" height="1280"/>
   <properties>
-   <property name="parallax_speed" type="float" value="1"/>
+   <property name="parallax_speed" type="float" value="0.8"/>
   </properties>
  </imagelayer>
  <layer id="3" name="Platforms" width="100" height="40">
