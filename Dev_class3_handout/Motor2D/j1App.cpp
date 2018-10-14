@@ -304,9 +304,11 @@ bool j1App::CleanUp()
 	
 	while(item != NULL && ret)
 	{
+		LOG("Cleaning... %s", item->data->name.GetString());
 		ret = item->data->CleanUp();
 		RELEASE(item->data);
 		item = item->prev;
+
 	}
 
 	return ret;

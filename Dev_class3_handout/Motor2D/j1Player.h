@@ -4,6 +4,7 @@
 #include "SDL/include/SDL.h"
 #include "j1Module.h"
 #include "j1Collision.h"
+#include "Animation.h"
 
 class j1Player : public j1Module
 {
@@ -16,7 +17,7 @@ public:
 	bool Awake(pugi::xml_node& config);
 	bool Start();
 	bool Update(float dt);
-	//bool CleanUp();
+	bool CleanUp();
 
 	void Draw();
 	void Move();
@@ -30,6 +31,12 @@ public:
 	void OnCollisionLine(Collider* c, int x1, int y1, int x2, int y2);
 
 public:
+	p2SString texture_path;
+	SDL_Texture* graphics = nullptr;
+	Animation* current_animation = nullptr;
+	Animation idle;
+	Animation walk;		//TODO
+	Animation jump;		//TODO
 
 	bool have_collided;
 	bool on_top;

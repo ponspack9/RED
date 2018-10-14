@@ -85,13 +85,13 @@ bool j1Collision::PreUpdate()
 			{
 				if (matrix[c1->type][c2->type] && c1->callback) {
 					
-					LOG("COLLIDED first if");
+					//LOG("COLLIDED first if");
 					c1->callback->OnCollision(c1, c2);
 				}
 
 				if (matrix[c2->type][c1->type] && c2->callback) {
 
-					LOG("COLLIDED second if");
+					//LOG("COLLIDED second if");
 					c2->callback->OnCollision(c2, c1);
 				}	
 			}
@@ -110,7 +110,7 @@ bool j1Collision::PreUpdate()
 
 				if (c1->CheckRectLineCollision(p->data.x + offsetx, p->data.y + offsety,
 					p->next->data.x + offsetx, p->next->data.y + offsety)) {
-					//LOG("COLLISION WITH LINE");
+					LOG("COLLISION WITH LINE");
 					c1->callback->OnCollisionLine(c1, p->data.x + offsetx, p->data.y + offsety,
 						p->next->data.x + offsetx, p->next->data.y + offsety);
 				}

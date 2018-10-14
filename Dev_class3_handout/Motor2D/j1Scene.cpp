@@ -32,37 +32,12 @@ bool j1Scene::Awake(pugi::xml_node& config)
 // Called before the first frame
 bool j1Scene::Start()
 {
-	//img = App->tex->Load("textures/test.png");
-	//TODO Load from audio folders not hardcoded, see example below
-	bool ret = App->audio->PlayMusic("audio/music/music_sadpiano.ogg");
+
+	bool ret = App->audio->PlayMusic(PATH(App->audio->folder_music.GetString(),App->audio->tracks_path.start->data.GetString()));
 	if (ret) App->map->Load(App->map->current_map->data.GetString());
-	
 
-	//Two debug colliders,one at the beginning of the map and at the end
-	//App->collision->AddCollider(SDL_Rect({ 0,0,32,32 }), COLLIDER_GROUND);
-	//App->collision->AddCollider(SDL_Rect({ 0,0,32,32 }), COLLIDER_PLAYER);
+	App->player->Start();
 
-	int real_w = App->map->data.width *32;
-	int real_h = App->map->data.height *32;
-	//App->map->MapToWorld(real_w,real_h);
-	//App->collision->AddCollider(SDL_Rect({ real_w-32,real_h-32,32,32 }), COLLIDER_GROUND);
-
-	//need to be better
-	/*if (App->map->current_map->prev != NULL) 
-	{
-		App->player->position.x = App->player->init_pos2.x;
-		App->player->position.y = App->player->init_pos2.y;
-	}
-	if (App->map->current_map->next != NULL)
-	{*/
-	App->player->position.x = App->map->start_collider->rect.x;
-	App->player->position.y = App->map->start_collider->rect.y;
-	//}
-
-	App->render->camera.x = 0;
-	App->render->camera.y = 0;
-
-	int a = 1;
 	return ret;
 }
 

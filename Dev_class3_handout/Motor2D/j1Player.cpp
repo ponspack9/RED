@@ -4,6 +4,8 @@
 #include "p2Point.h"
 #include "j1Player.h"
 #include "j1Render.h"
+#include "j1Textures.h"
+#include "j1Map.h"
 #include "p2Log.h"
 
 
@@ -26,10 +28,6 @@ bool j1Player::Awake(pugi::xml_node & config)
 	init_pos1.x = player_node.child("lvl1").attribute("x").as_float();
 	init_pos1.y = player_node.child("lvl1").attribute("y").as_float();
 
-	//LVL 2 INITIAL POSITION
-	init_pos2.x = player_node.child("lvl2").attribute("x").as_float();
-	init_pos2.y = player_node.child("lvl2").attribute("y").as_float();
-
 	////PLAYER RECT DIMENSIONS
 	player_rect.w = player_node.child("rect").attribute("width").as_uint();
 	player_rect.h = player_node.child("rect").attribute("height").as_uint();
@@ -45,7 +43,31 @@ bool j1Player::Awake(pugi::xml_node & config)
 	speed.y = player_node.child("speed").attribute("jumpspeed").as_float();
 
 	gravity = player_node.child("gravity").attribute("value").as_float();
+
+	texture_path = (player_node.child("TextureAtlas").attribute("imagePath").as_string());
+	LOG("texturepath: %s", texture_path.GetString());
+
 	
+	pugi::xml_node textureAtlas = player_node.child("TextureAtlas");
+	SDL_Rect r;
+	float animSpeed = 0.1;
+	
+	// IDLE
+	pugi::xml_node n = textureAtlas.child("idle");
+	for (n; n; n = n.next_sibling("idle")) {
+		r.x = n.attribute("x").as_int();
+		r.y = n.attribute("y").as_int();
+		r.w = n.attribute("width").as_int();
+		r.h = n.attribute("height").as_int();
+		idle.PushBack(r);
+	}
+	animSpeed = n.attribute("speed").as_float();
+	idle.speed = (animSpeed <= 0) ? 0.05 : animSpeed;
+
+	// WALK
+
+	// JUMP
+
 	//LOG("%d  %d", player_rect.h, player_rect.w);
 	LOG("%d  %d", speed.x, speed.y);
 
@@ -54,13 +76,16 @@ bool j1Player::Awake(pugi::xml_node & config)
 
 bool j1Player::Start()
 {
-	//PLACING PLAYER AT INITIAL POS
-	position.x = init_pos1.x;
-	position.y = init_pos1.y;
+	graphics = App->tex->Load(texture_path.GetString());
 
+	//PLACING PLAYER AT INITIAL POS
+	position.x = App->map->start_collider->rect.x;
+	position.y = App->map->start_collider->rect.y;
+
+	current_animation = &idle;
 	//PLACING PLAYER RECT
-	player_rect.x = position.x;
-	player_rect.y = position.y;
+	/*player_rect.x = position.x;
+	player_rect.y = position.y;*/
 
 	max_speed_y = speed.y;
 	on_floor = false;
@@ -74,16 +99,25 @@ bool j1Player::Start()
 
 bool j1Player::Update(float dt)
 {
+
 	Move();
-		
+	player_collider->rect.w = current_animation->GetCurrentFrame().w;
+	player_collider->rect.h = current_animation->GetCurrentFrame().h;
 	player_collider->SetPos(position.x, position.y);
 	Draw();
 	return true;
 }
 
+bool j1Player::CleanUp()
+{
+	App->tex->UnLoad(graphics);
+	return true;
+}
+
 void j1Player::Draw()
 {
-	App->render->DrawQuad(player_rect, r,g,b);
+	App->render->Blit(graphics, position.x, position.y, &idle.GetCurrentFrame());
+	//App->render->DrawQuad(player_rect, r,g,b);
 	g = 0;
 
 }
@@ -245,6 +279,30 @@ bool j1Player::Jump()
 	return (jumpspeed>=0);
 }
 
+
+void j1Player::OnCollision(Collider * c1, Collider * c2)
+{
+	have_collided = true;
+	if (c1->type == COLLIDER_PLAYER && c2->type == COLLIDER_FLOOR && !on_floor) {
+
+		on_floor = true;
+		//last_collision = COLLIDER_FLOOR;
+	}
+	if (c1->type == COLLIDER_PLAYER && c2->type == COLLIDER_WALL) {
+
+		on_wall = true;
+		//owall = false;
+	}
+
+
+}
+
+void j1Player::OnCollisionLine(Collider * c, int x1, int y1, int x2, int y2)
+{
+	LOG("COLLISION LINE");
+	g = 255;
+}
+
 bool j1Player::Load(pugi::xml_node & node)
 {
 	LOG("Loading PLAYER");
@@ -272,29 +330,3 @@ bool j1Player::Save(pugi::xml_node & node)
 
 	return true;
 }
-
-void j1Player::OnCollision(Collider * c1, Collider * c2)
-{
-	have_collided = true;
-	if (c1->type == COLLIDER_PLAYER && c2->type == COLLIDER_FLOOR && !on_floor) {
-
-		on_floor = true;
-		//last_collision = COLLIDER_FLOOR;
-	}
-	if (c1->type == COLLIDER_PLAYER && c2->type == COLLIDER_WALL) {
-
-		on_wall = true;
-		//owall = false;
-	}
-
-
-}
-
-void j1Player::OnCollisionLine(Collider * c, int x1, int y1, int x2, int y2)
-{
-	//LOG("COLLISION LINE");
-	g = 255;
-}
-
-
-
