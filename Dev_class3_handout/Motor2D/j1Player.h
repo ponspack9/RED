@@ -24,6 +24,7 @@ public:
 	void Move();
 	void MoveFree();
 	bool Jump();
+	void PlayerAnimations();
 
 	bool Save(pugi::xml_node& node);
 	bool Load(pugi::xml_node& node);
@@ -40,6 +41,7 @@ public:
 	Animation walk;		
 	Animation jump;		
 	float def_anim_speed;
+	SDL_Rect anim_rect;
 
 	bool have_collided;
 	bool level_finished;

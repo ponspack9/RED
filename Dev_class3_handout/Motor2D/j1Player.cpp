@@ -100,7 +100,7 @@ bool j1Player::Start()
 	position.y = App->map->start_collider->rect.y;
 
 	current_animation = &idle;
-
+	
 	max_speed_y = speed.y;
 	level_finished = false;
 	on_floor = false;
@@ -119,6 +119,7 @@ bool j1Player::Update(float dt)
 	if (!godmode)
 	{
 		Move();
+		PlayerAnimations();
 	}
 	else 
 	{
@@ -149,7 +150,14 @@ bool j1Player::CleanUp()
 
 void j1Player::Draw()
 {
-	App->render->Blit(graphics, position.x, position.y, &idle.GetCurrentFrame());
+	if (move_left)
+	{
+		App->render->Blit(graphics, position.x, position.y, &current_animation->GetCurrentFrame(), 1, 0.0, SDL_FLIP_HORIZONTAL, 1);
+	}
+	else 
+	{
+		App->render->Blit(graphics, position.x, position.y, &current_animation->GetCurrentFrame());
+	}
 	g = 0;
 
 }
@@ -157,22 +165,37 @@ void j1Player::Draw()
 ////////////////////////////////////////////////////////////////////////////////////////////
 void j1Player::Move()
 {
-	if (!have_collided && on_floor) on_floor = false;
-	if (!have_collided && on_wall) on_wall = false;
+	//if (!have_collided && on_floor) on_floor = false;
+	//if (!have_collided && on_wall) on_wall = false;
 	dx = 0;
 	dy = 0;
 	
 	if (App->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT) 
 	{
+		move_right = true;
+		move_left = false;
 		dx += speed.x;
+	}	
+	if (App->input->GetKey(SDL_SCANCODE_D) == KEY_UP)
+	{
+		move_right = false;
 	}
-
-	
 	if (App->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT)
 	{
+		move_right = false;
+		move_left = true;
 		dx -= speed.x;
 	}
+	if (App->input->GetKey(SDL_SCANCODE_A) == KEY_UP)
+	{
+		move_left = false;
+	}
+	if (App->input->GetKey(SDL_SCANCODE_W) == KEY_DOWN && on_floor)
+	{
+		Jump();
+		LOG("JUMP");
 
+	}
 	/*if (App->input->GetKey(SDL_SCANCODE_S) == KEY_REPEAT)
 	{
 		if (!on_floor)
@@ -181,8 +204,6 @@ void j1Player::Move()
 			speed.y += gravity;
 		}
 	}*/
-
-
 	if (is_jumping)
 	{
 		is_jumping = Jump();
@@ -192,12 +213,6 @@ void j1Player::Move()
 	{
 		dy += gravity;
 		//on_floor = false;
-	}
-	if (App->input->GetKey(SDL_SCANCODE_W) == KEY_DOWN && on_floor)
-	{
-		Jump();
-		LOG("JUMP");
-
 	}
 
 	position.x += dx;
@@ -303,16 +318,18 @@ bool j1Player::Jump()
 	}
 	else {
 		dy -= jumpspeed;
-		jumpspeed -= 0.2;
+		jumpspeed -= gravity;
 
 	}
 	return (jumpspeed>=0);
 }
 
 
+
+
 void j1Player::MoveFree()
 {
-
+	current_animation = &idle;
 	dx = 0;
 	dy = 0;
 
@@ -347,6 +364,21 @@ void j1Player::MoveFree()
 
 }
 
+void j1Player::PlayerAnimations()
+{
+	if (!is_jumping && move_right)
+	{
+		current_animation = &walk;
+	}
+	if (!is_jumping && move_left)
+	{
+		current_animation = &walk;
+	}
+	if (!is_jumping && !move_left && !move_right)
+	{
+		current_animation = &idle;
+	}
+}
 
 void j1Player::OnCollision(Collider * c1, Collider * c2)
 {
