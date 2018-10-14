@@ -21,6 +21,7 @@ public:
 	bool CleanUp();
 
 	void Draw();
+	bool MovePlayer(int vel_x, int vel_y);
 	void Move();
 	void MoveFree();
 	bool Jump();

@@ -139,7 +139,7 @@ bool j1Player::Update(float dt)
 
 bool j1Player::PostUpdate()
 {
-	App->render->MoveCamera(-dx, -dy);
+	
 	return true;
 }
 
@@ -154,8 +154,6 @@ void j1Player::Draw()
 {
 	if (move_left)
 	{
-		LOG("FLIPPED");
-		//SDL_RenderCopyEx(App->render->renderer, graphics, &current_animation->GetCurrentFrame(), &player_collider->rect, 0, NULL, SDL_FLIP_HORIZONTAL);
 		App->render->Blit(graphics, position.x, position.y, &current_animation->GetCurrentFrame(),1,0,SDL_FLIP_HORIZONTAL);
 	}
 	else {
@@ -169,7 +167,7 @@ void j1Player::Draw()
 void j1Player::Move()
 {
 	if (!have_collided && on_floor) on_floor = false;
-	if (!have_collided && on_wall) on_wall = false;
+	//if (!have_collided && on_wall) on_wall = false;
 	dx = 0;
 	dy = 0;
 	
@@ -219,6 +217,9 @@ void j1Player::Move()
 
 	position.x += dx;
 	position.y += dy;
+
+	//MovePlayer(-dx, -dy);
+	App->render->MoveCamera(-dx, -dy);
 
 	player_rect.x = position.x;
 	player_rect.y = position.y;
