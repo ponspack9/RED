@@ -68,7 +68,7 @@
       <idle height="45" width="39" y="174" x="180"  name="player_12"/>
       <jump height="42" width="49" y="48" x="66"    name="player_16"/>
       <jump height="46" width="39" y="0" x="223"    name="player_19"/>
-      <dead height="46" width="39" y="60" x="173"   name="player_24"/>
+      <death height="46" width="39" y="60" x="173"   name="player_24"/>
       <idle height="48" width="39" y="116" x="180"  name="player_idle"/>
       <jump height="50" width="39" y="0" x="125"    name="player_30"/>
       <jump height="38" width="56" y="140" x="0"    name="player_32"/>

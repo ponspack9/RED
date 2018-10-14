@@ -41,6 +41,7 @@ public:
 	Animation idle;
 	Animation walk;		
 	Animation jump;		
+	Animation death;
 	float def_anim_speed;
 	SDL_Rect anim_rect;
 

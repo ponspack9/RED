@@ -49,7 +49,8 @@ bool j1Player::Awake(pugi::xml_node & config)
 
 	// IDLE
 	pugi::xml_node n = textureAtlas.child("idle");
-	for (n; n; n = n.next_sibling("idle")) {
+	for (n; n; n = n.next_sibling("idle"))
+	{
 		r.x = n.attribute("x").as_int();
 		r.y = n.attribute("y").as_int();
 		r.w = n.attribute("width").as_int();
@@ -61,7 +62,8 @@ bool j1Player::Awake(pugi::xml_node & config)
 
 	// WALK
 	n = textureAtlas.child("walk");
-	for (n; n; n = n.next_sibling("walk")) {
+	for (n; n; n = n.next_sibling("walk")) 
+	{
 		r.x = n.attribute("x").as_int();
 		r.y = n.attribute("y").as_int();
 		r.w = n.attribute("width").as_int();
@@ -73,7 +75,8 @@ bool j1Player::Awake(pugi::xml_node & config)
 
 	// JUMP
 	n = textureAtlas.child("jump");
-	for (n; n; n = n.next_sibling("jump")) {
+	for (n; n; n = n.next_sibling("jump")) 
+	{
 		r.x = n.attribute("x").as_int();
 		r.y = n.attribute("y").as_int();
 		r.w = n.attribute("width").as_int();
@@ -82,6 +85,20 @@ bool j1Player::Awake(pugi::xml_node & config)
 	}
 	node_speed = n.attribute("speed").as_float();
 	jump.speed = (node_speed <= 0) ? def_anim_speed : node_speed;
+
+	//DEAD
+	n = textureAtlas.child("death");
+	for (n; n; n = n.next_sibling("death"))
+	{
+		r.x = n.attribute("x").as_int();
+		r.y = n.attribute("y").as_int();
+		r.w = n.attribute("width").as_int();
+		r.h = n.attribute("height").as_int();
+		death.PushBack(r);
+	}
+	node_speed = n.attribute("speed").as_float();
+	death.speed = (node_speed <= 0) ? def_anim_speed : node_speed;
+
 	// End parsing animations -----------------
 
 	//LOG("%d  %d", player_rect.h, player_rect.w);
@@ -99,7 +116,7 @@ bool j1Player::Start()
 	position.x = App->map->start_collider->rect.x;
 	position.y = App->map->start_collider->rect.y;
 
-	current_animation = &idle;
+	current_animation = &death;
 	
 	max_speed_y = speed.y;
 	level_finished = false;
@@ -139,7 +156,13 @@ bool j1Player::Update(float dt)
 
 bool j1Player::PostUpdate()
 {
-	App->render->MoveCamera(-dx, -dy);
+	//App->render->MoveCamera(-dx, -dy);
+	if (dead)
+	{
+		App->RestartLevel();
+		
+		dead = false;
+	}
 	return true;
 }
 
@@ -170,7 +193,10 @@ void j1Player::Move()
 	//if (!have_collided && on_wall) on_wall = false;
 	dx = 0;
 	dy = 0;
-	
+	if (App->input->GetKey(SDL_SCANCODE_Q) == KEY_DOWN)
+	{
+		dead = true;
+	}
 	if (App->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT) 
 	{
 		move_right = true;
@@ -373,6 +399,10 @@ void j1Player::PlayerAnimations()
 	if (!is_jumping && !move_left && !move_right)
 	{
 		current_animation = &idle;
+	}
+	if (dead)
+	{
+		current_animation = &death;
 	}
 
 	/*player_rect.x = position.x;

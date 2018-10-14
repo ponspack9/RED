@@ -71,8 +71,7 @@ bool j1Render::PreUpdate()
 
 bool j1Render::Update(float dt)
 {
-	//FollowPlayer();
-	MoveCamera(-App->player->dx, -App->player->dy);
+	FollowPlayer();
 	return true;
 }
 
@@ -126,10 +125,10 @@ bool j1Render::MoveCamera(const int & vel_x, const int & vel_y)
 	int x = App->map->world_limits.x - viewport.w;
 	int y = App->map->world_limits.y - viewport.h;
 
-	if (abs(camera.x + vel_x) <  x && camera.x + vel_x < viewport.w/3 && camera.x +vel_x > 2*(viewport.w/3)) {
+	if (abs(camera.x + vel_x) <  x && camera.x + vel_x < 0) {
 		//Camera can move x axis
 		camera.x += vel_x;
-		if (abs(camera.y + vel_y) < y && camera.y + vel_y < viewport.h / 3 && camera.y + vel_y > 2 * (viewport.h / 3)){
+		if (abs(camera.y + vel_y) < y && camera.y + vel_y < 0){
 			// Camera can move both axis
 			camera.y += vel_y;
 			return true;
@@ -137,7 +136,7 @@ bool j1Render::MoveCamera(const int & vel_x, const int & vel_y)
 		return true;
 
 	}
-	else if (abs(camera.y + vel_y) < y && camera.y + vel_y < viewport.h / 3 && camera.y + vel_y > 2 * (viewport.h / 3)) {
+	else if (abs(camera.y + vel_y) < y && camera.y + vel_y < 0) {
 			//Camera can move y axis
 			camera.y += vel_y;
 			return true;
@@ -146,24 +145,22 @@ bool j1Render::MoveCamera(const int & vel_x, const int & vel_y)
 	return false;
 }
 
-//void j1Render::FollowPlayer()
-//{
-	//if (App->player->position.x >= viewport.w / 3 && !(App->player->position.y >= viewport.h / 2))
-	//{
-	//	MoveCamera(-App->player->dx, 0);
-	//}
-	//if (!(App->player->position.x >= viewport.w / 3) && App->player->position.y >= viewport.h / 2)
-	//{
-	//	MoveCamera(0, -App->player->dy);
-	//}
-	//if (App->player->position.x >= viewport.w / 3 && App->player->position.y >= viewport.h / 2)
-	//{
-	//	MoveCamera(-App->player->dx, -App->player->dy);
-	//}
+void j1Render::FollowPlayer()
+{
+	if (App->player->position.x >= viewport.w / 3 && !(App->player->position.y >= viewport.h / 2))
+	{
+		MoveCamera(-App->player->dx, 0);
+	}
+	if (!(App->player->position.x >= viewport.w / 3) && App->player->position.y >= viewport.h / 2)
+	{
+		MoveCamera(0, -App->player->dy);
+	}
+	if (App->player->position.x >= viewport.w / 3 && App->player->position.y >= viewport.h / 2)
+	{
+		MoveCamera(-App->player->dx, -App->player->dy);
+	}
+}
 
-
-
-  
 	////1
 	//if (App->player->position.x >= (camera.w / 3) && App->player->position.x <= (2 * (camera.w / 3)) && App->player->position.y <= (camera.h / 3))
 	//{
@@ -189,8 +186,6 @@ bool j1Render::MoveCamera(const int & vel_x, const int & vel_y)
 	//{
 	//	MoveCamera(-App->player->dx, -App->player->dy);
 	//}
-
-//}
 
 void j1Render::SetViewPort(const SDL_Rect& rect)
 {
