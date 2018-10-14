@@ -17,6 +17,7 @@ public:
 	bool Awake(pugi::xml_node& config);
 	bool Start();
 	bool Update(float dt);
+	bool PostUpdate();
 	bool CleanUp();
 
 	void Draw();
@@ -63,9 +64,7 @@ public:
 	bool godmode = false;
 
 	Collider* player_collider;
-	Collider* shade_collider;
-
-	COLLIDER_TYPE last_collision;
+	Collider* wall;
 
 	int r, g, b;
 };

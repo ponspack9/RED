@@ -60,7 +60,7 @@ bool j1Collision::PreUpdate()
 		// skip empty colliders or not player colliders, he is the only one interacting
 		// would be more efficient to only have one or two player colliders and not to 
 		// iterate through all colliders till find the plaayer's one???
-		if (colliders[i] == nullptr /*|| colliders[i]->type != COLLIDER_PLAYER*/)
+		if (colliders[i] == nullptr /*|| colliders[i]->type != COLLIDER_NONE*/)
 			continue;
 
 		c1 = colliders[i];
@@ -209,7 +209,7 @@ bool j1Collision::CleanUp()
 void j1Collision::CleanColliders()
 {
 	for (uint i = 0; i < MAX_COLLIDERS; ++i)
-		if (colliders[i] != nullptr) {
+		if (colliders[i] != nullptr && colliders[i]->type != COLLIDER_PLAYER) {
 			colliders[i] = nullptr;
 		}
 }
@@ -249,9 +249,34 @@ Collider* j1Collision::AddCollider(SDL_Rect rect, COLLIDER_TYPE type, j1Module* 
 bool Collider::CheckCollision(const SDL_Rect& r) const
 {
 	//return CheckLineLine(rect.x, rect.y + rect.h, rect.x + rect.w, rect.y + rect.h, r.x, r.y+r.h, r.w+r.x, r.h+r.y);
-	if ((r.x > rect.x + rect.w) || (r.y > rect.y + rect.h)) { return false; }
+	/*if ((r.x > rect.x + rect.w) || (r.y > rect.y + rect.h)) { return false; }
 
-	if ((rect.x > r.x + r.w) || (rect.y > r.y + r.h)) { return false; }
+	if ((rect.x > r.x + r.w) || (rect.y > r.y + r.h)) { return false; }*/
+
+	if (rect.x || (rect.x + rect.w) > (r.x ) && (rect.x || (rect.x + rect.w) < (r.x + r.w))) {
+		if ((rect.y + rect.h) < (r.y)) {
+			return false;
+		}
+	}
+	if ((rect.y > (r.y)) || ((rect.y + rect.h) > (r.y))) {
+		if (rect.x < r.x) {
+			return true;
+		}
+	}
+
+	if ((rect.y > (r.y)) || ((rect.y + rect.h) > (r.y))) {
+		if (rect.x > r.x + (r.w - 5)) {
+			return true;
+		}
+	}
+
+	if (rect.x || (rect.x + rect.w) > (r.x ) && (rect.x || (rect.x + rect.w) < (r.x + r.w))) {
+		if (rect.y > (r.y)) {
+			return true;
+		}
+	}
+	return false;
+
 	//float w = (rect.x + rect.w + r.w+r.x)/2;
 	//float h = (rect.h + rect.y + r.y+r.h)/2;
 	//float dx = ((rect.w + rect.x) / 2) - ((r.w+r.x) / 2); //center of rect

@@ -120,8 +120,14 @@ void j1Render::SetBackgroundColor(SDL_Color color)
 
 bool j1Render::MoveCamera(const int & vel_x, const int & vel_y)
 {
-	int x = App->map->world_limits.x - viewport.w;
-	int y = App->map->world_limits.y - viewport.h;
+	/*uint q, f;
+	uint a = App->win->GetScale();
+	App->win->GetWindowSize(q,f);
+	LOG("Q: %d, F:%d SCALE: %d ", viewport.w,a );*/
+	int x = App->map->world_limits.x -viewport.w;
+	int y = App->map->world_limits.y -viewport.h;
+	/*p2SString s("cx: %d  cy: %d  x: %d  y: %d SCALE: %d", camera.x, camera.y,x,y,a);
+	App->win->SetTitle(s.GetString());*/
 
 	if (abs(camera.x + vel_x) <  x && camera.x + vel_x < 0) {
 		//Camera can move x axis

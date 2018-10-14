@@ -1,12 +1,12 @@
-#include "j1Collision.h"
 #include "j1App.h"
+#include "j1Collision.h"
 #include "j1Input.h"
 #include "p2Point.h"
-#include "j1Player.h"
 #include "j1Render.h"
 #include "j1Textures.h"
 #include "j1Map.h"
 #include "p2Log.h"
+#include "j1Player.h"
 
 
 j1Player::j1Player()
@@ -32,8 +32,7 @@ bool j1Player::Awake(pugi::xml_node & config)
 	player_rect.w = player_node.child("rect").attribute("width").as_uint();
 	player_rect.h = player_node.child("rect").attribute("height").as_uint();
 	
-	//PL. COLLIDER
-	player_collider = App->collision->AddCollider(player_rect, COLLIDER_PLAYER, this);
+	
 
 	//SCROLL AND JUMPSPEED (CONST)
 	speed.x = player_node.child("speed").attribute("scrollspeed").as_float();
@@ -86,7 +85,8 @@ bool j1Player::Awake(pugi::xml_node & config)
 
 	//LOG("%d  %d", player_rect.h, player_rect.w);
 	LOG("%d  %d", speed.x, speed.y);
-
+	//PL. COLLIDER
+	player_collider = App->collision->AddCollider(player_rect, COLLIDER_PLAYER, this);
 	return true;
 }
 
@@ -108,32 +108,46 @@ bool j1Player::Start()
 	r = 255;
 	g = 0;
 	b = 0;
-
+	
 	return true;
 }
 
 bool j1Player::Update(float dt)
 {
+	if (level_finished) App->NextLevel();
+	if (!godmode) {
+		Move();
+	}
+	else {
+		//MoveFree();
+	}
 
-	Move();
-	player_collider->rect.w = current_animation->GetCurrentFrame().w;
-	player_collider->rect.h = current_animation->GetCurrentFrame().h;
-	player_collider->SetPos(position.x, position.y);
-	Draw();
+	if (player_collider != nullptr) {
+		player_collider->rect.w = current_animation->GetCurrentFrame().w;
+		player_collider->rect.h = current_animation->GetCurrentFrame().h;
+		player_collider->SetPos(position.x, position.y);
+	}
+		Draw();
+	return true;
+}
+
+bool j1Player::PostUpdate()
+{
+	App->render->MoveCamera(-dx, -dy);
 	return true;
 }
 
 bool j1Player::CleanUp()
 {
 	App->tex->UnLoad(graphics);
-	//player_collider->to_delete = true;
+	if (player_collider) player_collider->to_delete = true;
 	return true;
 }
 
 void j1Player::Draw()
 {
 	App->render->Blit(graphics, position.x, position.y, &idle.GetCurrentFrame());
-	//App->render->DrawQuad(player_rect, r,g,b);
+	//App->render->DrawQuad(player_rect, r,255,b);
 	g = 0;
 
 }
@@ -170,7 +184,7 @@ void j1Player::Move()
 	if (is_jumping)
 	{
 		is_jumping = Jump();
-		LOG("JUMPING");
+		//LOG("JUMPING");
 	}
 	else if (!on_floor)
 	{
@@ -190,9 +204,7 @@ void j1Player::Move()
 	player_rect.x = position.x;
 	player_rect.y = position.y;
 
-	player_collider->SetPos(position.x, position.y);
-
-	App->render->MoveCamera(-dx, -dy);
+	//player_collider->SetPos(position.x, position.y);
 	//shade_collider->SetPos(position.x, position.y+ player_collider->rect.h);
 
 	have_collided = false;
@@ -307,7 +319,6 @@ void j1Player::OnCollision(Collider * c1, Collider * c2)
 	if (c1->type == COLLIDER_PLAYER && c2->type == COLLIDER_WALL) {
 
 		on_wall = true;
-		//owall = false;
 	}
 	if (c1->type == COLLIDER_PLAYER && c2->type == COLLIDER_END && !level_finished) {
 		level_finished = true;

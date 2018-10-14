@@ -34,6 +34,11 @@ struct Collider
 		type(type),
 		callback(callback)
 	{}
+	Collider(Collider* c) :
+		rect(c->rect),
+		type(c->type),
+		callback(c->callback)
+	{}
 
 	~Collider() {
 		//RELEASE(callback);
@@ -44,6 +49,17 @@ struct Collider
 		rect.x = x;
 		rect.y = y;
 	}
+	//void operator = (Collider* c) {
+	//	rect.x = c->rect.x;
+	//	rect.y = c->rect.y;
+	//	rect.w = c->rect.w;
+	//	rect.h = c->rect.h;
+	//	type = COLLIDER_NONE;
+	//	/*type = c->type;
+	//	if (c->callback != nullptr) {
+	//		callback = c->callback;
+	//	}*/
+	//}
 
 	bool CheckCollision(const SDL_Rect& r) const;
 	bool CheckRectLineCollision(int x1, int y1, int x2, int y2) const;
