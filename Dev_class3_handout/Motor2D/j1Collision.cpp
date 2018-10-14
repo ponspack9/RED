@@ -54,7 +54,7 @@ bool j1Collision::PreUpdate()
 	// Calculate collisions
 	Collider* c1;
 	Collider* c2;
-
+	n_player_colliders = 0;
 	for (uint i = 0; i < MAX_COLLIDERS; ++i)
 	{
 		// skip empty colliders or not player colliders, he is the only one interacting
@@ -62,7 +62,7 @@ bool j1Collision::PreUpdate()
 		// iterate through all colliders till find the plaayer's one???
 		if (colliders[i] == nullptr /*|| colliders[i]->type != COLLIDER_NONE*/)
 			continue;
-
+		if (colliders[i]->type == COLLIDER_PLAYER) n_player_colliders += 1;
 		c1 = colliders[i];
 
 		// avoid checking collisions already checked
@@ -110,11 +110,17 @@ bool j1Collision::PreUpdate()
 
 				if (c1->CheckRectLineCollision(p->data.x + offsetx, p->data.y + offsety,
 					p->next->data.x + offsetx, p->next->data.y + offsety)) {
-					LOG("COLLISION WITH LINE");
-					c1->callback->OnCollisionLine(c1, p->data.x + offsetx, p->data.y + offsety,
+					//LOG("COLLISION WITH LINE");
+					c1->callback->OnCollisionLine(p->data.x + offsetx, p->data.y + offsety,
 						p->next->data.x + offsetx, p->next->data.y + offsety);
 				}
 				p = p->next;
+			}
+			if (c1->CheckRectLineCollision(p->data.x + offsetx, p->data.y + offsety,
+				line->data->points.start->data.x + offsetx, line->data->points.start->data.y + offsety)) {
+					//LOG("COLLISION WITH LINE");
+					c1->callback->OnCollisionLine(p->data.x + offsetx, p->data.y + offsety,
+						line->data->points.start->data.x + offsetx, line->data->points.start->data.y + offsety);
 			}
 
 		}
@@ -249,11 +255,12 @@ Collider* j1Collision::AddCollider(SDL_Rect rect, COLLIDER_TYPE type, j1Module* 
 bool Collider::CheckCollision(const SDL_Rect& r) const
 {
 	//return CheckLineLine(rect.x, rect.y + rect.h, rect.x + rect.w, rect.y + rect.h, r.x, r.y+r.h, r.w+r.x, r.h+r.y);
-	/*if ((r.x > rect.x + rect.w) || (r.y > rect.y + rect.h)) { return false; }
+	if ((r.x > rect.x + rect.w) || (r.y > rect.y + rect.h)) { return false; }
 
-	if ((rect.x > r.x + r.w) || (rect.y > r.y + r.h)) { return false; }*/
+	if ((rect.x > r.x + r.w) || (rect.y > r.y + r.h)) { return false; }
+	return true;
 
-	if (rect.x || (rect.x + rect.w) > (r.x ) && (rect.x || (rect.x + rect.w) < (r.x + r.w))) {
+	/*if (rect.x || (rect.x + rect.w) > (r.x ) && (rect.x || (rect.x + rect.w) < (r.x + r.w))) {
 		if ((rect.y + rect.h) < (r.y)) {
 			return false;
 		}
@@ -275,7 +282,7 @@ bool Collider::CheckCollision(const SDL_Rect& r) const
 			return true;
 		}
 	}
-	return false;
+	return false;*/
 
 	//float w = (rect.x + rect.w + r.w+r.x)/2;
 	//float h = (rect.h + rect.y + r.y+r.h)/2;
@@ -319,7 +326,7 @@ bool Collider::CheckRectLineCollision(int x1, int y1, int x2, int y2) const
 	boolean top =    CheckLineLine(x1, y1, x2, y2, rect.x, rect.y, rect.x + rect.w, rect.y);
 	boolean bottom = CheckLineLine(x1, y1, x2, y2, rect.x, rect.y + rect.h, rect.x + rect.w, rect.y + rect.h);
 
-	// if ANY of the above arecte trectue, the line
+	// if ANY of the above are true, the line
 	// has hit the rectectangle
 	if (left || right || top || bottom) {
 		return true;
@@ -330,11 +337,11 @@ bool Collider::CheckRectLineCollision(int x1, int y1, int x2, int y2) const
 bool CheckLineLine(int x1, int y1, int x2, int y2, int x3, int y3, int x4, int y4)
 {
 	float uADiv = ((y4 - y3)*(x2 - x1) - (x4 - x3)*(y2 - y1));
-	if (uADiv == 0) return false;
 	float uBDiv = ((y4 - y3)*(x2 - x1) - (x4 - x3)*(y2 - y1));
-	if (uBDiv == 0) return false;
-	float uA = ((x4 - x3)*(y1 - y3) - (y4 - y3)*(x1 - x3)) / uADiv;
-	float uB = ((x2 - x1)*(y1 - y3) - (y2 - y1)*(x1 - x3)) / uBDiv;
+
+	float uA = (uADiv == 0) ? 0 : ((x4 - x3)*(y1 - y3) - (y4 - y3)*(x1 - x3)) / uADiv;
+	float uB = (uBDiv == 0) ? 0 : ((x2 - x1)*(y1 - y3) - (y2 - y1)*(x1 - x3)) / uBDiv;
+	
 
 	// if uA and uB are between 0-1, lines are colliding
 	if (uA >= 0 && uA <= 1 && uB >= 0 && uB <= 1) return true;

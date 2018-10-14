@@ -116,20 +116,22 @@ bool j1Player::Start()
 bool j1Player::Update(float dt)
 {
 	if (level_finished) App->NextLevel();
-	if (!godmode)
-	{
-		Move();
-		PlayerAnimations();
-	}
-	else 
-	{
-		MoveFree();
-	}
+	else {
+		if (!godmode)
+		{
+			Move();
+			PlayerAnimations();
+		}
+		else
+		{
+			MoveFree();
+		}
 
-	if (player_collider != nullptr) {
-		player_collider->rect.w = current_animation->GetCurrentFrame().w;
-		player_collider->rect.h = current_animation->GetCurrentFrame().h;
-		player_collider->SetPos(position.x, position.y);
+		if (player_collider != nullptr) {
+			player_collider->rect.w = current_animation->GetCurrentFrame().w;
+			player_collider->rect.h = current_animation->GetCurrentFrame().h;
+			player_collider->SetPos(position.x, position.y);
+		}
 	}
 		Draw();
 	return true;
@@ -152,10 +154,11 @@ void j1Player::Draw()
 {
 	if (move_left)
 	{
-		App->render->Blit(graphics, position.x, position.y, &current_animation->GetCurrentFrame(), 1, 0.0, SDL_FLIP_HORIZONTAL, 1);
+		LOG("FLIPPED");
+		//SDL_RenderCopyEx(App->render->renderer, graphics, &current_animation->GetCurrentFrame(), &player_collider->rect, 0, NULL, SDL_FLIP_HORIZONTAL);
+		App->render->Blit(graphics, position.x, position.y, &current_animation->GetCurrentFrame(),1,0,SDL_FLIP_HORIZONTAL);
 	}
-	else 
-	{
+	else {
 		App->render->Blit(graphics, position.x, position.y, &current_animation->GetCurrentFrame());
 	}
 	g = 0;
@@ -165,8 +168,8 @@ void j1Player::Draw()
 ////////////////////////////////////////////////////////////////////////////////////////////
 void j1Player::Move()
 {
-	//if (!have_collided && on_floor) on_floor = false;
-	//if (!have_collided && on_wall) on_wall = false;
+	if (!have_collided && on_floor) on_floor = false;
+	if (!have_collided && on_wall) on_wall = false;
 	dx = 0;
 	dy = 0;
 	
@@ -212,7 +215,6 @@ void j1Player::Move()
 	else if (!on_floor)
 	{
 		dy += gravity;
-		//on_floor = false;
 	}
 
 	position.x += dx;
@@ -221,10 +223,7 @@ void j1Player::Move()
 	player_rect.x = position.x;
 	player_rect.y = position.y;
 
-	//player_collider->SetPos(position.x, position.y);
-	//shade_collider->SetPos(position.x, position.y+ player_collider->rect.h);
-
-	//have_collided = false;
+	have_collided = false;
 
 
 //	/if (is_jumping && !move_left && !move_right)
@@ -357,9 +356,6 @@ void j1Player::MoveFree()
 	position.x += dx;
 	position.y += dy;
 
-	player_rect.x = position.x;
-	player_rect.y = position.y;
-
 	have_collided = false;
 
 }
@@ -378,6 +374,11 @@ void j1Player::PlayerAnimations()
 	{
 		current_animation = &idle;
 	}
+
+	/*player_rect.x = position.x;
+	player_rect.y = position.y;*/
+	player_rect.w = current_animation->GetCurrentFrame().w;
+	player_rect.h = current_animation->GetCurrentFrame().h;
 }
 
 void j1Player::OnCollision(Collider * c1, Collider * c2)

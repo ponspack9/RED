@@ -2,6 +2,8 @@
 #define __j1COLLISION_H__
 
 #define MAX_COLLIDERS 150
+#define MAX_LINES 256
+#define MAX_LINE_LENGTH 100
 #include "SDL/include/SDL.h"
 #include "j1Module.h"
 #include "p2Point.h"
@@ -93,7 +95,10 @@ public:
 
 	p2List<PolyLine*>	polylines;
 	int n_lines = 0;
+	int n_player_colliders;
 
+	int polyline[MAX_LINES][MAX_LINE_LENGTH];
+	int n_lines_col[MAX_LINES];
 private:
 
 	Collider * colliders[MAX_COLLIDERS];

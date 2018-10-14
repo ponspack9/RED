@@ -178,9 +178,6 @@ bool j1Map::Load(const char* file_name)
 
 						if (polyobject == NULL) {
 							//ITS A QUAD
-							if (object.attribute("id").as_int() == 407) {
-								int a = 1;
-							}
 							SDL_Rect r = { object.attribute("x").as_int() , object.attribute("y").as_int() ,
 										   object.attribute("width").as_int() ,object.attribute("height").as_int() };
 							if (group_name == "Colliders") {
@@ -342,6 +339,7 @@ bool j1Map::LoadMap()
 	{
 		LOG("Error parsing map xml file: Cannot find 'map' tag.");
 	}
+
 
 	return ret;
 }
@@ -631,7 +629,7 @@ p2SString j1Map::DebugToString() const
 	//int tile_id = data.map_layers.start->data->data[map_id + abs(App->render->camera.x/data.tile_width)];
 
 	// Loading info to title FLASHES WINDOW ICON IN TASK BAR
-	p2SString ret_string("Map: %dx%d Tiles: %dx%d Tilesets: %d Mouse [%d,%d] Rect [%d,%d] Camera.x: %d offsetX: %d",
+	p2SString ret_string("Map: %dx%d Tiles: %dx%d Tilesets: %d Mouse [%d,%d] Rect [%d,%d] Camera.x: %d offsetX: %d NPLAYER: %d",
 		data.width, data.height,
 		data.tile_width, data.tile_height,
 		data.tilesets.count(),
@@ -639,7 +637,8 @@ p2SString j1Map::DebugToString() const
 		map_pos.x,map_pos.y, 
 		//map_id,tile_id, MapID: %d TilesetID: %d
 		App->render->camera.x,
-		(data.tile_width > 0) ? abs(App->render->camera.x / data.tile_width): -5000);
+		(data.tile_width > 0) ? abs(App->render->camera.x / data.tile_width): -5000,
+		App->collision->n_player_colliders);
 
 	return ret_string;
 }
