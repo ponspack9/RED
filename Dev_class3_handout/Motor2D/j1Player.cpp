@@ -146,8 +146,8 @@ bool j1Player::Update(float dt)
 		}
 
 		if (player_collider != nullptr) {
-			player_collider->rect.w = current_animation->GetCurrentFrame().w;
-			player_collider->rect.h = current_animation->GetCurrentFrame().h;
+			//player_collider->rect.w = current_animation->GetCurrentFrame().w;
+			//player_collider->rect.h = current_animation->GetCurrentFrame().h;
 			player_collider->SetPos(position.x, position.y);
 		}
 	}
@@ -187,7 +187,7 @@ void j1Player::Draw()
 
 }
 
-////////////////////////////////////////////////////////////////////////////////////////////
+
 void j1Player::Move()
 {
 	float oldX = position.x;
@@ -198,7 +198,14 @@ void j1Player::Move()
 	if (!have_collided && on_floor) on_floor = false;
 	if (!have_collided && left) left = false;
 	if (!have_collided && right) right = false;
+	if (!have_collided && top) top = false;
+	if (!have_collided && bottom) bottom = false;
 
+	if (have_collided && on_floor) {
+		on_floor = wall->type == COLLIDER_FLOOR && !on_wall;
+	}
+
+	if (!have_collided && on_wall) on_wall = false;
 	//if (!have_collided && on_wall) on_wall = false;
 	dx = 0;
 	dy = 0;
@@ -243,10 +250,10 @@ void j1Player::Move()
 
 	if (have_collided) {
 
-
+		
 		//Moving left
 		if (dx < 0) {
-			left = (position.x < wall->rect.x + wall->rect.w);
+			left = (position.x <= wall->rect.x + wall->rect.w) && wall->type != COLLIDER_FLOOR;
 			LOG("LEEEEEEEEEEEEEEEEEEEEEEEFT");
 
 
@@ -258,18 +265,18 @@ void j1Player::Move()
 		}
 		//Moving right
 		else if (dx > 0) {
-			right = (position.x + current_animation->GetCurrentFrame().w > wall->rect.x);
+			right = (position.x + player_collider->rect.w >= wall->rect.x) && wall->type != COLLIDER_FLOOR;
 			LOG("RIIIIIIIIIIIGHT");
 		}
 
 
 		//Moving up
 		if (dy < 0) {
-
+			top = (position.y <= wall->rect.y + wall->rect.h) && wall->type != COLLIDER_FLOOR;
 		}
 		//Moving down
 		else if (dy > 0) {
-
+			bottom = (position.y + player_collider->rect.h >= wall->rect.y) && wall->type != COLLIDER_FLOOR;
 		}
 	}
 
@@ -290,7 +297,7 @@ bool j1Player::Jump()
 	if (!is_jumping)
 	{
 		is_jumping = true;
-		jumpspeed = 5;
+		jumpspeed = 20;
 		on_floor = false;
 		return true;
 	}
@@ -370,12 +377,15 @@ void j1Player::OnCollision(Collider * c1, Collider * c2)
 	if (c1->type == COLLIDER_PLAYER && c2->type == COLLIDER_FLOOR && !on_floor) {
 
 		on_floor = true;
-		*wall += (c2);
+		*wall = (c2);
+		LOG("TYPE: %d", wall->type);
 		//last_collision = COLLIDER_FLOOR;
 	}
 	if (c1->type == COLLIDER_PLAYER && c2->type == COLLIDER_WALL) {
 
 		on_wall = true;
+		*wall = (c2);
+		LOG("TYPE: %d", wall->type);
 
 	}
 	if (c1->type == COLLIDER_PLAYER && c2->type == COLLIDER_END && !level_finished) {
