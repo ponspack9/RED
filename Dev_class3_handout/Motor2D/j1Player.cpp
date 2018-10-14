@@ -245,6 +245,33 @@ void j1Player::Move()
 		}*/
 
 	}
+	if (top) {
+		is_jumping = false;
+		falling = false;
+		//position.y = Cy - Ph - 1;
+		bottom = false;
+	}
+	if (left) {
+		is_jumping = false;
+		falling = true;
+		if (!have_collided) {
+			left = false;
+		}
+		bottom = false;
+	}
+	if (right) {
+		is_jumping = false;
+		falling = true;
+		if (!have_collided) {
+			right = false;
+		}
+		bottom = false;
+	}
+	if (bottom) {
+		falling = true;
+		is_jumping = false;
+	}
+
 	if (!have_collided && on_floor) on_floor = false;
 	//if (!have_collided && on_wall) on_wall = false;
 	dx = 0;
@@ -253,7 +280,7 @@ void j1Player::Move()
 	{
 		dead = true;
 	}
-	if (App->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT) 
+	if (App->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT && !left) 
 	{
 		move_right = true;
 		move_left = false;
@@ -263,7 +290,7 @@ void j1Player::Move()
 	{
 		move_right = false;
 	}
-	if (App->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT)
+	if (App->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT && !right)
 	{
 		move_right = false;
 		move_left = true;

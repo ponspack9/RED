@@ -54,6 +54,7 @@ public:
 	bool move_left;
 	bool move_right;
 	bool is_jumping;
+	bool falling;
 	float dx = 0;
 	float dy = 0;
 	int max_speed_y;
