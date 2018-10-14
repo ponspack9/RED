@@ -121,71 +121,79 @@ void j1Render::SetBackgroundColor(SDL_Color color)
 bool j1Render::MoveCamera(const int & vel_x, const int & vel_y)
 {
 	SDL_RenderGetViewport(renderer, &viewport);
-
+	
 	int x = App->map->world_limits.x - viewport.w;
 	int y = App->map->world_limits.y - viewport.h;
-
-	if (abs(camera.x + vel_x) <  x && camera.x + vel_x < 0) {
-		//Camera can move x axis
-		camera.x += vel_x;
-		if (abs(camera.y + vel_y) < y && camera.y + vel_y < 0){
-			// Camera can move both axis
-			camera.y += vel_y;
-			return true;
-		}
-		return true;
-
-	}
-	else if (abs(camera.y + vel_y) < y && camera.y + vel_y < 0) {
-			//Camera can move y axis
-			camera.y += vel_y;
-			return true;
-	}
 	
+//if (abs(camera.x + vel_x) <  x && camera.x + vel_x < 0) {
+//	//Camera can move x axis
+//	camera.x += vel_x;
+//	if (abs(camera.y + vel_y) < y && camera.y + vel_y < 0){
+//		// Camera can move both axis
+//		camera.y += vel_y;
+//		return true;
+//	}
+//	return true;
+//
+//}
+//else if (abs(camera.y + vel_y) < y && camera.y + vel_y < 0) {
+//		//Camera can move y axis
+//		camera.y += vel_y;
+//		return true;
+//}
+//
+	camera.x += vel_x;
+	camera.y += vel_y;
+
+
 	return false;
 }
 
 void j1Render::FollowPlayer()
 {
-	if (App->player->position.x >= viewport.w / 3 && !(App->player->position.y >= viewport.h / 2))
+	//if (App->player->position.x >= viewport.w / 3 && !(App->player->position.y >= viewport.h / 2))
+	//{
+	//	MoveCamera(-App->player->dx, 0);
+	//}
+	//if (!(App->player->position.x >= viewport.w / 3) && App->player->position.y >= viewport.h / 2)
+	//{
+	//	MoveCamera(0, -App->player->dy);
+	//}
+	//if (App->player->position.x >= viewport.w / 3 && App->player->position.y >= viewport.h / 2)
+	//{
+	//	MoveCamera(-App->player->dx, -App->player->dy);
+	//}
+	//if (App->player->position.x >= 2*(viewport.w/3) &&  )
+
+	//MoveCamera(-App->player->dx, -App->player->dy);
+	//return;
+
+	//1
+	if (App->player->position.x >= viewport.w / 3 && App->player->position.x <= 2 * (viewport.w / 3) && App->player->position.y <= viewport.h / 3)
 	{
 		MoveCamera(-App->player->dx, 0);
 	}
-	if (!(App->player->position.x >= viewport.w / 3) && App->player->position.y >= viewport.h / 2)
+	//2
+	if (App->player->position.x <= viewport.w / 3 && App->player->position.y >= viewport.h / 3 && App->player->position.y <= 2 * (viewport.h / 3))
 	{
 		MoveCamera(0, -App->player->dy);
 	}
-	if (App->player->position.x >= viewport.w / 3 && App->player->position.y >= viewport.h / 2)
+	//3
+	if (App->player->position.x >= viewport.w / 3 && App->player->position.x <= 2 * (viewport.w / 3) && App->player->position.y >= 2 * (viewport.h / 3))
+	{
+		MoveCamera(-App->player->dx, 0);
+	}
+	//4
+	if (App->player->position.x >= 2 * (viewport.w / 3) && App->player->position.y >= viewport.h / 3 && App->player->position.y <= 2 * (viewport.h / 3))
+	{
+		MoveCamera(0, -App->player->dy);
+	}
+	//5
+	if (App->player->position.x >= viewport.w / 3 && App->player->position.x <= 2 * (viewport.w / 3) && App->player->position.y >= viewport.h / 3 && App->player->position.y <= 2 * (viewport.h / 3))
 	{
 		MoveCamera(-App->player->dx, -App->player->dy);
 	}
 }
-
-	////1
-	//if (App->player->position.x >= (camera.w / 3) && App->player->position.x <= (2 * (camera.w / 3)) && App->player->position.y <= (camera.h / 3))
-	//{
-	//	MoveCamera(-App->player->dx, 0);
-	//}
-	////2
-	//if (App->player->position.x <= (camera.w / 3) && App->player->position.y >= (camera.h / 3) && App->player->position.y <= (2 * (camera.h / 3)))
-	//{
-	//	MoveCamera(0, -App->player->dy);
-	//}
-	////3
-	//if (App->player->position.x >= (camera.w / 3) && App->player->position.x <= (2 * (camera.w / 3)) && App->player->position.y >= (2 * (camera.h / 3)))
-	//{
-	//	MoveCamera(-App->player->dx, 0);
-	//}
-	////4
-	//if (App->player->position.x >= (2 * (camera.w / 3)) && App->player->position.y >= (camera.h / 3) && App->player->position.y <= (2 * (camera.h / 3)))
-	//{
-	//	MoveCamera(0, -App->player->dy);
-	//}
-	////5
-	//if (App->player->position.x >= (camera.w / 3) && App->player->position.x <= (2 * (camera.w / 3)) && App->player->position.y >= (camera.h / 3) && App->player->position.y <= (2 * (camera.h / 3)))
-	//{
-	//	MoveCamera(-App->player->dx, -App->player->dy);
-	//}
 
 void j1Render::SetViewPort(const SDL_Rect& rect)
 {
