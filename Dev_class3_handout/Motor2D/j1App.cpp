@@ -380,6 +380,7 @@ bool j1App::RestartLevel()
 }
 
 bool j1App::NextLevel() {
+
 	if (App->map->current_map->next != NULL)
 	{
 		App->map->current_map = App->map->current_map->next;

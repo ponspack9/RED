@@ -47,7 +47,6 @@ public:
 
 	void FollowPlayer();
 
-
 public:
 
 	SDL_Renderer*	renderer;
