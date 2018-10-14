@@ -127,10 +127,6 @@ bool j1Player::Start()
 	on_floor = false;
 	is_jumping = false;
 
-	r = 255;
-	g = 0;
-	b = 0;
-
 	return true;
 }
 

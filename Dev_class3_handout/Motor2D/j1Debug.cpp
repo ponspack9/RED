@@ -25,7 +25,7 @@ j1Debug::~j1Debug()
 
 bool j1Debug::Awake(pugi::xml_node & config)
 {
-	show_colliders = true;
+	show_colliders = false;
 	start_motion = false;
 	zero.SetToZero();
 
@@ -118,7 +118,7 @@ bool j1Debug::Update(float dt)
 		iPoint final;
 		App->input->GetMousePosition(final.x, final.y);
 		SDL_SetRenderDrawColor(App->render->renderer, 255, 0, 0, SDL_ALPHA_OPAQUE);
-		SDL_RenderDrawLine(App->render->renderer, camera_motion.x, camera_motion.y, final.x, final.y);
+		if (show_colliders)SDL_RenderDrawLine(App->render->renderer, camera_motion.x, camera_motion.y, final.x, final.y);
 
 		App->input->GetMouseMotion(final.x, final.y);
 
