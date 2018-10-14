@@ -11,10 +11,10 @@
 	<debug />
 	<collisions />
 	<player>
-		<position x="0" y="0" />
+		<position x="508" y="704" />
 	</player>
 	<fade />
 	<renderer>
-		<camera x="-702" y="-210" />
+		<camera x="0" y="0" />
 	</renderer>
 </save>

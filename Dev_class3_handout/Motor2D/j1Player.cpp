@@ -105,6 +105,7 @@ bool j1Player::Awake(pugi::xml_node & config)
 	LOG("%d  %d", speed.x, speed.y);
 	//PL. COLLIDER
 	player_collider = App->collision->AddCollider(player_rect, COLLIDER_PLAYER, this);
+	wall = App->collision->AddCollider(player_rect, COLLIDER_NONE);
 	return true;
 }
 
@@ -189,6 +190,61 @@ void j1Player::Draw()
 ////////////////////////////////////////////////////////////////////////////////////////////
 void j1Player::Move()
 {
+	int Px = player_rect.x;
+	int Py = player_rect.y;
+	int Pw = player_rect.w;
+	int Ph = player_rect.h;
+	int Cx = wall->rect.x;
+	int Cy = wall->rect.y;
+	int Cw = wall->rect.w;
+	int Ch = wall->rect.h;
+
+	if (have_collided) {
+		if (Px < (Cx + 8)/*if player is in the left of the C*/) {
+			if (((Py < Cy) && (Py > (Cy + Ch))/*Py is inside Ch*/ || (((Py + Ph) < (Cy + Ch)) && ((Py + Ph) > Cy)))/**/) {
+				left = true;
+				LOG("PLAYER ON LEFT");
+			}
+			if (!(((Py < Cy) && (Py > (Cy + Ch))/*Py is inside Ch*/ || (((Py + Ph) < (Cy + Ch)) && ((Py + Ph) > Cy)))/**/)) {
+				left = false;
+				LOG("PLAYER NOT ON LEFT ANYMORE");
+			}
+		}
+
+		if (Px > (Cx + Cw - 8)/*if player is in the left of the C*/) {
+			if (((Py < Cy) && (Py > (Cy + Ch))/*Py is inside Ch*/ || (((Py + Ph) < (Cy + Ch)) && ((Py + Ph) > Cy)))/**/) {
+				right = true;
+				LOG("PLAYER ON RIGHT");
+			}
+			if (!(((Py < Cy) && (Py > (Cy + Ch))/*Py is inside Ch*/ || (((Py + Ph) < (Cy + Ch)) && ((Py + Ph) > Cy)))/**/)) {
+				right = false;
+				LOG("PLAYER NOT ON RIGHT ANYMORE");
+			}
+		}
+
+		if ((Px > Cx) && (Px < (Cx + Cw)) || (((Px + Pw) > Cx) && ((Px + Pw) < (Cx + Cw)))/*(Px+Pw) inside Cw*/) {
+			if ((Py + Ph) < (Cy + 20)/*if (Py+Ph) is inside the C but not more than 20p*/ && !((Py < (Cy + 20)) && (Py > (Cy + Ch)))) {
+				if (!left && !right) {
+					top = true;
+					LOG("PLAYER ON TOP");
+				}
+			}
+		}
+
+		if ((Px > Cx) && (Px < (Cx + Cw)) || (((Px + Pw) > Cx) && ((Px + Pw) < (Cx + Cw)))/*(Px+Pw) inside Cw*/) {
+			if ((Py > (Cy + (Ch - 8)))) {
+				bottom = true;
+				LOG("PLAYER ON BOT");
+			}
+
+		}
+		/*if (playerrect.x || (playerrect.x + playerrect.w) > (TheWallCollider->rect.x + 10) && (playerrect.x || (playerrect.x + playerrect.w) < (TheWallCollider->rect.x + TheWallCollider->rect.w))) {
+			if (playerrect.y > (TheWallCollider->rect.y - 10)) {
+				Bot = true;
+			}
+		}*/
+
+	}
 	if (!have_collided && on_floor) on_floor = false;
 	//if (!have_collided && on_wall) on_wall = false;
 	dx = 0;
@@ -221,20 +277,11 @@ void j1Player::Move()
 	{
 		Jump();
 		LOG("JUMP");
-
 	}
-	/*if (App->input->GetKey(SDL_SCANCODE_S) == KEY_REPEAT)
-	{
-		if (!on_floor)
-		{
-			position.y += (speed.y + 2);
-			speed.y += gravity;
-		}
-	}*/
+
 	if (is_jumping)
 	{
 		is_jumping = Jump();
-		//LOG("JUMPING");
 	}
 	else if (!on_floor)
 	{
@@ -250,86 +297,6 @@ void j1Player::Move()
 	player_rect.y = position.y;
 
 	have_collided = false;
-
-
-//	/if (is_jumping && !move_left && !move_right)
-//	/{
-//	/	position.y -= aux_speed_y;
-//	/	aux_speed_y -= 0.2;
-//	/	if (aux_speed_y == 0)
-//	/	{
-//	/		on_top = true;
-//	/		position.y += aux_speed_y;
-//	/		aux_speed_y += 0.2;
-//	/		if (aux_speed_y == speed.y)
-//	/		{
-//	/			position.y += aux_speed_y;
-//	/		}
-//  /
-//	/	}
-//  /
-//	/}
-//	/if (is_jumping && move_left && !move_right)
-//	/{
-//	/	position.x -= speed.x;
-//	/	position.y -= aux_speed_y;
-//	/	aux_speed_y -= 0.2;
-//	/	if (aux_speed_y == 0)
-//	/	{
-//	/		on_top = true;
-//	/		position.y += aux_speed_y;
-//	/		aux_speed_y += 0.1;
-//	/		if (aux_speed_y == speed.y)
-//	/		{
-//	/			position.y += aux_speed_y;
-//	/		}
-//  /
-//	/	}
-//	/}
-//	/if (is_jumping && !move_left && move_right)
-//	/{
-//	/	position.x -= speed.x;
-//	/	position.y -= aux_speed_y;
-//	/	aux_speed_y -= 0.1;
-//	/	if (aux_speed_y == 0)
-//	/	{
-//	/		on_top = true;
-//	/		position.y += aux_speed_y;
-//	/		aux_speed_y += 0.1;
-//	/		if (aux_speed_y == speed.y)
-//	/		{
-//	/			position.y += aux_speed_y;
-//	/		}
-//  /
-//	/	}
-//	/}
-//	/if (is_jumping && move_left && move_right)
-//	/{
-//	/	position.y -= aux_speed_y;
-//	/	aux_speed_y -= 0.1;
-//	/	if (aux_speed_y == 0)
-//	/	{
-//	/		on_top = true;
-//	/		position.y += aux_speed_y;
-//	/		aux_speed_y += 0.1;
-//	/	}
-//	/	if (aux_speed_y == speed.y)
-//	/	{
-//	/		position.y += aux_speed_y;
-//	/	}
-//  /
-//  /
-//	///if (!is_jumping && !on_floor)
-//	///{
-//	///	on_top = true;
-//	///	position.y += aux_speed_y;
-//	///	aux_speed_y += 0.1;
-//	///	if (aux_speed_y == speed.y)
-//	///	{
-//	///		position.y += aux_speed_y;
-//	///	}
-//	///}
-//  //
 }
 
 bool j1Player::Jump()
@@ -417,11 +384,13 @@ void j1Player::OnCollision(Collider * c1, Collider * c2)
 	if (c1->type == COLLIDER_PLAYER && c2->type == COLLIDER_FLOOR && !on_floor) {
 
 		on_floor = true;
+		
 		//last_collision = COLLIDER_FLOOR;
 	}
 	if (c1->type == COLLIDER_PLAYER && c2->type == COLLIDER_WALL) {
 
 		on_wall = true;
+		*wall += (c2);
 	}
 	if (c1->type == COLLIDER_PLAYER && c2->type == COLLIDER_END && !level_finished) {
 		level_finished = true;

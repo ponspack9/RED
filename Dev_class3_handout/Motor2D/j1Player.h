@@ -59,7 +59,7 @@ public:
 	int max_speed_y;
 	float gravity;
 	float jumpspeed;
-
+	bool top, bottom, left, right;
 	fPoint position;
 	iPoint init_pos1;
 	iPoint init_pos2;

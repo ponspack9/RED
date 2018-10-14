@@ -51,17 +51,13 @@ struct Collider
 		rect.x = x;
 		rect.y = y;
 	}
-	//void operator = (Collider* c) {
-	//	rect.x = c->rect.x;
-	//	rect.y = c->rect.y;
-	//	rect.w = c->rect.w;
-	//	rect.h = c->rect.h;
-	//	type = COLLIDER_NONE;
-	//	/*type = c->type;
-	//	if (c->callback != nullptr) {
-	//		callback = c->callback;
-	//	}*/
-	//}
+	void operator += (Collider* c) {
+		rect.x = c->rect.x;
+		rect.y = c->rect.y;
+		rect.w = c->rect.w;
+		rect.h = c->rect.h;
+		type = COLLIDER_NONE;
+	}
 
 	bool CheckCollision(const SDL_Rect& r) const;
 	bool CheckRectLineCollision(int x1, int y1, int x2, int y2) const;
