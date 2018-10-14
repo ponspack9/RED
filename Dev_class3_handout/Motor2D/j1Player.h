@@ -61,6 +61,7 @@ public:
 	float gravity;
 	float jumpspeed;
 	bool top, bottom, left, right;
+	bool can_left, can_right;
 	fPoint position;
 	iPoint init_pos1;
 	iPoint init_pos2;

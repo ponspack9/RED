@@ -101,7 +101,7 @@ bool j1Scene::Load(pugi::xml_node & node)
 {
 	LOG("Loading SCENE");
 
-	App->map->current_map->data = node.child("scene").child("current").attribute("current_map").as_string();
+	App->map->current_map->data = node.child("current").attribute("current_map").as_string();
 
 	return true;
 }

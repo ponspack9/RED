@@ -6,15 +6,15 @@
 	<audio />
 	<map />
 	<scene>
-		<current current_map="MapLvl2.tmx" />
+		<current current_map="MapLvl1.tmx" />
 	</scene>
 	<debug />
 	<collisions />
 	<player>
-		<position x="841" y="184" />
+		<position x="259" y="202" />
 	</player>
 	<fade />
 	<renderer>
-		<camera x="-501" y="0" />
+		<camera x="-9" y="-8" />
 	</renderer>
 </save>

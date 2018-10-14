@@ -29,7 +29,7 @@ bool j1Render::Awake(pugi::xml_node& config)
 	// load flags
 	Uint32 flags = SDL_RENDERER_ACCELERATED;
 
-	if(config.child("vsync").attribute("value").as_bool(true) == true)
+	if (config.child("vsync").attribute("value").as_bool(true) == true)
 	{
 		flags |= SDL_RENDERER_PRESENTVSYNC;
 		LOG("Using vsync");
@@ -37,7 +37,7 @@ bool j1Render::Awake(pugi::xml_node& config)
 
 	renderer = SDL_CreateRenderer(App->win->window, -1, flags);
 
-	if(renderer == NULL)
+	if (renderer == NULL)
 	{
 		LOG("Could not create the renderer! SDL_Error: %s\n", SDL_GetError());
 		ret = false;
@@ -94,9 +94,9 @@ bool j1Render::Load(pugi::xml_node& node)
 {
 
 	LOG("Loading RENDER");
-	
-	camera.x = node.child("renderer").child("camera").attribute("x").as_int();
-	camera.y = node.child("renderer").child("camera").attribute("y").as_int();
+
+	camera.x = node.child("camera").attribute("x").as_int();
+	camera.y = node.child("camera").attribute("y").as_int();
 
 	return true;
 }
@@ -108,7 +108,7 @@ bool j1Render::Save(pugi::xml_node& node)
 
 	cam.append_attribute("x") = camera.x;
 	cam.append_attribute("y") = camera.y;
-	LOG("cameraX: %d - %d \n camerY: %d - %d", camera.x, cam.attribute("x").as_int(), camera.y,cam.attribute("y").as_int());
+	LOG("cameraX: %d - %d \n camerY: %d - %d", camera.x, cam.attribute("x").as_int(), camera.y, cam.attribute("y").as_int());
 
 	return true;
 }
@@ -121,27 +121,31 @@ void j1Render::SetBackgroundColor(SDL_Color color)
 bool j1Render::MoveCamera(const int & vel_x, const int & vel_y)
 {
 	SDL_RenderGetViewport(renderer, &viewport);
-	
+
 	int x = App->map->world_limits.x - viewport.w;
 	int y = App->map->world_limits.y - viewport.h;
-	
-	if (abs(camera.x + vel_x) <  x && camera.x + vel_x < 0) {
+
+	if (abs(camera.x + vel_x) < x && camera.x + vel_x < 0) {
 		//Camera can move x axis
 		camera.x += vel_x;
-		if (abs(camera.y + vel_y) < y && camera.y + vel_y < 0){
+		if (abs(camera.y + vel_y) < y && camera.y + vel_y < 0) {
 			// Camera can move both axis
 			camera.y += vel_y;
 			return true;
 		}
 		return true;
-	
+
 	}
 	else if (abs(camera.y + vel_y) < y && camera.y + vel_y < 0) {
-			//Camera can move y axis
-			camera.y += vel_y;
-			return true;
+		//Camera can move y axis
+		camera.y += vel_y;
+		return true;
 	}
-	
+
+	/*camera.x += vel_x;
+	camera.y += vel_y;*/
+
+
 	return false;
 }
 
@@ -159,6 +163,7 @@ void j1Render::FollowPlayer()
 	{
 		MoveCamera(-App->player->dx, -App->player->dy);
 	}
+	/*if (App->player->position.x >= 2*(viewport.w/3) &&  )*/
 
 	//MoveCamera(-App->player->dx, -App->player->dy);
 	//return;
@@ -201,7 +206,7 @@ void j1Render::ResetViewPort()
 }
 
 // Blit to screen
-bool j1Render::Blit(SDL_Texture* texture, int x, int y, const SDL_Rect* section, float speed, double angle, SDL_RendererFlip flip,int pivot_x, int pivot_y) const
+bool j1Render::Blit(SDL_Texture* texture, int x, int y, const SDL_Rect* section, float speed, double angle, SDL_RendererFlip flip, int pivot_x, int pivot_y) const
 {
 	bool ret = true;
 	uint scale = App->win->GetScale();
@@ -210,7 +215,7 @@ bool j1Render::Blit(SDL_Texture* texture, int x, int y, const SDL_Rect* section,
 	rect.x = (int)(camera.x * speed) + x * scale;
 	rect.y = (int)(camera.y * speed) + y * scale;
 
-	if(section != NULL)
+	if (section != NULL)
 	{
 		rect.w = section->w;
 		rect.h = section->h;
@@ -226,14 +231,14 @@ bool j1Render::Blit(SDL_Texture* texture, int x, int y, const SDL_Rect* section,
 	SDL_Point* p = NULL;
 	SDL_Point pivot;
 
-	if(pivot_x != INT_MAX && pivot_y != INT_MAX)
+	if (pivot_x != INT_MAX && pivot_y != INT_MAX)
 	{
 		pivot.x = pivot_x;
 		pivot.y = pivot_y;
 		p = &pivot;
 	}
 
-	if(SDL_RenderCopyEx(renderer, texture, section, &rect, angle, p, flip) != 0)
+	if (SDL_RenderCopyEx(renderer, texture, section, &rect, angle, p, flip) != 0)
 	{
 		LOG("Cannot blit to screen. SDL_RenderCopy error: %s", SDL_GetError());
 		ret = false;
@@ -251,7 +256,7 @@ bool j1Render::DrawQuad(const SDL_Rect& rect, Uint8 r, Uint8 g, Uint8 b, Uint8 a
 	SDL_SetRenderDrawColor(renderer, r, g, b, a);
 
 	SDL_Rect rec(rect);
-	if(use_camera)
+	if (use_camera)
 	{
 		rec.x = (int)(camera.x + rect.x * scale);
 		rec.y = (int)(camera.y + rect.y * scale);
@@ -261,7 +266,7 @@ bool j1Render::DrawQuad(const SDL_Rect& rect, Uint8 r, Uint8 g, Uint8 b, Uint8 a
 
 	int result = (filled) ? SDL_RenderFillRect(renderer, &rec) : SDL_RenderDrawRect(renderer, &rec);
 
-	if(result != 0)
+	if (result != 0)
 	{
 		LOG("Cannot draw quad to screen. SDL_RenderFillRect error: %s", SDL_GetError());
 		ret = false;
@@ -280,12 +285,12 @@ bool j1Render::DrawLine(int x1, int y1, int x2, int y2, Uint8 r, Uint8 g, Uint8 
 
 	int result = -1;
 
-	if(use_camera)
+	if (use_camera)
 		result = SDL_RenderDrawLine(renderer, camera.x + x1 * scale, camera.y + y1 * scale, camera.x + x2 * scale, camera.y + y2 * scale);
 	else
 		result = SDL_RenderDrawLine(renderer, x1 * scale, y1 * scale, x2 * scale, y2 * scale);
 
-	if(result != 0)
+	if (result != 0)
 	{
 		LOG("Cannot draw quad to screen. SDL_RenderFillRect error: %s", SDL_GetError());
 		ret = false;
@@ -307,7 +312,7 @@ bool j1Render::DrawCircle(int x, int y, int radius, Uint8 r, Uint8 g, Uint8 b, U
 
 	float factor = (float)M_PI / 180.0f;
 
-	for(uint i = 0; i < 360; ++i)
+	for (uint i = 0; i < 360; ++i)
 	{
 		points[i].x = (int)(x + radius * cos(i * factor));
 		points[i].y = (int)(y + radius * sin(i * factor));
@@ -315,7 +320,7 @@ bool j1Render::DrawCircle(int x, int y, int radius, Uint8 r, Uint8 g, Uint8 b, U
 
 	result = SDL_RenderDrawPoints(renderer, points, 360);
 
-	if(result != 0)
+	if (result != 0)
 	{
 		LOG("Cannot draw quad to screen. SDL_RenderFillRect error: %s", SDL_GetError());
 		ret = false;
