@@ -177,6 +177,12 @@ bool j1Player::CleanUp()
 	return true;
 }
 
+void j1Player::Die()
+{
+	dead = true;
+	current_animation = &death;
+}
+
 void j1Player::Draw()
 {
 	if (move_left)
@@ -226,7 +232,7 @@ void j1Player::Move()
 	dy = 0;
 	if (App->input->GetKey(SDL_SCANCODE_Q) == KEY_DOWN)
 	{
-		dead = true;
+		Die();
 	}
 	if (App->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT && !right)
 	{
@@ -301,7 +307,7 @@ void j1Player::Move()
 	MovePlayer(dx, dy);
 
 	//player_rect.x = position.x;
-	player_rect.y = position.y;
+	//player_rect.y = position.y;
 
 	have_collided = false;
 }
@@ -404,6 +410,9 @@ void j1Player::OnCollision(Collider * c1, Collider * c2)
 	}
 	if (c1->type == COLLIDER_PLAYER && c2->type == COLLIDER_END && !level_finished) {
 		level_finished = true;
+	}
+	if (c1->type == COLLIDER_PLAYER && c2->type == COLLIDER_DEATH) {
+		Die();
 	}
 
 }

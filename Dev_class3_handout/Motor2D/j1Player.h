@@ -20,6 +20,7 @@ public:
 	bool PostUpdate();
 	bool CleanUp();
 
+	void Die();
 	void Draw();
 	bool MovePlayer(float vel_x, float vel_y);
 	void Move();
