@@ -103,6 +103,9 @@ public:
 	j1FadeToBlack*		fade;
 	j1Player*			player;
 
+	bool				want_to_load;
+	mutable bool		want_to_save;
+
 private:
 
 	p2List<j1Module*>	modules;
@@ -117,8 +120,6 @@ private:
 	p2SString			load_path;
 	mutable p2SString	save_path;
 	
-	mutable bool		want_to_save;
-	bool				want_to_load;
 
 };
 

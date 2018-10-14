@@ -10,6 +10,7 @@
 #include "j1Collision.h"
 #include "j1Map.h"
 #include "j1Player.h"
+#include "j1FadeToBlack.h"
 
 j1Scene::j1Scene() : j1Module()
 {
@@ -32,14 +33,14 @@ bool j1Scene::Awake(pugi::xml_node& config)
 // Called before the first frame
 bool j1Scene::Start()
 {
-
 	bool ret = App->audio->PlayMusic(PATH(App->audio->folder_music.GetString(),App->audio->tracks_path.start->data.GetString()));
 	if (ret) App->map->Load(App->map->current_map->data.GetString());
 
 	
-	App->render->camera.x = 0;
-	App->render->camera.y = 0;
-	App->player->Start();
+		App->render->camera.x = 0;
+		App->render->camera.y = 0;
+		App->player->Start();
+	
 
 	return ret;
 }
@@ -93,15 +94,19 @@ bool j1Scene::Save(pugi::xml_node & node)
 		
 	map_node.append_attribute("current_map") = App->map->current_map->data.GetString();
 	
-	LOG("current map %s - %s", App->map->current_map->data.GetString(), node.child("scene").child("current").attribute("current_map").as_string());
+	LOG("current map %s - %s", App->map->current_map->data.GetString(), node.child("current").attribute("current_map").as_string());
 	return true;
 }
 
 bool j1Scene::Load(pugi::xml_node & node)
 {
 	LOG("Loading SCENE");
+	   
 
 	App->map->current_map->data = node.child("current").attribute("current_map").as_string();
+
+
+	LOG("Current map: %s", App->map->current_map->data);
 
 	return true;
 }

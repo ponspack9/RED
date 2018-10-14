@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.1" tiledversion="2018.09.12" orientation="orthogonal" renderorder="right-down" width="100" height="40" tilewidth="32" tileheight="32" infinite="0" nextlayerid="10" nextobjectid="1423">
+<map version="1.1" tiledversion="2018.09.12" orientation="orthogonal" renderorder="right-down" width="100" height="40" tilewidth="32" tileheight="32" infinite="0" nextlayerid="11" nextobjectid="1569">
  <properties>
   <property name="Collider" type="bool" value="true"/>
  </properties>
@@ -4147,451 +4147,18 @@
   <object id="671" x="3200" y="256">
    <polyline points="0,0 -32,0 -32,-64 0,-64"/>
   </object>
-  <object id="815" x="704" y="256" width="64" height="64">
-   <ellipse/>
-  </object>
   <object id="1339" x="1824" y="577.818" width="32" height="30.1818"/>
   <object id="1340" x="2208" y="609.091" width="32" height="30.9091"/>
- </objectgroup>
- <objectgroup id="6" name="Colliders_death" locked="1">
-  <properties>
-   <property name="is_collider" type="bool" value="true"/>
-  </properties>
-  <object id="1166" x="0" y="160">
-   <polyline points="0,0 36,-15.5 0,-32"/>
-  </object>
-  <object id="1167" x="0" y="320">
-   <polyline points="0,0 36,-15.5 0,-32"/>
-  </object>
-  <object id="1168" x="0" y="480">
-   <polyline points="0,0 36,-15.5 0,-32"/>
-  </object>
-  <object id="1169" x="352" y="576">
-   <polyline points="0,0 36,-15.5 0,-32"/>
-  </object>
-  <object id="1170" x="352" y="416">
-   <polyline points="0,0 36,-15.5 0,-32"/>
-  </object>
-  <object id="1171" x="768" y="384">
-   <polyline points="0,0 36,-15.5 0,-32"/>
-  </object>
-  <object id="1172" x="768" y="480">
-   <polyline points="0,0 36,-15.5 0,-32"/>
-  </object>
-  <object id="1173" x="960" y="512">
-   <polyline points="0,0 36,-15.5 0,-32"/>
-  </object>
-  <object id="1174" x="960" y="544">
-   <polyline points="0,0 36,-15.5 0,-32"/>
-  </object>
-  <object id="1175" x="1120" y="512">
-   <polyline points="0,0 36,-15.5 0,-32"/>
-  </object>
-  <object id="1176" x="1120" y="480">
-   <polyline points="0,0 36,-15.5 0,-32"/>
-  </object>
-  <object id="1177" x="1248" y="288">
-   <polyline points="0,0 36,-15.5 0,-32"/>
-  </object>
-  <object id="1178" x="1248" y="352">
-   <polyline points="0,0 36,-15.5 0,-32"/>
-  </object>
-  <object id="1179" x="1248" y="320">
-   <polyline points="0,0 36,-15.5 0,-32"/>
-  </object>
-  <object id="1180" x="1248" y="384">
-   <polyline points="0,0 36,-15.5 0,-32"/>
-  </object>
-  <object id="1181" x="2272" y="160">
-   <polyline points="0,0 36,-15.5 0,-32"/>
-  </object>
-  <object id="1182" x="2144" y="192">
-   <polyline points="0,0 36,-15.5 0,-32"/>
-  </object>
-  <object id="1183" x="2016" y="160">
-   <polyline points="0,0 36,-15.5 0,-32"/>
-  </object>
-  <object id="1184" x="2528" y="320">
-   <polyline points="0,0 36,-15.5 0,-32"/>
-  </object>
-  <object id="1185" x="2528" y="352">
-   <polyline points="0,0 36,-15.5 0,-32"/>
-  </object>
-  <object id="1186" x="2688" y="416">
-   <polyline points="0,0 36,-15.5 0,-32"/>
-  </object>
-  <object id="1187" x="2688" y="448">
-   <polyline points="0,0 36,-15.5 0,-32"/>
-  </object>
-  <object id="1188" x="2592" y="544">
-   <polyline points="0,0 36,-15.5 0,-32"/>
-  </object>
-  <object id="1189" x="2592" y="576">
-   <polyline points="0,0 36,-15.5 0,-32"/>
-  </object>
-  <object id="1190" x="3040" y="416">
-   <polyline points="0,0 36,-15.5 0,-32"/>
-  </object>
-  <object id="1191" x="3040" y="448">
-   <polyline points="0,0 36,-15.5 0,-32"/>
-  </object>
-  <object id="1192" x="3040" y="480">
-   <polyline points="0,0 36,-15.5 0,-32"/>
-  </object>
-  <object id="1193" x="3040" y="512">
-   <polyline points="0,0 36,-15.5 0,-32"/>
-  </object>
-  <object id="1194" x="1920" y="736">
-   <polyline points="0,0 36,-15.5 0,-32"/>
-  </object>
-  <object id="1195" x="1920" y="800">
-   <polyline points="0,0 36,-15.5 0,-32"/>
-  </object>
-  <object id="1196" x="1920" y="864">
-   <polyline points="0,0 36,-15.5 0,-32"/>
-  </object>
-  <object id="1197" x="1920" y="928">
-   <polyline points="0,0 36,-15.5 0,-32"/>
-  </object>
-  <object id="1198" x="1920" y="992">
-   <polyline points="0,0 36,-15.5 0,-32"/>
-  </object>
-  <object id="1199" x="1920" y="1056">
-   <polyline points="0,0 36,-15.5 0,-32"/>
-  </object>
-  <object id="1200" x="1920" y="1120">
-   <polyline points="0,0 36,-15.5 0,-32"/>
-  </object>
-  <object id="1201" x="1920" y="1184">
-   <polyline points="0,0 36,-15.5 0,-32"/>
-  </object>
-  <object id="1202" x="1920" y="1248">
-   <polyline points="0,0 36,-15.5 0,-32"/>
-  </object>
-  <object id="1203" x="224" y="384">
-   <polyline points="0,0 -35.3636,-16.4545 0,-32"/>
-  </object>
-  <object id="1204" x="224" y="416">
-   <polyline points="0,0 -35.3636,-16.4545 0,-32"/>
-  </object>
-  <object id="1205" x="704" y="416">
-   <polyline points="0,0 -35.3636,-16.4545 0,-32"/>
-  </object>
-  <object id="1206" x="704" y="512">
-   <polyline points="0,0 -35.3636,-16.4545 0,-32"/>
-  </object>
-  <object id="1207" x="704" y="608">
-   <polyline points="0,0 -35.3636,-16.4545 0,-32"/>
-  </object>
-  <object id="1208" x="704" y="704">
-   <polyline points="0,0 -35.3636,-16.4545 0,-32"/>
-  </object>
-  <object id="1209" x="704" y="800">
-   <polyline points="0,0 -35.3636,-16.4545 0,-32"/>
-  </object>
-  <object id="1210" x="1184" y="288">
-   <polyline points="0,0 -35.3636,-16.4545 0,-32"/>
-  </object>
-  <object id="1211" x="1184" y="320">
-   <polyline points="0,0 -35.3636,-16.4545 0,-32"/>
-  </object>
-  <object id="1212" x="1184" y="352">
-   <polyline points="0,0 -35.3636,-16.4545 0,-32"/>
-  </object>
-  <object id="1213" x="1184" y="384">
-   <polyline points="0,0 -35.3636,-16.4545 0,-32"/>
-  </object>
-  <object id="1214" x="2208" y="160">
-   <polyline points="0,0 -35.3636,-16.4545 0,-32"/>
-  </object>
-  <object id="1215" x="2080" y="192">
-   <polyline points="0,0 -35.3636,-16.4545 0,-32"/>
-  </object>
-  <object id="1216" x="1888" y="672">
-   <polyline points="0,0 -35.3636,-16.4545 0,-32"/>
-  </object>
-  <object id="1217" x="2528" y="544">
-   <polyline points="0,0 -35.3636,-16.4545 0,-32"/>
-  </object>
-  <object id="1218" x="2528" y="576">
-   <polyline points="0,0 -35.3636,-16.4545 0,-32"/>
-  </object>
-  <object id="1219" x="2464" y="352">
-   <polyline points="0,0 -35.3636,-16.4545 0,-32"/>
-  </object>
-  <object id="1220" x="2464" y="320">
-   <polyline points="0,0 -35.3636,-16.4545 0,-32"/>
-  </object>
-  <object id="1221" x="2624" y="416">
-   <polyline points="0,0 -35.3636,-16.4545 0,-32"/>
-  </object>
-  <object id="1222" x="2624" y="448">
-   <polyline points="0,0 -35.3636,-16.4545 0,-32"/>
-  </object>
-  <object id="1223" x="2016" y="896">
-   <polyline points="0,0 -35.3636,-16.4545 0,-32"/>
-  </object>
-  <object id="1224" x="2016" y="960">
-   <polyline points="0,0 -35.3636,-16.4545 0,-32"/>
-  </object>
-  <object id="1225" x="2016" y="1024">
-   <polyline points="0,0 -35.3636,-16.4545 0,-32"/>
-  </object>
-  <object id="1226" x="2016" y="1088">
-   <polyline points="0,0 -35.3636,-16.4545 0,-32"/>
-  </object>
-  <object id="1227" x="2016" y="1152">
-   <polyline points="0,0 -35.3636,-16.4545 0,-32"/>
-  </object>
-  <object id="1228" x="2016" y="1216">
-   <polyline points="0,0 -35.3636,-16.4545 0,-32"/>
-  </object>
-  <object id="1229" x="2016" y="1280">
-   <polyline points="0,0 -35.3636,-16.4545 0,-32"/>
-  </object>
-  <object id="1230" x="3200" y="160">
-   <polyline points="0,0 -35.3636,-16.4545 0,-32"/>
-  </object>
-  <object id="1231" x="3200" y="608">
-   <polyline points="0,0 -35.3636,-16.4545 0,-32"/>
-  </object>
-  <object id="1232" x="3200" y="640">
-   <polyline points="0,0 -35.3636,-16.4545 0,-32"/>
-  </object>
-  <object id="1233" x="2784" y="320">
-   <polyline points="0,0 -35.3636,-16.4545 0,-32"/>
-  </object>
-  <object id="1234" x="2784" y="288">
-   <polyline points="0,0 -35.3636,-16.4545 0,-32"/>
-  </object>
-  <object id="1235" x="2784" y="384">
-   <polyline points="0,0 -35.3636,-16.4545 0,-32"/>
-  </object>
-  <object id="1236" x="2784" y="352">
-   <polyline points="0,0 -35.3636,-16.4545 0,-32"/>
-  </object>
-  <object id="1237" x="2784" y="448">
-   <polyline points="0,0 -35.3636,-16.4545 0,-32"/>
-  </object>
-  <object id="1238" x="2784" y="416">
-   <polyline points="0,0 -35.3636,-16.4545 0,-32"/>
-  </object>
-  <object id="1239" x="2784" y="512">
-   <polyline points="0,0 -35.3636,-16.4545 0,-32"/>
-  </object>
-  <object id="1240" x="2784" y="480">
-   <polyline points="0,0 -35.3636,-16.4545 0,-32"/>
-  </object>
-  <object id="1241" x="256" y="352">
-   <polyline points="0,0 -15.625,-36.125 -32,0"/>
-  </object>
-  <object id="1242" x="320" y="352">
-   <polyline points="0,0 -15.625,-36.125 -32,0"/>
-  </object>
-  <object id="1243" x="448" y="864">
-   <polyline points="0,0 -15.625,-36.125 -32,0"/>
-  </object>
-  <object id="1244" x="480" y="864">
-   <polyline points="0,0 -15.625,-36.125 -32,0"/>
-  </object>
-  <object id="1245" x="544" y="864">
-   <polyline points="0,0 -15.625,-36.125 -32,0"/>
-  </object>
-  <object id="1246" x="576" y="864">
-   <polyline points="0,0 -15.625,-36.125 -32,0"/>
-  </object>
-  <object id="1247" x="640" y="864">
-   <polyline points="0,0 -15.625,-36.125 -32,0"/>
-  </object>
-  <object id="1248" x="672" y="864">
-   <polyline points="0,0 -15.625,-36.125 -32,0"/>
-  </object>
-  <object id="1249" x="1056" y="704">
-   <polyline points="0,0 -15.625,-36.125 -32,0"/>
-  </object>
-  <object id="1250" x="1088" y="704">
-   <polyline points="0,0 -15.625,-36.125 -32,0"/>
-  </object>
-  <object id="1251" x="1184" y="704">
-   <polyline points="0,0 -15.625,-36.125 -32,0"/>
-  </object>
-  <object id="1252" x="1216" y="704">
-   <polyline points="0,0 -15.625,-36.125 -32,0"/>
-  </object>
-  <object id="1253" x="1312" y="704">
-   <polyline points="0,0 -15.625,-36.125 -32,0"/>
-  </object>
-  <object id="1254" x="1344" y="704">
-   <polyline points="0,0 -15.625,-36.125 -32,0"/>
-  </object>
-  <object id="1255" x="1376" y="704">
-   <polyline points="0,0 -15.625,-36.125 -32,0"/>
-  </object>
-  <object id="1256" x="1408" y="704">
-   <polyline points="0,0 -15.625,-36.125 -32,0"/>
-  </object>
-  <object id="1257" x="1632" y="704">
-   <polyline points="0,0 -15.625,-36.125 -32,0"/>
-  </object>
-  <object id="1258" x="1664" y="704">
-   <polyline points="0,0 -15.625,-36.125 -32,0"/>
-  </object>
-  <object id="1259" x="1696" y="704">
-   <polyline points="0,0 -15.625,-36.125 -32,0"/>
-  </object>
-  <object id="1260" x="1216" y="256">
-   <polyline points="0,0 -15.625,-36.125 -32,0"/>
-  </object>
-  <object id="1261" x="1248" y="256">
-   <polyline points="0,0 -15.625,-36.125 -32,0"/>
-  </object>
-  <object id="1262" x="2496" y="288">
-   <polyline points="0,0 -15.625,-36.125 -32,0"/>
-  </object>
-  <object id="1263" x="2528" y="288">
-   <polyline points="0,0 -15.625,-36.125 -32,0"/>
-  </object>
-  <object id="1264" x="2560" y="512">
-   <polyline points="0,0 -15.625,-36.125 -32,0"/>
-  </object>
-  <object id="1265" x="2592" y="512">
-   <polyline points="0,0 -15.625,-36.125 -32,0"/>
-  </object>
-  <object id="1266" x="2656" y="384">
-   <polyline points="0,0 -15.625,-36.125 -32,0"/>
-  </object>
-  <object id="1267" x="2688" y="384">
-   <polyline points="0,0 -15.625,-36.125 -32,0"/>
-  </object>
-  <object id="1268" x="2336" y="832">
-   <polyline points="0,0 -15.625,-36.125 -32,0"/>
-  </object>
-  <object id="1269" x="2368" y="832">
-   <polyline points="0,0 -15.625,-36.125 -32,0"/>
-  </object>
-  <object id="1270" x="2720" y="832">
-   <polyline points="0,0 -15.625,-36.125 -32,0"/>
-  </object>
-  <object id="1271" x="2752" y="832">
-   <polyline points="0,0 -15.625,-36.125 -32,0"/>
-  </object>
-  <object id="1272" x="2784" y="832">
-   <polyline points="0,0 -15.625,-36.125 -32,0"/>
-  </object>
-  <object id="1273" x="2816" y="832">
-   <polyline points="0,0 -15.625,-36.125 -32,0"/>
-  </object>
-  <object id="1274" x="2400" y="832">
-   <polyline points="0,0 -15.625,-36.125 -32,0"/>
-  </object>
-  <object id="1275" x="2528" y="896">
-   <polyline points="0,0 -15.625,-36.125 -32,0"/>
-  </object>
-  <object id="1276" x="1248" y="384">
-   <polyline points="0,0 -16.1818,35.9091 -32,0"/>
-  </object>
-  <object id="1277" x="1216" y="384">
-   <polyline points="0,0 -16.1818,35.9091 -32,0"/>
-  </object>
-  <object id="1278" x="2144" y="192">
-   <polyline points="0,0 -16.1818,35.9091 -32,0"/>
-  </object>
-  <object id="1279" x="2112" y="192">
-   <polyline points="0,0 -16.1818,35.9091 -32,0"/>
-  </object>
-  <object id="1280" x="2272" y="192">
-   <polyline points="0,0 -16.1818,35.9091 -32,0"/>
-  </object>
-  <object id="1281" x="2240" y="192">
-   <polyline points="0,0 -16.1818,35.9091 -32,0"/>
-  </object>
-  <object id="1282" x="2528" y="352">
-   <polyline points="0,0 -16.1818,35.9091 -32,0"/>
-  </object>
-  <object id="1283" x="2496" y="352">
-   <polyline points="0,0 -16.1818,35.9091 -32,0"/>
-  </object>
-  <object id="1284" x="2560" y="576">
-   <polyline points="0,0 -16.1818,35.9091 -32,0"/>
-  </object>
-  <object id="1285" x="2592" y="576">
-   <polyline points="0,0 -16.1818,35.9091 -32,0"/>
-  </object>
-  <object id="1286" x="2624" y="896">
-   <polyline points="0,0 -15.625,-36.125 -32,0"/>
-  </object>
-  <object id="1287" x="2688" y="448">
-   <polyline points="0,0 -16.1818,35.9091 -32,0"/>
-  </object>
-  <object id="1288" x="2656" y="448">
-   <polyline points="0,0 -16.1818,35.9091 -32,0"/>
-  </object>
-  <object id="1289" x="2848" y="512">
-   <polyline points="0,0 -16.1818,35.9091 -32,0"/>
-  </object>
-  <object id="1290" x="2816" y="512">
-   <polyline points="0,0 -16.1818,35.9091 -32,0"/>
-  </object>
-  <object id="1291" x="2912" y="512">
-   <polyline points="0,0 -16.1818,35.9091 -32,0"/>
-  </object>
-  <object id="1292" x="2880" y="512">
-   <polyline points="0,0 -16.1818,35.9091 -32,0"/>
-  </object>
-  <object id="1293" x="2976" y="512">
-   <polyline points="0,0 -16.1818,35.9091 -32,0"/>
-  </object>
-  <object id="1294" x="2944" y="512">
-   <polyline points="0,0 -16.1818,35.9091 -32,0"/>
-  </object>
-  <object id="1295" x="3040" y="512">
-   <polyline points="0,0 -16.1818,35.9091 -32,0"/>
-  </object>
-  <object id="1296" x="3008" y="512">
-   <polyline points="0,0 -16.1818,35.9091 -32,0"/>
-  </object>
-  <object id="1297" x="2016" y="192">
-   <polyline points="0,0 -16.1818,35.9091 -32,0"/>
-  </object>
-  <object id="1298" x="640" y="352">
-   <polyline points="0,0 -16.1818,35.9091 -32,0"/>
-  </object>
-  <object id="1299" x="608" y="352">
-   <polyline points="0,0 -16.1818,35.9091 -32,0"/>
-  </object>
-  <object id="1300" x="288" y="480" width="64" height="64">
-   <ellipse/>
-  </object>
-  <object id="1301" x="704" y="256" width="64" height="64">
-   <ellipse/>
-  </object>
-  <object id="1302" x="768" y="768" width="64" height="64">
-   <ellipse/>
-  </object>
-  <object id="1303" x="1472" y="320" width="64" height="64">
-   <ellipse/>
-  </object>
-  <object id="1304" x="1472" y="544" width="64" height="64">
-   <ellipse/>
-  </object>
-  <object id="1305" x="2048" y="352" width="64" height="64">
-   <ellipse/>
-  </object>
-  <object id="1306" x="2336" y="224" width="64" height="64">
-   <ellipse/>
-  </object>
-  <object id="1307" x="2848" y="640" width="64" height="64">
-   <ellipse/>
-  </object>
-  <object id="1308" x="2944" y="576" width="64" height="64">
-   <ellipse/>
-  </object>
-  <object id="1309" x="2944" y="672" width="64" height="64">
-   <properties>
-    <property name="is_collider" type="bool" value="true"/>
-   </properties>
-   <ellipse/>
-  </object>
+  <object id="1558" x="295.5" y="486" width="50.5" height="50.5"/>
+  <object id="1559" x="711.205" y="263.568" width="50.5" height="50.5"/>
+  <object id="1560" x="774.083" y="776.083" width="50.5" height="50.5"/>
+  <object id="1561" x="1479.75" y="327.083" width="50.5" height="50.5"/>
+  <object id="1562" x="1479.42" y="551.083" width="50.5" height="50.5"/>
+  <object id="1563" x="2055.75" y="358.75" width="50.5" height="50.5"/>
+  <object id="1564" x="2343.25" y="231.75" width="50.5" height="50.5"/>
+  <object id="1565" x="2855.75" y="647.25" width="50.5" height="50.5"/>
+  <object id="1566" x="2951.25" y="679.75" width="50.5" height="50.5"/>
+  <object id="1568" x="2950.54" y="583.371" width="50.5" height="50.5"/>
  </objectgroup>
  <objectgroup id="7" name="Colliders_floor">
   <object id="1341" x="256.25" y="352.125" width="31.7188" height="0.46875"/>
@@ -4667,6 +4234,142 @@
   <object id="1418" x="2848.02" y="448.111" width="127.889" height="1.06667"/>
   <object id="1419" x="2976" y="384.089" width="63.9531" height="0.832986"/>
   <object id="1422" x="384.044" y="864.044" width="319.933" height="0.9"/>
+ </objectgroup>
+ <objectgroup id="10" name="Colliders_death">
+  <object id="1423" x="0" y="137.333" width="31" height="15"/>
+  <object id="1424" x="-0.5" y="296.833" width="31" height="15"/>
+  <object id="1425" x="-0.333333" y="457.5" width="31" height="15"/>
+  <object id="1426" x="192" y="359.5" width="31" height="15"/>
+  <object id="1427" x="192.5" y="392" width="31" height="15"/>
+  <object id="1428" x="353" y="393.5" width="31" height="15"/>
+  <object id="1429" x="353" y="554.5" width="31" height="15"/>
+  <object id="1430" x="673" y="776.25" width="31" height="15"/>
+  <object id="1431" x="672.75" y="680.25" width="31" height="15"/>
+  <object id="1432" x="672.5" y="584.5" width="31" height="15"/>
+  <object id="1433" x="672.75" y="488" width="31" height="15"/>
+  <object id="1434" x="672.5" y="392" width="31" height="15"/>
+  <object id="1435" x="769.5" y="363" width="31" height="15"/>
+  <object id="1436" x="769" y="457" width="31" height="15"/>
+  <object id="1437" x="958.5" y="488.5" width="31" height="15"/>
+  <object id="1438" x="959.5" y="521.5" width="31" height="15"/>
+  <object id="1439" x="1119" y="457" width="31" height="15"/>
+  <object id="1440" x="1120" y="490" width="31" height="15"/>
+  <object id="1441" x="1151" y="264" width="31" height="15"/>
+  <object id="1442" x="1152" y="297" width="31" height="15"/>
+  <object id="1443" x="1152" y="328" width="31" height="15"/>
+  <object id="1444" x="1153" y="361" width="31" height="15"/>
+  <object id="1445" x="1249" y="265" width="31" height="15"/>
+  <object id="1446" x="1250" y="298" width="31" height="15"/>
+  <object id="1447" x="1249" y="329" width="31" height="15"/>
+  <object id="1448" x="1250" y="362" width="31" height="15"/>
+  <object id="1449" x="2016.67" y="136" width="31" height="15"/>
+  <object id="1450" x="2048.33" y="167.333" width="31" height="15"/>
+  <object id="1451" x="2145.17" y="169.5" width="31" height="15"/>
+  <object id="1452" x="2176.17" y="135.833" width="31" height="15"/>
+  <object id="1453" x="2271.5" y="136.833" width="31" height="15"/>
+  <object id="1454" x="1856.5" y="649" width="31" height="15"/>
+  <object id="1455" x="1921" y="711.5" width="31" height="15"/>
+  <object id="1456" x="1919.5" y="776.5" width="31" height="15"/>
+  <object id="1457" x="1920.75" y="840" width="31" height="15"/>
+  <object id="1458" x="1922.25" y="905" width="31" height="15"/>
+  <object id="1459" x="1921.5" y="968.5" width="31" height="15"/>
+  <object id="1460" x="1919.61" y="1033.5" width="31" height="15"/>
+  <object id="1461" x="1920.86" y="1097" width="31" height="15"/>
+  <object id="1462" x="1922.36" y="1162" width="31" height="15"/>
+  <object id="1463" x="1921.61" y="1225.5" width="31" height="15"/>
+  <object id="1464" x="1984.27" y="871.75" width="31" height="15"/>
+  <object id="1465" x="1985.77" y="936.75" width="31" height="15"/>
+  <object id="1466" x="1985.02" y="1000.25" width="31" height="15"/>
+  <object id="1467" x="1983.13" y="1065.25" width="31" height="15"/>
+  <object id="1468" x="1984.38" y="1128.75" width="31" height="15"/>
+  <object id="1469" x="1985.88" y="1193.75" width="31" height="15"/>
+  <object id="1470" x="1985.13" y="1257.25" width="31" height="15"/>
+  <object id="1471" x="2430.67" y="295.5" width="31" height="15"/>
+  <object id="1472" x="2431.67" y="328.5" width="31" height="15"/>
+  <object id="1473" x="2528.67" y="296.5" width="31" height="15"/>
+  <object id="1474" x="2529.67" y="329.5" width="31" height="15"/>
+  <object id="1475" x="2592.33" y="390.167" width="31" height="15"/>
+  <object id="1476" x="2593.33" y="423.167" width="31" height="15"/>
+  <object id="1477" x="2690.33" y="391.167" width="31" height="15"/>
+  <object id="1478" x="2691.33" y="424.167" width="31" height="15"/>
+  <object id="1479" x="2495" y="519.167" width="31" height="15"/>
+  <object id="1480" x="2496" y="552.167" width="31" height="15"/>
+  <object id="1481" x="2593" y="520.167" width="31" height="15"/>
+  <object id="1482" x="2594" y="553.167" width="31" height="15"/>
+  <object id="1483" x="2754.67" y="264" width="31" height="15"/>
+  <object id="1484" x="2755.67" y="297" width="31" height="15"/>
+  <object id="1485" x="2754.67" y="328" width="31" height="15"/>
+  <object id="1486" x="2755.67" y="361" width="31" height="15"/>
+  <object id="1487" x="2753.33" y="392" width="31" height="15"/>
+  <object id="1488" x="2754.33" y="425" width="31" height="15"/>
+  <object id="1489" x="2753.33" y="456" width="31" height="15"/>
+  <object id="1490" x="2754.33" y="489" width="31" height="15"/>
+  <object id="1491" x="3041.33" y="392" width="31" height="15"/>
+  <object id="1492" x="3042.33" y="425" width="31" height="15"/>
+  <object id="1493" x="3041.33" y="456" width="31" height="15"/>
+  <object id="1494" x="3042.33" y="489" width="31" height="15"/>
+  <object id="1495" x="3166.67" y="134.667" width="31" height="15"/>
+  <object id="1497" x="3169.33" y="585.333" width="31" height="15"/>
+  <object id="1498" x="3170.33" y="618.333" width="31" height="15"/>
+  <object id="1499" x="233.5" y="320" width="14" height="32"/>
+  <object id="1500" x="297.75" y="320.75" width="14" height="32"/>
+  <object id="1501" x="583" y="353" width="14" height="32"/>
+  <object id="1502" x="615" y="353" width="14" height="32"/>
+  <object id="1503" x="425" y="832" width="14" height="32"/>
+  <object id="1504" x="457" y="832" width="14" height="32"/>
+  <object id="1505" x="521.667" y="833" width="14" height="32"/>
+  <object id="1506" x="553.667" y="833" width="14" height="32"/>
+  <object id="1507" x="617.333" y="832.667" width="14" height="32"/>
+  <object id="1508" x="649.333" y="832.667" width="14" height="32"/>
+  <object id="1509" x="1032.75" y="672.5" width="14" height="32"/>
+  <object id="1510" x="1064.75" y="672.5" width="14" height="32"/>
+  <object id="1511" x="1161" y="672" width="14" height="32"/>
+  <object id="1512" x="1193" y="672" width="14" height="32"/>
+  <object id="1513" x="1289" y="673.5" width="14" height="32"/>
+  <object id="1514" x="1321" y="673.5" width="14" height="32"/>
+  <object id="1515" x="1353.5" y="672.5" width="14" height="32"/>
+  <object id="1516" x="1385.5" y="672.5" width="14" height="32"/>
+  <object id="1517" x="1192.5" y="385" width="14" height="32"/>
+  <object id="1518" x="1224.5" y="385" width="14" height="32"/>
+  <object id="1519" x="1193" y="223.5" width="14" height="32"/>
+  <object id="1520" x="1225" y="223.5" width="14" height="32"/>
+  <object id="1521" x="1641.91" y="672.455" width="14" height="32"/>
+  <object id="1522" x="1673.91" y="672.455" width="14" height="32"/>
+  <object id="1523" x="1610" y="672.333" width="14" height="32"/>
+  <object id="1524" x="2343.95" y="801.061" width="14" height="32"/>
+  <object id="1525" x="2375.95" y="801.061" width="14" height="32"/>
+  <object id="1526" x="2312.05" y="800.939" width="14" height="32"/>
+  <object id="1527" x="2535" y="576" width="14" height="32"/>
+  <object id="1528" x="2567" y="576" width="14" height="32"/>
+  <object id="1529" x="2536" y="480" width="14" height="32"/>
+  <object id="1530" x="2568" y="480" width="14" height="32"/>
+  <object id="1531" x="2630" y="352" width="14" height="32"/>
+  <object id="1532" x="2662" y="352" width="14" height="32"/>
+  <object id="1533" x="2631" y="449" width="14" height="32"/>
+  <object id="1534" x="2663" y="449" width="14" height="32"/>
+  <object id="1535" x="2473" y="257" width="14" height="32"/>
+  <object id="1536" x="2505" y="257" width="14" height="32"/>
+  <object id="1537" x="2471" y="353" width="14" height="32"/>
+  <object id="1538" x="2503" y="353" width="14" height="32"/>
+  <object id="1539" x="2087.67" y="192" width="14" height="32"/>
+  <object id="1540" x="2119.67" y="192" width="14" height="32"/>
+  <object id="1541" x="2217" y="193.333" width="14" height="32"/>
+  <object id="1542" x="2249" y="193.333" width="14" height="32"/>
+  <object id="1543" x="1993" y="192" width="14" height="32"/>
+  <object id="1544" x="2694.33" y="801.333" width="14" height="32"/>
+  <object id="1545" x="2726.33" y="801.333" width="14" height="32"/>
+  <object id="1546" x="2762.33" y="801.333" width="14" height="32"/>
+  <object id="1547" x="2794.33" y="801.333" width="14" height="32"/>
+  <object id="1548" x="2789.67" y="512" width="14" height="32"/>
+  <object id="1549" x="2821.67" y="512" width="14" height="32"/>
+  <object id="1550" x="2857.67" y="512" width="14" height="32"/>
+  <object id="1551" x="2889.67" y="512" width="14" height="32"/>
+  <object id="1552" x="2921.67" y="513.333" width="14" height="32"/>
+  <object id="1553" x="2953.67" y="513.333" width="14" height="32"/>
+  <object id="1554" x="2989.67" y="513.333" width="14" height="32"/>
+  <object id="1555" x="3021.67" y="513.333" width="14" height="32"/>
+  <object id="1556" x="2504.33" y="861.333" width="14" height="32"/>
+  <object id="1557" x="2600.67" y="864" width="14" height="32"/>
  </objectgroup>
  <objectgroup id="8" name="Colliders_start" locked="1">
   <object id="1420" x="192" y="544" width="64" height="64"/>
