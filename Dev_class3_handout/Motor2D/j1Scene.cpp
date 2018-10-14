@@ -36,7 +36,9 @@ bool j1Scene::Start()
 	bool ret = App->audio->PlayMusic(PATH(App->audio->folder_music.GetString(),App->audio->tracks_path.start->data.GetString()));
 	if (ret) App->map->Load(App->map->current_map->data.GetString());
 
-	//App->render->Start();
+	
+	App->render->camera.x = 0;
+	App->render->camera.y = 0;
 	App->player->Start();
 
 	return ret;

@@ -435,8 +435,8 @@ bool j1Player::Load(pugi::xml_node & node)
 {
 	LOG("Loading PLAYER");
 
-	position.x = node.child("player").child("position").attribute("x").as_int();
-	position.y = node.child("player").child("position").attribute("y").as_int();
+	position.x = node.child("player").child("position").attribute("x").as_float();
+	position.y = node.child("player").child("position").attribute("y").as_float();
 
 	return true;
 }
@@ -454,7 +454,7 @@ bool j1Player::Save(pugi::xml_node & node)
 	//pl_node.append_attribute("x") = init_pos1.x;
 	//pl_node.append_attribute("y") = init_pos1.y;
 
-	LOG("playerX: %d - %d \n playerY: %d - %d",position.x, pl_node.attribute("x").as_int(), position.y, pl_node.attribute("y").as_int());
+	LOG("playerX: %d - %d \n playerY: %d - %d",position.x, pl_node.attribute("x").as_float(), position.y, pl_node.attribute("y").as_float());
 
 	return true;
 }
