@@ -76,7 +76,7 @@
       <idle height="48" width="39" y="0" x="174"    name="player_37"/>
       <SubTexture height="34" width="56" y="96" x="0"     name="player_40"/>
       <jump height="45" width="39" y="100" x="124"  name="player_45"/>
-      <SubTexture height="40" width="40" y="221" x="123"  name="player_52"/>
+      <god height="40" width="40" y="221" x="123"  name="player_52"/>
       <jump height="38" width="56" y="48" x="0"     name="player_55"/>
       <walk height="48" width="51" y="188" x="62"   name="player_60"/>
       <walk height="48" width="52" y="188" x="0"    name="player_67"/>

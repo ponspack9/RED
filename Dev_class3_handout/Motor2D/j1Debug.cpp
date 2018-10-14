@@ -77,10 +77,14 @@ bool j1Debug::Update(float dt)
 
 	if (App->input->GetKey(SDL_SCANCODE_F10) == KEY_DOWN)
 	{
-		if (!App->player->godmode)
+		if (!App->player->godmode) {
 			App->player->godmode = true;
-		else
+			if (App->player->player_collider) App->player->player_collider->type = COLLIDER_NONE;
+		}
+		else {
 			App->player->godmode = false;
+			if (App->player->player_collider) App->player->player_collider->type = COLLIDER_PLAYER;
+		}
 	}
 	//////////////// spawn a debug cvollider in mousepos
 	if (App->input->GetMouseButtonDown(SDL_BUTTON_RIGHT) == KEY_DOWN) {
@@ -131,6 +135,6 @@ bool j1Debug::Update(float dt)
 	}
 	
 
-	App->win->SetTitle(App->map->DebugToString().GetString());
+	//App->win->SetTitle(App->map->DebugToString().GetString());
 	return true;
 }

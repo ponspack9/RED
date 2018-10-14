@@ -43,6 +43,7 @@ public:
 	Animation walk;		
 	Animation jump;		
 	Animation death;
+	Animation god;
 	float def_anim_speed;
 	SDL_Rect anim_rect;
 

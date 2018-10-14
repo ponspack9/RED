@@ -102,6 +102,19 @@ bool j1Player::Awake(pugi::xml_node & config)
 	node_speed = n.attribute("speed").as_float();
 	death.speed = (node_speed <= 0) ? def_anim_speed : node_speed;
 
+	//GOD
+	n = textureAtlas.child("god");
+	for (n; n; n = n.next_sibling("god"))
+	{
+		r.x = n.attribute("x").as_int();
+		r.y = n.attribute("y").as_int();
+		r.w = n.attribute("width").as_int();
+		r.h = n.attribute("height").as_int();
+		god.PushBack(r);
+	}
+	node_speed = n.attribute("speed").as_float();
+	god.speed = (node_speed <= 0) ? def_anim_speed : node_speed;
+
 	// End parsing animations -----------------
 
 	//LOG("%d  %d", player_rect.h, player_rect.w);
@@ -141,6 +154,7 @@ bool j1Player::Update(float dt)
 		}
 		else
 		{
+			current_animation = &god;
 			MoveFree();
 		}
 
@@ -188,7 +202,6 @@ void j1Player::Draw()
 	else {
 		App->render->Blit(graphics, position.x, position.y, &current_animation->GetCurrentFrame());
 	}
-	g = 0;
 
 }
 
@@ -330,7 +343,7 @@ bool j1Player::Jump()
 
 void j1Player::MoveFree()
 {
-	current_animation = &idle;
+	//current_animation = &idle;
 	dx = 0;
 	dy = 0;
 
