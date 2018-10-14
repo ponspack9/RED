@@ -64,23 +64,23 @@
     <gravity value="2"/>
     <TextureAtlas imagePath="textures/player/sprites.png">
       <SubTexture height="38" width="64" y="0" x="0"      name="player_01"/>
-      <SubTexture height="48" width="39" y="58" x="222"   name="player_05"/>
-      <SubTexture height="45" width="39" y="174" x="180"  name="player_12"/>
-      <SubTexture height="42" width="49" y="48" x="66"    name="player_16"/>
-      <SubTexture height="46" width="39" y="0" x="223"    name="player_19"/>
-      <SubTexture height="46" width="39" y="60" x="173"   name="player_24"/>
+      <idle height="48" width="39" y="58" x="222"   name="player_05"/>
+      <idle height="45" width="39" y="174" x="180"  name="player_12"/>
+      <jump height="42" width="49" y="48" x="66"    name="player_16"/>
+      <jump height="46" width="39" y="0" x="223"    name="player_19"/>
+      <dead height="46" width="39" y="60" x="173"   name="player_24"/>
       <idle height="48" width="39" y="116" x="180"  name="player_idle"/>
-      <idle height="50" width="39" y="0" x="125"    name="player_30"/>
-      <SubTexture height="38" width="56" y="140" x="0"    name="player_32"/>
-      <SubTexture height="50" width="47" y="161" x="123"  name="player_34"/>
-      <SubTexture height="48" width="39" y="0" x="174"    name="player_37"/>
+      <jump height="50" width="39" y="0" x="125"    name="player_30"/>
+      <jump height="38" width="56" y="140" x="0"    name="player_32"/>
+      <walk height="50" width="47" y="161" x="123"  name="player_34"/>
+      <idle height="48" width="39" y="0" x="174"    name="player_37"/>
       <SubTexture height="34" width="56" y="96" x="0"     name="player_40"/>
-      <SubTexture height="45" width="39" y="100" x="124"  name="player_45"/>
+      <jump height="45" width="39" y="100" x="124"  name="player_45"/>
       <SubTexture height="40" width="40" y="221" x="123"  name="player_52"/>
-      <SubTexture height="38" width="56" y="48" x="0"     name="player_55"/>
-      <SubTexture height="48" width="51" y="188" x="62"   name="player_60"/>
-      <SubTexture height="48" width="52" y="188" x="0"    name="player_67"/>
-      <SubTexture height="51" width="48" y="100" x="66"   name="player_68"/>
+      <jump height="38" width="56" y="48" x="0"     name="player_55"/>
+      <walk height="48" width="51" y="188" x="62"   name="player_60"/>
+      <walk height="48" width="52" y="188" x="0"    name="player_67"/>
+      <walk height="51" width="48" y="100" x="66"   name="player_68"/>
     </TextureAtlas>
   </player>
 

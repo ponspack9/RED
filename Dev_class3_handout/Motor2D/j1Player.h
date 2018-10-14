@@ -22,6 +22,7 @@ public:
 
 	void Draw();
 	void Move();
+	void MoveFree();
 	bool Jump();
 
 	bool Save(pugi::xml_node& node);

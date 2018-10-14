@@ -30,8 +30,7 @@ bool j1Player::Awake(pugi::xml_node & config)
 
 	////PLAYER RECT DIMENSIONS
 	player_rect.w = player_node.child("rect").attribute("width").as_uint();
-	player_rect.h = player_node.child("rect").attribute("height").as_uint();
-	
+	player_rect.h = player_node.child("rect").attribute("height").as_uint();	
 	
 
 	//SCROLL AND JUMPSPEED (CONST)
@@ -44,8 +43,10 @@ bool j1Player::Awake(pugi::xml_node & config)
 	// Parsing animations ----------------
 	pugi::xml_node textureAtlas = player_node.child("TextureAtlas");
 	texture_path = (textureAtlas.attribute("imagePath").as_string());
+
 	SDL_Rect r;
 	float node_speed = -1;
+
 	// IDLE
 	pugi::xml_node n = textureAtlas.child("idle");
 	for (n; n; n = n.next_sibling("idle")) {
@@ -115,11 +116,13 @@ bool j1Player::Start()
 bool j1Player::Update(float dt)
 {
 	if (level_finished) App->NextLevel();
-	if (!godmode) {
+	if (!godmode)
+	{
 		Move();
 	}
-	else {
-		//MoveFree();
+	else 
+	{
+		MoveFree();
 	}
 
 	if (player_collider != nullptr) {
@@ -147,7 +150,6 @@ bool j1Player::CleanUp()
 void j1Player::Draw()
 {
 	App->render->Blit(graphics, position.x, position.y, &idle.GetCurrentFrame());
-	//App->render->DrawQuad(player_rect, r,255,b);
 	g = 0;
 
 }
@@ -207,7 +209,7 @@ void j1Player::Move()
 	//player_collider->SetPos(position.x, position.y);
 	//shade_collider->SetPos(position.x, position.y+ player_collider->rect.h);
 
-	have_collided = false;
+	//have_collided = false;
 
 
 //	/if (is_jumping && !move_left && !move_right)
@@ -308,6 +310,44 @@ bool j1Player::Jump()
 }
 
 
+void j1Player::MoveFree()
+{
+
+	dx = 0;
+	dy = 0;
+
+	if (App->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT)
+	{
+		dx += speed.x;
+	}
+
+	if (App->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT)
+	{
+		dx -= speed.x;
+		
+	}
+
+	if (App->input->GetKey(SDL_SCANCODE_S) == KEY_REPEAT)
+	{
+		dy += speed.y;
+	}
+
+	if (App->input->GetKey(SDL_SCANCODE_W) == KEY_REPEAT)
+	{
+		dy -= speed.y;
+	}
+
+	position.x += dx;
+	position.y += dy;
+
+	player_rect.x = position.x;
+	player_rect.y = position.y;
+
+	have_collided = false;
+
+}
+
+
 void j1Player::OnCollision(Collider * c1, Collider * c2)
 {
 	have_collided = true;
@@ -355,7 +395,7 @@ bool j1Player::Save(pugi::xml_node & node)
 	//pl_node.append_attribute("x") = init_pos1.x;
 	//pl_node.append_attribute("y") = init_pos1.y;
 
-	LOG("playerX: %d - %d \n playerY: %d - %d", init_pos1.x, pl_node.attribute("x").as_int(), init_pos1.y, pl_node.attribute("y").as_int());
+	LOG("playerX: %d - %d \n playerY: %d - %d",position.x, pl_node.attribute("x").as_int(), position.y, pl_node.attribute("y").as_int());
 
 	return true;
 }

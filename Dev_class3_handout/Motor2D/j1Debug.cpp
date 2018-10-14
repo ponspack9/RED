@@ -77,8 +77,10 @@ bool j1Debug::Update(float dt)
 
 	if (App->input->GetKey(SDL_SCANCODE_F10) == KEY_DOWN)
 	{
-		//FUCKING GOD MODE CUSI
-
+		if (!App->player->godmode)
+			App->player->godmode = true;
+		else
+			App->player->godmode = false;
 	}
 	//////////////// spawn a debug cvollider in mousepos
 	if (App->input->GetMouseButtonDown(SDL_BUTTON_RIGHT) == KEY_DOWN) {
