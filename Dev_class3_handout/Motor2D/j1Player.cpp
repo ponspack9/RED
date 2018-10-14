@@ -139,7 +139,7 @@ bool j1Player::Update(float dt)
 
 bool j1Player::PostUpdate()
 {
-	
+	App->render->MoveCamera(-dx, -dy);
 	return true;
 }
 
@@ -219,7 +219,6 @@ void j1Player::Move()
 	position.y += dy;
 
 	//MovePlayer(-dx, -dy);
-	App->render->MoveCamera(-dx, -dy);
 
 	player_rect.x = position.x;
 	player_rect.y = position.y;

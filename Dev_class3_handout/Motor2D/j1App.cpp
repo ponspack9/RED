@@ -367,7 +367,6 @@ void j1App::GetSaveGames(p2List<p2SString>& list_to_fill) const
 
 bool j1App::RestartGame()
 {
-	App->player->Start();
 	App->map->current_map = App->map->maps_path.start;
 	App->fade->FadeToBlack(App->scene, App->scene);
 
@@ -376,7 +375,6 @@ bool j1App::RestartGame()
 
 bool j1App::RestartLevel()
 {
-	App->player->Start();
 	App->fade->FadeToBlack(App->scene, App->scene);
 	return true;
 }
@@ -384,12 +382,10 @@ bool j1App::RestartLevel()
 bool j1App::NextLevel() {
 	if (App->map->current_map->next != NULL)
 	{
-		App->player->Start();
 		App->map->current_map = App->map->current_map->next;
 	}
 	else
 	{
-		App->player->Start();
 		App->map->current_map = App->map->maps_path.start;
 	}
 
