@@ -142,6 +142,7 @@ private:
 public:
 
 	MapData data;
+	iPoint goal;
 
 private:
 

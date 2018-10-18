@@ -5,6 +5,7 @@
 #include "j1Textures.h"
 #include "j1Map.h"
 #include <math.h>
+#include <ctime>
 
 j1Map::j1Map() : j1Module(), map_loaded(false)
 {
@@ -47,6 +48,7 @@ void j1Map::PropagateBFS()
 	iPoint right;
 	iPoint down;
 
+	goal = { 3,20 };
 	up = { aux.x,aux.y - 1 };
 	left = { aux.x - 1,aux.y };
 	right = { aux.x + 1,aux.y };
@@ -55,36 +57,46 @@ void j1Map::PropagateBFS()
 	// DONE TODO 2: For each neighbor, if not visited, add it
 	// to the frontier queue and visited list
 
-	if (visited.find(left) == -1 && IsWalkable(left.x, left.y))
+	if (visited.find(left) == -1 && IsWalkable(left.x, left.y) && visited.end->data != goal)
 	{
 		frontier.Push(left);
 		visited.add(left);
 	}
-	if (visited.find(right) == -1 && IsWalkable(right.x, right.y))
+	if (visited.find(right) == -1 && IsWalkable(right.x, right.y) && visited.end->data != goal)
 	{
 		frontier.Push(right);
 		visited.add(right);
 	}
-	if (visited.find(up) == -1 && IsWalkable(up.x, up.y))
+	if (visited.find(up) == -1 && IsWalkable(up.x, up.y) && visited.end->data != goal)
 	{
 		frontier.Push(up);
 		visited.add(up);
 	}
-	if (visited.find(down) == -1 && IsWalkable(down.x, down.y))
+	if (visited.find(down) == -1 && IsWalkable(down.x, down.y) && visited.end->data != goal)
 	{
 		frontier.Push(down);
 		visited.add(down);
 	}
-
 }
 
 void j1Map::DrawBFS()
 {
 	iPoint point;
 
-	// Draw visited
 	p2List_item<iPoint>* item = visited.start;
+	
+	//Draw GOAL
+	point = goal;
+	TileSet* tileset = GetTilesetFromTileId(25);
+	
+	SDL_Rect r = tileset->GetTileRect(25);
+	iPoint pos = MapToWorld(point.x, point.y);
+	
+	App->render->Blit(tileset->texture, pos.x, pos.y, &r);
+		
+	
 
+	// Draw visited
 	while(item)
 	{
 		point = item->data;
@@ -92,7 +104,8 @@ void j1Map::DrawBFS()
 
 		SDL_Rect r = tileset->GetTileRect(26);
 		iPoint pos = MapToWorld(point.x, point.y);
-
+		
+		if(point != goal)
 		App->render->Blit(tileset->texture, pos.x, pos.y, &r);
 
 		item = item->next;
@@ -109,7 +122,6 @@ void j1Map::DrawBFS()
 
 		App->render->Blit(tileset->texture, pos.x, pos.y, &r);
 	}
-
 }
 
 bool j1Map::IsWalkable(int x, int y) const
