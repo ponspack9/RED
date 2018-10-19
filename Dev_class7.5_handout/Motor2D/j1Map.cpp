@@ -36,6 +36,7 @@ void j1Map::ResetBFS()
 	visited.add(iPoint(19, 4));
 }
 
+
 void j1Map::PropagateBFS()
 {
 	// DONE TODO 1: If frontier queue contains elements
@@ -48,7 +49,6 @@ void j1Map::PropagateBFS()
 	iPoint right;
 	iPoint down;
 
-	goal = { 3,20 };
 	up = { aux.x,aux.y - 1 };
 	left = { aux.x - 1,aux.y };
 	right = { aux.x + 1,aux.y };
@@ -78,6 +78,33 @@ void j1Map::PropagateBFS()
 		visited.add(down);
 	}
 }
+
+void j1Map::EraseBFS()
+{
+	if (eraser.count() == NULL)
+	{
+		p2List_item<iPoint>* item = eraser.start;
+		p2List_item<iPoint>* aux = visited.end;
+		
+		while (visited.count() != NULL)
+		{
+			for (item; aux->prev != NULL; item = item->next)
+			{
+
+				item->data = aux->data;
+				eraser.add(item->data);
+
+				aux = aux->prev;
+			}
+		}
+	}		
+
+	
+
+}
+
+
+
 
 void j1Map::DrawBFS()
 {
