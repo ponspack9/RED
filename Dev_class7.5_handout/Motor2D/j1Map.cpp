@@ -32,8 +32,9 @@ void j1Map::ResetBFS()
 {
 	frontier.Clear();
 	visited.clear();
-	frontier.Push(iPoint(19, 4));
-	visited.add(iPoint(19, 4));
+	came_from.clear();
+	frontier.Push(source);
+	visited.add(source);
 }
 
 
@@ -61,77 +62,69 @@ void j1Map::PropagateBFS()
 	{
 		frontier.Push(left);
 		visited.add(left);
+		came_from.add(aux);
 	}
+	LOG("FRONTIER LEFT  %d , %d", visited.end->data.x, visited.end->data.y);
+	LOG("CAME FROM LIST  %d , %d", came_from.end->data.x, came_from.end->data.y);
+
 	if (visited.find(right) == -1 && IsWalkable(right.x, right.y) && visited.end->data != goal)
 	{
 		frontier.Push(right);
 		visited.add(right);
+		came_from.add(aux);
 	}
+	LOG("FRONTIER RIGHT  %d , %d", visited.end->data.x, visited.end->data.y);
+	LOG("CAME FROM LIST  %d , %d", came_from.end->data.x, came_from.end->data.y);
+
 	if (visited.find(up) == -1 && IsWalkable(up.x, up.y) && visited.end->data != goal)
 	{
 		frontier.Push(up);
 		visited.add(up);
+		came_from.add(aux);
 	}
+	LOG("FRONTIER UP  %d , %d", visited.end->data.x, visited.end->data.y);
+	LOG("CAME FROM LIST  %d , %d", came_from.end->data.x, came_from.end->data.y);
+
 	if (visited.find(down) == -1 && IsWalkable(down.x, down.y) && visited.end->data != goal)
 	{
 		frontier.Push(down);
 		visited.add(down);
+		came_from.add(aux);
+	}
+	LOG("FRONTIER DOWN  %d , %d", visited.end->data.x, visited.end->data.y);
+	LOG("CAME FROM LIST  %d , %d", came_from.end->data.x, came_from.end->data.y);
+
+	if (visited.end->data == goal)
+	{
+		propagate = false;
 	}
 }
 
-void j1Map::EraseBFS()
-{
-	if (eraser.count() == NULL)
-	{
-		p2List_item<iPoint>* item = eraser.start;
-		p2List_item<iPoint>* aux = visited.end;
-		
-		while (visited.count() != NULL)
-		{
-			for (item; aux->prev != NULL; item = item->next)
-			{
+//USING CAME_FROM LIST
+/*void j1Map::EraseBFS()
+{	
 
-				item->data = aux->data;
-				eraser.add(item->data);
-
-				aux = aux->prev;
-			}
-		}
-	}		
-
-	
-
-}
-
-
-
+}*/
 
 void j1Map::DrawBFS()
 {
-	iPoint point;
-
+	iPoint point;	
 	p2List_item<iPoint>* item = visited.start;
 	
 	//Draw GOAL
-	point = goal;
+	
 	TileSet* tileset = GetTilesetFromTileId(25);
-	
 	SDL_Rect r = tileset->GetTileRect(25);
-	iPoint pos = MapToWorld(point.x, point.y);
-	
+	iPoint pos = MapToWorld(goal.x,goal.y);
 	App->render->Blit(tileset->texture, pos.x, pos.y, &r);
-		
 	
-
 	// Draw visited
 	while(item)
 	{
 		point = item->data;
 		TileSet* tileset = GetTilesetFromTileId(26);
-
 		SDL_Rect r = tileset->GetTileRect(26);
-		iPoint pos = MapToWorld(point.x, point.y);
-		
+		iPoint pos = MapToWorld(point.x, point.y);		
 		if(point != goal)
 		App->render->Blit(tileset->texture, pos.x, pos.y, &r);
 
@@ -143,11 +136,36 @@ void j1Map::DrawBFS()
 	{
 		point = *(frontier.Peek(i));
 		TileSet* tileset = GetTilesetFromTileId(25);
-
 		SDL_Rect r = tileset->GetTileRect(25);
 		iPoint pos = MapToWorld(point.x, point.y);
-
 		App->render->Blit(tileset->texture, pos.x, pos.y, &r);
+	}
+
+	//Draw PATH
+	if (propagate == false)
+	{
+		p2List_item<iPoint>* item = visited.end;
+		p2List_item<iPoint>* came_item = came_from.end;
+
+		for (item; item->data != source; item)
+		{
+			TileSet* tileset = GetTilesetFromTileId(25);
+			SDL_Rect r = tileset->GetTileRect(25);
+			iPoint pos = MapToWorld(item->data.x, item->data.y);
+			App->render->Blit(tileset->texture, pos.x, pos.y, &r);
+
+			int i = 0;
+			while (item->data != came_item->data)
+			{
+				item = item->prev;
+				i++;
+			}
+			while (i > 0)
+			{
+				came_item = came_item->prev;
+				i--;
+			}
+		}
 	}
 }
 
