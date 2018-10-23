@@ -51,12 +51,12 @@ void j1Map::Path(int x, int y)
 	iPoint current = goal;
 
 	//DONE TODO 2: Follow the breadcrumps to goal back to the origin
-	// add each step into "path" dyn array (it will then draw automatically)
+	//add each step into "path" dyn array (it will then draw automatically)
 	if (visited.find(goal) != -1)
 	{
 		path.PushBack(goal);
-
-		while (current != visited.start->data)
+		
+		while (current != source_point)
 		{
 			int pos = visited.find(current);
 				current = breadcrumbs.At(pos)->data;
@@ -85,7 +85,7 @@ void j1Map::PropagateDijkstra()
 
 			if (MovementCost(neighbors[i].x, neighbors[i].y) >= 0)
 			{
-				if (visited.find(neighbors[i]) == -1)
+				if (visited.find(neighbors[i]) == -1 && visited.end->data != final_point)
 				{
 					frontier.Push(neighbors[i], MovementCost(neighbors[i].x, neighbors[i].y));
 					visited.add(neighbors[i]);
@@ -131,7 +131,7 @@ void j1Map::PropagateBFS()
 		{
 			if (MovementCost(neighbors[i].x, neighbors[i].y) > 0)
 			{
-				if (visited.find(neighbors[i]) == -1)
+				if (visited.find(neighbors[i]) == -1 && visited.end->data != final_point)
 				{
 					frontier.Push(neighbors[i], 0);
 					visited.add(neighbors[i]);
@@ -180,6 +180,14 @@ void j1Map::DrawPath()
 		iPoint pos = MapToWorld(path[i].x, path[i].y);
 		App->render->Blit(tile_x, pos.x, pos.y);
 	}
+
+	//Draw Final Point
+	TileSet* tileset = GetTilesetFromTileId(25);
+
+	SDL_Rect r = tileset->GetTileRect(25);
+	iPoint pos = MapToWorld(final_point.x, final_point.y);
+
+	App->render->Blit(tileset->texture, pos.x, pos.y, &r);
 }
 
 void j1Map::Draw()

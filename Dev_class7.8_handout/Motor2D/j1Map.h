@@ -162,6 +162,8 @@ private:
 	p2List<iPoint>		visited;
 	p2List<iPoint>		breadcrumbs;
 
+	iPoint				final_point = { 5,22 };
+	iPoint				source_point = { 19,4 };
 	uint				cost_so_far[COST_MAP][COST_MAP];
 	p2DynArray<iPoint>	path;
 	SDL_Texture*		tile_x = nullptr;
