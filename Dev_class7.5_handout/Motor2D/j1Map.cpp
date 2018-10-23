@@ -33,15 +33,17 @@ void j1Map::ResetBFS()
 	frontier.Clear();
 	visited.clear();
 	came_from.clear();
+
 	frontier.Push(source);
 	visited.add(source);
+	came_from.add(source);
+
+	is_propagating = true;
 }
 
 
 void j1Map::PropagateBFS()
 {
-	// DONE TODO 1: If frontier queue contains elements
-	// pop the last one and calculate its 4 neighbors
 	iPoint aux;
 	frontier.Pop(aux);
 
@@ -55,8 +57,6 @@ void j1Map::PropagateBFS()
 	right = { aux.x + 1,aux.y };
 	down = { aux.x,aux.y + 1 };	
 
-	// DONE TODO 2: For each neighbor, if not visited, add it
-	// to the frontier queue and visited list
 
 	if (visited.find(left) == -1 && IsWalkable(left.x, left.y) && visited.end->data != goal)
 	{
@@ -93,30 +93,18 @@ void j1Map::PropagateBFS()
 	}
 	LOG("FRONTIER DOWN  %d , %d", visited.end->data.x, visited.end->data.y);
 	LOG("CAME FROM LIST  %d , %d", came_from.end->data.x, came_from.end->data.y);
-
+	
 	if (visited.end->data == goal)
 	{
-		propagate = false;
+		is_propagating = false;
 	}
 }
-
-//USING CAME_FROM LIST
-/*void j1Map::EraseBFS()
-{	
-
-}*/
 
 void j1Map::DrawBFS()
 {
 	iPoint point;	
 	p2List_item<iPoint>* item = visited.start;
 	
-	//Draw GOAL
-	
-	TileSet* tileset = GetTilesetFromTileId(25);
-	SDL_Rect r = tileset->GetTileRect(25);
-	iPoint pos = MapToWorld(goal.x,goal.y);
-	App->render->Blit(tileset->texture, pos.x, pos.y, &r);
 	
 	// Draw visited
 	while(item)
@@ -141,8 +129,14 @@ void j1Map::DrawBFS()
 		App->render->Blit(tileset->texture, pos.x, pos.y, &r);
 	}
 
+	//Draw GOAL	
+	TileSet* tileset = GetTilesetFromTileId(25);
+	SDL_Rect r = tileset->GetTileRect(25);
+	iPoint pos = MapToWorld(goal.x,goal.y);
+	App->render->Blit(tileset->texture, pos.x, pos.y, &r);
+
 	//Draw PATH
-	if (propagate == false)
+	if (is_propagating == false)
 	{
 		p2List_item<iPoint>* item = visited.end;
 		p2List_item<iPoint>* came_item = came_from.end;

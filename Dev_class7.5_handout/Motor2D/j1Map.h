@@ -155,9 +155,9 @@ private:
 	p2List<iPoint>		visited;
 	p2List<iPoint>		came_from;
 
-	iPoint				source = { 3,20 };
-	iPoint				goal = { 22,5 };
-	bool				propagate = true;
+	iPoint				source = { 16,12 };
+	iPoint				goal = { 5,5 };
+	bool				is_propagating;
 };
 
 #endif // __j1MAP_H__
