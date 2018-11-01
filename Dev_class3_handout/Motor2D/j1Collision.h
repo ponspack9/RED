@@ -1,7 +1,9 @@
 #ifndef __j1COLLISION_H__
 #define __j1COLLISION_H__
 
-#define MAX_COLLIDERS 350
+#define MAX_COLLIDERS	350
+#define MAX_LINES		256
+#define MAX_LINE_LENGTH 50
 
 #include "SDL/include/SDL.h"
 #include "j1Module.h"
@@ -88,12 +90,12 @@ public:
 	Collider* AddCollider(SDL_Rect rect, COLLIDER_TYPE type, j1Module* callback = nullptr);
 	void Draw();
 
-	p2List<PolyLine*>	polylines;
-	int n_lines = 0;
+	//p2List<PolyLine*>	polylines;
 	int n_player_colliders;
 
-	//int polyline[MAX_LINES][MAX_LINE_LENGTH];
-	//int n_lines_col[MAX_LINES];
+	int polylines[MAX_LINES][MAX_LINE_LENGTH];
+	int n_lines = 0;
+	int n_lines_col[MAX_LINES];
 private:
 
 	Collider * colliders[MAX_COLLIDERS];

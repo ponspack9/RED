@@ -163,10 +163,8 @@ bool j1Map::Load(const char* file_name)
 			//LOG("OBJECTGROUP NAME: %s", objectgroup.attribute("name").as_string());
 			pugi::xml_node object = objectgroup.child("object");
 			pugi::xml_node polyobject = object.child("polygon");
-			
+			int n = 0;
 			for (object; object; object = object.next_sibling("object")) {
-				bool rotation = false;
-				double alpha = 0;
 
 				polyobject = object.child("polyline");
 
@@ -207,44 +205,45 @@ bool j1Map::Load(const char* file_name)
 
 					}
 				}
-				PolyLine* p = new PolyLine();
-				iPoint start = { object.attribute("x").as_int(), object.attribute("y").as_int() };
-				p->start = start;
-				//LOG("id: %d [ %d,%d ]", object.attribute("id").as_int(), start.x, start.y);
+				n = App->collision->n_lines;
+				const char* c = polyobject.attribute("points").as_string();
 
-				p2SString s(polyobject.attribute("points").as_string());
-
+				int it = 0;
+				App->collision->polylines[n][it++] = object.attribute("x").as_int();
+				App->collision->polylines[n][it++] = object.attribute("y").as_int();
 
 				//Deal with the string to find each point
-				const char* c = polyobject.attribute("points").as_string();
-				char* buffer = new char();
+				char* buffer = new char[6];
 
-				iPoint ret;
+				int point;
 				int j = 0;
 				for (uint i = 0; i <= strlen(c); i++) {
 
 					char k = c[i];
-					if (k == ',') {
-						ret.x = atoi(buffer);
-						//LOG("x: %d , ", ret.x);
-						while (j > 0) {
+					if (k == ',') {				// Had finished parsing x point, time to add it
+						point = atoi(buffer);// +offx;
+						App->collision->polylines[n][it++] = point;
+						while (j > 0) {				// Reset buffer and j
 							buffer[--j] = 0;
 						}
 					}
-					else if (k == ' ' || k == '\0') {
-						ret.y = atoi(buffer);
-						//LOG("y: %d , ", ret.y);
-						while (j > 0) {
+					else if (k == ' ' || k == '\0') {			// Had finished parsing y point, time to add it
+						App->collision->polylines[n][it++] = atoi(buffer);// +offy;
+						while (j > 0) {				// Reset buffer and j
 							buffer[--j] = 0;
 						}
-						p->points.add(ret);					// Had finished parsing one point, time to add it
 					}
-					else {
+					else {							// Parsing number
 						buffer[j++] = c[i];
 					}
 				}
-				App->collision->polylines.add(p);
-				App->collision->n_lines += 1;
+				App->collision->n_lines_col[n] = it - 1;
+				if (App->collision->n_lines + 1 > MAX_LINES) {
+					break;
+				}
+				else {
+					App->collision->n_lines += 1;
+				}
 
 				// END DEALING OBJECT NODE
 			}

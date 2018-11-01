@@ -98,33 +98,33 @@ bool j1Collision::PreUpdate()
 
 		}
 		
-		if (c1->type == COLLIDER_PLAYER) {
-			
-		p2List_item<PolyLine*>* line = polylines.start;
-		for (line; line != polylines.end->prev; line = line->next) {
-			p2List_item<iPoint>* p = line->data->points.start;
-			int offsetx = line->data->start.x + App->render->camera.x;
-			int offsety = line->data->start.y + App->render->camera.y;
-			
-			for (int i = 0; i < line->data->points.count() - 1; i++) {
+		//if (c1->type == COLLIDER_PLAYER) {
+		//	
+		//	p2List_item<PolyLine*>* line = polylines.start;
+		//	for (line; line != polylines.end->prev; line = line->next) {
+		//		p2List_item<iPoint>* p = line->data->points.start;
+		//		int offsetx = line->data->start.x + App->render->camera.x;
+		//		int offsety = line->data->start.y + App->render->camera.y;
+		//	
+		//		for (int i = 0; i < line->data->points.count() - 1; i++) {
 
-				if (c1->CheckRectLineCollision(p->data.x + offsetx, p->data.y + offsety,
-					p->next->data.x + offsetx, p->next->data.y + offsety)) {
-					//LOG("COLLISION WITH LINE");
-					c1->callback->OnCollisionLine(p->data.x + offsetx, p->data.y + offsety,
-						p->next->data.x + offsetx, p->next->data.y + offsety);
-				}
-				p = p->next;
-			}
-			if (c1->CheckRectLineCollision(p->data.x + offsetx, p->data.y + offsety,
-				line->data->points.start->data.x + offsetx, line->data->points.start->data.y + offsety)) {
-					//LOG("COLLISION WITH LINE");
-					c1->callback->OnCollisionLine(p->data.x + offsetx, p->data.y + offsety,
-						line->data->points.start->data.x + offsetx, line->data->points.start->data.y + offsety);
-			}
+		//			if (c1->CheckRectLineCollision(p->data.x + offsetx, p->data.y + offsety,
+		//				p->next->data.x + offsetx, p->next->data.y + offsety)) {
+		//				//LOG("COLLISION WITH LINE");
+		//				c1->callback->OnCollisionLine(p->data.x + offsetx, p->data.y + offsety,
+		//					p->next->data.x + offsetx, p->next->data.y + offsety);
+		//			}
+		//			p = p->next;
+		//		}
+		//		if (c1->CheckRectLineCollision(p->data.x + offsetx, p->data.y + offsety,
+		//			line->data->points.start->data.x + offsetx, line->data->points.start->data.y + offsety)) {
+		//				//LOG("COLLISION WITH LINE");
+		//				c1->callback->OnCollisionLine(p->data.x + offsetx, p->data.y + offsety,
+		//					line->data->points.start->data.x + offsetx, line->data->points.start->data.y + offsety);
+		//		}
 
-		}
-		}
+		//	}
+		//}
 		
 
 	}
@@ -180,8 +180,21 @@ void j1Collision::Draw()
 			}
 
 	}
+	SDL_SetRenderDrawColor(App->render->renderer, 255, 0, 0, SDL_ALPHA_OPAQUE);
 
-	p2List_item<PolyLine*>* line = polylines.start;
+	for (int i = 0; i < App->collision->n_lines; i++) {
+		int offx = polylines[i][0] + App->render->camera.x;
+		int offy = polylines[i][1] + App->render->camera.y;
+
+		for (int j = 2; j < n_lines_col[i]; j += 2) {
+			SDL_RenderDrawLine(App->render->renderer,
+				polylines[i][j] + offx, polylines[i][j + 1] + offy,
+				polylines[i][j + 2] + offx, polylines[i][j + 3] + offy);
+		}
+	}
+	int a = 1;
+
+	/*p2List_item<PolyLine*>* line = polylines.start;
 	SDL_SetRenderDrawColor(App->render->renderer, 255, 0, 0, SDL_ALPHA_OPAQUE);
 	for (line; line != polylines.end->prev; line = line->next) {
 		p2List_item<iPoint>* p = line->data->points.start;
@@ -197,7 +210,7 @@ void j1Collision::Draw()
 		}
 		SDL_RenderDrawLine(App->render->renderer, p->data.x + offsetx, p->data.y + offsety,
 			line->data->points.start->data.x + offsetx, line->data->points.start->data.y + offsety);
-	}
+	}*/
 }
 
 // Called before quitting
@@ -222,17 +235,18 @@ void j1Collision::CleanColliders()
 
 void j1Collision::CleanPolylines()
 {
-	//Remove all lines
-	p2List_item<PolyLine*>* line;
-	line = polylines.start;
+	////Remove all lines
+	//p2List_item<PolyLine*>* line;
+	//line = polylines.start;
 
-	while (line != NULL) {
-		line->data->points.clear();
-		//RELEASE(line->data);
-		line = line->next;
-	}
-	polylines.clear();
-	line->~p2List_item();
+	//while (line != NULL) {
+	//	line->data->points.clear();
+	//	//RELEASE(line->data);
+	//	line = line->next;
+	//}
+	//polylines.clear();
+	//line->~p2List_item();
+	n_lines = 0;
 }
 
 Collider* j1Collision::AddCollider(SDL_Rect rect, COLLIDER_TYPE type, j1Module* callback)
