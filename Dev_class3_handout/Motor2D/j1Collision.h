@@ -66,11 +66,6 @@ struct Collider
 
 	bool CheckLineLine(int x1, int y1, int x2, int y2, int x3, int y3, int x4, int y4);
 
-struct PolyLine {
-	p2List<iPoint>  points;
-	iPoint			 start;
-};
-
 
 class j1Collision : public j1Module
 {
@@ -88,17 +83,17 @@ public:
 	void CleanPolylines();
 
 	Collider* AddCollider(SDL_Rect rect, COLLIDER_TYPE type, j1Module* callback = nullptr);
+	void AddPolyLine(int startX, int startY, const char * c);
 	void Draw();
-
-	//p2List<PolyLine*>	polylines;
-	int n_player_colliders;
 
 	int polylines[MAX_LINES][MAX_LINE_LENGTH];
 	int n_lines = 0;
 	int n_lines_col[MAX_LINES];
+
 private:
 
 	Collider * colliders[MAX_COLLIDERS];
+	Collider* player_collider;
 	bool matrix[COLLIDER_MAX][COLLIDER_MAX] = { false };
 };
 

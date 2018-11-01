@@ -152,7 +152,7 @@ bool j1Map::Load(const char* file_name)
 			if (ret) data.map_layers.add(set);
 		}
 
-		//BEGIN TRIP POLYLINE -> TO IMPROVE (cant make it work with a matrix of int[][] (see optimization branch)
+		//BEGIN TRIP POLYLINE
 
 		pugi::xml_node objectgroup = map_doc.child("map").child("objectgroup");
 		//LOG("OBJECTGROUP NAME: %s", objectgroup.attribute("name").as_string());
@@ -163,7 +163,7 @@ bool j1Map::Load(const char* file_name)
 			//LOG("OBJECTGROUP NAME: %s", objectgroup.attribute("name").as_string());
 			pugi::xml_node object = objectgroup.child("object");
 			pugi::xml_node polyobject = object.child("polygon");
-			int n = 0;
+
 			for (object; object; object = object.next_sibling("object")) {
 
 				polyobject = object.child("polyline");
@@ -205,50 +205,17 @@ bool j1Map::Load(const char* file_name)
 
 					}
 				}
-				n = App->collision->n_lines;
+				//It's a Polyline
+
+				
+				//Deal with the string to find each point
 				const char* c = polyobject.attribute("points").as_string();
 
-				int it = 0;
-				App->collision->polylines[n][it++] = object.attribute("x").as_int();
-				App->collision->polylines[n][it++] = object.attribute("y").as_int();
-
-				//Deal with the string to find each point
-				char* buffer = new char[6];
-
-				int point;
-				int j = 0;
-				for (uint i = 0; i <= strlen(c); i++) {
-
-					char k = c[i];
-					if (k == ',') {				// Had finished parsing x point, time to add it
-						point = atoi(buffer);// +offx;
-						App->collision->polylines[n][it++] = point;
-						while (j > 0) {				// Reset buffer and j
-							buffer[--j] = 0;
-						}
-					}
-					else if (k == ' ' || k == '\0') {			// Had finished parsing y point, time to add it
-						App->collision->polylines[n][it++] = atoi(buffer);// +offy;
-						while (j > 0) {				// Reset buffer and j
-							buffer[--j] = 0;
-						}
-					}
-					else {							// Parsing number
-						buffer[j++] = c[i];
-					}
-				}
-				App->collision->n_lines_col[n] = it - 1;
-				if (App->collision->n_lines + 1 > MAX_LINES) {
-					break;
-				}
-				else {
-					App->collision->n_lines += 1;
-				}
+				App->collision->AddPolyLine(object.attribute("x").as_int(), object.attribute("y").as_int(),c);
 
 				// END DEALING OBJECT NODE
 			}
 		}
-		//LOG("AAAAAAAAAAAAAAAAAA: %d", a);
 	}
 	 map_loaded = ret;
 
@@ -502,6 +469,7 @@ bool j1Map::LoadImageLayer(pugi::xml_node & node, ImageLayer * set)
 
 }
 
+
 TileSet* j1Map::GetTilesetFromTileId(int id) const
 {
 	p2List_item<TileSet*>* item = data.tilesets.end;
@@ -628,7 +596,7 @@ p2SString j1Map::DebugToString() const
 	//int tile_id = data.map_layers.start->data->data[map_id + abs(App->render->camera.x/data.tile_width)];
 
 	// Loading info to title FLASHES WINDOW ICON IN TASK BAR
-	p2SString ret_string("Map: %dx%d Tiles: %dx%d Tilesets: %d Mouse [%d,%d] Rect [%d,%d] Camera.x: %d offsetX: %d NPLAYER: %d",
+	p2SString ret_string("Map: %dx%d Tiles: %dx%d Tilesets: %d Mouse [%d,%d] Rect [%d,%d] Camera.x: %d offsetX: %d",
 		data.width, data.height,
 		data.tile_width, data.tile_height,
 		data.tilesets.count(),
@@ -636,8 +604,7 @@ p2SString j1Map::DebugToString() const
 		map_pos.x,map_pos.y, 
 		//map_id,tile_id, MapID: %d TilesetID: %d
 		App->render->camera.x,
-		(data.tile_width > 0) ? abs(App->render->camera.x / data.tile_width): -5000,
-		App->collision->n_player_colliders);
+		(data.tile_width > 0) ? abs(App->render->camera.x / data.tile_width): -5000);
 
 	return ret_string;
 }

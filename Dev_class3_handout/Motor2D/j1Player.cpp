@@ -407,14 +407,14 @@ void j1Player::OnCollision(Collider * c1, Collider * c2)
 
 		on_floor = true;
 		*wall = (c2);
-		LOG("TYPE: %d", wall->type);
+		//LOG("TYPE: %d", wall->type);
 		//last_collision = COLLIDER_FLOOR;
 	}
 	if (c1->type == COLLIDER_PLAYER && c2->type == COLLIDER_WALL) {
 
 		on_wall = true;
 		*wall = (c2);
-		LOG("TYPE: %d", wall->type);
+		//LOG("TYPE: %d", wall->type);
 
 	}
 	if (c1->type == COLLIDER_PLAYER && c2->type == COLLIDER_END && !level_finished) {

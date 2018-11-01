@@ -18,21 +18,6 @@ j1Collision::j1Collision()
 	matrix[COLLIDER_PLAYER][COLLIDER_START]  = false;
 	matrix[COLLIDER_PLAYER][COLLIDER_END]    = true;
 
-	/*matrix[COLLIDER_FLOOR][COLLIDER_PLAYER]  = true;
-	matrix[COLLIDER_FLOOR][COLLIDER_FLOOR]   = false;
-	matrix[COLLIDER_FLOOR][COLLIDER_WALL]    = false;
-	matrix[COLLIDER_FLOOR][COLLIDER_DEATH]   = false;
-
-	matrix[COLLIDER_WALL][COLLIDER_PLAYER]   = true;
-	matrix[COLLIDER_WALL][COLLIDER_FLOOR]    = false;
-	matrix[COLLIDER_WALL][COLLIDER_WALL]     = false;
-	matrix[COLLIDER_WALL][COLLIDER_DEATH]    = false;
-
-	matrix[COLLIDER_DEATH][COLLIDER_PLAYER]  = true;
-	matrix[COLLIDER_DEATH][COLLIDER_FLOOR]   = false;
-	matrix[COLLIDER_DEATH][COLLIDER_WALL]    = false;
-	matrix[COLLIDER_DEATH][COLLIDER_DEATH]   = false;*/
-
 	name.create("collisions");
 }
 
@@ -50,83 +35,35 @@ bool j1Collision::PreUpdate()
 			colliders[i] = nullptr;
 		}
 	}
+	
+	//Works only checking the player, as we only have one player that interacts with everything,
+	// we should only check it,, forgetting about the for
+	// avoid checking unnecessary colliders
+	if (player_collider == nullptr) {
+		LOG("NO player collider, avoiding checking collisions");
+		return true;
+	}
 
-	// Calculate collisions
-	Collider* c1;
-	Collider* c2;
-	n_player_colliders = 0;
-	for (uint i = 0; i < MAX_COLLIDERS; ++i)
+	//RECT COLLISIONS
+	for (uint k = 0; k < MAX_COLLIDERS; ++k)
 	{
-		// skip empty colliders or not player colliders, he is the only one interacting
-		// would be more efficient to only have one or two player colliders and not to 
-		// iterate through all colliders till find the plaayer's one???
-		if (colliders[i] == nullptr /*|| colliders[i]->type != COLLIDER_NONE*/)
-			continue;
-		if (colliders[i]->type == COLLIDER_PLAYER) n_player_colliders += 1;
-		c1 = colliders[i];
+		// stop when finds empty colliders
+		if (colliders[k] == nullptr)
+			break;
 
-		// avoid checking collisions already checked
-		//RECT COLLISIONS
-		for (uint k = i + 1; k < MAX_COLLIDERS; ++k)
+		Collider* c2 = colliders[k];
+
+		if (matrix[player_collider->type][c2->type] && player_collider->CheckCollision(c2->rect))
 		{
-			// skip empty colliders
-			if (colliders[k] == nullptr)
-				continue;
-
-			c2 = colliders[k];
-
-			/*if (matrix[c1->type][c2->type] && c1->CheckCollision(c2->rect) && c1->callback) {
-				LOG("COLLIDED first if");
+			if (player_collider->callback) {					
+				//LOG("COLLIDED first if");
+				player_collider->callback->OnCollision(player_collider, c2);
 			}
-			else if (matrix[c2->type][c1->type] && c2->CheckCollision(c1->rect) && c2->callback) {
-				LOG("COLLIDED second if");
-			}*/
-			if (c1->CheckCollision(c2->rect))
-			{
-				if (matrix[c1->type][c2->type] && c1->callback) {
-					
-					//LOG("COLLIDED first if");
-					c1->callback->OnCollision(c1, c2);
-				}
-
-				if (matrix[c2->type][c1->type] && c2->callback) {
-
-					//LOG("COLLIDED second if");
-					c2->callback->OnCollision(c2, c1);
-				}	
-			}
-
+			if (c2->callback) {
+				//LOG("COLLIDED second if");
+				c2->callback->OnCollision(c2, player_collider);
+			}	
 		}
-		
-		//if (c1->type == COLLIDER_PLAYER) {
-		//	
-		//	p2List_item<PolyLine*>* line = polylines.start;
-		//	for (line; line != polylines.end->prev; line = line->next) {
-		//		p2List_item<iPoint>* p = line->data->points.start;
-		//		int offsetx = line->data->start.x + App->render->camera.x;
-		//		int offsety = line->data->start.y + App->render->camera.y;
-		//	
-		//		for (int i = 0; i < line->data->points.count() - 1; i++) {
-
-		//			if (c1->CheckRectLineCollision(p->data.x + offsetx, p->data.y + offsety,
-		//				p->next->data.x + offsetx, p->next->data.y + offsety)) {
-		//				//LOG("COLLISION WITH LINE");
-		//				c1->callback->OnCollisionLine(p->data.x + offsetx, p->data.y + offsety,
-		//					p->next->data.x + offsetx, p->next->data.y + offsety);
-		//			}
-		//			p = p->next;
-		//		}
-		//		if (c1->CheckRectLineCollision(p->data.x + offsetx, p->data.y + offsety,
-		//			line->data->points.start->data.x + offsetx, line->data->points.start->data.y + offsety)) {
-		//				//LOG("COLLISION WITH LINE");
-		//				c1->callback->OnCollisionLine(p->data.x + offsetx, p->data.y + offsety,
-		//					line->data->points.start->data.x + offsetx, line->data->points.start->data.y + offsety);
-		//		}
-
-		//	}
-		//}
-		
-
 	}
 
 	return true;
@@ -180,6 +117,8 @@ void j1Collision::Draw()
 			}
 
 	}
+
+	//Drawing polylines
 	SDL_SetRenderDrawColor(App->render->renderer, 255, 0, 0, SDL_ALPHA_OPAQUE);
 
 	for (int i = 0; i < App->collision->n_lines; i++) {
@@ -192,25 +131,8 @@ void j1Collision::Draw()
 				polylines[i][j + 2] + offx, polylines[i][j + 3] + offy);
 		}
 	}
-	int a = 1;
 
-	/*p2List_item<PolyLine*>* line = polylines.start;
-	SDL_SetRenderDrawColor(App->render->renderer, 255, 0, 0, SDL_ALPHA_OPAQUE);
-	for (line; line != polylines.end->prev; line = line->next) {
-		p2List_item<iPoint>* p = line->data->points.start;
-		int offsetx = line->data->start.x + App->render->camera.x;
-		int offsety = line->data->start.y + App->render->camera.y;
-
-		for (int i=0;i<line->data->points.count()-1;i++){
-
-			SDL_RenderDrawLine(App->render->renderer, p->data.x + offsetx, p->data.y + offsety, 
-				p->next->data.x + offsetx, p->next->data.y + offsety);
-			//int a = 1;
-			p = p->next;
-		}
-		SDL_RenderDrawLine(App->render->renderer, p->data.x + offsetx, p->data.y + offsety,
-			line->data->points.start->data.x + offsetx, line->data->points.start->data.y + offsety);
-	}*/
+	
 }
 
 // Called before quitting
@@ -235,17 +157,6 @@ void j1Collision::CleanColliders()
 
 void j1Collision::CleanPolylines()
 {
-	////Remove all lines
-	//p2List_item<PolyLine*>* line;
-	//line = polylines.start;
-
-	//while (line != NULL) {
-	//	line->data->points.clear();
-	//	//RELEASE(line->data);
-	//	line = line->next;
-	//}
-	//polylines.clear();
-	//line->~p2List_item();
 	n_lines = 0;
 }
 
@@ -258,11 +169,59 @@ Collider* j1Collision::AddCollider(SDL_Rect rect, COLLIDER_TYPE type, j1Module* 
 		if (colliders[i] == nullptr)
 		{
 			ret = colliders[i] = new Collider(rect, type, callback);
+
+			if (type == COLLIDER_PLAYER) {
+				if (player_collider == nullptr) {
+					player_collider = ret;
+				}
+				else {
+					LOG("THERE CAN ONLY BE ONE PLAYER COLLIDER ERROR ADDING NEW COLLIDER");
+				}
+			}
+
 			break;
 		}
 	}
 
 	return ret;
+}
+void j1Collision::AddPolyLine(int startX, int startY, const char* line)
+{
+	char* buffer = new char[6];
+	int point;
+	int j = 0;
+	int it = 0;
+
+	polylines[n_lines][it++] = startX;
+	polylines[n_lines][it++] = startY;
+
+	for (uint i = 0; i <= strlen(line); i++) {
+		char k = line[i];
+
+		if (k == ',') {				// Had finished parsing x point, time to add it
+			polylines[n_lines][it++] = atoi(buffer);
+			while (j > 0) {				// Reset buffer and j
+				buffer[--j] = 0;
+			}
+		}
+		else if (k == ' ' || k == '\0') {			// Had finished parsing y point, time to add it
+			polylines[n_lines][it++] = atoi(buffer);// +offy;
+			while (j > 0) {				// Reset buffer and j
+				buffer[--j] = 0;
+			}
+		}
+		else {							// Parsing number
+			buffer[j++] = line[i];
+		}
+	}
+	n_lines_col[n_lines] = it - 1;
+
+	if (n_lines + 1 > MAX_LINES) {
+		LOG("MAX LINES ACHIEVED");
+	}
+	else {
+		n_lines += 1;
+	}
 }
 
 
