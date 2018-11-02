@@ -132,10 +132,12 @@ public:
 	void ResetPath();
 	void DrawPath();
 	void Path(int x, int y);
+	void SetGoal(int x,int y);
 
 	// Propagation style
 	void PropagateBFS();
 	void PropagateDijkstra();
+	void PropagateAStar();
 
 private:
 
@@ -162,11 +164,13 @@ private:
 	p2List<iPoint>		visited;
 	p2List<iPoint>		breadcrumbs;
 
-	iPoint				final_point = { 5,22 };
+	iPoint				goal_point;
 	iPoint				source_point = { 19,4 };
 	uint				cost_so_far[COST_MAP][COST_MAP];
 	p2DynArray<iPoint>	path;
 	SDL_Texture*		tile_x = nullptr;
+	bool			    goal_set = false;
+	bool			    goal_found = false;
 };
 
 #endif // __j1MAP_H__

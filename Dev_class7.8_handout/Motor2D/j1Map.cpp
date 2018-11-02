@@ -38,23 +38,23 @@ void j1Map::ResetPath()
 	frontier.Clear();
 	visited.clear();
 	breadcrumbs.clear();
-	frontier.Push(iPoint(19, 4), 0);
-	visited.add(iPoint(19, 4));
-	breadcrumbs.add(iPoint(19, 4));
+	frontier.Push(source_point, 0);
+	visited.add(source_point);
+	breadcrumbs.add(source_point);
 	memset(cost_so_far, 0, sizeof(uint) * COST_MAP * COST_MAP);
+	goal_found = false;
 }
 
 void j1Map::Path(int x, int y)
 {
 	path.Clear();
 	iPoint goal = WorldToMap(x, y);
-	iPoint current = goal;
+	path.PushBack(goal);
 
-	//DONE TODO 2: Follow the breadcrumps to goal back to the origin
-	//add each step into "path" dyn array (it will then draw automatically)
+
 	if (visited.find(goal) != -1)
 	{
-		path.PushBack(goal);
+		iPoint current = goal;
 		
 		while (current != source_point)
 		{
@@ -63,16 +63,23 @@ void j1Map::Path(int x, int y)
 				path.PushBack(current);
 		}
 	}
-
 }
 
-void j1Map::PropagateDijkstra()
+void j1Map::SetGoal(int x, int y)
 {
-	// TODO 3: Taking BFS as a reference, implement the Dijkstra algorithm
-	// use the 2 dimensional array "cost_so_far" to track the accumulated costs
-	// on each cell (is already reset to 0 automatically)
+	goal_point = WorldToMap(x, y);
+	goal_set = true;
+	LOG("goal %d, %d", goal_point.x, goal_point.y);
+}
+
+void j1Map::PropagateAStar()
+{
 	iPoint curr;
-	if (frontier.Pop(curr))
+	if (frontier.Find(goal_point) != -1)
+	{
+		goal_found = true;
+	}
+	if (frontier.Pop(curr) && goal_found != true)
 	{
 		iPoint neighbors[4];
 		neighbors[0].create(curr.x + 1, curr.y + 0);
@@ -81,20 +88,64 @@ void j1Map::PropagateDijkstra()
 		neighbors[3].create(curr.x + 0, curr.y - 1);
 
 		for (uint i = 0; i < 4; ++i)
-		{			
-
-			if (MovementCost(neighbors[i].x, neighbors[i].y) >= 0)
+		{
+			if (MovementCost(neighbors[i].x, neighbors[i].y) > 0)
 			{
-				if (visited.find(neighbors[i]) == -1 && visited.end->data != final_point)
+				uint newcost = cost_so_far[curr.x][curr.y] + MovementCost(neighbors[i].x, neighbors[i].y) /*+ curr.DistanceManhattan(goal_point)*/;
+
+				if (neighbors[i] != source_point)
 				{
-					frontier.Push(neighbors[i], MovementCost(neighbors[i].x, neighbors[i].y));
-					visited.add(neighbors[i]);
-					breadcrumbs.add(curr);
+					if (cost_so_far[neighbors[i].x][neighbors[i].y] == NULL || cost_so_far[neighbors[i].x][neighbors[i].y]/* + curr.DistanceManhattan(neighbors[i]) */> newcost)
+					{
+						cost_so_far[neighbors[i].x][neighbors[i].y] = newcost;
+						frontier.Push(neighbors[i], newcost + neighbors[i].DistanceNoSqrt(goal_point));
+						visited.add(neighbors[i]);
+						breadcrumbs.add(curr);
+					}
 				}
+
 			}
 		}
 	}
+}
 
+void j1Map::PropagateDijkstra()
+{
+
+	iPoint curr;
+	if (frontier.Find(goal_point) != -1)
+	{
+		goal_found = true;
+	}
+	if (frontier.Pop(curr) && goal_found != true)
+	{
+		iPoint neighbors[4];
+		neighbors[0].create(curr.x + 1, curr.y + 0);
+		neighbors[1].create(curr.x + 0, curr.y + 1);
+		neighbors[2].create(curr.x - 1, curr.y + 0);
+		neighbors[3].create(curr.x + 0, curr.y - 1);
+
+		for (uint i = 0; i < 4; ++i)
+		{
+			if (MovementCost(neighbors[i].x, neighbors[i].y) >= 0)
+			{
+				uint newcost = cost_so_far[curr.x][curr.y] + MovementCost(neighbors[i].x, neighbors[i].y);
+
+				if (neighbors[i] != source_point)
+				{
+					if (cost_so_far[neighbors[i].x][neighbors[i].y] > newcost || cost_so_far[neighbors[i].x][neighbors[i].y] == NULL)
+					{
+						cost_so_far[neighbors[i].x][neighbors[i].y] = newcost;
+						frontier.Push(neighbors[i], newcost);
+						visited.add(neighbors[i]);
+						breadcrumbs.add(curr);
+					}
+				}
+				
+			}
+		}
+	}
+	
 }
 
 int j1Map::MovementCost(int x, int y) const
@@ -116,8 +167,6 @@ int j1Map::MovementCost(int x, int y) const
 
 void j1Map::PropagateBFS()
 {
-	// DONE TODO 1: Record the direction to the previous node 
-	// with the new list "breadcrumps"
 	iPoint curr;
 	if (frontier.Pop(curr))
 	{
@@ -131,7 +180,7 @@ void j1Map::PropagateBFS()
 		{
 			if (MovementCost(neighbors[i].x, neighbors[i].y) > 0)
 			{
-				if (visited.find(neighbors[i]) == -1 && visited.end->data != final_point)
+				if (visited.find(neighbors[i]) == -1 && visited.end->data != goal_point)
 				{
 					frontier.Push(neighbors[i], 0);
 					visited.add(neighbors[i]);
@@ -153,13 +202,14 @@ void j1Map::DrawPath()
 	{
 		point = item->data;
 		TileSet* tileset = GetTilesetFromTileId(26);
-
+	
 		SDL_Rect r = tileset->GetTileRect(26);
 		iPoint pos = MapToWorld(point.x, point.y);
-
+	
 		App->render->Blit(tileset->texture, pos.x, pos.y, &r);
-
+	
 		item = item->next;
+	
 	}
 
 	// Draw frontier
@@ -182,12 +232,11 @@ void j1Map::DrawPath()
 	}
 
 	//Draw Final Point
-	TileSet* tileset = GetTilesetFromTileId(25);
-
-	SDL_Rect r = tileset->GetTileRect(25);
-	iPoint pos = MapToWorld(final_point.x, final_point.y);
-
-	App->render->Blit(tileset->texture, pos.x, pos.y, &r);
+	if (goal_set == true)
+	{
+		iPoint pos = MapToWorld(goal_point.x, goal_point.y);
+		App->render->Blit(tile_x, pos.x, pos.y);
+	}
 }
 
 void j1Map::Draw()

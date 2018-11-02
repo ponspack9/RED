@@ -94,7 +94,7 @@ public:
 			p2PQueue_item<tdata>* prev = start;
 			p2PQueue_item<tdata>* tmp = start;
 
-			while (tmp && tmp->priority <= priority)
+			while (tmp && tmp->priority < priority)
 			{
 				prev = tmp;
 				tmp = tmp->next;
@@ -142,6 +142,19 @@ public:
 			return &(tmp->data);
 
 		return NULL;
+	}
+
+	const int Find(tdata data) const
+	{
+		p2PQueue_item<tdata>* tmp;
+
+		for (tmp = start; tmp != NULL; tmp = tmp->next)
+		{
+			if (tmp->data == data)
+				return 1;
+		}
+
+		return -1;
 	}
 
 	/**
