@@ -69,41 +69,126 @@ void j1Map::SetGoal(int x, int y)
 {
 	goal_point = WorldToMap(x, y);
 	goal_set = true;
-	LOG("goal %d, %d", goal_point.x, goal_point.y);
 }
 
-void j1Map::PropagateAStar()
+void j1Map::PropagateAStar1()
 {
-	iPoint curr;
-	if (frontier.Find(goal_point) != -1)
+	if (goal_found != true)
 	{
-		goal_found = true;
-	}
-	if (frontier.Pop(curr) && goal_found != true)
-	{
-		iPoint neighbors[4];
-		neighbors[0].create(curr.x + 1, curr.y + 0);
-		neighbors[1].create(curr.x + 0, curr.y + 1);
-		neighbors[2].create(curr.x - 1, curr.y + 0);
-		neighbors[3].create(curr.x + 0, curr.y - 1);
+		iPoint curr;
 
-		for (uint i = 0; i < 4; ++i)
+		if (frontier.Pop(curr))
 		{
-			if (MovementCost(neighbors[i].x, neighbors[i].y) > 0)
+			iPoint neighbors[4];
+			neighbors[0].create(curr.x + 1, curr.y + 0);
+			neighbors[1].create(curr.x + 0, curr.y + 1);
+			neighbors[2].create(curr.x - 1, curr.y + 0);
+			neighbors[3].create(curr.x + 0, curr.y - 1);
+
+			for (uint i = 0; i < 4; ++i)
 			{
-				uint newcost = cost_so_far[curr.x][curr.y] + MovementCost(neighbors[i].x, neighbors[i].y) /*+ curr.DistanceManhattan(goal_point)*/;
-
-				if (neighbors[i] != source_point)
+				if (MovementCost(neighbors[i].x, neighbors[i].y) > 0)
 				{
-					if (cost_so_far[neighbors[i].x][neighbors[i].y] == NULL || cost_so_far[neighbors[i].x][neighbors[i].y]/* + curr.DistanceManhattan(neighbors[i]) */> newcost)
-					{
-						cost_so_far[neighbors[i].x][neighbors[i].y] = newcost;
-						frontier.Push(neighbors[i], newcost + neighbors[i].DistanceNoSqrt(goal_point));
-						visited.add(neighbors[i]);
-						breadcrumbs.add(curr);
-					}
-				}
+					uint newcost = cost_so_far[curr.x][curr.y] + MovementCost(neighbors[i].x, neighbors[i].y);
 
+					if (neighbors[i] != source_point)
+					{
+						if (cost_so_far[neighbors[i].x][neighbors[i].y] == NULL || cost_so_far[neighbors[i].x][neighbors[i].y] > newcost)
+						{
+							cost_so_far[neighbors[i].x][neighbors[i].y] = newcost;
+							frontier.Push(neighbors[i], newcost + neighbors[i].DistanceManhattan(goal_point));
+							visited.add(neighbors[i]);
+							breadcrumbs.add(curr);
+							if (curr == goal_point)
+							{
+								goal_found = true;
+							}
+						}
+					}
+
+				}
+			}
+		}
+	}
+}
+
+void j1Map::PropagateAStar2()
+{
+	if (goal_found != true)
+	{
+		iPoint curr;
+	
+		if (frontier.Pop(curr))
+		{
+			iPoint neighbors[4];
+			neighbors[0].create(curr.x + 1, curr.y + 0);
+			neighbors[1].create(curr.x + 0, curr.y + 1);
+			neighbors[2].create(curr.x - 1, curr.y + 0);
+			neighbors[3].create(curr.x + 0, curr.y - 1);
+
+			for (uint i = 0; i < 4; ++i)
+			{
+				if (MovementCost(neighbors[i].x, neighbors[i].y) > 0)
+				{
+					uint newcost = cost_so_far[curr.x][curr.y] + MovementCost(neighbors[i].x, neighbors[i].y);
+
+					if (neighbors[i] != source_point)
+					{
+						if (cost_so_far[neighbors[i].x][neighbors[i].y] == NULL || cost_so_far[neighbors[i].x][neighbors[i].y] > newcost)
+						{
+							cost_so_far[neighbors[i].x][neighbors[i].y] = newcost;
+							frontier.Push(neighbors[i], newcost + neighbors[i].DistanceNoSqrt(goal_point));
+							visited.add(neighbors[i]);
+							breadcrumbs.add(curr);
+							if (curr == goal_point)
+							{
+								goal_found = true;
+							}
+						}
+					}
+
+				}
+			}
+		}
+	}
+}
+
+void j1Map::PropagateAStar3()
+{
+	if (goal_found != true)
+	{
+		iPoint curr;
+
+		if (frontier.Pop(curr))
+		{
+			iPoint neighbors[4];
+			neighbors[0].create(curr.x + 1, curr.y + 0);
+			neighbors[1].create(curr.x + 0, curr.y + 1);
+			neighbors[2].create(curr.x - 1, curr.y + 0);
+			neighbors[3].create(curr.x + 0, curr.y - 1);
+
+			for (uint i = 0; i < 4; ++i)
+			{
+				if (MovementCost(neighbors[i].x, neighbors[i].y) > 0)
+				{
+					uint newcost = cost_so_far[curr.x][curr.y] + MovementCost(neighbors[i].x, neighbors[i].y);
+
+					if (neighbors[i] != source_point)
+					{
+						if (cost_so_far[neighbors[i].x][neighbors[i].y] == NULL || cost_so_far[neighbors[i].x][neighbors[i].y] > newcost)
+						{
+							cost_so_far[neighbors[i].x][neighbors[i].y] = newcost;
+							frontier.Push(neighbors[i], newcost + neighbors[i].DistanceTo(goal_point));
+							visited.add(neighbors[i]);
+							breadcrumbs.add(curr);
+							if (curr == goal_point)
+							{
+								goal_found = true;
+							}
+						}
+					}
+
+				}
 			}
 		}
 	}
@@ -157,7 +242,7 @@ int j1Map::MovementCost(int x, int y) const
 		int id = data.layers.start->next->data->Get(x, y);
 
 		if (id == 0)
-			ret = 3;
+			ret = 1;
 		else
 			ret = 0;
 	}

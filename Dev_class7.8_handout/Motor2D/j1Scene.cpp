@@ -77,11 +77,14 @@ bool j1Scene::Update(float dt)
 	if (App->input->GetKey(SDL_SCANCODE_K) == KEY_REPEAT)
 		App->map->PropagateDijkstra();
 
-	if (App->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT)
-		App->map->PropagateAStar();
+	if (App->input->GetKey(SDL_SCANCODE_1) == KEY_DOWN)
+		App->map->PropagateAStar1();
 
-	if (App->input->GetKey(SDL_SCANCODE_Z) == KEY_DOWN)
-		App->map->PropagateAStar();
+	if (App->input->GetKey(SDL_SCANCODE_2) == KEY_DOWN)
+		App->map->PropagateAStar2();
+
+	if (App->input->GetKey(SDL_SCANCODE_3) == KEY_DOWN)
+		App->map->PropagateAStar3();
 
 	if (App->input->GetMouseButtonDown(1) == KEY_DOWN)
 	{
