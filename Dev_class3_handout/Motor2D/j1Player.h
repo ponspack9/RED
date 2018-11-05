@@ -26,6 +26,7 @@ public:
 	void Move();
 	void MoveFree();
 	bool Jump();
+	bool DoubleJump();
 	void PlayerAnimations();
 
 	bool Save(pugi::xml_node& node);
@@ -41,7 +42,9 @@ public:
 	Animation* current_animation = nullptr;
 	Animation idle;
 	Animation walk;		
-	Animation jump;		
+	Animation jump;	
+	Animation doublejump;
+	Animation fall;
 	Animation death;
 	Animation god;
 	float def_anim_speed;
@@ -56,9 +59,12 @@ public:
 	bool move_left;
 	bool move_right;
 	bool is_jumping;
-	bool falling;
+	bool djump;
+	bool aux_djump;
+	bool is_falling;
 	float dx = 0;
 	float dy = 0;
+	float falling_y;
 	int max_speed_y;
 	float gravity;
 	float jumpspeed;
@@ -67,11 +73,9 @@ public:
 	fPoint position;
 	iPoint init_pos1;
 	iPoint init_pos2;
-
 	fPoint speed;
 	SDL_Rect player_rect;
 	bool godmode = false;
-
 	Collider* player_collider;
 	Collider* wall;
 
