@@ -11,6 +11,7 @@
 #include "j1Map.h"
 #include "j1Player.h"
 #include "j1FadeToBlack.h"
+#include "j1Enemies.h"
 
 j1Scene::j1Scene() : j1Module()
 {
@@ -33,13 +34,12 @@ bool j1Scene::Awake(pugi::xml_node& config)
 // Called before the first frame
 bool j1Scene::Start()
 {
-	bool ret = App->audio->PlayMusic(PATH(App->audio->folder_music.GetString(),App->audio->tracks_path.start->data.GetString()));
+	bool ret = true;// App->audio->PlayMusic(PATH(App->audio->folder_music.GetString(), App->audio->tracks_path.start->data.GetString()));
 	if (ret) App->map->Load(App->map->current_map->data.GetString());
 
 	
-		App->render->camera.x = 0;
-		App->render->camera.y = 0;
-		App->player->Start();
+	App->render->ResetCamera();
+	App->player->Start();
 	
 
 	return ret;
@@ -54,6 +54,10 @@ bool j1Scene::PreUpdate()
 // Called each loop iteration
 bool j1Scene::Update(float dt)
 {
+	int x;
+	int y;
+	App->input->GetMousePosition(x, y);
+
 	if (App->input->GetKey(SDL_SCANCODE_UP) == KEY_REPEAT)
 		App->render->MoveCamera(0, 1);
 
@@ -65,6 +69,9 @@ bool j1Scene::Update(float dt)
 
 	if (App->input->GetKey(SDL_SCANCODE_RIGHT) == KEY_REPEAT)
 		App->render->MoveCamera(-1, 0);
+
+	if (App->input->GetKey(SDL_SCANCODE_E) == KEY_DOWN)
+		App->enemies->AddEnemy(BLACK_NIGGA, x, y);
 
 	App->map->Draw();
 	

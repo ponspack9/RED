@@ -16,6 +16,7 @@
 #include "j1Player.h"
 #include "j1App.h"
 #include "j1FileSystem.h"
+#include "j1Enemies.h"
 
 // Constructor
 j1App::j1App(int argc, char* args[]) : argc(argc), args(args)
@@ -34,6 +35,7 @@ j1App::j1App(int argc, char* args[]) : argc(argc), args(args)
 	collision   = new j1Collision();
 	fade		= new j1FadeToBlack();
 	player		= new j1Player();
+	enemies		= new j1Enemies();
 
 	// Ordered for awake / Start / Update
 	// Reverse order of CleanUp
@@ -48,6 +50,7 @@ j1App::j1App(int argc, char* args[]) : argc(argc), args(args)
 	AddModule(collision);
 	AddModule(player);
 	AddModule(fade);
+	AddModule(enemies);
 
 	AddModule(render);
 }
@@ -376,6 +379,13 @@ bool j1App::RestartGame()
 bool j1App::RestartLevel()
 {
 	App->fade->FadeToBlack(App->scene, App->scene);
+	return true;
+}
+bool j1App::SoftRestartLevel()
+{
+	render->ResetCamera();
+	player->position.x = map->start_collider->rect.x;
+	player->position.y = map->start_collider->rect.y;
 	return true;
 }
 

@@ -38,7 +38,7 @@ bool j1Collision::PreUpdate()
 	
 	//Works only checking the player, as we only have one player that interacts with everything,
 	// we should only check it,, forgetting about the for
-	// avoid checking unnecessary colliders
+	// avoids checking unnecessary colliders
 	if (player_collider == nullptr) {
 		LOG("NO player collider, avoiding checking collisions");
 		return true;
@@ -158,6 +158,10 @@ void j1Collision::CleanColliders()
 void j1Collision::CleanPolylines()
 {
 	n_lines = 0;
+	for (int i = 0; i < n_lines; ++i) {
+		for (int j = 0; j < n_lines_col[i]; ++j)
+			polylines[i][j] = 0;
+	}
 }
 
 Collider* j1Collision::AddCollider(SDL_Rect rect, COLLIDER_TYPE type, j1Module* callback)
@@ -187,6 +191,10 @@ Collider* j1Collision::AddCollider(SDL_Rect rect, COLLIDER_TYPE type, j1Module* 
 }
 void j1Collision::AddPolyLine(int startX, int startY, const char* line)
 {
+	if (n_lines >= MAX_LINES) {
+		LOG("MAX LINES ACHIEVED");
+		return;
+	}
 	char* buffer = new char[6];
 	int point;
 	int j = 0;
@@ -215,13 +223,8 @@ void j1Collision::AddPolyLine(int startX, int startY, const char* line)
 		}
 	}
 	n_lines_col[n_lines] = it - 1;
-
-	if (n_lines + 1 > MAX_LINES) {
-		LOG("MAX LINES ACHIEVED");
-	}
-	else {
-		n_lines += 1;
-	}
+	n_lines += 1;
+	
 }
 
 

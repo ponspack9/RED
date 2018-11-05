@@ -47,6 +47,8 @@ public:
 
 	void FollowPlayer();
 
+	void ResetCamera();
+
 public:
 
 	SDL_Renderer*	renderer;
