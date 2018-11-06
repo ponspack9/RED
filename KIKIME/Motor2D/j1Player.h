@@ -53,9 +53,9 @@ public:
 	bool have_collided;
 	bool level_finished;
 	bool on_floor;
-	bool on_wall;
-	bool colliding_floor;
 	bool dead;
+
+	//Animations
 	bool move_left;
 	bool move_right;
 	bool is_jumping;
@@ -77,13 +77,14 @@ public:
 	SDL_Rect player_rect;
 	bool godmode = false;
 	Collider* player_collider;
-	Collider* col_temp;
 
 	//NEW approach
 	bool can_move_right;
 	bool can_move_left;
 	bool can_move_up;
 	bool can_move_down;
+
+	bool collision_from_top;
 
 	bool horizontal_collided;
 

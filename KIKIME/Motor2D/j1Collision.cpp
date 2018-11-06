@@ -20,6 +20,8 @@ j1Collision::j1Collision()
 
 	matrix[COLLIDER_RAY_RIGHT][COLLIDER_FLOOR] = true;
 	matrix[COLLIDER_RAY_LEFT][COLLIDER_FLOOR] = true;
+	matrix[COLLIDER_RAY_UP][COLLIDER_FLOOR] = true;
+	matrix[COLLIDER_RAY_DOWN][COLLIDER_FLOOR] = true;
 
 	name.create("collisions");
 }
@@ -130,6 +132,12 @@ void j1Collision::Draw()
 				App->render->DrawQuad(colliders[i]->rect, 0, 0, 0, alpha);
 				break;
 			case COLLIDER_RAY_LEFT:
+				App->render->DrawQuad(colliders[i]->rect, 0, 0, 0, alpha);
+				break;
+			case COLLIDER_RAY_UP:
+				App->render->DrawQuad(colliders[i]->rect, 0, 0, 0, alpha);
+				break;
+			case COLLIDER_RAY_DOWN:
 				App->render->DrawQuad(colliders[i]->rect, 0, 0, 0, alpha);
 				break;
 			}
