@@ -17,6 +17,7 @@ class j1Debug;
 class j1Collision;
 class j1FadeToBlack;
 class j1Player;
+class j1Enemies;
 
 class j1App
 {
@@ -63,6 +64,8 @@ public:
 	//Restarts the current level
 	bool RestartLevel();
 
+	bool SoftRestartLevel();
+
 	bool NextLevel();
 
 private:
@@ -102,6 +105,8 @@ public:
 	j1Collision*		collision;
 	j1FadeToBlack*		fade;
 	j1Player*			player;
+	j1Enemies*			enemies;
+
 
 	bool				want_to_load;
 	mutable bool		want_to_save;

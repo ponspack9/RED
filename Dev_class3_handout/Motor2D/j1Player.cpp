@@ -206,7 +206,7 @@ bool j1Player::PostUpdate()
 	//App->render->MoveCamera(-dx, -dy);
 	if (dead)
 	{
-		App->RestartLevel();
+		App->SoftRestartLevel();
 		dead = false;
 	}
 	return true;

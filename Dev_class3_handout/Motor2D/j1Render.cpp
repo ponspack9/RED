@@ -195,6 +195,12 @@ void j1Render::FollowPlayer()
 	//}
 }
 
+void j1Render::ResetCamera()
+{
+	camera.x = 0;
+	camera.y = 0;
+}
+
 void j1Render::SetViewPort(const SDL_Rect& rect)
 {
 	SDL_RenderSetViewport(renderer, &rect);
