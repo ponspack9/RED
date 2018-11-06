@@ -1,5 +1,4 @@
 #include "j1App.h"
-#include "j1Collision.h"
 #include "j1Render.h"
 #include "Enemy.h"
 

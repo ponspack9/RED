@@ -1,6 +1,5 @@
 #include "j1App.h"
 #include "Enemy_Fish.h"
-#include "j1Collision.h"
 #include "j1Input.h"
 
 
@@ -25,5 +24,5 @@ void Enemy_Fish::Shoot()
 
 void Enemy_Fish::Move()
 {
-	position = original_position + path.GetCurrentSpeed(&animation);	
+	//position = original_position + path.GetCurrentSpeed(&animation);	
 }

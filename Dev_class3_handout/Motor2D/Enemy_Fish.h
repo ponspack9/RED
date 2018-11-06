@@ -12,7 +12,6 @@ private:
 
 public:
 	Enemy_Fish(int x, int y);
-	Collider* collider;
 
 	void Move();
 	void Shoot();

@@ -42,9 +42,9 @@ bool j1Enemies::PreUpdate()
 		{
 			if(queue[i].x * App->win->GetScale() < App->render->camera.x + (App->render->camera.w * App->win->GetScale()) + SPAWN_MARGIN)
 			{
+				LOG(" RIGHT Spawning enemy at %d", queue[i].x * App->win->GetScale());
 				SpawnEnemy(queue[i]);
 				queue[i].type = ENEMY_TYPES::NO_TYPE;
-				LOG("Spawning enemy at %d", queue[i].x * App->win->GetScale());
 			}
 		}
 	}
@@ -53,13 +53,15 @@ bool j1Enemies::PreUpdate()
 }
 
 // Called before render is available
-bool j1Enemies::Update()
+bool j1Enemies::Update(float dt)
 {
 	for(uint i = 0; i < MAX_ENEMIES; ++i)
-		if(enemies[i] != nullptr) enemies[i]->Move();
+		if(enemies[i] != nullptr) 
+			enemies[i]->Move();
 
 	for(uint i = 0; i < MAX_ENEMIES; ++i)
-		if(enemies[i] != nullptr) enemies[i]->Draw(sprites);
+		if(enemies[i] != nullptr) 
+			enemies[i]->Draw(sprites);
 
 	return true;
 }
@@ -71,13 +73,14 @@ bool j1Enemies::PostUpdate()
 	{
 		if(enemies[i] != nullptr)
 		{
+			("Enemy found at index: %d", i);
 
-			if(enemies[i]->position.x * App->win->GetScale() < (App->render->camera.x) - SPAWN_MARGIN)
+			/*if(enemies[i]->position.x * App->win->GetScale() < (App->render->camera.x) - SPAWN_MARGIN)
 			{
 				LOG("DeSpawning enemy at %d", enemies[i]->position.x * App->win->GetScale());
 				delete enemies[i];
 				enemies[i] = nullptr;
-			}
+			}*/
 		}
 	}
 	return true;
@@ -133,7 +136,7 @@ void j1Enemies::SpawnEnemy(const EnemyInfo& info)
 		{
 			case ENEMY_TYPES::BLACK_NIGGA:
 			enemies[i] = new Enemy_Fish(info.x, info.y);
-				LOG("You want to spawn a BLACK NIGGA");
+			LOG(" RIGHT You want to spawn a BLACK NIGGA");
 			break;
 
 			

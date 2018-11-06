@@ -1,6 +1,7 @@
 #pragma once
 
 #include "p2Point.h"
+#include "j1Collision.h"
 #include "Animation.h"
 #include "Path.h"
 #include "SDL\include\SDL_timer.h"
@@ -19,7 +20,7 @@ protected:
 
 public:
 	Enemy(int x, int y);
-	virtual ~Enemy();
+	~Enemy(); //virtual
 
 	const Collider* GetCollider() const;
 
