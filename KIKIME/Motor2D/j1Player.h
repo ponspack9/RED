@@ -77,7 +77,23 @@ public:
 	SDL_Rect player_rect;
 	bool godmode = false;
 	Collider* player_collider;
-	Collider* wall;
+	Collider* col_temp;
+
+	//NEW approach
+	bool can_move_right;
+	bool can_move_left;
+	bool can_move_up;
+	bool can_move_down;
+
+	bool horizontal_collided;
+
+	Collider* collider_ray_right;
+	Collider* collider_ray_left;
+	Collider* collider_ray_up;
+	Collider* collider_ray_down;
+
+	int collider_offset = 1;
+	COLLIDER_TYPE last_collision;
 
 	int r, g, b;
 };

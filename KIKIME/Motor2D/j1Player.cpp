@@ -147,7 +147,13 @@ bool j1Player::Awake(pugi::xml_node & config)
 	LOG("%d  %d", speed.x, speed.y);
 	//PL. COLLIDER
 	player_collider = App->collision->AddCollider(player_rect, COLLIDER_PLAYER, this);
-	wall = App->collision->AddCollider(player_rect, COLLIDER_NONE);
+	SDL_Rect temp = player_rect;
+	temp.h -= 20;
+	collider_ray_right = App->collision->AddCollider(temp, COLLIDER_RAY_RIGHT, this);
+	
+	collider_ray_left = App->collision->AddCollider(temp, COLLIDER_RAY_LEFT, this);
+	
+	col_temp = App->collision->AddCollider(player_rect, COLLIDER_NONE);
 	return true;
 }
 
@@ -160,13 +166,18 @@ bool j1Player::Start()
 	position.y = App->map->start_collider->rect.y;
 
 	current_animation = &idle;
-
+	collider_offset = speed.x;
 	max_speed_y = speed.y;
 	level_finished = false;
 	on_floor = false;
 	is_jumping = false;
 	is_falling = false;
 	dead = false;
+
+	can_move_right 	= true;
+	can_move_left	= true;
+	can_move_up		= true;
+	can_move_down	= true;
 
 	return true;
 }
@@ -195,7 +206,10 @@ bool j1Player::Update(float dt)
 			//player_collider->rect.w = current_animation->GetCurrentFrame().w;
 			//player_collider->rect.h = current_animation->GetCurrentFrame().h;
 			player_collider->SetPos(position.x, position.y);
+			collider_ray_right->SetPos(position.x+collider_offset, position.y + collider_offset);
+			collider_ray_left->SetPos(position.x-collider_offset, position.y + collider_offset);
 		}
+		else LOG("MISSING PLAYER COLLIDER");
 	}
 	Draw();
 	return true;
@@ -261,15 +275,24 @@ void j1Player::Move()
 	bool collidedX = false;
 	bool collidedY = false;
 
-	if (!have_collided && on_floor) on_floor = false;
-	if (!have_collided && left) left = false;
-	if (!have_collided && right) right = false;
-	if (!have_collided && top) top = false;
-	if (!have_collided && bottom) bottom = false;
+	if (!have_collided && on_floor)	on_floor = false;
+	if (!have_collided && left)		left	 = false;
+	if (!have_collided && right)	right	 = false;
+	if (!have_collided && top)		top		 = false;
+	if (!have_collided && bottom)	bottom = false;
+	if (!horizontal_collided && !can_move_right)	can_move_right = true;
+	if (!horizontal_collided && !can_move_left)		can_move_left = true;
 
 	if (have_collided && on_floor) {
-		on_floor = wall->type == COLLIDER_FLOOR && !on_wall;
+		//on_floor = wall->type == COLLIDER_FLOOR;
 	}
+	// positionX - speed is greater than the collider position + its widht
+	// player left - speed > collider right
+	//can_move_left  = (position.x - speed.x) > (col_temp->rect.x + col_temp->rect.w);
+	//can_move_right = (position.x + player_collider->rect.w + speed.x) < (col_temp->rect.x);
+	//can_move_up	   = (position.y - speed.y) > (col_temp->rect.y + col_temp->rect.h);
+	//can_move_down  = (position.y + player_collider->rect.h + speed.y) < (col_temp->rect.y);
+
 
 	if (!have_collided && on_wall) on_wall = false;
 	//if (!have_collided && on_wall) on_wall = false;
@@ -279,7 +302,7 @@ void j1Player::Move()
 	{
 		Die();
 	}
-	if (App->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT && !right)
+	if (App->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT && can_move_right)
 	{
 		move_right = true;
 		move_left = false;
@@ -289,7 +312,7 @@ void j1Player::Move()
 	{
 		move_right = false;
 	}
-	if (App->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT && !left)
+	if (App->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT && can_move_left)
 	{
 		move_right = false;
 		move_left = true;
@@ -299,7 +322,7 @@ void j1Player::Move()
 	{
 		move_left = false;
 	}
-	if (App->input->GetKey(SDL_SCANCODE_W) == KEY_DOWN && on_floor)
+	if (App->input->GetKey(SDL_SCANCODE_W) == KEY_DOWN && can_move_up)
 	{
 		Jump();
 		//LOG("JUMP");
@@ -332,31 +355,9 @@ void j1Player::Move()
 		falling_y = 0;
 	}
 
-	if (have_collided) {		
-		//Moving left
-		if (dx < 0) {
-			left = (position.x <= wall->rect.x + wall->rect.w) && wall->type != COLLIDER_FLOOR;
-			//LOG("LEEEEEEEEEEEEEEEEEEEEEEEFT");
-			// Colliding also with the floor collider 
-			//bottom = (left && dy <= 0);
-			//can_left = left && !bottom ||
-		}
-		//Moving right
-		else if (dx > 0) {
-			right = (position.x + player_collider->rect.w >= wall->rect.x) && wall->type != COLLIDER_FLOOR;
-		}
-
-		//Moving up
-		if (dy < 0) {
-			top = (position.y <= wall->rect.y + wall->rect.h) && wall->type != COLLIDER_FLOOR;
-		}
-		//Moving down
-		else if (dy > 0) {
-			bottom = (position.y + player_collider->rect.h >= wall->rect.y) && wall->type != COLLIDER_FLOOR;
-		}
-	}
+	
 	MovePlayer(dx, dy);
-
+	horizontal_collided = false;
 	have_collided = false;
 }
 
@@ -480,14 +481,25 @@ void j1Player::OnCollision(Collider * c1, Collider * c2)
 		is_falling = false;
 		djump = false;
 		aux_djump = false;
-		*wall = (c2);
+		*col_temp = (c2);
 		//LOG("TYPE: %d", wall->type);
-		//last_collision = COLLIDER_FLOOR;
+	}
+	if (c1->type == COLLIDER_RAY_RIGHT && c2->type == COLLIDER_FLOOR) {
+		can_move_right = false;
+		horizontal_collided = true;
+		//LOG("COLLIDED_RAY_RIGHT");
+	}
+	if (c1->type == COLLIDER_RAY_LEFT && c2->type == COLLIDER_FLOOR) {
+		can_move_left = false;
+		horizontal_collided = true;
+		//LOG("COLLIDED_RAY_LEFT");
+
 	}
 	if (c1->type == COLLIDER_PLAYER && c2->type == COLLIDER_WALL) {
 
 		on_wall = true;
-		*wall = (c2);
+		*col_temp = (c2);
+		
 		//LOG("TYPE: %d", wall->type);
 
 	}
