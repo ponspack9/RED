@@ -105,6 +105,14 @@ private:
 	p2SString			load_game;
 	mutable p2SString	save_game;
 
+	//Framerate control
+	j1Timer timer;
+	j1Timer aux_timer; //to control the amount of frames in the last second
+	j1PerfTimer perf_timer;
+
+	uint32 frames_on_last_update = 0;
+	uint32 total_frames = 0;
+	uint32 aux_frames_counter; //to control the amount of frames in the last second
 };
 
 extern j1App* App; // No student is asking me about that ... odd :-S

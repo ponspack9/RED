@@ -17,8 +17,6 @@
 // TODO 3: Measure the amount of ms that takes to execute:
 // App constructor, Awake, Start and CleanUp
 // LOG the result
-j1Timer timer;
-j1PerfTimer perf_timer;
 
 // Constructor
 j1App::j1App(int argc, char* args[]) : argc(argc), args(args)
@@ -117,8 +115,9 @@ bool j1App::Awake()
 // Called before the first frame
 bool j1App::Start()
 {
-	timer.Start();
 	perf_timer.Start();
+	timer.Start();
+	aux_timer.Start();
 
 	bool ret = true;
 	p2List_item<j1Module*>* item;
@@ -176,6 +175,7 @@ pugi::xml_node j1App::LoadConfig(pugi::xml_document& config_file) const
 // ---------------------------------------------
 void j1App::PrepareUpdate()
 {
+	perf_timer.Start();
 }
 
 // ---------------------------------------------
@@ -194,12 +194,21 @@ void j1App::FinishUpdate()
 	// Amount of ms took the last update
 	// Amount of frames during the last second
 
-	float avg_fps = 0.0f;
-	float seconds_since_startup = 0.0f;
+
 	float dt = 0.0f;
-	uint32 last_frame_ms = 0;
-	uint32 frames_on_last_update = 0;
-	uint64 frame_count = 0;
+	float seconds_since_startup = timer.ReadSec();
+	uint32 last_frame_ms = perf_timer.ReadMs() / 1000;
+	uint64 frame_count = total_frames;
+
+	float avg_fps = total_frames / seconds_since_startup;
+
+	if (aux_timer.ReadSec() >= 1.0f)
+	{
+		frames_on_last_update = total_frames - aux_frames_counter;
+		aux_frames_counter = total_frames;
+
+		aux_timer.Start();
+	}
 
 	static char title[256];
 	sprintf_s(title, 256, "Av.FPS: %.2f Last Frame Ms: %02u Last sec frames: %i Last dt: %.3f Time since startup: %.3f Frame Count: %lu ",
@@ -269,6 +278,8 @@ bool j1App::PostUpdate()
 
 		ret = item->data->PostUpdate();
 	}
+
+	total_frames++;
 
 	return ret;
 }
