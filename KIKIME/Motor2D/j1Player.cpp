@@ -147,6 +147,7 @@ bool j1Player::Awake(pugi::xml_node & config)
 	LOG("%d  %d", speed.x, speed.y);
 	//PL. COLLIDER
 	player_collider = App->collision->AddCollider(player_rect, COLLIDER_PLAYER, this);
+	collider_identifier = App->collision->AddCollider(player_rect, COLLIDER_NONE, this);
 	SDL_Rect temp = player_rect;
 	temp.h -= speed.x+1;
 	collider_ray_right = App->collision->AddCollider(temp, COLLIDER_RAY_RIGHT, this);
@@ -185,18 +186,33 @@ bool j1Player::Start()
 	return true;
 }
 
+bool j1Player::PreUpdate()
+{
+	Move();
+	return true;
+}
+
 bool j1Player::Update(float dt)
 {
 	if (level_finished) App->NextLevel();
 	else {
-	/*	if (dead)
-		{
-			Draw();
-			return true;
-		}*/
 		if (!godmode)
 		{
-			Move();
+			//Move();
+			if (dx > 0 && !can_move_right) {
+				MovePlayer(-dx, 0);
+			}
+			else if (dx < 0 && !can_move_left) {
+				MovePlayer(-dx, 0);
+			}
+			if (dy > 0 && !can_move_down) {
+				MovePlayer(0, -dy);
+			}
+			else if (dy < 0 && !can_move_up) {
+				MovePlayer(0, dy);
+			}
+			horizontal_collided = false;
+			have_collided = false;
 			PlayerAnimations();
 		}
 		else
@@ -205,16 +221,6 @@ bool j1Player::Update(float dt)
 			MoveFree();
 		}
 
-		if (player_collider != nullptr) {
-			//player_collider->rect.w = current_animation->GetCurrentFrame().w;
-			//player_collider->rect.h = current_animation->GetCurrentFrame().h;
-			player_collider->SetPos(position.x, position.y);
-			collider_ray_right	->SetPos(position.x + collider_offset, position.y + collider_offset);
-			collider_ray_left	->SetPos(position.x - collider_offset, position.y + collider_offset);
-			collider_ray_up		->SetPos(position.x + collider_offset, position.y - collider_offset);
-			collider_ray_down	->SetPos(position.x + collider_offset, position.y + collider_offset);
-		}
-		else LOG("MISSING PLAYER COLLIDER");
 	}
 	Draw();
 	return true;
@@ -262,14 +268,24 @@ void j1Player::Draw()
 
 bool j1Player::MovePlayer(float vel_x, float vel_y)
 {
-	//if (position.x + vel_x > 0) {
-	position.x += dx;
+	position.x += vel_x;
 	player_rect.x = position.x;
-	//}
-	position.y += dy;
+	
+	position.y += vel_y;
 	player_rect.y = position.y;
 
-	return false;
+	if (player_collider != nullptr) {
+		//player_collider->rect.w = current_animation->GetCurrentFrame().w;
+		//player_collider->rect.h = current_animation->GetCurrentFrame().h;
+		player_collider->SetPos(position.x, position.y);
+		collider_ray_right->SetPos(position.x + collider_offset, position.y + collider_offset);
+		collider_ray_left->SetPos(position.x - collider_offset, position.y + collider_offset);
+		collider_ray_up->SetPos(position.x + collider_offset, position.y - collider_offset);
+		collider_ray_down->SetPos(position.x + collider_offset, position.y + collider_offset);
+	}
+	else LOG("MISSING PLAYER COLLIDER");
+
+	return true;
 }
 
 
@@ -284,11 +300,6 @@ void j1Player::Move()
 
 	can_move_down &= !on_floor && !is_jumping && !djump;
 
-	// positionX - speed is greater than the collider position + its widht
-	// player left - speed > collider right
-	//can_move_left  = (position.x - speed.x) > (col_temp->rect.x + col_temp->rect.w);
-	//can_move_right = (position.x + player_collider->rect.w + speed.x) < (col_temp->rect.x);
-	//can_move_down  = (position.y + player_collider->rect.h + speed.y) < (col_temp->rect.y);
 	dx = 0;
 	dy = 0;
 	if (App->input->GetKey(SDL_SCANCODE_Q) == KEY_DOWN)
@@ -349,8 +360,6 @@ void j1Player::Move()
 
 	
 	MovePlayer(dx, dy);
-	horizontal_collided = false;
-	have_collided = false;
 }
 
 bool j1Player::Jump()
@@ -475,6 +484,7 @@ void j1Player::OnCollision(Collider * c1, Collider * c2)
 	//	aux_djump = false;
 	//	//LOG("TYPE: %d", wall->type);
 	//}
+	*collider_identifier = c2;
 	if (c1->type == COLLIDER_RAY_RIGHT && c2->type == COLLIDER_FLOOR) {
 		can_move_right = false;
 		horizontal_collided = true;

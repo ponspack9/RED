@@ -1,6 +1,4 @@
-#ifndef __j1PLAYER_H__
-#define __j1PLAYER_H__
-
+#pragma once
 #include "SDL/include/SDL.h"
 #include "j1Module.h"
 #include "j1Collision.h"
@@ -16,6 +14,7 @@ public:
 
 	bool Awake(pugi::xml_node& config);
 	bool Start();
+	bool PreUpdate();
 	bool Update(float dt);
 	bool PostUpdate();
 	bool CleanUp();
@@ -93,10 +92,10 @@ public:
 	Collider* collider_ray_up;
 	Collider* collider_ray_down;
 
+	Collider* collider_identifier;
+
 	int collider_offset = 1;
 	COLLIDER_TYPE last_collision;
 
 	int r, g, b;
 };
-
-#endif 
