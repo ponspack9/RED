@@ -174,12 +174,8 @@ bool j1Player::Start()
 bool j1Player::Update(float dt)
 {
 	if (level_finished) App->NextLevel();
-	else {
-	/*	if (dead)
-		{
-			Draw();
-			return true;
-		}*/
+	else
+	{
 		if (!godmode)
 		{
 			Move();
@@ -242,12 +238,11 @@ void j1Player::Draw()
 }
 
 bool j1Player::MovePlayer(float vel_x, float vel_y)
-{
-	//if (position.x + vel_x > 0) {
-	position.x += dx;
+{	
+	position.x += vel_x;
 	player_rect.x = position.x;
-	//}
-	position.y += dy;
+	
+	position.y += vel_y;
 	player_rect.y = position.y;
 
 	return false;
@@ -309,6 +304,7 @@ void j1Player::Move()
 		DoubleJump();
 	}
 
+
 	if (is_jumping)
 	{
 		is_jumping = Jump();
@@ -321,7 +317,6 @@ void j1Player::Move()
 	{
 		is_falling = true;
 
-		//dy += gravity;
 		falling_y += gravity/2;
 		if (falling_y >= max_speed_y) falling_y = max_speed_y;
 
@@ -402,7 +397,6 @@ bool j1Player::DoubleJump()
 
 void j1Player::MoveFree()
 {
-	//current_animation = &idle;
 	dx = 0;
 	dy = 0;
 
@@ -410,18 +404,14 @@ void j1Player::MoveFree()
 	{
 		dx += speed.x;
 	}
-
 	if (App->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT)
 	{
 		dx -= speed.x;
-
 	}
-
 	if (App->input->GetKey(SDL_SCANCODE_S) == KEY_REPEAT)
 	{
 		dy += speed.y;
 	}
-
 	if (App->input->GetKey(SDL_SCANCODE_W) == KEY_REPEAT)
 	{
 		dy -= speed.y;
@@ -431,7 +421,6 @@ void j1Player::MoveFree()
 	position.y += dy;
 
 	have_collided = false;
-
 }
 
 void j1Player::PlayerAnimations()
@@ -465,8 +454,6 @@ void j1Player::PlayerAnimations()
 		current_animation = &death;
 	}
 
-	/*player_rect.x = position.x;
-	player_rect.y = position.y;*/
 	player_rect.w = current_animation->GetCurrentFrame().w;
 	player_rect.h = current_animation->GetCurrentFrame().h;
 }
@@ -491,10 +478,12 @@ void j1Player::OnCollision(Collider * c1, Collider * c2)
 		//LOG("TYPE: %d", wall->type);
 
 	}
-	if (c1->type == COLLIDER_PLAYER && c2->type == COLLIDER_END && !level_finished) {
+	if (c1->type == COLLIDER_PLAYER && c2->type == COLLIDER_END && !level_finished)
+	{
 		level_finished = true;
 	}
-	if (c1->type == COLLIDER_PLAYER && c2->type == COLLIDER_DEATH) {
+	if (c1->type == COLLIDER_PLAYER && c2->type == COLLIDER_DEATH) 
+	{
 		Die();
 	}
 
