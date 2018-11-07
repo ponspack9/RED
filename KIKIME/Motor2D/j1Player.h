@@ -49,7 +49,6 @@ public:
 	float def_anim_speed;
 	SDL_Rect anim_rect;
 
-	bool have_collided;
 	bool level_finished;
 	bool on_floor;
 	bool dead;
@@ -85,6 +84,7 @@ public:
 
 	bool collision_from_top;
 
+	bool vertical_collided;
 	bool horizontal_collided;
 
 	Collider* collider_ray_right;
@@ -94,7 +94,7 @@ public:
 
 	Collider* collider_identifier;
 
-	int collider_offset = 1;
+	int collider_offset = 0;
 	COLLIDER_TYPE last_collision;
 
 	int r, g, b;
