@@ -11,7 +11,7 @@ public:
 	j1PerfTimer();
 
 	void Start();
-	double ReadMs() const;
+	uint64 ReadMs() const;
 	uint64 ReadTicks() const;
 
 private:

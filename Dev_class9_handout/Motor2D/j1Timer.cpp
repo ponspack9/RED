@@ -17,17 +17,17 @@ void j1Timer::Start()
 {
 	// DONE TODO 1: Fill Start(), Read(), ReadSec() methods
 	// they are simple, one line each!
-	started_at = Read();
+	started_at = SDL_GetTicks();
 }
 
 // ---------------------------------------------
 uint32 j1Timer::Read() const
 {
-	return SDL_GetTicks();
+	return (SDL_GetTicks() - started_at);
 }
 
 // ---------------------------------------------
 float j1Timer::ReadSec() const
 {
-	return (SDL_GetTicks() - started_at);
+	return (Read() * 0.001f);
 }
