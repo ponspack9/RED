@@ -45,7 +45,7 @@ public:
 	}
 
 	// Called each loop iteration
-	virtual bool Update()
+	virtual bool Update(float dt)
 	{
 		return true;
 	}
@@ -76,6 +76,7 @@ public:
 
 	p2SString	name;
 	bool		active;
+	float		dt;
 
 };
 
