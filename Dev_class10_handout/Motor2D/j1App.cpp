@@ -208,8 +208,8 @@ void j1App::FinishUpdate()
 
 	testing_ptimer.Start();
 
-	SDL_Delay((1.0 / framerate_cap * 1000.0) - last_frame_ms);
-	//SDL_Delay((1.0 / framerate_cap * 1000.0) - last_frame_ms);
+	SDL_Delay((1000 / framerate_cap) - last_frame_ms);
+	
 	LOG("We waited for : %f and got back in : %f", (float)(1000 / framerate_cap) - last_frame_ms, testing_ptimer.ReadMs());
 	LOG("AVG FPS : %f", avg_fps);
 	
