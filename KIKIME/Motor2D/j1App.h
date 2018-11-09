@@ -127,13 +127,17 @@ private:
 	mutable p2SString	save_path;
 	
 	//Framerate control
-	j1Timer timer;
-	j1Timer aux_timer; //to control the amount of frames in the last second
-	j1PerfTimer perf_timer;
+	j1Timer				timer;
+	j1Timer				aux_timer; //to control the amount of frames in the last second
+	j1Timer				frame_time;
 
-	uint32 frames_on_last_update = 0;
-	uint32 total_frames = 0;
-	uint32 aux_frames_counter; //to control the amount of frames in the last second
+	j1PerfTimer			perf_timer;
+
+	uint64				frame_count = 0;
+	uint32				frames_on_last_update = 0;
+	uint32				aux_frames_counter = 0; //to control the amount of frames in the last second
+	uint32				last_sec_fcount = 0;
+	uint				framerate_cap;
 
 };
 

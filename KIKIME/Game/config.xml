@@ -6,7 +6,7 @@
   
 -->
 <config>
-  <app>
+  <app framerate_cap ="60">
     <title>KIKIME</title>
     <organization>ORISO</organization>
   </app>

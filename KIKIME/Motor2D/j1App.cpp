@@ -110,6 +110,8 @@ bool j1App::Awake()
 		load_path.create(file_system.child("load_path").child_value());
 		save_path.create(file_system.child("save_path").child_value());
 		LOG("LoadPath: %s", load_path.GetString());
+
+		framerate_cap = app_config.attribute("framerate_cap").as_uint();
 	
 		// END CONFIGURATION
 
@@ -191,7 +193,12 @@ pugi::xml_parse_result j1App::LoadXML(pugi::xml_document& doc, const char* path)
 // ---------------------------------------------
 void j1App::PrepareUpdate()
 {
-	perf_timer.Start();
+	frame_count++;
+	aux_frames_counter++;
+
+	dt = frame_time.ReadSec();
+
+	frame_time.Start();
 }
 
 // ---------------------------------------------
@@ -200,26 +207,32 @@ void j1App::FinishUpdate()
 	if (want_to_save) SaveGameFile();
 	if (want_to_load) LoadGameFile();
 
-	float dt = 0.0f;
-	float seconds_since_startup = timer.ReadSec();
-	uint32 last_frame_ms = perf_timer.ReadMs() / 1000;
-	uint64 frame_count = total_frames;
-
-	float avg_fps = total_frames / seconds_since_startup;
-
 	if (aux_timer.ReadSec() >= 1.0f)
 	{
-		frames_on_last_update = total_frames - aux_frames_counter;
-		aux_frames_counter = total_frames;
-
+		last_sec_fcount = aux_frames_counter;
+		aux_frames_counter = 0;
 		aux_timer.Start();
 	}
+
+	float avg_fps = float(frame_count) / timer.ReadSec();
+	float seconds_since_startup = timer.ReadSec();
+	uint32 last_frame_ms = frame_time.Read();
+	frames_on_last_update = last_sec_fcount;
+
+	LOG("Av.FPS: %.2f", avg_fps);
+	LOG("Last Frame Ms: %02u ", last_frame_ms);
+	LOG("Last sec frames: %i ", frames_on_last_update);
+	LOG("Last dt : %.3f ", dt);
+	LOG("Time since startup : %.3f", seconds_since_startup); 
+	LOG("Frame Count : %lu ", frame_count);
 
 	static char title[256];
 	sprintf_s(title, 256, "Av.FPS: %.2f Last Frame Ms: %02u Last sec frames: %i Last dt: %.3f Time since startup: %.3f Frame Count: %lu ",
 		avg_fps, last_frame_ms, frames_on_last_update, dt, seconds_since_startup, frame_count);
-
 	App->win->SetTitle(title);
+
+
+	SDL_Delay(abs((float)(1000 / framerate_cap) - last_frame_ms));
 }
 
 bool j1App::SaveGameFile() 
@@ -335,7 +348,6 @@ bool j1App::PostUpdate()
 		item = item->next;
 	}
 
-	total_frames++;
 
 	return ret;
 }
