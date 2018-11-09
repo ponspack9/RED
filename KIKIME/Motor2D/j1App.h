@@ -110,6 +110,7 @@ public:
 	j1Enemies*			enemies;
 
 
+	bool				delay_is_active = true;
 	bool				want_to_load;
 	mutable bool		want_to_save;
 
@@ -138,6 +139,7 @@ private:
 	uint32				aux_frames_counter = 0; //to control the amount of frames in the last second
 	uint32				last_sec_fcount = 0;
 	uint				framerate_cap;
+
 
 };
 

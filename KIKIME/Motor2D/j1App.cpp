@@ -219,20 +219,23 @@ void j1App::FinishUpdate()
 	uint32 last_frame_ms = frame_time.Read();
 	frames_on_last_update = last_sec_fcount;
 
-	LOG("Av.FPS: %.2f", avg_fps);
-	LOG("Last Frame Ms: %02u ", last_frame_ms);
-	LOG("Last sec frames: %i ", frames_on_last_update);
-	LOG("Last dt : %.3f ", dt);
-	LOG("Time since startup : %.3f", seconds_since_startup); 
-	LOG("Frame Count : %lu ", frame_count);
+	//LOG("Av.FPS: %.2f", avg_fps);
+	//LOG("Last Frame Ms: %02u ", last_frame_ms);
+	//LOG("Last sec frames: %i ", frames_on_last_update);
+	//LOG("Last dt : %.3f ", dt);
+	//LOG("Time since startup : %.3f", seconds_since_startup); 
+	//LOG("Frame Count : %lu ", frame_count);
 
 	static char title[256];
 	sprintf_s(title, 256, "Av.FPS: %.2f Last Frame Ms: %02u Last sec frames: %i Last dt: %.3f Time since startup: %.3f Frame Count: %lu ",
 		avg_fps, last_frame_ms, frames_on_last_update, dt, seconds_since_startup, frame_count);
 	App->win->SetTitle(title);
 
-
-	SDL_Delay(abs((float)(1000 / framerate_cap) - last_frame_ms));
+	if (delay_is_active)
+	{
+		SDL_Delay(abs((float)(1000 / framerate_cap) - last_frame_ms));
+		LOG("SDL_Delay is active");
+	}
 }
 
 bool j1App::SaveGameFile() 
