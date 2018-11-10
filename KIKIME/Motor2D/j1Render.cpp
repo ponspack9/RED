@@ -6,7 +6,7 @@
 #include "j1Player.h"
 #include "j1Map.h"
 
-#define VSYNC true
+#define VSYNC false
 
 j1Render::j1Render() : j1Module()
 {
@@ -26,13 +26,18 @@ bool j1Render::Awake(pugi::xml_node& config)
 {
 	LOG("Create SDL rendering context");
 	bool ret = true;
-	// load flags
-	Uint32 flags = SDL_RENDERER_ACCELERATED;
 
-	if (config.child("vsync").attribute("value").as_bool(true) == true)
+	// load flags
+	uint32 flags = SDL_RENDERER_ACCELERATED;
+
+	if (config.child("vsync").attribute("value").as_bool() == true)
 	{
 		flags |= SDL_RENDERER_PRESENTVSYNC;
 		LOG("Using vsync");
+	}
+	else
+	{
+		LOG("Not Using vsync");
 	}
 
 	renderer = SDL_CreateRenderer(App->win->window, -1, flags);

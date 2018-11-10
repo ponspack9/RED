@@ -3,6 +3,8 @@
 
 #include "p2List.h"
 #include "j1Module.h"
+#include "j1PerfTimer.h"
+#include "j1Timer.h"
 #include "PugiXml\src\pugixml.hpp"
 
 // Modules
@@ -108,13 +110,13 @@ public:
 	j1Enemies*			enemies;
 
 
+	bool				delay_is_active = true;
 	bool				want_to_load;
 	mutable bool		want_to_save;
 
 private:
 
 	p2List<j1Module*>	modules;
-	uint				frames;
 	float				dt;
 	int					argc;
 	char**				args;
@@ -125,6 +127,19 @@ private:
 	p2SString			load_path;
 	mutable p2SString	save_path;
 	
+	//Framerate control
+	j1Timer				timer;
+	j1Timer				aux_timer; //to control the amount of frames in the last second
+	j1Timer				frame_time;
+
+	j1PerfTimer			perf_timer;
+
+	uint64				frame_count = 0;
+	uint32				frames_on_last_update = 0;
+	uint32				aux_frames_counter = 0; //to control the amount of frames in the last second
+	uint32				last_sec_fcount = 0;
+	uint				framerate_cap;
+
 
 };
 

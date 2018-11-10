@@ -197,7 +197,9 @@ bool j1Player::PreUpdate()
 bool j1Player::Update(float dt)
 {
 	if (level_finished) App->NextLevel();
-	else {
+
+	else
+	{
 		if (!godmode)
 		{
 			//Move();
@@ -342,6 +344,7 @@ void j1Player::Move()
 		DoubleJump();
 	}
 
+
 	if (is_jumping)
 	{
 		is_jumping = Jump();
@@ -361,7 +364,6 @@ void j1Player::Move()
 	{
 		is_falling = true;
 
-		//dy += gravity;
 		falling_y += gravity/2;
 		if (falling_y >= max_speed_y) falling_y = max_speed_y;
 
@@ -468,7 +470,6 @@ bool j1Player::DoubleJump()
 
 void j1Player::MoveFree()
 {
-	//current_animation = &idle;
 	dx = 0;
 	dy = 0;
 
@@ -476,18 +477,14 @@ void j1Player::MoveFree()
 	{
 		dx += speed.x;
 	}
-
 	if (App->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT)
 	{
 		dx -= speed.x;
-
 	}
-
 	if (App->input->GetKey(SDL_SCANCODE_S) == KEY_REPEAT)
 	{
 		dy += speed.y;
 	}
-
 	if (App->input->GetKey(SDL_SCANCODE_W) == KEY_REPEAT)
 	{
 		dy -= speed.y;
@@ -495,9 +492,8 @@ void j1Player::MoveFree()
 
 	position.x += dx;
 	position.y += dy;
-
+  
 	vertical_collided = false;
-
 }
 
 void j1Player::PlayerAnimations()
@@ -531,8 +527,6 @@ void j1Player::PlayerAnimations()
 		current_animation = &death;
 	}
 
-	/*player_rect.x = position.x;
-	player_rect.y = position.y;*/
 	player_rect.w = current_animation->GetCurrentFrame().w;
 	player_rect.h = current_animation->GetCurrentFrame().h;
 }

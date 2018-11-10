@@ -21,6 +21,9 @@
 // Constructor
 j1App::j1App(int argc, char* args[]) : argc(argc), args(args)
 {
+	timer.Start();
+	perf_timer.Start();
+
 	input = new j1Input();
 	win = new j1Window();
 	render = new j1Render();
@@ -42,6 +45,9 @@ j1App::j1App(int argc, char* args[]) : argc(argc), args(args)
 
 	// render last to swap buffer
 	AddModule(render);
+
+	LOG("App constructor takes %u ms", timer.Read());
+	LOG("App constructor takes %u micro secs", perf_timer.ReadMs());
 }
 
 // Destructor
@@ -68,6 +74,9 @@ void j1App::AddModule(j1Module* module)
 // Called before render is available
 bool j1App::Awake()
 {
+	timer.Start();
+	perf_timer.Start();
+
 	pugi::xml_document	config_file;
 	pugi::xml_node		config;
 	pugi::xml_node		app_config;
@@ -97,12 +106,19 @@ bool j1App::Awake()
 		}
 	}
 
+	LOG("App awake takes %u ms", timer.Read());
+	LOG("App awake takes %u micro secs", perf_timer.ReadMs());
+
 	return ret;
 }
 
 // Called before the first frame
 bool j1App::Start()
 {
+	perf_timer.Start();
+	timer.Start();
+	aux_timer.Start();
+
 	bool ret = true;
 	p2List_item<j1Module*>* item;
 	item = modules.start;
@@ -112,6 +128,10 @@ bool j1App::Start()
 		ret = item->data->Start();
 		item = item->next;
 	}
+
+	LOG("App start takes %u ms", timer.Read());
+	LOG("App start takes %u micro secs", perf_timer.ReadMs());
+
 	return ret;
 }
 
@@ -155,6 +175,7 @@ pugi::xml_node j1App::LoadConfig(pugi::xml_document& config_file) const
 // ---------------------------------------------
 void j1App::PrepareUpdate()
 {
+	perf_timer.Start();
 }
 
 // ---------------------------------------------
@@ -173,12 +194,21 @@ void j1App::FinishUpdate()
 	// Amount of ms took the last update
 	// Amount of frames during the last second
 
-	float avg_fps = 0.0f;
-	float seconds_since_startup = 0.0f;
+
 	float dt = 0.0f;
-	uint32 last_frame_ms = 0;
-	uint32 frames_on_last_update = 0;
-	uint64 frame_count = 0;
+	float seconds_since_startup = timer.ReadSec();
+	uint32 last_frame_ms = perf_timer.ReadMs() / 1000;
+	uint64 frame_count = total_frames;
+
+	float avg_fps = total_frames / seconds_since_startup;
+
+	if (aux_timer.ReadSec() >= 1.0f)
+	{
+		frames_on_last_update = total_frames - aux_frames_counter;
+		aux_frames_counter = total_frames;
+
+		aux_timer.Start();
+	}
 
 	static char title[256];
 	sprintf_s(title, 256, "Av.FPS: %.2f Last Frame Ms: %02u Last sec frames: %i Last dt: %.3f Time since startup: %.3f Frame Count: %lu ",
@@ -249,12 +279,17 @@ bool j1App::PostUpdate()
 		ret = item->data->PostUpdate();
 	}
 
+	total_frames++;
+
 	return ret;
 }
 
 // Called before quitting
 bool j1App::CleanUp()
 {
+	timer.Start();
+	perf_timer.Start();
+
 	bool ret = true;
 	p2List_item<j1Module*>* item;
 	item = modules.end;
@@ -264,6 +299,10 @@ bool j1App::CleanUp()
 		ret = item->data->CleanUp();
 		item = item->prev;
 	}
+
+	LOG("App cleanUp takes %u ms", timer.Read());
+	LOG("App cleanUp takes %u micro secs", perf_timer.ReadMs());
+
 	return ret;
 }
 

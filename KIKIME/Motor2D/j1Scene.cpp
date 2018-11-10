@@ -73,6 +73,14 @@ bool j1Scene::Update(float dt)
 	if (App->input->GetKey(SDL_SCANCODE_E) == KEY_DOWN)
 		App->enemies->AddEnemy(BLACK_NIGGA, x, y);
 
+	if (App->input->GetKey(SDL_SCANCODE_1) == KEY_DOWN)
+	{
+		if (App->delay_is_active)
+			App->delay_is_active = false;
+		else if (!App->delay_is_active)
+			App->delay_is_active = true;
+	}
+
 	App->map->Draw();
 	
 

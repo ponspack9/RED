@@ -21,7 +21,9 @@
 // Constructor
 j1App::j1App(int argc, char* args[]) : argc(argc), args(args)
 {
-	frames = 0;
+	timer.Start();
+	perf_timer.Start();
+
 	want_to_save = want_to_load = false;
 
 	input		= new j1Input();
@@ -53,6 +55,9 @@ j1App::j1App(int argc, char* args[]) : argc(argc), args(args)
 	AddModule(enemies);
 
 	AddModule(render);
+
+	LOG("App constructor takes %u ms", timer.Read());
+	LOG("App constructor takes %u micro secs", perf_timer.ReadMs());
 }
 
 // Destructor
@@ -79,6 +84,9 @@ void j1App::AddModule(j1Module* module)
 // Called before render is available
 bool j1App::Awake()
 {
+	timer.Start();
+	perf_timer.Start();
+
 	bool ret = true;
 
 		// BEGIN CONFIGURATION
@@ -102,6 +110,8 @@ bool j1App::Awake()
 		load_path.create(file_system.child("load_path").child_value());
 		save_path.create(file_system.child("save_path").child_value());
 		LOG("LoadPath: %s", load_path.GetString());
+
+		framerate_cap = app_config.attribute("framerate_cap").as_uint();
 	
 		// END CONFIGURATION
 
@@ -115,12 +125,19 @@ bool j1App::Awake()
 		}
 	}
 
+	LOG("App awake takes %u ms", timer.Read());
+	LOG("App awake takes %u micro secs", perf_timer.ReadMs());
+
 	return ret;
 }
 
 // Called before the first frame
 bool j1App::Start()
 {
+	perf_timer.Start();
+	timer.Start();
+	aux_timer.Start();
+
 	bool ret = true;
 	p2List_item<j1Module*>* item = modules.start;
 
@@ -129,6 +146,9 @@ bool j1App::Start()
 		ret = item->data->Start();
 		item = item->next;
 	}
+
+	LOG("App start takes %u ms", timer.Read());
+	LOG("App start takes %u micro secs", perf_timer.ReadMs());
 
 	return ret;
 }
@@ -173,7 +193,12 @@ pugi::xml_parse_result j1App::LoadXML(pugi::xml_document& doc, const char* path)
 // ---------------------------------------------
 void j1App::PrepareUpdate()
 {
-	
+	frame_count++;
+	aux_frames_counter++;
+
+	dt = frame_time.ReadSec();
+
+	frame_time.Start();
 }
 
 // ---------------------------------------------
@@ -181,6 +206,36 @@ void j1App::FinishUpdate()
 {
 	if (want_to_save) SaveGameFile();
 	if (want_to_load) LoadGameFile();
+
+	if (aux_timer.ReadSec() >= 1.0f)
+	{
+		last_sec_fcount = aux_frames_counter;
+		aux_frames_counter = 0;
+		aux_timer.Start();
+	}
+
+	float avg_fps = float(frame_count) / timer.ReadSec();
+	float seconds_since_startup = timer.ReadSec();
+	uint32 last_frame_ms = frame_time.Read();
+	frames_on_last_update = last_sec_fcount;
+
+	//LOG("Av.FPS: %.2f", avg_fps);
+	//LOG("Last Frame Ms: %02u ", last_frame_ms);
+	//LOG("Last sec frames: %i ", frames_on_last_update);
+	//LOG("Last dt : %.3f ", dt);
+	//LOG("Time since startup : %.3f", seconds_since_startup); 
+	//LOG("Frame Count : %lu ", frame_count);
+
+	static char title[256];
+	sprintf_s(title, 256, "Av.FPS: %.2f Last Frame Ms: %02u Last sec frames: %i Last dt: %.3f Time since startup: %.3f Frame Count: %lu ",
+		avg_fps, last_frame_ms, frames_on_last_update, dt, seconds_since_startup, frame_count);
+	App->win->SetTitle(title);
+
+	if (delay_is_active)
+	{
+		SDL_Delay(abs((float)(1000 / framerate_cap) - last_frame_ms));
+		LOG("SDL_Delay is active");
+	}
 }
 
 bool j1App::SaveGameFile() 
@@ -296,12 +351,16 @@ bool j1App::PostUpdate()
 		item = item->next;
 	}
 
+
 	return ret;
 }
 
 // Called before quitting
 bool j1App::CleanUp()
 {
+	timer.Start();
+	perf_timer.Start();
+
 	bool ret = true;
 	p2List_item<j1Module*>* item = modules.end;
 	
@@ -313,6 +372,9 @@ bool j1App::CleanUp()
 		item = item->prev;
 
 	}
+	
+	LOG("App cleanUp takes %u ms", timer.Read());
+	LOG("App cleanUp takes %u micro secs", perf_timer.ReadMs());
 
 	return ret;
 }
