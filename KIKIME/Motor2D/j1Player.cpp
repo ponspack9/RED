@@ -148,6 +148,7 @@ bool j1Player::Awake(pugi::xml_node & config)
 	//PL. COLLIDER
 	player_collider = App->collision->AddCollider(player_rect, COLLIDER_PLAYER, this);
 	collider_identifier = App->collision->AddCollider(player_rect, COLLIDER_NONE, this);
+	last_collision = COLLIDER_NONE;
 	SDL_Rect temp = player_rect;
 	temp.h -= speed.x;
 	collider_ray_right = App->collision->AddCollider(temp, COLLIDER_RAY_RIGHT, this);
@@ -172,6 +173,7 @@ bool j1Player::Start()
 	current_animation = &idle;
 	collider_offset = speed.x;
 	max_speed_y = speed.y;
+
 	level_finished = false;
 	on_floor = false;
 	is_jumping = false;
@@ -291,8 +293,8 @@ bool j1Player::MovePlayer(float vel_x, float vel_y)
 
 void j1Player::Move()
 {
-	//if (!vertical_collided && on_floor && !is_jumping && !djump)	
-		//on_floor = false;
+	/*if (vertical_collided && on_floor)	
+		on_floor = last_collision == collider_ray_down->type;*/
 	if (!vertical_collided && !can_move_down)	can_move_down = true;
 	if (!vertical_collided && !can_move_up)		can_move_up = true;
 
@@ -329,13 +331,13 @@ void j1Player::Move()
 	{
 		move_left = false;
 	}
-	if (App->input->GetKey(SDL_SCANCODE_W) == KEY_DOWN || App->input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN)
-		if( on_floor)
+	if (App->input->GetKey(SDL_SCANCODE_W) == KEY_REPEAT || App->input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN)
+		if(on_floor && !is_jumping)
 	{
 		Jump();
 		LOG("JUMP");
 	}
-	if ((App->input->GetKey(SDL_SCANCODE_W) == KEY_DOWN || App->input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN)&& !on_floor && is_falling && !aux_djump)
+	if ((App->input->GetKey(SDL_SCANCODE_W) == KEY_REPEAT || App->input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN)&& !on_floor && is_falling && !aux_djump && !djump)
 	{
 		DoubleJump();
 	}
@@ -343,6 +345,7 @@ void j1Player::Move()
 	if (is_jumping)
 	{
 		is_jumping = Jump();
+		//last iteration jumping
 		if (!is_jumping) {
 
 		}
@@ -369,7 +372,7 @@ void j1Player::Move()
 	
 	MovePlayer(dx, dy);
 	//if (!vertical_collided && on_floor)	
-		on_floor = false;
+	on_floor = false;
 }
 
 
@@ -377,6 +380,7 @@ void j1Player::Move()
 void j1Player::OnCollision(Collider * c1, Collider * c2)
 {
 	*collider_identifier = c2;
+	//*ray_identifier = c1;
 
 	/*can_move_right = true;
 	can_move_left = true;
@@ -386,11 +390,13 @@ void j1Player::OnCollision(Collider * c1, Collider * c2)
 	if (c1->type == COLLIDER_RAY_RIGHT && c2->type == COLLIDER_FLOOR) {
 		can_move_right = false;
 		horizontal_collided = true;
+		last_collision = c1->type;
 		//LOG("COLLIDED_RAY_RIGHT");
 	}
 	if (c1->type == COLLIDER_RAY_LEFT && c2->type == COLLIDER_FLOOR) {
 		can_move_left = false;
 		horizontal_collided = true;
+		last_collision = c1->type;
 		//LOG("COLLIDED_RAY_LEFT");
 
 	}
@@ -398,6 +404,7 @@ void j1Player::OnCollision(Collider * c1, Collider * c2)
 		can_move_up = false;
 		on_floor = false;
 		vertical_collided = true;
+		last_collision = c1->type;
 		//LOG("COLLIDED_RAY_UP");
 
 	}
@@ -408,6 +415,7 @@ void j1Player::OnCollision(Collider * c1, Collider * c2)
 		djump = false;
 		aux_djump = false;
 		vertical_collided = true;
+		last_collision = c1->type;
 		//LOG("COLLIDED_RAY_DOWN");
 
 	}
@@ -458,7 +466,6 @@ bool j1Player::DoubleJump()
 	}
 	else
 	{
-		dx = 0;
 		dy -= jumpspeed;
 		jumpspeed -= gravity / 2;
 	}

@@ -57,9 +57,9 @@ public:
 	bool move_left;
 	bool move_right;
 	bool is_jumping;
+	bool is_falling;
 	bool djump;
 	bool aux_djump;
-	bool is_falling;
 	float dx = 0;
 	float dy = 0;
 	float falling_y;
@@ -81,8 +81,6 @@ public:
 	bool can_move_left;
 	bool can_move_up;
 	bool can_move_down;
-
-	bool collision_from_top;
 
 	bool vertical_collided;
 	bool horizontal_collided;
