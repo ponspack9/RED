@@ -18,6 +18,11 @@ j1Collision::j1Collision()
 	matrix[COLLIDER_PLAYER][COLLIDER_START]  = false;
 	matrix[COLLIDER_PLAYER][COLLIDER_END]    = true;
 
+	matrix[COLLIDER_RAY_RIGHT][COLLIDER_FLOOR] = true;
+	matrix[COLLIDER_RAY_LEFT][COLLIDER_FLOOR] = true;
+	matrix[COLLIDER_RAY_UP][COLLIDER_FLOOR] = true;
+	matrix[COLLIDER_RAY_DOWN][COLLIDER_FLOOR] = true;
+
 	name.create("collisions");
 }
 
@@ -36,33 +41,42 @@ bool j1Collision::PreUpdate()
 		}
 	}
 	
-	//Works only checking the player, as we only have one player that interacts with everything,
-	// we should only check it,, forgetting about the for
-	// avoids checking unnecessary colliders
-	if (player_collider == nullptr) {
-		LOG("NO player collider, avoiding checking collisions");
-		return true;
-	}
+	// Calculate collisions
+	Collider* c1;
+	Collider* c2;
 
-	//RECT COLLISIONS
-	for (uint k = 0; k < MAX_COLLIDERS; ++k)
+	for (uint i = 0; i < MAX_COLLIDERS; ++i)
 	{
-		// stop when finds empty colliders
-		if (colliders[k] == nullptr)
-			break;
+	
+		if (colliders[i] == nullptr /*|| colliders[i]->type != COLLIDER_NONE*/)
+			continue;
 
-		Collider* c2 = colliders[k];
+		c1 = colliders[i];
 
-		if (matrix[player_collider->type][c2->type] && player_collider->CheckCollision(c2->rect))
+		// avoid checking collisions already checked
+		//RECT COLLISIONS
+		for (uint k = i + 1; k < MAX_COLLIDERS; ++k)
 		{
-			if (player_collider->callback) {					
-				//LOG("COLLIDED first if");
-				player_collider->callback->OnCollision(player_collider, c2);
+			// skip empty colliders
+			if (colliders[k] == nullptr)
+				continue;
+
+			c2 = colliders[k];
+			if (c1->CheckCollision(c2->rect))
+			{
+				if (matrix[c1->type][c2->type] && c1->callback) {
+
+					//LOG("COLLIDED first if");
+					c1->callback->OnCollision(c1, c2);
+				}
+
+				if (matrix[c2->type][c1->type] && c2->callback) {
+
+					//LOG("COLLIDED second if");
+					c2->callback->OnCollision(c2, c1);
+				}
 			}
-			if (c2->callback) {
-				//LOG("COLLIDED second if");
-				c2->callback->OnCollision(c2, player_collider);
-			}	
+
 		}
 	}
 
@@ -112,6 +126,18 @@ void j1Collision::Draw()
 				App->render->DrawQuad(colliders[i]->rect, 255, 255, 255, alpha);
 				break;
 			case COLLIDER_END:
+				App->render->DrawQuad(colliders[i]->rect, 0, 0, 0, alpha);
+				break;
+			case COLLIDER_RAY_RIGHT:
+				App->render->DrawQuad(colliders[i]->rect, 0, 0, 0, alpha);
+				break;
+			case COLLIDER_RAY_LEFT:
+				App->render->DrawQuad(colliders[i]->rect, 0, 0, 0, alpha);
+				break;
+			case COLLIDER_RAY_UP:
+				App->render->DrawQuad(colliders[i]->rect, 0, 0, 0, alpha);
+				break;
+			case COLLIDER_RAY_DOWN:
 				App->render->DrawQuad(colliders[i]->rect, 0, 0, 0, alpha);
 				break;
 			}

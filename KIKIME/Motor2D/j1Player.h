@@ -1,6 +1,4 @@
-#ifndef __j1PLAYER_H__
-#define __j1PLAYER_H__
-
+#pragma once
 #include "SDL/include/SDL.h"
 #include "j1Module.h"
 #include "j1Collision.h"
@@ -16,6 +14,7 @@ public:
 
 	bool Awake(pugi::xml_node& config);
 	bool Start();
+	bool PreUpdate();
 	bool Update(float dt);
 	bool PostUpdate();
 	bool CleanUp();
@@ -50,18 +49,17 @@ public:
 	float def_anim_speed;
 	SDL_Rect anim_rect;
 
-	bool have_collided;
 	bool level_finished;
 	bool on_floor;
-	bool on_wall;
-	bool colliding_floor;
 	bool dead;
+
+	//Animations
 	bool move_left;
 	bool move_right;
 	bool is_jumping;
+	bool is_falling;
 	bool djump;
 	bool aux_djump;
-	bool is_falling;
 	float dx = 0;
 	float dy = 0;
 	float falling_y;
@@ -77,9 +75,25 @@ public:
 	SDL_Rect player_rect;
 	bool godmode = false;
 	Collider* player_collider;
-	Collider* wall;
+
+	//NEW approach
+	bool can_move_right;
+	bool can_move_left;
+	bool can_move_up;
+	bool can_move_down;
+
+	bool vertical_collided;
+	bool horizontal_collided;
+
+	Collider* collider_ray_right;
+	Collider* collider_ray_left;
+	Collider* collider_ray_up;
+	Collider* collider_ray_down;
+
+	Collider* collider_identifier;
+
+	int collider_offset = 0;
+	COLLIDER_TYPE last_collision;
 
 	int r, g, b;
 };
-
-#endif 
