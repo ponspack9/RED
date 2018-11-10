@@ -331,13 +331,13 @@ void j1Player::Move()
 	{
 		move_left = false;
 	}
-	if (App->input->GetKey(SDL_SCANCODE_W) == KEY_REPEAT || App->input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN)
+	if (App->input->GetKey(SDL_SCANCODE_W) == KEY_REPEAT || App->input->GetKey(SDL_SCANCODE_SPACE) == KEY_REPEAT)
 		if(on_floor && !is_jumping)
 	{
 		Jump();
 		LOG("JUMP");
 	}
-	if ((App->input->GetKey(SDL_SCANCODE_W) == KEY_REPEAT || App->input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN)&& !on_floor && is_falling && !aux_djump && !djump)
+	if ((App->input->GetKey(SDL_SCANCODE_W) == KEY_REPEAT || App->input->GetKey(SDL_SCANCODE_SPACE) == KEY_REPEAT)&& !on_floor && is_falling && !aux_djump && !djump)
 	{
 		DoubleJump();
 	}
@@ -347,12 +347,15 @@ void j1Player::Move()
 		is_jumping = Jump();
 		//last iteration jumping
 		if (!is_jumping) {
-
+			//is_falling = true;
 		}
 	}
 	else if (djump)
 	{
 		djump = DoubleJump();
+		if (!djump) {
+			//is_falling = true;
+		}
 	}
 	else if (can_move_down)
 	{
@@ -380,23 +383,16 @@ void j1Player::Move()
 void j1Player::OnCollision(Collider * c1, Collider * c2)
 {
 	*collider_identifier = c2;
-	//*ray_identifier = c1;
-
-	/*can_move_right = true;
-	can_move_left = true;
-	can_move_up = true;
-	can_move_down = true;*/
+	last_collision = c1->type;
 
 	if (c1->type == COLLIDER_RAY_RIGHT && c2->type == COLLIDER_FLOOR) {
 		can_move_right = false;
 		horizontal_collided = true;
-		last_collision = c1->type;
 		//LOG("COLLIDED_RAY_RIGHT");
 	}
 	if (c1->type == COLLIDER_RAY_LEFT && c2->type == COLLIDER_FLOOR) {
 		can_move_left = false;
 		horizontal_collided = true;
-		last_collision = c1->type;
 		//LOG("COLLIDED_RAY_LEFT");
 
 	}
@@ -404,7 +400,6 @@ void j1Player::OnCollision(Collider * c1, Collider * c2)
 		can_move_up = false;
 		on_floor = false;
 		vertical_collided = true;
-		last_collision = c1->type;
 		//LOG("COLLIDED_RAY_UP");
 
 	}
@@ -415,7 +410,6 @@ void j1Player::OnCollision(Collider * c1, Collider * c2)
 		djump = false;
 		aux_djump = false;
 		vertical_collided = true;
-		last_collision = c1->type;
 		//LOG("COLLIDED_RAY_DOWN");
 
 	}
