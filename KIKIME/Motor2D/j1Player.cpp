@@ -469,6 +469,7 @@ bool j1Player::DoubleJump()
 	}
 	else
 	{
+		dx = 0;
 		dy -= jumpspeed;
 		jumpspeed -= gravity / 2;
 	}
@@ -482,7 +483,7 @@ void j1Player::MoveFree()
 
 	if (App->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT)
 	{
-		dx += speed.x +5 ;
+		dx += speed.x + 5;
 	}
 	if (App->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT)
 	{

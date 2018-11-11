@@ -51,7 +51,7 @@ public:
 	void ResetCamera();
 
 public:
-
+	
 	bool enable_vsync;
 
 	SDL_Renderer*	renderer;

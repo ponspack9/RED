@@ -133,90 +133,73 @@ bool j1Render::MoveCamera(const int & vel_x, const int & vel_y)
 	int x = App->map->world_limits.x - viewport.w;
 	int y = App->map->world_limits.y - viewport.h;
 
-	if (abs(camera.x + vel_x) < x && camera.x + vel_x < 0) {
-		//Camera can move x axis
+	//Camera can move x axis
+	if (abs(camera.x + vel_x) < x && camera.x + vel_x < 0) 
 		camera.x += vel_x;
-		if (abs(camera.y + vel_y) < y && camera.y + vel_y < 0) {
-			// Camera can move both axis
-			camera.y += vel_y;
-			return true;
-		}
-		return true;
+	
+		//if (abs(camera.y + vel_y) < y && camera.y + vel_y < 0) {
+		//	// Camera can move both axis
+		//	camera.y += vel_y;
+		//	return true;
+		//}
+		//return true;
 
-	}
-	else if (abs(camera.y + vel_y) < y && camera.y + vel_y < 0) {
-		//Camera can move y axis
+	//}
+	//Camera can move y axis
+	if (abs(camera.y + vel_y) < y && camera.y + vel_y < 0) 
 		camera.y += vel_y;
-		return true;
-	}
+	//	return true;
+	//}
 
 	/*camera.x += vel_x;
 	camera.y += vel_y;*/
 
-
-	return false;
+	return true;
 }
 
 void j1Render::FollowPlayer()
 {
-	int left_border = viewport.w / 3;// (abs(camera.x) + camera.w) / 3;
-	int right_border = App->map->world_limits.x *10/12; //(abs(camera.x) + camera.w) *5/ 6;
-	int x = App->player->position.x;
-	DrawLine(left_border, 0, left_border, App->map->world_limits.y, 255, 0, 0, 100, false);
-	DrawLine(right_border, 0, right_border, App->map->world_limits.y, 255, 0, 0, 100,false);
-	LOG("x: %d", x);
+	camera.x = -App->player->position.x + camera.w / 3;
+	camera.y = -App->player->position.y + camera.h / 2;
 
-
-	if (x > left_border && x < right_border && App->player->horizontal_movement)
-		MoveCamera(-App->player->dx, 0);
-
-	if (!(App->player->position.x >= viewport.w / 3) && App->player->position.y >= viewport.h / 2)
+	if (camera.x > 0) //left limit
 	{
-		MoveCamera(0, -App->player->dy);
+		camera.x = 0;
+	}
+	if (camera.x - camera.w < -App->map->data.width * App->map->data.tile_width) //right limit
+	{
+		camera.x = -App->map->data.width * App->map->data.tile_width + camera.w;
+	}
+	if (camera.y > 0) //top limit
+	{
+		camera.y = 0;
+	}
+	if (camera.y - camera.h < -App->map->data.height * App->map->data.tile_height) //down limit
+	{
+		camera.y = -App->map->data.height * App->map->data.tile_height + camera.h;
 	}
 
-	//camera.x = -App->player->position.x;
-	//camera.y = -App->player->position.y;
-
-	/*if (App->player->position.x >= viewport.w / 3 && !(App->player->position.y >= viewport.h / 2))
-	{
-		MoveCamera(-App->player->dx, 0);
-	}*/
-	
-	/*if (App->player->position.x >= viewport.w / 3 && App->player->position.y >= viewport.h / 2)
-	{
-		MoveCamera(-App->player->dx, -App->player->dy);
-	}*/
-	/*if (App->player->position.x >= 2*(viewport.w/3) &&  )*/
-
-	//MoveCamera(-App->player->dx, -App->player->dy);
-	//return;
-
-	////1
-	//if (App->player->position.x >= viewport.w / 3 && App->player->position.x <= 2 * (viewport.w / 3) && App->player->position.y <= viewport.h / 3)
-	//{
+	//int left_border = viewport.w / 3;// (abs(camera.x) + camera.w) / 3;
+	//int right_border = App->map->world_limits.x *10/12; //(abs(camera.x) + camera.w) *5/ 6;
+	//int x = App->player->position.x;
+	//DrawLine(left_border, 0, left_border, App->map->world_limits.y, 255, 0, 0, 100, false);
+	//DrawLine(right_border, 0, right_border, App->map->world_limits.y, 255, 0, 0, 100,false);
+	//LOG("x: %d", x);
+	//
+	//
+	//if (x > left_border && x < right_border && App->player->horizontal_movement)
 	//	MoveCamera(-App->player->dx, 0);
-	//}
-	////2
-	//if (App->player->position.x <= viewport.w / 3 && App->player->position.y >= viewport.h / 3 && App->player->position.y <= 2 * (viewport.h / 3))
-	//{
-	//	MoveCamera(0, -App->player->dy);
-	//}
-	////3
-	//if (App->player->position.x >= viewport.w / 3 && App->player->position.x <= 2 * (viewport.w / 3) && App->player->position.y >= 2 * (viewport.h / 3))
-	//{
-	//	MoveCamera(-App->player->dx, 0);
-	//}
-	////4
-	//if (App->player->position.x >= 2 * (viewport.w / 3) && App->player->position.y >= viewport.h / 3 && App->player->position.y <= 2 * (viewport.h / 3))
-	//{
-	//	MoveCamera(0, -App->player->dy);
-	//}
-	////5
-	//if (App->player->position.x >= viewport.w / 3 && App->player->position.x <= 2 * (viewport.w / 3) && App->player->position.y >= viewport.h / 3 && App->player->position.y <= 2 * (viewport.h / 3))
-	//{
-	//	MoveCamera(-App->player->dx, -App->player->dy);
-	//}
+	//
+	//
+	//int up_border =viewport.h / 3;
+	//int down_border = 2 * viewport.h / 3;
+	//int y = App->player->position.y;
+	//
+	//DrawLine(0, up_border, App->map->world_limits.x, up_border, 0, 0, 255, 100, false);
+	//DrawLine(0, down_border, App->map->world_limits.x, down_border, 0, 0, 255, 100, false);
+	//
+	//if (y > up_border && y < down_border && App->player->vertical_movement)
+	//	MoveCamera(0, -App->player->dy);	
 }
 
 void j1Render::ResetCamera()
