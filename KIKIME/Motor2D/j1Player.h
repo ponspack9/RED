@@ -85,6 +85,10 @@ public:
 	bool vertical_collided;
 	bool horizontal_collided;
 
+	//Camera
+	bool vertical_movement;
+	bool horizontal_movement;
+
 	Collider* collider_ray_right;
 	Collider* collider_ray_left;
 	Collider* collider_ray_up;

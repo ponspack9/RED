@@ -71,17 +71,20 @@ bool j1Render::Start()
 bool j1Render::PreUpdate()
 {
 	SDL_RenderClear(renderer);
+	SDL_RenderGetViewport(renderer, &viewport);
+	
 	return true;
 }
 
 bool j1Render::Update(float dt)
 {
-	FollowPlayer();
+	
 	return true;
 }
 
 bool j1Render::PostUpdate()
 {
+	FollowPlayer();
 	SDL_SetRenderDrawColor(renderer, background.r, background.g, background.g, background.a);
 	SDL_RenderPresent(renderer);
 	return true;
@@ -156,18 +159,34 @@ bool j1Render::MoveCamera(const int & vel_x, const int & vel_y)
 
 void j1Render::FollowPlayer()
 {
-	if (App->player->position.x >= viewport.w / 3 && !(App->player->position.y >= viewport.h / 2))
-	{
+	int left_border = viewport.w / 3;// (abs(camera.x) + camera.w) / 3;
+	int right_border = App->map->world_limits.x *10/12; //(abs(camera.x) + camera.w) *5/ 6;
+	int x = App->player->position.x;
+	DrawLine(left_border, 0, left_border, App->map->world_limits.y, 255, 0, 0, 100, false);
+	DrawLine(right_border, 0, right_border, App->map->world_limits.y, 255, 0, 0, 100,false);
+	LOG("x: %d", x);
+
+
+	if (x > left_border && x < right_border && App->player->horizontal_movement)
 		MoveCamera(-App->player->dx, 0);
-	}
+
 	if (!(App->player->position.x >= viewport.w / 3) && App->player->position.y >= viewport.h / 2)
 	{
 		MoveCamera(0, -App->player->dy);
 	}
-	if (App->player->position.x >= viewport.w / 3 && App->player->position.y >= viewport.h / 2)
+
+	//camera.x = -App->player->position.x;
+	//camera.y = -App->player->position.y;
+
+	/*if (App->player->position.x >= viewport.w / 3 && !(App->player->position.y >= viewport.h / 2))
+	{
+		MoveCamera(-App->player->dx, 0);
+	}*/
+	
+	/*if (App->player->position.x >= viewport.w / 3 && App->player->position.y >= viewport.h / 2)
 	{
 		MoveCamera(-App->player->dx, -App->player->dy);
-	}
+	}*/
 	/*if (App->player->position.x >= 2*(viewport.w/3) &&  )*/
 
 	//MoveCamera(-App->player->dx, -App->player->dy);

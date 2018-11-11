@@ -190,14 +190,17 @@ bool j1Player::Start()
 
 bool j1Player::PreUpdate()
 {
-	Move();
+	if (!godmode)Move();
 	return true;
 }
 
 bool j1Player::Update(float dt)
 {
-	if (level_finished) App->NextLevel();
+	vertical_movement	= true;
+	horizontal_movement = true;
 
+	if (level_finished) App->NextLevel();
+	
 	else
 	{
 		if (!godmode)
@@ -205,15 +208,19 @@ bool j1Player::Update(float dt)
 			//Move();
 			if (dx > 0 && !can_move_right) {
 				MovePlayer(-dx, 0);
+				horizontal_movement = false;
 			}
 			else if (dx < 0 && !can_move_left) {
 				MovePlayer(-dx, 0);
+				horizontal_movement = false;
 			}
 			if (dy > 0 && !can_move_down) {
 				MovePlayer(0, -dy);
+				vertical_movement = false;
 			}
 			else if (dy < 0 && !can_move_up) {
 				MovePlayer(0, -dy);
+				vertical_movement = false;
 			}
 			
 			horizontal_collided = false;
@@ -475,19 +482,19 @@ void j1Player::MoveFree()
 
 	if (App->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT)
 	{
-		dx += speed.x;
+		dx += speed.x +5 ;
 	}
 	if (App->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT)
 	{
-		dx -= speed.x;
+		dx -= speed.x + 5;
 	}
 	if (App->input->GetKey(SDL_SCANCODE_S) == KEY_REPEAT)
 	{
-		dy += speed.y;
+		dy += speed.y + 5;
 	}
 	if (App->input->GetKey(SDL_SCANCODE_W) == KEY_REPEAT)
 	{
-		dy -= speed.y;
+		dy -= speed.y + 5;
 	}
 
 	position.x += dx;
