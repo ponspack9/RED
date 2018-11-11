@@ -170,15 +170,15 @@ bool j1Player::Start()
 	position.x = App->map->start_collider->rect.x;
 	position.y = App->map->start_collider->rect.y;
 
-	current_animation = &idle;
-	collider_offset = speed.x;
-	max_speed_y = speed.y;
+	current_animation	= &idle;
+	collider_offset		= speed.x;
+	max_speed_y			= speed.y;
 
-	level_finished = false;
-	on_floor = false;
-	is_jumping = false;
-	is_falling = true;
-	dead = false;
+	level_finished	= false;
+	on_floor		= false;
+	is_jumping		= false;
+	is_falling		= true;
+	dead			= false;
 
 	can_move_right 	= true;
 	can_move_left	= true;
@@ -367,7 +367,7 @@ void j1Player::Move()
 			//is_falling = true;
 		}
 	}
-	else if (can_move_down)
+	else if (!on_floor && !is_jumping && !djump)
 	{
 		is_falling = true;
 
@@ -419,7 +419,7 @@ void j1Player::OnCollision(Collider * c1, Collider * c2)
 		djump = false;
 		aux_djump = false;
 		vertical_collided = true;
-		//LOG("COLLIDED_RAY_DOWN");
+		LOG("COLLIDED_RAY_DOWN");
 
 	}
 	if (!can_move_down && !can_move_left && !can_move_right) {

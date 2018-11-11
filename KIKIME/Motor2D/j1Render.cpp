@@ -133,28 +133,27 @@ bool j1Render::MoveCamera(const int & vel_x, const int & vel_y)
 	int x = App->map->world_limits.x - viewport.w;
 	int y = App->map->world_limits.y - viewport.h;
 
-	//Camera can move x axis
 	if (abs(camera.x + vel_x) < x && camera.x + vel_x < 0) 
+	{
+	//Camera can move x axis
 		camera.x += vel_x;
 	
-		//if (abs(camera.y + vel_y) < y && camera.y + vel_y < 0) {
-		//	// Camera can move both axis
-		//	camera.y += vel_y;
-		//	return true;
-		//}
-		//return true;
+		if (abs(camera.y + vel_y) < y && camera.y + vel_y < 0) {
+			// Camera can move both axis
+			camera.y += vel_y;
+			return true;
+		}
+		return true;
 
-	//}
+	}
+	else if (abs(camera.y + vel_y) < y && camera.y + vel_y < 0) 
+	{
 	//Camera can move y axis
-	if (abs(camera.y + vel_y) < y && camera.y + vel_y < 0) 
 		camera.y += vel_y;
-	//	return true;
-	//}
+		return true;
+	}
 
-	/*camera.x += vel_x;
-	camera.y += vel_y;*/
-
-	return true;
+	return false;
 }
 
 void j1Render::FollowPlayer()
@@ -178,28 +177,6 @@ void j1Render::FollowPlayer()
 	{
 		camera.y = -App->map->data.height * App->map->data.tile_height + camera.h;
 	}
-
-	//int left_border = viewport.w / 3;// (abs(camera.x) + camera.w) / 3;
-	//int right_border = App->map->world_limits.x *10/12; //(abs(camera.x) + camera.w) *5/ 6;
-	//int x = App->player->position.x;
-	//DrawLine(left_border, 0, left_border, App->map->world_limits.y, 255, 0, 0, 100, false);
-	//DrawLine(right_border, 0, right_border, App->map->world_limits.y, 255, 0, 0, 100,false);
-	//LOG("x: %d", x);
-	//
-	//
-	//if (x > left_border && x < right_border && App->player->horizontal_movement)
-	//	MoveCamera(-App->player->dx, 0);
-	//
-	//
-	//int up_border =viewport.h / 3;
-	//int down_border = 2 * viewport.h / 3;
-	//int y = App->player->position.y;
-	//
-	//DrawLine(0, up_border, App->map->world_limits.x, up_border, 0, 0, 255, 100, false);
-	//DrawLine(0, down_border, App->map->world_limits.x, down_border, 0, 0, 255, 100, false);
-	//
-	//if (y > up_border && y < down_border && App->player->vertical_movement)
-	//	MoveCamera(0, -App->player->dy);	
 }
 
 void j1Render::ResetCamera()
