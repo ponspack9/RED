@@ -36,6 +36,7 @@ public:
 	bool Load(pugi::xml_node& node);
 
 private:
+	SDL_Texture* debug_tex;
 
 };
 

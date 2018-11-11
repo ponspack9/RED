@@ -17,6 +17,7 @@
 #include "j1App.h"
 #include "j1FileSystem.h"
 #include "j1Enemies.h"
+#include "j1PathFinding.h"
 
 // Constructor
 j1App::j1App(int argc, char* args[]) : argc(argc), args(args)
@@ -38,6 +39,7 @@ j1App::j1App(int argc, char* args[]) : argc(argc), args(args)
 	fade		= new j1FadeToBlack();
 	player		= new j1Player();
 	enemies		= new j1Enemies();
+	pathfinding = new j1PathFinding();
 
 	// Ordered for awake / Start / Update
 	// Reverse order of CleanUp
@@ -53,6 +55,7 @@ j1App::j1App(int argc, char* args[]) : argc(argc), args(args)
 	AddModule(collision);
 	AddModule(fade);
 	AddModule(enemies);
+	AddModule(pathfinding);
 
 	AddModule(render);
 
@@ -234,7 +237,7 @@ void j1App::FinishUpdate()
 	if (delay_is_active)
 	{
 		SDL_Delay(abs((float)(1000 / framerate_cap) - last_frame_ms));
-		LOG("SDL_Delay is active");
+		//LOG("SDL_Delay is active");
 	}
 }
 

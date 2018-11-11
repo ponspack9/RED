@@ -20,6 +20,7 @@ class j1Collision;
 class j1FadeToBlack;
 class j1Player;
 class j1Enemies;
+class j1PathFinding;
 
 class j1App
 {
@@ -108,6 +109,7 @@ public:
 	j1FadeToBlack*		fade;
 	j1Player*			player;
 	j1Enemies*			enemies;
+	j1PathFinding*		pathfinding;
 
 
 	bool				delay_is_active = true;
