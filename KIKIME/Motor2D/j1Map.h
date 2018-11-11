@@ -18,10 +18,31 @@ enum MapTypes
 	MAPTYPE_STAGGERED
 };
 
-//TO TEST
-struct Properties {
-	bool draw;
-	bool collider;
+struct Properties
+{
+	struct Property
+	{
+		p2SString name;
+		int value;
+	};
+
+	~Properties()
+	{
+		p2List_item<Property*>* item;
+		item = list.start;
+
+		while (item != NULL)
+		{
+			RELEASE(item->data);
+			item = item->next;
+		}
+
+		list.clear();
+	}
+
+	int Get(const char* name, int default_value = 0) const;
+
+	p2List<Property*>	list;
 };
 
 struct ImageLayer {
@@ -92,6 +113,10 @@ public:
 
 	// Destructor
 	virtual ~j1Map();
+
+	bool CreateWalkabilityMap(int & width, int & height, uchar ** buffer) const;
+
+	bool LoadProperties(pugi::xml_node & node, Properties & properties);
 
 	// Called before render is available
 	bool Awake(pugi::xml_node& config);
