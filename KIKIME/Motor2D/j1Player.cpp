@@ -419,7 +419,7 @@ void j1Player::OnCollision(Collider * c1, Collider * c2)
 		djump = false;
 		aux_djump = false;
 		vertical_collided = true;
-		LOG("COLLIDED_RAY_DOWN");
+		//LOG("COLLIDED_RAY_DOWN");
 
 	}
 	if (!can_move_down && !can_move_left && !can_move_right) {

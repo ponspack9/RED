@@ -42,12 +42,16 @@ void Enemy_Fish::Move()
 
 	App->pathfinding->CreatePath(p, a);
 	p2DynArray<iPoint>* path = App->pathfinding->GetLastPathNotConst();
-	//LOG("path size %d", path->Count());
 	for (uint i = 0; i < path->Count(); ++i)
 	{
 		iPoint pos = App->map->MapToWorld(path->At(i)->x, path->At(i)->y);
-		//LOG("[%d,%d]", path->At(i)->x, path->At(i)->y);
 		App->render->Blit(App->scene->debug_tex, pos.x, pos.y);
+		//LOG("[%d,%d]", path->At(i)->x, path->At(i)->y);
+	}
+	if (path->Count() > 0) {
+		//LOG("Path[%d,%d]", path->At(1)->x, path->At(1)->y);
+		//LOG("Poss[%d,%d]", p.x,p.y);
+		position += iPoint (path->At(1)->x, path->At(1)->y) - p;
 	}
 	path->Clear();
 	//const p2DynArray arraay =  App->pathfinding->GetLastPath()->Pop(velocity);
