@@ -5,7 +5,7 @@
 #include "j1Textures.h"
 #include "j1Window.h"
 #include "j1Player.h"
-#include "Enemy_Fish.h"
+#include "Enemy_Air.h"
 #include "p2Log.h"
 #include "Enemy.h"
 #include "j1Pathfinding.h"
@@ -27,7 +27,6 @@ j1Enemies::~j1Enemies()
 bool j1Enemies::Start()
 {
 	// Create a prototype for each enemy available so we can copy them around
-	//sprites = App->tex->Load("assets/tengai/Enemy.png");
 	sprites = App->player->graphics;
 	//Explosion = App->audio->LoadFx("assets/audio/Explosion.wav");
 
@@ -143,9 +142,9 @@ void j1Enemies::SpawnEnemy(const EnemyInfo& info)
 	{
 		switch(info.type)
 		{
-			case ENEMY_TYPES::BLACK_NIGGA:
-			enemies[i] = new Enemy_Fish(info.x, info.y);
-			LOG(" RIGHT You want to spawn a BLACK NIGGA");
+			case ENEMY_TYPES::ENEMY_AIR:
+			enemies[i] = new Enemy_Air(info.x, info.y);
+			LOG("You want to spawn a ENEMY_AIR");
 			break;
 
 			

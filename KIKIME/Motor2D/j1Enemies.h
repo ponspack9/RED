@@ -7,7 +7,7 @@
 enum ENEMY_TYPES
 {
 	NO_TYPE,
-	BLACK_NIGGA
+	ENEMY_AIR
 };
 
 class Enemy;

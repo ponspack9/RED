@@ -107,7 +107,7 @@ bool j1Scene::Update(float dt)
 		App->render->MoveCamera(-1, 0);
 
 	if (App->input->GetKey(SDL_SCANCODE_E) == KEY_DOWN)
-		App->enemies->AddEnemy(BLACK_NIGGA, p.x, p.y);
+		App->enemies->AddEnemy(ENEMY_AIR, p.x, p.y);
 
 	if (App->input->GetKey(SDL_SCANCODE_1) == KEY_DOWN)
 	{
