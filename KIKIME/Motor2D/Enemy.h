@@ -32,8 +32,13 @@ public:
 
 	int health;
 	bool alive = true;
-	
+	bool first_iteration = true;
+	int can_see = 15;
+
+	iPoint speed;
+	iPoint last_velocity;
 	iPoint position;
+	iPoint desired_position;
 	Animation* animation = nullptr;
 };
 

@@ -342,9 +342,9 @@ void j1Player::Move()
 	}
 	if (App->input->GetKey(SDL_SCANCODE_W) == KEY_REPEAT || App->input->GetKey(SDL_SCANCODE_SPACE) == KEY_REPEAT)
 		if(on_floor && !is_jumping)
-	{
+		{
 		Jump();
-		LOG("JUMP");
+		//LOG("JUMP");
 	}
 	if ((App->input->GetKey(SDL_SCANCODE_W) == KEY_REPEAT || App->input->GetKey(SDL_SCANCODE_SPACE) == KEY_REPEAT)&& !on_floor && is_falling && !aux_djump && !djump)
 	{
@@ -469,7 +469,7 @@ bool j1Player::DoubleJump()
 	}
 	else
 	{
-		dx = 0;
+		//dx = 0;
 		dy -= jumpspeed;
 		jumpspeed -= gravity / 2;
 	}

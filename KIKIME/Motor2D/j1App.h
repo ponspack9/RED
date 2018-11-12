@@ -116,10 +116,10 @@ public:
 	bool				want_to_load;
 	mutable bool		want_to_save;
 
+	float				dt;
 private:
 
 	p2List<j1Module*>	modules;
-	float				dt;
 	int					argc;
 	char**				args;
 

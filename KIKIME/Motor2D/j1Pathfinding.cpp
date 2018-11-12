@@ -54,7 +54,7 @@ uchar j1PathFinding::GetTileAt(const iPoint& pos) const
 {
 	if(CheckBoundaries(pos))
 		return map[(pos.y*width) + pos.x];
-	else LOG("Not in boundaries");
+	//else LOG("Not in boundaries");
 
 	return INVALID_WALK_CODE;
 }
@@ -174,11 +174,11 @@ int j1PathFinding::CreatePath(const iPoint& origin, const iPoint& destination)
 {
 	// TODO 1: if origin or destination are not walkable, return -1
 	if (!IsWalkable(origin)) {
-		LOG("origin not walkable");
+		//LOG("origin not walkable");
 		return -1;
 	}
 	if (!IsWalkable(destination)) {
-		LOG("destination not walkable");
+		//LOG("destination not walkable");
 		return -1;
 	}
 	

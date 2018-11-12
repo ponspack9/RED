@@ -86,6 +86,7 @@ bool j1Debug::Update(float dt)
 			if (App->player->player_collider) App->player->player_collider->type = COLLIDER_PLAYER;
 		}
 	}
+	
 	//////////////// spawn a debug cvollider in mousepos
 	if (App->input->GetMouseButtonDown(SDL_BUTTON_RIGHT) == KEY_DOWN) {
 		LOG("RIGHT CLICK");

@@ -74,17 +74,45 @@ public:
 
 		return(*this);
 	}
+	p2Point operator *(const float &v)
+	{
+		p2Point r;
+
+		r.x = x *v;
+		r.y = y *v;
+
+		return(r);
+	}
 
 	bool operator ==(const p2Point& v) const
 	{
 		return (x == v.x && y == v.y);
+	}
+	bool operator ==(const int& v) const
+	{
+		return (x == v && y == v);
 	}
 
 	bool operator !=(const p2Point& v) const
 	{
 		return (x != v.x || y != v.y);
 	}
-
+	bool operator >=(const int& v) const
+	{
+		return (x >= v && y >= v);
+	}
+	bool operator <=(const int& v) const
+	{
+		return (x <= v && y <= v);
+	}
+	bool operator >(const int& v) const
+	{
+		return (x > v && y > v);
+	}
+	bool operator <(const int& v) const
+	{
+		return (x < v && y < v);
+	}
 	// Utils ------------------------------------------------
 	bool IsZero() const
 	{
