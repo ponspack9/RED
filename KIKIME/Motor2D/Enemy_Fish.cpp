@@ -30,18 +30,23 @@ void Enemy_Fish::Shoot()
 void Enemy_Fish::Move()
 {
 	iPoint velocity;
-	iPoint p = App->render->ScreenToWorld(position.x, position.y);
+	iPoint p = App->render->ScreenToWorld(position.x + App->render->camera.x, position.y + App->render->camera.y);
 	p = App->map->WorldToMap(p.x, p.y);
+	//p = App->map->MapToWorld(p.x, p.y);  
+	//LOG("Origin [%d,%d]", p.x, p.y);
 
-	iPoint a = App->render->ScreenToWorld(App->player->position.x, App->player->position.y);
+	iPoint a = App->render->ScreenToWorld(App->player->position.x + App->render->camera.x, App->player->position.y + App->render->camera.y);
 	a = App->map->WorldToMap(a.x, a.y);
+	//a = App->map->MapToWorld(a.x, a.y);
+	//LOG("Destination [%d,%d]", a.x, a.y);
 
 	App->pathfinding->CreatePath(p, a);
 	p2DynArray<iPoint>* path = App->pathfinding->GetLastPathNotConst();
-	LOG("path size %d", path->Count());
+	//LOG("path size %d", path->Count());
 	for (uint i = 0; i < path->Count(); ++i)
 	{
 		iPoint pos = App->map->MapToWorld(path->At(i)->x, path->At(i)->y);
+		//LOG("[%d,%d]", path->At(i)->x, path->At(i)->y);
 		App->render->Blit(App->scene->debug_tex, pos.x, pos.y);
 	}
 	path->Clear();
