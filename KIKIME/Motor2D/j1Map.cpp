@@ -279,9 +279,9 @@ bool j1Map::Load(const char* file_name)
 
 				
 				//Deal with the string to find each point
-				const char* c = polyobject.attribute("points").as_string();
+				//const char* c = polyobject.attribute("points").as_string();
 
-				App->collision->AddPolyLine(object.attribute("x").as_int(), object.attribute("y").as_int(),c);
+				//App->collision->AddPolyLine(object.attribute("x").as_int(), object.attribute("y").as_int(),c);
 
 				// END DEALING OBJECT NODE
 			}
@@ -741,6 +741,6 @@ void j1Map::CleanMap()
 	//Removes all colliders
 	if (App->collision->active) {
 		App->collision->CleanColliders();
-		App->collision->CleanPolylines();
+		//App->collision->CleanPolylines();
 	}
 }
