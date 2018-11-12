@@ -11,11 +11,8 @@
 
 Enemy_Air::Enemy_Air(int x, int y) : Enemy(x, y)
 {
-	idle.PushBack({ 123,221,40,40 });
-	idle.speed = 0.2f;
-
-	animation = &idle;
-	collider = App->collision->AddCollider({ x,y,40,40 }, COLLIDER_TYPE::COLLIDER_DEATH,App->enemies); 
+	current_animation = &App->enemies->enemies[0]->idle;
+	collider = App->collision->AddCollider(App->enemies->enemy_air_rect, COLLIDER_TYPE::COLLIDER_DEATH,App->enemies); 
 	position = iPoint(x, y);
 	health = 2;
 }

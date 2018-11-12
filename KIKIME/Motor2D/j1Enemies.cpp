@@ -15,6 +15,8 @@
 
 j1Enemies::j1Enemies()
 {
+	name.create("enemies");
+
 	for(uint i = 0; i < MAX_ENEMIES; ++i)
 		enemies[i] = nullptr;
 }
@@ -24,10 +26,65 @@ j1Enemies::~j1Enemies()
 {
 }
 
+bool j1Enemies::Awake(pugi::xml_node & config)
+{
+	pugi::xml_node enem_node = config; 
+
+	//enemy rect
+	enemy_air_rect.w = enem_node.child("rect").attribute("width").as_int();
+	enemy_air_rect.h = enem_node.child("rect").attribute("height").as_int();
+
+	//enemy speed
+	enemies[0]->speed.x = enem_node.child("speed").attribute("movingVel").as_int();
+	enemies[0]->speed.y = enemies[0]->speed.x;
+
+	enemies[0]->def_anim_speed_enem = enem_node.child("speed").attribute("defaultAnimationSpeed").as_float();
+
+	pugi::xml_node enemy_anims = enem_node.child("TextureAtlas");
+	texture_path = (enemy_anims.attribute("imagePath").as_string());
+
+	SDL_Rect r;
+	float node_speed = -1;
+
+	//Enemy Idle
+	pugi::xml_node n = enemy_anims.child("FloatIdle");
+	for (n; n; n = n.next_sibling("FloatIdle"))
+	{
+		r.x = n.attribute("x").as_int();
+		r.y = n.attribute("y").as_int();
+		r.w = n.attribute("width").as_int();
+		r.h = n.attribute("height").as_int();
+		enemies[0]->idle.PushBack(r);
+	}
+	node_speed = n.attribute("speed").as_float();
+	enemies[0]->idle.speed = (node_speed <= 0) ? enemies[0]->def_anim_speed_enem : node_speed;
+
+	enemy_air_rect.w = enemies[0]->idle.GetCurrentFrame().w;
+	enemy_air_rect.h = enemies[0]->idle.GetCurrentFrame().h;
+
+	//Enemy Follow
+	n = enemy_anims.child("FloatFollow");
+	for (n; n; n = n.next_sibling("FloatFollow"))
+	{
+		r.x = n.attribute("x").as_int();
+		r.y = n.attribute("y").as_int();
+		r.w = n.attribute("width").as_int();
+		r.h = n.attribute("height").as_int();
+		enemies[0]->follow.PushBack(r);
+	}
+	node_speed = n.attribute("speed").as_float();
+	enemies[0]->follow.speed = (node_speed <= 0) ? enemies[0]->def_anim_speed_enem : node_speed;
+
+	enemy_air_rect.w = enemies[0]->follow.GetCurrentFrame().w;
+	enemy_air_rect.h = enemies[0]->follow.GetCurrentFrame().h;
+
+	return true;
+}
+
 bool j1Enemies::Start()
 {
 	// Create a prototype for each enemy available so we can copy them around
-	sprites = App->player->graphics;
+	sprites = App->tex->Load(texture_path.GetString());
 	//Explosion = App->audio->LoadFx("assets/audio/Explosion.wav");
 
 	return true;

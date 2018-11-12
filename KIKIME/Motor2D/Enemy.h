@@ -38,7 +38,10 @@ public:
 	iPoint speed;
 	iPoint position;
 	iPoint desired_position;
-	Animation* animation = nullptr;
+	Animation* current_animation = nullptr;
 	Animation idle;
+	Animation follow;
+
+	float def_anim_speed_enem;
 };
 
