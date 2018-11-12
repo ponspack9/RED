@@ -228,10 +228,16 @@ void j1App::FinishUpdate()
 	//LOG("Last dt : %.3f ", dt);
 	//LOG("Time since startup : %.3f", seconds_since_startup); 
 	//LOG("Frame Count : %lu ", frame_count);
-
+	int x, y;
+	App->input->GetMousePosition(x, y);
+	iPoint map_coordinates = App->map->WorldToMap(x - App->render->camera.x, y - App->render->camera.y);
 	static char title[256];
-	sprintf_s(title, 256, "Av.FPS: %.2f Last Frame Ms: %02u Last sec frames: %i Last dt: %.3f Time since startup: %.3f Frame Count: %lu ",
-		avg_fps, last_frame_ms, frames_on_last_update, dt, seconds_since_startup, frame_count);
+	sprintf_s(title, 256, "Av.FPS: %.2f Last Frame Ms: %02u Last sec frames: %i Last dt: %.3f Time since startup: %.3f Frame Count: %llu Map:%dx%d Tiles:%dx%d Tilesets:%d Tile:%d,%d ",
+		avg_fps, last_frame_ms, frames_on_last_update, dt, seconds_since_startup, frame_count,
+		App->map->data.width, App->map->data.height,
+		App->map->data.tile_width, App->map->data.tile_height,
+		App->map->data.tilesets.count(),
+		map_coordinates.x, map_coordinates.y);
 	App->win->SetTitle(title);
 
 	if (delay_is_active)

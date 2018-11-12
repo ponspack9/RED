@@ -35,8 +35,8 @@ public:
 	bool Save(pugi::xml_node& node);
 	bool Load(pugi::xml_node& node);
 
-private:
 	SDL_Texture* debug_tex;
+private:
 
 };
 

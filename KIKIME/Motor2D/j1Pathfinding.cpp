@@ -54,12 +54,17 @@ uchar j1PathFinding::GetTileAt(const iPoint& pos) const
 {
 	if(CheckBoundaries(pos))
 		return map[(pos.y*width) + pos.x];
+	else LOG("Not in boundaries");
 
 	return INVALID_WALK_CODE;
 }
 
 // To request all tiles involved in the last generated path
 const p2DynArray<iPoint>* j1PathFinding::GetLastPath() const
+{
+	return &last_path;
+}
+ p2DynArray<iPoint>* j1PathFinding::GetLastPathNotConst()
 {
 	return &last_path;
 }
@@ -168,8 +173,14 @@ int PathNode::CalculateF(const iPoint& destination)
 int j1PathFinding::CreatePath(const iPoint& origin, const iPoint& destination)
 {
 	// TODO 1: if origin or destination are not walkable, return -1
-	if (!IsWalkable(origin) || !IsWalkable(destination))
+	if (!IsWalkable(origin)) {
+		LOG("origin not walkable");
 		return -1;
+	}
+	if (!IsWalkable(destination)) {
+		LOG("destination not walkable");
+		return -1;
+	}
 	
 	// TODO 2: Create two lists: open, close
 	// Add the origin tile to open
