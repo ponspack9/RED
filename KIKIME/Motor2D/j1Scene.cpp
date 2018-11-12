@@ -47,7 +47,7 @@ bool j1Scene::Start()
 		RELEASE_ARRAY(data);
 	}
 
-	debug_tex = App->tex->Load("maps/path2.png");
+	debug_tex = App->tex->Load("maps/path3.png");
 	
 	App->render->ResetCamera();
 	App->player->Start();
@@ -90,6 +90,9 @@ bool j1Scene::Update(float dt)
 	int x;
 	int y;
 	App->input->GetMousePosition(x, y);
+	iPoint p = App->render->ScreenToWorld(x, y);
+	p = App->map->WorldToMap(p.x, p.y);
+	p = App->map->MapToWorld(p.x, p.y);
 
 	if (App->input->GetKey(SDL_SCANCODE_UP) == KEY_REPEAT)
 		App->render->MoveCamera(0, 1);
@@ -104,7 +107,7 @@ bool j1Scene::Update(float dt)
 		App->render->MoveCamera(-1, 0);
 
 	if (App->input->GetKey(SDL_SCANCODE_E) == KEY_DOWN)
-		App->enemies->AddEnemy(BLACK_NIGGA, x, y);
+		App->enemies->AddEnemy(BLACK_NIGGA, p.x, p.y);
 
 	if (App->input->GetKey(SDL_SCANCODE_1) == KEY_DOWN)
 	{
@@ -119,9 +122,8 @@ bool j1Scene::Update(float dt)
 	// Debug pathfinding ------------------------------
 	//int x, y;
 	//App->input->GetMousePosition(x, y);
-	iPoint p = App->render->ScreenToWorld(x, y);
-	p = App->map->WorldToMap(p.x, p.y);
-	p = App->map->MapToWorld(p.x, p.y);
+	
+	
 
 	App->render->Blit(debug_tex, p.x, p.y);
 

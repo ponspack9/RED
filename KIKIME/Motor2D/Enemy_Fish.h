@@ -7,7 +7,7 @@ private:
 
 	iPoint original_position;
 	Animation idle;
-	Path path;
+	//Path path;
 
 
 public:

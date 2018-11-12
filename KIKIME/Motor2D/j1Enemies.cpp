@@ -8,6 +8,7 @@
 #include "Enemy_Fish.h"
 #include "p2Log.h"
 #include "Enemy.h"
+#include "j1Pathfinding.h"
 
 
 #define SPAWN_MARGIN 10
@@ -49,6 +50,7 @@ bool j1Enemies::PreUpdate()
 		}
 	}
 
+
 	return true;
 }
 
@@ -56,12 +58,17 @@ bool j1Enemies::PreUpdate()
 bool j1Enemies::Update(float dt)
 {
 	for(uint i = 0; i < MAX_ENEMIES; ++i)
-		if(enemies[i] != nullptr) 
+		if (enemies[i] != nullptr) {
 			enemies[i]->Move();
 
+
+		}
+
 	for(uint i = 0; i < MAX_ENEMIES; ++i)
-		if(enemies[i] != nullptr) 
+		if (enemies[i] != nullptr) {
 			enemies[i]->Draw(sprites);
+			
+		}
 
 	return true;
 }
