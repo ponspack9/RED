@@ -109,12 +109,16 @@ bool j1Scene::Update(float dt)
 	if (App->input->GetKey(SDL_SCANCODE_E) == KEY_DOWN)
 		App->enemies->AddEnemy(ENEMY_AIR, p.x, p.y);
 
+	if (App->input->GetKey(SDL_SCANCODE_R) == KEY_DOWN)
+		App->enemies->AddEnemy(ENEMY_GROUND, p.x, p.y);
+
 	if (App->input->GetKey(SDL_SCANCODE_1) == KEY_DOWN)
 	{
-		if (App->delay_is_active)
+		App->delay_is_active = !App->delay_is_active;
+		/*if (App->delay_is_active)
 			App->delay_is_active = false;
 		else if (!App->delay_is_active)
-			App->delay_is_active = true;
+			App->delay_is_active = true;*/
 	}
 
 	App->map->Draw();

@@ -1,5 +1,5 @@
 #include "j1App.h"
-#include "Enemy_Air.h"
+#include "Enemy_Ground.h"
 #include "j1Input.h"
 #include "j1Pathfinding.h"
 #include "j1Player.h"
@@ -10,10 +10,10 @@
 #include "Enemy.h"
 #include "j1Enemies.h"
 
-Enemy_Air::Enemy_Air(int x, int y) : Enemy(x, y)
+Enemy_Ground::Enemy_Ground(int x, int y) : Enemy(x, y)
 {
-	//current_animation = &App->enemies->prototypes[(int)ENEMY_AIR].idle;
-	//collider = App->collision->AddCollider(App->enemies->enemy_air_rect, COLLIDER_TYPE::COLLIDER_DEATH,App->enemies); 
+	//current_animation = &App->enemies->prototypes[(int)Enemy_Ground].idle;
+	//collider = App->collision->AddCollider(App->enemies->Enemy_Ground_rect, COLLIDER_TYPE::COLLIDER_DEATH,App->enemies); 
 	idle.PushBack({ 123,221,40,40 });
 	idle.speed = 0.2f;
 
@@ -23,12 +23,12 @@ Enemy_Air::Enemy_Air(int x, int y) : Enemy(x, y)
 	health = 2;
 }
 
-void Enemy_Air::Shoot() 
+void Enemy_Ground::Shoot() 
 {
 	//App->particles->AddParticle(App->particles->Eshot1, position.x, position.y + animation->GetCurrentFrame().h / 2, COLLIDER_ENEMY_SHOT);
 }
 
-void Enemy_Air::Move()
+void Enemy_Ground::Move()
 {
 	//Origin
 	iPoint p = App->render->ScreenToWorld(position.x + App->render->camera.x, position.y + App->render->camera.y);

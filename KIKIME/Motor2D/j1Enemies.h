@@ -7,7 +7,10 @@
 enum ENEMY_TYPES
 {
 	NO_TYPE,
-	ENEMY_AIR
+	ENEMY_AIR,
+	ENEMY_GROUND,
+
+	MAX_ENEMY_TYPE
 };
 
 
@@ -41,6 +44,7 @@ public:
 	//Mix_Chunk* Explosion = nullptr;
 	SDL_Rect enemy_air_rect;
 	Enemy* enemies[MAX_ENEMIES];
+	Enemy* prototypes[MAX_ENEMY_TYPE];
 
 private:
 
@@ -52,5 +56,6 @@ private:
 	EnemyInfo queue[MAX_ENEMIES];
 	SDL_Texture* sprites;
 
+	
 	
 };

@@ -6,8 +6,8 @@
 #include "j1Window.h"
 #include "j1Player.h"
 #include "Enemy_Air.h"
+#include "Enemy_Ground.h"
 #include "p2Log.h"
-#include "Enemy.h"
 #include "j1Pathfinding.h"
 
 
@@ -30,53 +30,53 @@ bool j1Enemies::Awake(pugi::xml_node & config)
 {
 	pugi::xml_node enem_node = config; 
 
-	//enemy rect
-	enemy_air_rect.w = enem_node.child("rect").attribute("width").as_int();
-	enemy_air_rect.h = enem_node.child("rect").attribute("height").as_int();
+	////enemy rect
+	//enemy_air_rect.w = enem_node.child("rect").attribute("width").as_int();
+	//enemy_air_rect.h = enem_node.child("rect").attribute("height").as_int();
 
-	//enemy speed
-	enemies[0]->speed.x = enem_node.child("speed").attribute("movingVel").as_int();
-	enemies[0]->speed.y = enemies[0]->speed.x;
+	////enemy speed
+	//prototypes[(int)ENEMY_AIR]->speed.x = enem_node.child("speed").attribute("movingVel").as_int();
+	//prototypes[(int)ENEMY_AIR]->speed.y = prototypes[(int)ENEMY_AIR]->speed.x;
 
-	enemies[0]->def_anim_speed_enem = enem_node.child("speed").attribute("defaultAnimationSpeed").as_float();
+	//prototypes[(int)ENEMY_AIR]->def_anim_speed_enem = enem_node.child("speed").attribute("defaultAnimationSpeed").as_float();
 
-	pugi::xml_node enemy_anims = enem_node.child("TextureAtlas");
-	texture_path = (enemy_anims.attribute("imagePath").as_string());
+	//pugi::xml_node enemy_anims = enem_node.child("TextureAtlas");
+	//texture_path = (enemy_anims.attribute("imagePath").as_string());
 
-	SDL_Rect r;
-	float node_speed = -1;
+	//SDL_Rect r;
+	//float node_speed = -1;
 
-	//Enemy Idle
-	pugi::xml_node n = enemy_anims.child("FloatIdle");
-	for (n; n; n = n.next_sibling("FloatIdle"))
-	{
-		r.x = n.attribute("x").as_int();
-		r.y = n.attribute("y").as_int();
-		r.w = n.attribute("width").as_int();
-		r.h = n.attribute("height").as_int();
-		enemies[0]->idle.PushBack(r);
-	}
-	node_speed = n.attribute("speed").as_float();
-	enemies[0]->idle.speed = (node_speed <= 0) ? enemies[0]->def_anim_speed_enem : node_speed;
+	////Enemy Idle
+	//pugi::xml_node n = enemy_anims.child("FloatIdle");
+	//for (n; n; n = n.next_sibling("FloatIdle"))
+	//{
+	//	r.x = n.attribute("x").as_int();
+	//	r.y = n.attribute("y").as_int();
+	//	r.w = n.attribute("width").as_int();
+	//	r.h = n.attribute("height").as_int();
+	//	prototypes[(int)ENEMY_AIR]->idle.PushBack(r);
+	//}
+	//node_speed = n.attribute("speed").as_float();
+	//prototypes[(int)ENEMY_AIR]->idle.speed = (node_speed <= 0) ? prototypes[(int)ENEMY_AIR]->def_anim_speed_enem : node_speed;
 
-	enemy_air_rect.w = enemies[0]->idle.GetCurrentFrame().w;
-	enemy_air_rect.h = enemies[0]->idle.GetCurrentFrame().h;
+	//enemy_air_rect.w = prototypes[(int)ENEMY_AIR]->idle.GetCurrentFrame().w;
+	//enemy_air_rect.h = prototypes[(int)ENEMY_AIR]->idle.GetCurrentFrame().h;
 
-	//Enemy Follow
-	n = enemy_anims.child("FloatFollow");
-	for (n; n; n = n.next_sibling("FloatFollow"))
-	{
-		r.x = n.attribute("x").as_int();
-		r.y = n.attribute("y").as_int();
-		r.w = n.attribute("width").as_int();
-		r.h = n.attribute("height").as_int();
-		enemies[0]->follow.PushBack(r);
-	}
-	node_speed = n.attribute("speed").as_float();
-	enemies[0]->follow.speed = (node_speed <= 0) ? enemies[0]->def_anim_speed_enem : node_speed;
+	////Enemy Follow
+	//n = enemy_anims.child("FloatFollow");
+	//for (n; n; n = n.next_sibling("FloatFollow"))
+	//{
+	//	r.x = n.attribute("x").as_int();
+	//	r.y = n.attribute("y").as_int();
+	//	r.w = n.attribute("width").as_int();
+	//	r.h = n.attribute("height").as_int();
+	//	prototypes[(int)ENEMY_AIR]->follow.PushBack(r);
+	//}
+	//node_speed = n.attribute("speed").as_float();
+	//prototypes[(int)ENEMY_AIR]->follow.speed = (node_speed <= 0) ? prototypes[(int)ENEMY_AIR]->def_anim_speed_enem : node_speed;
 
-	enemy_air_rect.w = enemies[0]->follow.GetCurrentFrame().w;
-	enemy_air_rect.h = enemies[0]->follow.GetCurrentFrame().h;
+	//enemy_air_rect.w = prototypes[(int)ENEMY_AIR]->follow.GetCurrentFrame().w;
+	//enemy_air_rect.h = prototypes[(int)ENEMY_AIR]->follow.GetCurrentFrame().h;
 
 	return true;
 }
@@ -84,7 +84,8 @@ bool j1Enemies::Awake(pugi::xml_node & config)
 bool j1Enemies::Start()
 {
 	// Create a prototype for each enemy available so we can copy them around
-	sprites = App->tex->Load(texture_path.GetString());
+	//sprites = App->tex->Load(texture_path.GetString());
+	sprites = App->player->graphics;
 	//Explosion = App->audio->LoadFx("assets/audio/Explosion.wav");
 
 	return true;
@@ -103,6 +104,9 @@ bool j1Enemies::PreUpdate()
 				SpawnEnemy(queue[i]);
 				queue[i].type = ENEMY_TYPES::NO_TYPE;
 			}
+		}
+		else {
+			break;
 		}
 	}
 
@@ -200,8 +204,12 @@ void j1Enemies::SpawnEnemy(const EnemyInfo& info)
 		switch(info.type)
 		{
 			case ENEMY_TYPES::ENEMY_AIR:
-			enemies[i] = new Enemy_Air(info.x, info.y);
-			LOG("You want to spawn a ENEMY_AIR");
+				enemies[i] = new Enemy_Air(info.x, info.y);
+				LOG("You want to spawn a ENEMY_AIR");
+			break;
+			case ENEMY_TYPES::ENEMY_GROUND:
+				enemies[i] = new Enemy_Ground(info.x, info.y);
+				LOG("You want to spawn a ENEMY_Ground");
 			break;
 
 			
