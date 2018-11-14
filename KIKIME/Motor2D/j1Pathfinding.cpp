@@ -155,73 +155,124 @@ uint PathNode::FindWalkableGroundAdjacents(PathList& list_to_fill) const
 	bool one	= false;
 	bool two	= false;
 	bool three	= false;
+	bool left   = false;
+	bool right	= false;
+	bool jump	= false;
+	bool djump	= false;
 
-	LOG("pos[%d,%d]", pos.x, pos.y);
+	//LOG("pos[%d,%d]", pos.x, pos.y);
+
+	// left
+	one = !App->pathfinding->IsWalkable({ pos.x - 1, pos.y + 1 });
+	if (one) {
+		cell.create(pos.x - 1, pos.y); //left
+		one = App->pathfinding->IsWalkable(cell);
+		if (one) list_to_fill.list.add(PathNode(-1, -1, cell, this));
+	}
 
 
-	// jump right
-	cell.create(pos.x+1, pos.y); //ground at right
+	// right
+	cell.create(pos.x + 1, pos.y + 1); //right + down == ground
+	two = !App->pathfinding->IsWalkable(cell);
+	cell.create(pos.x + 1, pos.y); //right
+	one = App->pathfinding->IsWalkable(cell);
+	right = one && two;
+	if (right)
+		list_to_fill.list.add(PathNode(-1, -1, cell, this));
+
+
+	// Simple jump right
+
+	cell.create(pos.x + 1, pos.y); //ground at right
 	one = !App->pathfinding->IsWalkable(cell);
-	cell.create(pos.x+1, pos.y - 2);//north + right
-	two = App->pathfinding->IsWalkable(cell);
-	cell.create(pos.x, pos.y - 2); //north
-	three = App->pathfinding->IsWalkable(cell);
-	if (one && two && three)
-	list_to_fill.list.add(PathNode(-1, -1, cell, this));
-
-	// jump left
-	cell.create(pos.x - 1, pos.y); //ground at left
-	one = !App->pathfinding->IsWalkable(cell);
-	cell.create(pos.x - 1, pos.y - 1);//north + left
+	cell.create(pos.x + 1, pos.y - 1);//north + right
 	two = App->pathfinding->IsWalkable(cell);
 	cell.create(pos.x, pos.y - 1); //north
 	three = App->pathfinding->IsWalkable(cell);
 	if (one && two && three)
-	list_to_fill.list.add(PathNode(-1, -1, cell, this));
+		list_to_fill.list.add(PathNode(-1, -1, cell, this));
+	
+	// Simple jump left
 
-	// jump down left
-	cell.create(pos.x - 1, pos.y+2); //ground at left + 2down
+	cell.create(pos.x - 1, pos.y); //ground at left
 	one = !App->pathfinding->IsWalkable(cell);
-	cell.create(pos.x - 1, pos.y + 1);//down + left
+	cell.create(pos.x - 1, pos.y - 1);//north + right
 	two = App->pathfinding->IsWalkable(cell);
-	cell.create(pos.x, pos.y + 1); //down
+	cell.create(pos.x, pos.y - 1); //north
 	three = App->pathfinding->IsWalkable(cell);
 	if (one && two && three)
 		list_to_fill.list.add(PathNode(-1, -1, cell, this));
 
-	// jump down right
-	cell.create(pos.x + 1, pos.y + 2); //ground at right + 2down
-	one = !App->pathfinding->IsWalkable(cell);
-	cell.create(pos.x + 1, pos.y + 1);//down + right
-	two = App->pathfinding->IsWalkable(cell);
-	cell.create(pos.x, pos.y + 1); //down
-	three = App->pathfinding->IsWalkable(cell);
-	if (one && two && three)
-		list_to_fill.list.add(PathNode(-1, -1, cell, this));
 
-	// down
-	cell.create(pos.x, pos.y+2); //two down must be ground
-	one = !App->pathfinding->IsWalkable(cell);
-	cell.create(pos.x, pos.y + 1);// down
-	two = App->pathfinding->IsWalkable(cell);
-	if (one && two)
-		list_to_fill.list.add(PathNode(-1, -1, cell, this));
+	// double jump right
 
-	// left
-	cell.create(pos.x - 1, pos.y + 1);//left + down
-	two = !App->pathfinding->IsWalkable(cell);
-	cell.create(pos.x -1 , pos.y); //left
-	one = App->pathfinding->IsWalkable(cell);
-	if (one && two)
-		list_to_fill.list.add(PathNode(-1, -1, cell, this));
+	cell.create(pos.x + 1, pos.y); //ground at right
+	if (!App->pathfinding->IsWalkable(cell)) {
+		cell.create(pos.x + 1, pos.y - 1); //ground at right north
+		if (!App->pathfinding->IsWalkable(cell)) {
+			cell.create(pos.x+1, pos.y - 2);//2north + right
+			if (App->pathfinding->IsWalkable(cell)) {
+				cell.create(pos.x, pos.y - 2); //2north
+				if (App->pathfinding->IsWalkable(cell)) {
+					cell.create(pos.x, pos.y - 1); //north
+					if( App->pathfinding->IsWalkable(cell))
+					list_to_fill.list.add(PathNode(-1, -1, cell, this));
+				}
+			}
+		}
+	}
 
-	// right
-	cell.create(pos.x + 1, pos.y + 1);//left + down
-	two = !App->pathfinding->IsWalkable(cell);
-	cell.create(pos.x + 1, pos.y); //left
-	one = App->pathfinding->IsWalkable(cell);
-	if (one && two)
-		list_to_fill.list.add(PathNode(-1, -1, cell, this));
+	// double jump left
+
+	cell.create(pos.x - 1, pos.y); //ground at left
+	if (!App->pathfinding->IsWalkable(cell)) {
+		cell.create(pos.x - 1, pos.y - 1); //ground at left north
+		if (!App->pathfinding->IsWalkable(cell)) {
+			cell.create(pos.x - 1, pos.y - 2);//2north + left
+			if (App->pathfinding->IsWalkable(cell)) {
+				cell.create(pos.x, pos.y - 2); //2north
+				if (App->pathfinding->IsWalkable(cell)) {
+					cell.create(pos.x, pos.y - 1); //north
+					if (App->pathfinding->IsWalkable(cell))
+						list_to_fill.list.add(PathNode(-1, -1, cell, this));
+				}
+			}
+		}
+	}
+
+	// Simple descend right
+
+	cell.create(pos.x + 1, pos.y + 2); //ground at right 2down
+	if (!App->pathfinding->IsWalkable(cell)) {
+		cell.create(pos.x + 1, pos.y + 1); //free at right down
+		if (App->pathfinding->IsWalkable(cell)) {
+			cell.create(pos.x + 1, pos.y); //free at right
+			if (App->pathfinding->IsWalkable(cell)) 
+				list_to_fill.list.add(PathNode(-1, -1, cell, this));
+		}
+	}
+
+	// Simple descend left
+
+	cell.create(pos.x - 1, pos.y + 2); //ground at left 2down
+	if (!App->pathfinding->IsWalkable(cell)) {
+		cell.create(pos.x - 1, pos.y + 1); //free at left down
+		if (App->pathfinding->IsWalkable(cell)) {
+			cell.create(pos.x - 1, pos.y); //free at left
+			if (App->pathfinding->IsWalkable(cell))
+				list_to_fill.list.add(PathNode(-1, -1, cell, this));
+		}
+	}
+
+	//// down
+	//cell.create(pos.x, pos.y+2); //two down must be ground
+	//one = !App->pathfinding->IsWalkable(cell);
+	//cell.create(pos.x, pos.y + 1);// down
+	//two = App->pathfinding->IsWalkable(cell);
+	//if (one && two)
+	//	list_to_fill.list.add(PathNode(-1, -1, cell, this));
+
+	
 
 	//// up
 	//cell.create(pos.x, pos.y - 1);//left + down
