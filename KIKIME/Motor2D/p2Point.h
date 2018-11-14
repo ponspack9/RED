@@ -74,7 +74,7 @@ public:
 
 		return(*this);
 	}
-	p2Point operator *(const float &v)
+	p2Point operator *(const TYPE &v)
 	{
 		p2Point r;
 

@@ -37,9 +37,9 @@ void Enemy_Ground::Move()
 	iPoint a = App->render->ScreenToWorld(App->player->position.x + App->render->camera.x, App->player->position.y + App->render->camera.y);
 	a = App->map->WorldToMap(a.x, a.y);
 
-	App->pathfinding->CreatePath(p, a);
+	App->pathfinding->CreatePath(p, a, true);
 	p2DynArray<iPoint>* path = App->pathfinding->GetLastPathNotConst();
-	if (first_iteration) {
+	if (first_iteration && path->Count() > 1) {
 		speed = iPoint(path->At(1)->x, path->At(1)->y) - p;
 		first_iteration = false;
 	}

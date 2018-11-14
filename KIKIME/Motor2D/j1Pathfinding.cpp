@@ -148,6 +148,91 @@ uint PathNode::FindWalkableAdjacents(PathList& list_to_fill) const
 	return list_to_fill.list.count();
 }
 
+uint PathNode::FindWalkableGroundAdjacents(PathList& list_to_fill) const
+{
+	iPoint cell;
+	uint before = list_to_fill.list.count();
+	bool one	= false;
+	bool two	= false;
+	bool three	= false;
+
+	LOG("pos[%d,%d]", pos.x, pos.y);
+
+
+	// jump right
+	cell.create(pos.x+1, pos.y); //ground at right
+	one = !App->pathfinding->IsWalkable(cell);
+	cell.create(pos.x+1, pos.y - 2);//north + right
+	two = App->pathfinding->IsWalkable(cell);
+	cell.create(pos.x, pos.y - 2); //north
+	three = App->pathfinding->IsWalkable(cell);
+	if (one && two && three)
+	list_to_fill.list.add(PathNode(-1, -1, cell, this));
+
+	// jump left
+	cell.create(pos.x - 1, pos.y); //ground at left
+	one = !App->pathfinding->IsWalkable(cell);
+	cell.create(pos.x - 1, pos.y - 1);//north + left
+	two = App->pathfinding->IsWalkable(cell);
+	cell.create(pos.x, pos.y - 1); //north
+	three = App->pathfinding->IsWalkable(cell);
+	if (one && two && three)
+	list_to_fill.list.add(PathNode(-1, -1, cell, this));
+
+	// jump down left
+	cell.create(pos.x - 1, pos.y+2); //ground at left + 2down
+	one = !App->pathfinding->IsWalkable(cell);
+	cell.create(pos.x - 1, pos.y + 1);//down + left
+	two = App->pathfinding->IsWalkable(cell);
+	cell.create(pos.x, pos.y + 1); //down
+	three = App->pathfinding->IsWalkable(cell);
+	if (one && two && three)
+		list_to_fill.list.add(PathNode(-1, -1, cell, this));
+
+	// jump down right
+	cell.create(pos.x + 1, pos.y + 2); //ground at right + 2down
+	one = !App->pathfinding->IsWalkable(cell);
+	cell.create(pos.x + 1, pos.y + 1);//down + right
+	two = App->pathfinding->IsWalkable(cell);
+	cell.create(pos.x, pos.y + 1); //down
+	three = App->pathfinding->IsWalkable(cell);
+	if (one && two && three)
+		list_to_fill.list.add(PathNode(-1, -1, cell, this));
+
+	// down
+	cell.create(pos.x, pos.y+2); //two down must be ground
+	one = !App->pathfinding->IsWalkable(cell);
+	cell.create(pos.x, pos.y + 1);// down
+	two = App->pathfinding->IsWalkable(cell);
+	if (one && two)
+		list_to_fill.list.add(PathNode(-1, -1, cell, this));
+
+	// left
+	cell.create(pos.x - 1, pos.y + 1);//left + down
+	two = !App->pathfinding->IsWalkable(cell);
+	cell.create(pos.x -1 , pos.y); //left
+	one = App->pathfinding->IsWalkable(cell);
+	if (one && two)
+		list_to_fill.list.add(PathNode(-1, -1, cell, this));
+
+	// right
+	cell.create(pos.x + 1, pos.y + 1);//left + down
+	two = !App->pathfinding->IsWalkable(cell);
+	cell.create(pos.x + 1, pos.y); //left
+	one = App->pathfinding->IsWalkable(cell);
+	if (one && two)
+		list_to_fill.list.add(PathNode(-1, -1, cell, this));
+
+	//// up
+	//cell.create(pos.x, pos.y - 1);//left + down
+	//one = App->pathfinding->IsWalkable(cell);
+	//if (one)
+	//	list_to_fill.list.add(PathNode(-1, -1, cell, this));
+	
+
+	return list_to_fill.list.count();
+}
+
 // PathNode -------------------------------------------------------------------------
 // Calculates this tile score
 // ----------------------------------------------------------------------------------
@@ -170,14 +255,16 @@ int PathNode::CalculateF(const iPoint& destination)
 // ----------------------------------------------------------------------------------
 // Actual A* algorithm: return number of steps in the creation of the path or -1 ----
 // ----------------------------------------------------------------------------------
-int j1PathFinding::CreatePath(const iPoint& origin, const iPoint& destination)
+int j1PathFinding::CreatePath(const iPoint& origin, const iPoint& destination, bool ground)
 {
+	iPoint dest = destination;
+	if (ground) dest.y += 1;
 	// TODO 1: if origin or destination are not walkable, return -1
 	if (!IsWalkable(origin)) {
 		//LOG("origin not walkable");
 		return -1;
 	}
-	if (!IsWalkable(destination)) {
+	if (!IsWalkable(dest)) {
 		//LOG("destination not walkable");
 		return -1;
 	}
@@ -204,7 +291,7 @@ int j1PathFinding::CreatePath(const iPoint& origin, const iPoint& destination)
 	// TODO 4: If we just added the destination, we are done!
 	// Backtrack to create the final path
 	// Use the Pathnode::parent and Flip() the path when you are finish
-			if (lowest_score_node->data.pos == destination)
+			if (lowest_score_node->data.pos == dest)
 			{
 				int steps = 0;
 				while (lowest_score_node->data.parent != nullptr)
@@ -221,7 +308,9 @@ int j1PathFinding::CreatePath(const iPoint& origin, const iPoint& destination)
 			}
 	// TODO 5: Fill a list of all adjancent nodes
 			PathList neighbours;
-			lowest_score_node->data.FindWalkableAdjacents(neighbours);
+			
+			if (ground) lowest_score_node->data.FindWalkableGroundAdjacents(neighbours);
+			else lowest_score_node->data.FindWalkableAdjacents(neighbours);
 
 	// TODO 6: Iterate adjancent nodes:
 	// ignore nodes in the closed list
@@ -237,7 +326,7 @@ int j1PathFinding::CreatePath(const iPoint& origin, const iPoint& destination)
 				p2List_item<PathNode>* open_node = open.Find(neighbour_pos);
 				if (open_node == nullptr)
 				{
-					neighbour_node->data.CalculateF(destination);
+					neighbour_node->data.CalculateF(dest);
 					open.list.add(neighbour_node->data);
 				}
 				else
