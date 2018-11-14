@@ -98,9 +98,8 @@ bool j1Enemies::PreUpdate()
 	{
 		if(queue[i].type != ENEMY_TYPES::NO_TYPE)
 		{
-			if(queue[i].x * App->win->GetScale() < App->render->camera.x + (App->render->camera.w * App->win->GetScale()) + SPAWN_MARGIN)
+			if(queue[i].x < abs(App->render->camera.x) + App->render->viewport.w)
 			{
-				LOG(" RIGHT Spawning enemy at %d", queue[i].x * App->win->GetScale());
 				SpawnEnemy(queue[i]);
 				queue[i].type = ENEMY_TYPES::NO_TYPE;
 			}
@@ -182,6 +181,7 @@ bool j1Enemies::AddEnemy(ENEMY_TYPES type, int x, int y)
 	{
 		if(queue[i].type == ENEMY_TYPES::NO_TYPE)
 		{
+			LOG("To Spawn at %d,%d", x, y);
 			queue[i].type = type;
 			queue[i].x = x;
 			queue[i].y = y;
