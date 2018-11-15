@@ -18,6 +18,7 @@
 #include "j1FileSystem.h"
 #include "j1Enemies.h"
 #include "j1PathFinding.h"
+#include "j1EntityManager.h"
 
 // Constructor
 j1App::j1App(int argc, char* args[]) : argc(argc), args(args)
@@ -27,19 +28,19 @@ j1App::j1App(int argc, char* args[]) : argc(argc), args(args)
 
 	want_to_save = want_to_load = false;
 
-	input		= new j1Input();
-	win			= new j1Window();
-	render		= new j1Render();
-	tex			= new j1Textures();
-	audio		= new j1Audio();
-	scene		= new j1Scene();
-	map			= new j1Map();
-	debug		= new j1Debug();
-	collision   = new j1Collision();
-	fade		= new j1FadeToBlack();
-	player		= new j1Player();
-	enemies		= new j1Enemies();
-	pathfinding = new j1PathFinding();
+	input			= new j1Input();
+	win				= new j1Window();
+	render			= new j1Render();
+	tex				= new j1Textures();
+	audio			= new j1Audio();
+	scene			= new j1Scene();
+	map				= new j1Map();
+	debug			= new j1Debug();
+	collision		= new j1Collision();
+	fade			= new j1FadeToBlack();
+	player			= new j1Player();
+	pathfinding		= new j1PathFinding();
+	entitymanager	= new j1EntityManager();
 
 	// Ordered for awake / Start / Update
 	// Reverse order of CleanUp
@@ -54,7 +55,7 @@ j1App::j1App(int argc, char* args[]) : argc(argc), args(args)
 	AddModule(player);
 	AddModule(collision);
 	AddModule(fade);
-	AddModule(enemies);
+	AddModule(entitymanager);
 	AddModule(pathfinding);
 
 	AddModule(render);
