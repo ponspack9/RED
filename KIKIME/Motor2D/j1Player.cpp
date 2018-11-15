@@ -227,6 +227,7 @@ bool j1Player::Update(float dt)
 			vertical_collided = false;
 			
 			PlayerAnimations();
+			on_floor = false;
 		}
 		else
 		{
@@ -383,8 +384,7 @@ void j1Player::Move()
 
 	
 	MovePlayer(dx, dy);
-	//if (!vertical_collided && on_floor)	
-	on_floor = false;
+		
 }
 
 
@@ -425,6 +425,8 @@ void j1Player::OnCollision(Collider * c1, Collider * c2)
 	if (!can_move_down && !can_move_left && !can_move_right) {
 		can_move_left = true;
 		can_move_right = true;
+		is_falling = false;
+		on_floor = true;
 		//LOG("SPECIAL CASE");
 	}
 
@@ -506,27 +508,27 @@ void j1Player::MoveFree()
 
 void j1Player::PlayerAnimations()
 {
+	if (is_falling && !is_jumping && !djump && !on_floor)
+	{
+		current_animation = &fall;
+	}
+	else if (!is_jumping && !move_left && !move_right && !djump && !is_falling)
+	{
+		current_animation = &idle;
+	}
 	if (!is_jumping && move_right)
 	{
 		current_animation = &walk;
 	}
-	if (!is_jumping && move_left)
+	else if (!is_jumping && move_left)
 	{
 		current_animation = &walk;
-	}
-	if (!is_jumping && !move_left && !move_right)
-	{
-		current_animation = &idle;
 	}
 	if (is_jumping && !is_falling && !djump)
 	{
 		current_animation = &jump;
 	}
-	if (is_falling && !is_jumping && !djump)
-	{
-		current_animation = &fall;
-	}
-	if (djump && !is_falling && !is_jumping)
+	else if (djump && !is_falling && !is_jumping)
 	{
 		current_animation = &doublejump;
 	}
