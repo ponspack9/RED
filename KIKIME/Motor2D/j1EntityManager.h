@@ -9,9 +9,9 @@
 
 
 
+class Entity;
 struct SDL_Texture;
 struct Collider;
-class Entity;
 
 class j1EntityManager : public j1Module 
 {

@@ -26,9 +26,6 @@ class Entity
 {
 public:
 
-
-public:
-
 	Entity();
 	Entity(entityType type);
 
