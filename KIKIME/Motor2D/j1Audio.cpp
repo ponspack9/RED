@@ -21,6 +21,7 @@ j1Audio::~j1Audio()
 // Called before render is available
 bool j1Audio::Awake(pugi::xml_node& config)
 {
+	//BROFILER_CATEGORY("Audio->Awake", Profiler::Color::HotPink)
 	LOG("Loading Audio Mixer");
 	bool ret = true;
 	SDL_Init(0);
@@ -85,6 +86,7 @@ bool j1Audio::Awake(pugi::xml_node& config)
 // Called before quitting
 bool j1Audio::CleanUp()
 {
+	BROFILER_CATEGORY("Audio->CleanUp", Profiler::Color::HotPink)
 	if(!active)
 		return true;
 

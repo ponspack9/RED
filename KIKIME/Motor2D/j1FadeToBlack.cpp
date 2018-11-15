@@ -19,6 +19,7 @@ j1FadeToBlack::~j1FadeToBlack()
 // Load assets
 bool j1FadeToBlack::Start()
 {
+	BROFILER_CATEGORY("Fade->Start", Profiler::Color::Black)
 	LOG("Preparing Fade Screen");
 	uint w, h;
 	App->win->GetWindowSize(w, h);
@@ -30,6 +31,7 @@ bool j1FadeToBlack::Start()
 // Update: draw background
 bool j1FadeToBlack::Update(float dt)
 {
+	BROFILER_CATEGORY("Fade->Update", Profiler::Color::Black)
 	if (current_step == fade_step::none)
 		return true;
 

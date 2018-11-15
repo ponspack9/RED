@@ -6,6 +6,7 @@
 #include "j1Input.h"
 #include "j1Map.h"
 #include "j1Collision.h"
+#include "Brofiler/Brofiler.h"
 #include <cmath>
 
 j1Map::j1Map() : j1Module(), map_loaded(false)
@@ -22,6 +23,7 @@ j1Map::~j1Map()
 //}
 bool j1Map::CreateWalkabilityMap(int& width, int& height, uchar** buffer) const
 {
+	BROFILER_CATEGORY("Map->CreateWalkabilityMap", Profiler::Color::LightCyan)
 	bool ret = false;
 	p2List_item<MapLayer*>* item;
 	item = data.map_layers.start;
@@ -70,6 +72,7 @@ bool j1Map::CreateWalkabilityMap(int& width, int& height, uchar** buffer) const
 // Load a group of properties from a node and fill a list with it
 bool j1Map::LoadProperties(pugi::xml_node& node, Properties& properties)
 {
+	BROFILER_CATEGORY("Map->LoadProperties", Profiler::Color::LightCyan)
 	bool ret = false;
 
 	pugi::xml_node data = node.child("properties");
@@ -106,6 +109,7 @@ SDL_Rect TileSet::GetTileRect(int id) const
 
 bool j1Map::Awake(pugi::xml_node& config)
 {
+	//BROFILER_CATEGORY("Map->Awake", Profiler::Color::LightCyan)
 	LOG("Loading Map Parser");
 
 	folder.create(config.child("folder").child_value());
@@ -126,6 +130,7 @@ bool j1Map::Awake(pugi::xml_node& config)
 
 void j1Map::Draw()
 {
+	BROFILER_CATEGORY("Map->Draw", Profiler::Color::LightCyan)
 	if(!map_loaded)
 		return;
 	//Draw background
@@ -181,6 +186,7 @@ void j1Map::Draw()
 
 bool j1Map::Load(const char* file_name)
 {
+	BROFILER_CATEGORY("Map->Load", Profiler::Color::LightCyan)
 	pugi::xml_parse_result result = App->LoadXML(map_doc, PATH(folder.GetString(),file_name));
 
 	bool ret = (result != NULL);
@@ -342,6 +348,7 @@ int Properties::Get(const char* value, int default_value) const
 }
 bool j1Map::LoadMap()
 {
+	BROFILER_CATEGORY("Map->LoadMap", Profiler::Color::LightCyan)
 	pugi::xml_node map = map_doc.child("map");
 	bool ret = map != NULL;
 
@@ -395,6 +402,7 @@ bool j1Map::LoadMap()
 
 bool j1Map::LoadTilesetDetails(pugi::xml_node& tileset_node, TileSet* set)
 {
+	BROFILER_CATEGORY("Map->LoadTilesetDetails", Profiler::Color::LightCyan)
 	bool ret = tileset_node != NULL;
 	if (ret){
 		set->name.create	  ( tileset_node.attribute("name").as_string());
@@ -426,6 +434,7 @@ bool j1Map::LoadTilesetDetails(pugi::xml_node& tileset_node, TileSet* set)
 
 bool j1Map::LoadTilesetImage(pugi::xml_node& tileset_node, TileSet* set)
 {
+	BROFILER_CATEGORY("Map->LoadTilesetImage", Profiler::Color::LightCyan)
 	bool ret = tileset_node != NULL;
 
 	if (ret) {
@@ -469,6 +478,7 @@ bool j1Map::LoadTilesetImage(pugi::xml_node& tileset_node, TileSet* set)
 
 bool j1Map::LoadLayer(pugi::xml_node & node, MapLayer * layer)
 {
+	BROFILER_CATEGORY("Map->LoadLayer", Profiler::Color::LightCyan)
 	bool ret = node != NULL;
 
 	if (ret) {
@@ -498,6 +508,7 @@ bool j1Map::LoadLayer(pugi::xml_node & node, MapLayer * layer)
 
 bool j1Map::LoadImageLayer(pugi::xml_node & node, ImageLayer * set)
 {
+	BROFILER_CATEGORY("Map->LoadImageLayer", Profiler::Color::LightCyan)
 	bool ret = node != NULL;
 
 	if (ret) {
@@ -556,6 +567,7 @@ bool j1Map::LoadImageLayer(pugi::xml_node & node, ImageLayer * set)
 
 TileSet* j1Map::GetTilesetFromTileId(int id) const
 {
+	//BROFILER_CATEGORY("Map->GetTilesetFromTileId", Profiler::Color::LightCyan)
 	p2List_item<TileSet*>* item = data.tilesets.end;
 
 	for (item; item != nullptr; item = item->prev)
@@ -571,6 +583,7 @@ TileSet* j1Map::GetTilesetFromTileId(int id) const
 
 bool j1Map::CleanUp()
 {
+	BROFILER_CATEGORY("Map->CleanUp", Profiler::Color::LightCyan)
 	LOG("Unloading map");
 
 	// Remove all tilesets /////////////////
@@ -623,6 +636,7 @@ bool j1Map::CleanUp()
 
 iPoint j1Map::MapToWorld(int x, int y) const
 {
+	//BROFILER_CATEGORY("Map->MapToWorld", Profiler::Color::LightCyan)
 	iPoint ret;
 
 	if (data.type == MAPTYPE_ORTHOGONAL)
@@ -646,6 +660,7 @@ iPoint j1Map::MapToWorld(int x, int y) const
 
 iPoint j1Map::WorldToMap(int x, int y) const 
 {
+	BROFILER_CATEGORY("Map->WorldToMap", Profiler::Color::LightCyan)
 	iPoint ret(0, 0);
 
 	if (data.type == MAPTYPE_ORTHOGONAL)
@@ -672,6 +687,7 @@ iPoint j1Map::WorldToMap(int x, int y) const
 
 p2SString j1Map::DebugToString() const
 {
+	BROFILER_CATEGORY("Map->DebugToString", Profiler::Color::LightCyan)
 	int x, y;
 	App->input->GetMousePosition(x, y);
 	iPoint map_pos = WorldToMap(x, y);
@@ -695,6 +711,7 @@ p2SString j1Map::DebugToString() const
 
 void j1Map::CleanMap()
 {
+	BROFILER_CATEGORY("Map->CleanMap", Profiler::Color::LightCyan)
 	LOG("Unloading map");
 
 	// Remove all tilesets /////////////////

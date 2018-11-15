@@ -7,7 +7,7 @@
 #include "j1Map.h"
 #include "p2Log.h"
 #include "j1Player.h"
-
+#include "Brofiler/Brofiler.h"
 
 j1Player::j1Player()
 {
@@ -22,6 +22,7 @@ j1Player::~j1Player()
 
 bool j1Player::Awake(pugi::xml_node & config)
 {
+	//BROFILER_CATEGORY("Player->Awake", Profiler::Color::BlueViolet)
 	pugi::xml_node player_node = config;
 
 	//LVL 1 INITIAL POSITION
@@ -164,6 +165,7 @@ bool j1Player::Awake(pugi::xml_node & config)
 
 bool j1Player::Start()
 {
+	BROFILER_CATEGORY("Player->Start", Profiler::Color::BlueViolet)
 	graphics = App->tex->Load(texture_path.GetString());
 
 	//PLACING PLAYER AT INITIAL POS
@@ -190,12 +192,14 @@ bool j1Player::Start()
 
 bool j1Player::PreUpdate()
 {
+	BROFILER_CATEGORY("Player->PreUpdate", Profiler::Color::BlueViolet)
 	if (!godmode)Move();
 	return true;
 }
 
 bool j1Player::Update(float dt)
 {
+	BROFILER_CATEGORY("Player->Update", Profiler::Color::BlueViolet)
 	vertical_movement	= true;
 	horizontal_movement = true;
 
@@ -242,6 +246,7 @@ bool j1Player::Update(float dt)
 
 bool j1Player::PostUpdate()
 {
+	BROFILER_CATEGORY("Player->PostUpdate", Profiler::Color::BlueViolet)
 	//App->render->MoveCamera(-dx, -dy);
 	if (dead)
 	{
@@ -253,6 +258,7 @@ bool j1Player::PostUpdate()
 
 bool j1Player::CleanUp()
 {
+	BROFILER_CATEGORY("Player->CleanUp", Profiler::Color::BlueViolet)
 	App->tex->UnLoad(graphics);
 	if (player_collider) player_collider->to_delete = true;
 	return true;

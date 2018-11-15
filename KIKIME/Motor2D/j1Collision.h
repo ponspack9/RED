@@ -66,10 +66,10 @@ struct Collider
 	}
 
 	bool CheckCollision(const SDL_Rect& r) const;
-	bool CheckRectLineCollision(int x1, int y1, int x2, int y2) const;
+	//bool CheckRectLineCollision(int x1, int y1, int x2, int y2) const;
 };
 
-	bool CheckLineLine(int x1, int y1, int x2, int y2, int x3, int y3, int x4, int y4);
+	//bool CheckLineLine(int x1, int y1, int x2, int y2, int x3, int y3, int x4, int y4);
 
 
 class j1Collision : public j1Module
@@ -98,7 +98,6 @@ public:
 private:
 
 	Collider * colliders[MAX_COLLIDERS];
-	Collider* player_collider;
 	bool matrix[COLLIDER_MAX][COLLIDER_MAX] = { false };
 };
 
