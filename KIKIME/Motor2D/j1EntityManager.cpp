@@ -4,7 +4,10 @@
 #include "Animation.h"
 #include "Path.h"
 #include "j1EntityManager.h"
-#include "Entity.h"
+#include "j1Textures.h"
+#include "Floater.h"
+#include "Roller.h"
+#include "Static.h"
 
 j1EntityManager::j1EntityManager()
 {
@@ -25,19 +28,19 @@ bool j1EntityManager::Awake(pugi::xml_node & config)
 
 	pugi::xml_node f_enem = config.child("enemies").child("enemyair");
 
-	floaterinfo->speed.x = f_enem.child("speed").attribute("x").as_float();
-	floaterinfo->speed.y = f_enem.child("speed").attribute("y").as_float();
+	floaterinfo.speed.x = f_enem.child("speed").attribute("x").as_float();
+	floaterinfo.speed.y = f_enem.child("speed").attribute("y").as_float();
 
-	floaterinfo->vision_range = f_enem.child("range").attribute("value").as_int();
+	floaterinfo.vision_range = f_enem.child("range").attribute("value").as_int();
 
-	floaterinfo->health = f_enem.child("health").attribute("hp").as_int();
+	floaterinfo.health = f_enem.child("health").attribute("hp").as_int();
 
-	floaterinfo->alive = f_enem.child("alive").attribute("value").as_bool();
+	floaterinfo.alive = f_enem.child("alive").attribute("value").as_bool();
 
 	pugi::xml_node i = f_enem.child("spawn");
 
-	p2List_item<SDL_Rect>* item1 = floaterinfo->rect.start;
-	p2List_item<iPoint>* item2 = floaterinfo->spawns.start;
+	p2List_item<SDL_Rect>* item1 = floaterinfo.rect.start;
+	p2List_item<iPoint>* item2 = floaterinfo.spawns.start;
 
 	for (i; i; i = i.next_sibling("spawn"))
 	{
@@ -55,19 +58,19 @@ bool j1EntityManager::Awake(pugi::xml_node & config)
 
 	pugi::xml_node r_enem = config.child("enemies").child("enemyground");
 
-	rollerinfo->speed.x = r_enem.child("speed").attribute("x").as_float();
-	rollerinfo->speed.y = r_enem.child("speed").attribute("y").as_float();
+	rollerinfo.speed.x = r_enem.child("speed").attribute("x").as_float();
+	rollerinfo.speed.y = r_enem.child("speed").attribute("y").as_float();
+			  
+	rollerinfo.vision_range = r_enem.child("range").attribute("value").as_int();
+			  
+	rollerinfo.health = r_enem.child("health").attribute("hp").as_int();
+			  
+	rollerinfo.alive = r_enem.child("alive").attribute("value").as_bool();
 
-	rollerinfo->vision_range = r_enem.child("range").attribute("value").as_int();
+	i = r_enem.child("spawn");
 
-	rollerinfo->health = r_enem.child("health").attribute("hp").as_int();
-
-	rollerinfo->alive = r_enem.child("alive").attribute("value").as_bool();
-
-	pugi::xml_node i = r_enem.child("spawn");
-
-	p2List_item<SDL_Rect>* item1 = rollerinfo->rect.start;
-	p2List_item<iPoint>*   item2 = rollerinfo->spawns.start;
+	item1 = rollerinfo.rect.start;
+	item2 = rollerinfo.spawns.start;
 
 	for (i; i; i = i.next_sibling("spawn"))
 	{
@@ -84,13 +87,43 @@ bool j1EntityManager::Awake(pugi::xml_node & config)
 	}
 
 	//reading animations
+	//floater Idle
+	SDL_Rect r;
+	float node_speed = -1;
+
+	pugi::xml_node n = config.child("enemyanimations").child("FloatIdle");
+	for (n; n; n = n.next_sibling("FloatIdle"))
+	{
+		r.x = n.attribute("x").as_int();
+		r.y = n.attribute("y").as_int();
+		r.w = n.attribute("width").as_int();
+		r.h = n.attribute("height").as_int();
+		floaterinfo.idle.PushBack(r);
+	}
+	node_speed = n.attribute("speed").as_float();
+	floaterinfo.idle.speed = (node_speed <= 0) ? floaterinfo.def_anim_speed_enem : node_speed;
+
+	//floater Follow
+	n = config.child("enemyanimations").child("FloatFollow");
+	for (n; n; n = n.next_sibling("FloatFollow"))
+	{
+		r.x = n.attribute("x").as_int();
+		r.y = n.attribute("y").as_int();
+		r.w = n.attribute("width").as_int();
+		r.h = n.attribute("height").as_int();
+		floaterinfo.follow.PushBack(r);
+	}
+	node_speed = n.attribute("speed").as_float();
+	floaterinfo.follow.speed = (node_speed <= 0) ? floaterinfo.def_anim_speed_enem : node_speed;
+
+	//floater die
+	//...
 
 	return true;
 }
 
 bool j1EntityManager::Start()
 {
-	//ni papa dels errors en App
 	enemyTex = App->tex->Load(enemyPath.GetString());
 	playerTex = App->tex->Load(playerPath.GetString());
 
@@ -158,14 +191,24 @@ bool j1EntityManager::Save(pugi::xml_node & node) const
 bool j1EntityManager::Load(pugi::xml_node & node)
 {
 	p2List_item<Entity*>* item = entities.start;
-	pugi::xml_node enemy = node.child("enemies");
+	pugi::xml_node floater = node.child("enemyair");
+	pugi::xml_node roller = node.child("enemyground");
+	pugi::xml_node e_static = node.child("enemystatic");
 	pugi::xml_node player = node.child("player");
 
 	while (item != nullptr)
 	{
-		if (item->data->type == Entity::entityType::ENEMY)
+		if (item->data->type == Entity::entityType::FLOATER)
 		{
-			item->data->Load(enemy);
+			item->data->Load(floater);
+		}
+		if (item->data->type == Entity::entityType::ROLLER)
+		{
+			item->data->Load(roller);
+		}
+		if (item->data->type == Entity::entityType::STATIC)
+		{
+			item->data->Load(e_static);
 		}
 		if (item->data->type == Entity::entityType::PLAYER)
 		{
@@ -200,29 +243,31 @@ void j1EntityManager::UpdateAll(float dt,bool run)
 Entity * j1EntityManager::CreateEntity(Entity::entityType type, iPoint pos)
 {
 	//falta crear classes especifiques
-	static_assert(Entity::entityType::NO_TYPE == 2, "NO TYPE TO CREATE, CODE NEEDS UPDATE");
+	static_assert(Entity::entityType::NO_TYPE == 4, "NO TYPE TO CREATE, CODE NEEDS UPDATE");
+
 	Entity* entity = nullptr;
 	switch (type)
 	{
-	case Entity::entityType::ENEMY:
+	case Entity::entityType::FLOATER:
 
-		if (Entity::enemyType::FLOATING)
-		{
-			entity = new Floater(type, pos);
-			break;
-		}
-		if(Entity::enemyType::ROLLING)
-		{
-			entity = new Roller(type, pos);
-			break;
-		}
-
-	case Entity::entityType::PLAYER:
-
-		entity = new Player(type, pos);
+		entity = new Floater(pos.x, pos.y);
 		break;
+		
+	//case Entity::entityType::ROLLER:
+	//	
+	//	entity = new Roller(pos.x, pos.y);
+	//	break;
+	//	
+	//case Entity::entityType::STATIC:
+	//	
+	//	entity = new Static(pos.x, pos.y);
+	//	break;
+	//	
+	//case Entity::entityType::PLAYER:
+	//
+	//	entity = new Player(pos.x, pos.y);
+	//	break;
 	}
-
 	entities.add(entity);
 
 	return entity;

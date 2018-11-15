@@ -1,9 +1,14 @@
 #pragma once
 #include "j1Module.h"
+#include "p2Defs.h"
+#include "Animation.h"
+#include "p2Point.h"
 
 #define MAX_ENEMIES 100
 
 class EntityManager;
+class Animation;
+struct SDL_Texture;
 
 class Entity
 {
@@ -11,16 +16,11 @@ public:
 
 	enum entityType
 	{
-		ENEMY,
+		FLOATER,
+		ROLLER,
+		STATIC,
 		PLAYER,
 		NO_TYPE
-	};
-
-	enum enemyType
-	{
-		FLOATING,
-		ROLLING,
-		STOPPED
 	};
 
 public:
@@ -39,7 +39,7 @@ public:
 	virtual bool Save(pugi::xml_node & node) const { return true; }
 	virtual bool Load(pugi::xml_node & node) { return true; }
 
-	void Draw();
+	void Draw(float dt);
 	void OnCollision(Collider* c1, Collider* c2);
 
 	const Collider* GetCollider() const;
@@ -52,7 +52,7 @@ public:
 	int						health;
 	bool					alive;
 	int						vision_range;
-	fPoint					speed;
+	iPoint					speed;
 	p2List<iPoint>			spawns;
 	p2List<SDL_Rect>		rect;	
 	iPoint					position;
@@ -62,7 +62,6 @@ public:
 	Animation die;
 	//Animation shoot;
 
-	enemyType	enemy_type;
 	entityType	type;
 
 	bool first_iteration = true;

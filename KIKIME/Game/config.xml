@@ -87,7 +87,7 @@
   <entitymanager>
     <enemypath path="textures/enemies/spritesheet_enemies.png"/>
     <playerpath path="textures/player/sprites.png"/>
-    <updatems time="0.25"></updatems>
+    <updatems time="0.25"/>
     <enemies>      
       <enemyair>
         <size w="32" h="32"/>

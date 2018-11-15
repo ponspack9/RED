@@ -13,8 +13,12 @@
 	<player>
 		<position x="2188" y="624" />
 	</player>
-	<fade />
-	<:anonymous />
+  <enemyair>
+  </enemyair>
+  <enemyground>
+  </enemyground>
+  <enemystatic>
+  </enemystatic>
 	<renderer>
 		<camera x="-1848" y="-250" />
 	</renderer>

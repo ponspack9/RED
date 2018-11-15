@@ -2,7 +2,11 @@
 
 #include "p2Point.h"
 #include "j1Module.h"
+#include "Entity.h"
 #include "SDL\include\SDL_timer.h"
+#include "p2SString.h"
+#include "p2List.h"
+
 
 
 struct SDL_Texture;
@@ -14,7 +18,7 @@ class j1EntityManager : public j1Module
 
 private:
 
-	float	current_time;
+	float	current_time = 0.0f;
 	float	update_cycle;
 	bool	do_update;
 
@@ -47,8 +51,8 @@ public:
 	p2SString		playerPath;
 	p2List<Entity*> entities;	
 
-	Entity*			floaterinfo;
-	Entity*			rollerinfo;
-	Entity*			playerinfo;
+	Entity		    floaterinfo;
+	Entity			rollerinfo;
+	//Entity*			playerinfo = new Entity();
 };
 

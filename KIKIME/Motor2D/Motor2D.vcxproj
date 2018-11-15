@@ -77,7 +77,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="j1EntityManager.cpp" />
-    <ClCompile Include="Enemy_Air.cpp" />
+    <ClCompile Include="Floater.cpp" />
     <ClCompile Include="j1Collision.cpp" />
     <ClCompile Include="j1Debug.cpp" />
     <ClCompile Include="Entity.cpp" />
@@ -97,11 +97,13 @@
     <ClCompile Include="j1Textures.cpp" />
     <ClCompile Include="j1Window.cpp" />
     <ClCompile Include="PugiXml\src\pugixml.cpp" />
+    <ClCompile Include="Roller.cpp" />
+    <ClCompile Include="Static.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Animation.h" />
     <ClInclude Include="j1EntityManager.h" />
-    <ClInclude Include="Enemy_Air.h" />
+    <ClInclude Include="Floater.h" />
     <ClInclude Include="j1Collision.h" />
     <ClInclude Include="j1Debug.h" />
     <ClInclude Include="Entity.h" />
@@ -128,6 +130,8 @@
     <ClInclude Include="Path.h" />
     <ClInclude Include="PugiXml\src\pugiconfig.hpp" />
     <ClInclude Include="PugiXml\src\pugixml.hpp" />
+    <ClInclude Include="Roller.h" />
+    <ClInclude Include="Static.h" />
   </ItemGroup>
   <ItemGroup>
     <Xml Include="..\Game\config.xml">

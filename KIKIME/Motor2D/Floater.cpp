@@ -1,5 +1,5 @@
 #include "j1App.h"
-#include "Enemy_Air.h"
+#include "Floater.h"
 #include "j1Input.h"
 #include "j1Pathfinding.h"
 #include "j1Player.h"
@@ -7,22 +7,24 @@
 #include "j1Scene.h"
 #include "j1Render.h"
 #include "p2Log.h"
-#include "j1Enemies.h"
+#include "Entity.h"
 
-Enemy_Air::Enemy_Air(int x, int y) : Enemy(x, y)
+Floater::Floater(int x, int y) : Entity(type)
 {
-	current_animation = &App->enemies->enemies[0]->idle;
-	collider = App->collision->AddCollider(App->enemies->enemy_air_rect, COLLIDER_TYPE::COLLIDER_DEATH,App->enemies); 
-	position = iPoint(x, y);
-	health = 2;
+
 }
 
-void Enemy_Air::Shoot() 
+Floater::~Floater()
+{
+
+}
+
+void Floater::Shoot() 
 {
 	//App->particles->AddParticle(App->particles->Eshot1, position.x, position.y + animation->GetCurrentFrame().h / 2, COLLIDER_ENEMY_SHOT);
 }
 
-void Enemy_Air::Move()
+void Floater::Move()
 {
 	//Origin
 	iPoint p = App->render->ScreenToWorld(position.x + App->render->camera.x, position.y + App->render->camera.y);
