@@ -108,7 +108,7 @@ bool j1Scene::Update(float dt)
 		App->render->MoveCamera(-1, 0);
 
 	if (App->input->GetKey(SDL_SCANCODE_E) == KEY_DOWN)
-		App->entitymanager->CreateEntity(Entity::entityType::FLOATER, p);
+		App->entitymanager->CreateEntity(entityType::FLOATER, p);
 
 	if (App->input->GetKey(SDL_SCANCODE_1) == KEY_DOWN)
 	{

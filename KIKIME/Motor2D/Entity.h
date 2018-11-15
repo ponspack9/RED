@@ -10,18 +10,19 @@ class EntityManager;
 class Animation;
 struct SDL_Texture;
 
+enum entityType
+{
+	FLOATER,
+	ROLLER,
+	STATIC,
+	PLAYER,
+	NO_TYPE
+};
+
 class Entity
 {
 public:
 
-	enum entityType
-	{
-		FLOATER,
-		ROLLER,
-		STATIC,
-		PLAYER,
-		NO_TYPE
-	};
 
 public:
 

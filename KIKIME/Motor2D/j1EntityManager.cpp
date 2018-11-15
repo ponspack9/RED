@@ -198,19 +198,19 @@ bool j1EntityManager::Load(pugi::xml_node & node)
 
 	while (item != nullptr)
 	{
-		if (item->data->type == Entity::entityType::FLOATER)
+		if (item->data->type == entityType::FLOATER)
 		{
 			item->data->Load(floater);
 		}
-		if (item->data->type == Entity::entityType::ROLLER)
+		if (item->data->type == entityType::ROLLER)
 		{
 			item->data->Load(roller);
 		}
-		if (item->data->type == Entity::entityType::STATIC)
+		if (item->data->type == entityType::STATIC)
 		{
 			item->data->Load(e_static);
 		}
-		if (item->data->type == Entity::entityType::PLAYER)
+		if (item->data->type == entityType::PLAYER)
 		{
 			item->data->Load(player);
 		}
@@ -225,7 +225,7 @@ void j1EntityManager::UpdateAll(float dt,bool run)
 	p2List_item<Entity*>* item;
 	for (item = entities.start; item != nullptr; item = item->next)
 	{
-		if (item->data->type == Entity::entityType::PLAYER)
+		if (item->data->type == entityType::PLAYER)
 		{
 			item->data->Update(dt);
 		}
@@ -240,15 +240,15 @@ void j1EntityManager::UpdateAll(float dt,bool run)
 	}
 }
 
-Entity * j1EntityManager::CreateEntity(Entity::entityType type, iPoint pos)
+Entity * j1EntityManager::CreateEntity(entityType type, iPoint pos)
 {
 	//falta crear classes especifiques
-	static_assert(Entity::entityType::NO_TYPE == 4, "NO TYPE TO CREATE, CODE NEEDS UPDATE");
+	static_assert(entityType::NO_TYPE == 4, "NO TYPE TO CREATE, CODE NEEDS UPDATE");
 
 	Entity* entity = nullptr;
 	switch (type)
 	{
-	case Entity::entityType::FLOATER:
+	case entityType::FLOATER:
 
 		entity = new Floater(pos.x, pos.y);
 		break;

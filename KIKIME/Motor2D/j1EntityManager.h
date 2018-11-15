@@ -39,7 +39,7 @@ public:
 
 	//Creators
 
-	Entity*	 CreateEntity(Entity::entityType type, iPoint pos);
+	Entity*	 CreateEntity(entityType type, iPoint pos);
 	bool	 DeleteEntity(Entity* entity);	
 
 public:
