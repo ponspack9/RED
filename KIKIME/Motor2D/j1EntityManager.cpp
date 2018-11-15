@@ -250,7 +250,7 @@ Entity * j1EntityManager::CreateEntity(entityType type, iPoint pos)
 	{
 	case entityType::FLOATER:
 
-		entity = new Floater(pos.x, pos.y);
+		entity = new Floater(pos);
 		break;
 		
 	//case Entity::entityType::ROLLER:

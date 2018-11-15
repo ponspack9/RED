@@ -3,6 +3,9 @@
 #include "p2Defs.h"
 #include "Animation.h"
 #include "p2Point.h"
+#include "p2Log.h"
+#include "j1EntityManager.h"
+#include "j1App.h"
 
 #define MAX_ENEMIES 100
 
@@ -31,9 +34,6 @@ public:
 
 	~Entity();
 
-	virtual bool Awake(pugi::xml_node &config) { return true; }
-	virtual bool Start() { return true; }
-	virtual bool PreUpdate() { return true; }
 	virtual bool Update(float dt) { return true; }
 	virtual bool PostUpdate() { return true; }
 	virtual bool CleanUp() { return true; }
