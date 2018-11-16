@@ -6,7 +6,7 @@ class Static : public Entity
 private:
 
 public:
-	Static(int x, int y);
+	Static(iPoint pos, Entity* e);
 	~Static();
 
 	bool Update(float dt);

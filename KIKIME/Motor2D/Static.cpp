@@ -7,12 +7,19 @@
 #include "j1Render.h"
 #include "p2Log.h"
 #include "Entity.h"
-#include "j1EntityManager.h"
 #include "Static.h"
 
-Static::Static(int x, int y)
+Static::Static(iPoint pos, Entity* e) :Entity(type)
 {
+	this->type = type;
 
+	position = pos;
+	rect = { pos.x,pos.y,e->rect.w,e->rect.h };
+	speed = e->speed;
+
+	health = e->health;
+	alive = e->alive;
+	vision_range = e->vision_range;
 }
 
 Static::~Static()
@@ -41,7 +48,7 @@ bool Static::Save(pugi::xml_node & node, const p2List<Entity*>* entities) const
 
 	pugi::xml_node floater_node = node.append_child("static");
 
-	p2List_item<Entity*>* item = App->entitymanager->entities.start;
+	p2List_item<Entity*>* item = entities->start;
 	for (item; item != nullptr; item = item->next)
 	{
 		if (item->data->type == STATIC)
@@ -68,7 +75,7 @@ bool Static::Load(pugi::xml_node & node, p2List<Entity*>* entities)
 
 	pugi::xml_node floater_node = node.append_child("static");
 
-	p2List_item<Entity*>* item = App->entitymanager->entities.start;
+	p2List_item<Entity*>* item = entities->start;
 	for (item; item != nullptr; item = item->next)
 	{
 		if (item->data->type == STATIC)

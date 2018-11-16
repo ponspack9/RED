@@ -2,14 +2,17 @@
 
 #include "p2Point.h"
 #include "j1Module.h"
-#include "Entity.h"
 #include "SDL\include\SDL_timer.h"
 #include "p2SString.h"
 #include "p2List.h"
+#include "j1App.h"
+#include "Entity.h"
+#include "Floater.h"
+#include "Roller.h"
 
 
 
-class Entity;
+//class Entity;
 struct SDL_Texture;
 struct Collider;
 
@@ -32,7 +35,7 @@ public:
 	bool Update(float dt);
 	bool PostUpdate();
 	bool CleanUp();
-	bool Save(pugi::xml_node &node) const;
+	bool Save(pugi::xml_node &node);
 	bool Load(pugi::xml_node &node);
 
 	void UpdateAll(float dt, bool run);
@@ -51,8 +54,8 @@ public:
 	p2SString		playerPath;
 	p2List<Entity*> entities;	
 
-	Entity		    floaterinfo;
-	Entity			rollerinfo;
+	Floater		    floaterinfo;
+	Roller			rollerinfo;
 	//Entity*			playerinfo = new Entity();
 };
 

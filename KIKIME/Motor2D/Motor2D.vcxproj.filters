@@ -58,16 +58,10 @@
     <ClCompile Include="j1EntityManager.cpp">
       <Filter>Desenvolupament  ========\Entities</Filter>
     </ClCompile>
-    <ClCompile Include="Entity.cpp">
-      <Filter>Desenvolupament  ========\Entities</Filter>
-    </ClCompile>
     <ClCompile Include="Floater.cpp">
       <Filter>Desenvolupament  ========\Entities</Filter>
     </ClCompile>
     <ClCompile Include="Roller.cpp">
-      <Filter>Desenvolupament  ========\Entities</Filter>
-    </ClCompile>
-    <ClCompile Include="Static.cpp">
       <Filter>Desenvolupament  ========\Entities</Filter>
     </ClCompile>
   </ItemGroup>
@@ -160,9 +154,6 @@
       <Filter>Desenvolupament  ========\Entities</Filter>
     </ClInclude>
     <ClInclude Include="Roller.h">
-      <Filter>Desenvolupament  ========\Entities</Filter>
-    </ClInclude>
-    <ClInclude Include="Static.h">
       <Filter>Desenvolupament  ========\Entities</Filter>
     </ClInclude>
   </ItemGroup>

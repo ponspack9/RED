@@ -242,7 +242,7 @@ bool j1Player::Update(float dt)
 bool j1Player::PostUpdate()
 {
 	//App->render->MoveCamera(-dx, -dy);
-	if (position.x > App->map->world_limits.x || position.y > App->map->world_limits.y)
+	if (position.x > App->map->world_limits.x || position.y > App->map->world_limits.y || position.x < 0 || position.y < 0)
 		dead = true;
 
 	if (dead)

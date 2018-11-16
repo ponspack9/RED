@@ -7,14 +7,24 @@
 #include "j1Scene.h"
 #include "j1Render.h"
 #include "p2Log.h"
-#include "Entity.h"
-#include "j1EntityManager.h"
 
 
-Floater::Floater(iPoint pos) : Entity(type)
+Floater::Floater(iPoint pos,Entity* e, SDL_Texture* sprites) : Entity(type)
 {
+	name.create("floater");
+	
+	this->sprites = sprites;
 	this->type = type;
+
 	position = pos;
+	rect = { pos.x,pos.y,e->rect.w,e->rect.h };
+	speed = e->speed;
+
+	health = e->health;
+	alive = e->alive;
+	vision_range = e->vision_range;
+	LOG("Floater Created");
+	LOG("pos %d %d");
 }
 
 Floater::~Floater()
@@ -25,7 +35,7 @@ Floater::~Floater()
 bool Floater::Update(float dt)
 {
 	bool ret = true;
-
+	Draw();
 
 	return ret;
 }
@@ -40,62 +50,19 @@ bool Floater::CleanUp()
 	return true;
 }
 
-bool Floater::Save(pugi::xml_node & node, const p2List<Entity*>* entities) const
-{
-	LOG("Saving floater stats");
-
-	pugi::xml_node floater_node = node.append_child("floater");
-
-	p2List_item<Entity*>* item = App->entitymanager->entities.start;
-	for (item; item != nullptr; item = item->next)
-	{
-		if (item->data->type == FLOATER)
-		{
-			floater_node.append_child("alive").append_attribute("value") = item->data->alive;
-			floater_node.append_child("health").append_attribute("hp") = item->data->health;
-			
-			if (!item->data->alive)
-				continue;
-			else
-			{
-				floater_node.append_child("position");
-				floater_node.append_attribute("x") = item->data->position.x;
-				floater_node.append_attribute("y") = item->data->position.y;
-			}
-		}
-	}
-	return true;
-}
-
-bool Floater::Load(pugi::xml_node & node, p2List<Entity*>* entities)
-{
-	LOG("Loading floater stats");
-
-	pugi::xml_node floater_node = node.append_child("floater");
-
-	p2List_item<Entity*>* item = App->entitymanager->entities.start;
-	for (item; item != nullptr; item = item->next)
-	{
-		if (item->data->type == FLOATER)
-		{
-			item->data->alive = floater_node.child("alive").attribute("value").as_bool();
-			item->data->health = floater_node.child("health").attribute("hp").as_int();
-
-			if (!item->data->alive)
-				continue;
-			else
-			{
-				item->data->position.x = floater_node.child("position").attribute("x").as_int();
-				item->data->position.y = floater_node.child("position").attribute("y").as_int();
-			}
-		}
-	}
-	return false;
-}
-
 void Floater::Shoot() 
 {
 	//App->particles->AddParticle(App->particles->Eshot1, position.x, position.y + animation->GetCurrentFrame().h / 2, COLLIDER_ENEMY_SHOT);
+}
+
+bool Floater::UpdateLogic()
+{
+	return false;
+}
+
+void Floater::Draw()
+{
+	App->render->Blit(sprites, position.x, position.y, NULL, 1, 0);
 }
 
 void Floater::Move()

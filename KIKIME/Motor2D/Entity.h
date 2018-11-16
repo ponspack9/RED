@@ -1,4 +1,5 @@
 #pragma once
+
 #include "j1Module.h"
 #include "p2Defs.h"
 #include "Animation.h"
@@ -8,7 +9,6 @@
 
 #define MAX_ENEMIES 100
 
-class EntityManager;
 class Animation;
 struct SDL_Texture;
 
@@ -25,10 +25,17 @@ class Entity
 {
 public:
 
-	Entity();
-	Entity(entityType type);
+	Entity(){}
 
-	~Entity();
+	Entity(entityType type)
+	{
+
+	}
+
+	~Entity()
+	{
+
+	}
 
 	virtual bool Update(float dt) { return true; }
 	virtual bool PostUpdate() { return true; }
@@ -36,15 +43,17 @@ public:
 	virtual bool Save(pugi::xml_node & node, const p2List<Entity*>* entities) const { return true; }
 	virtual bool Load(pugi::xml_node & node, p2List<Entity*>* entities) { return true; }
 
-	void Draw(float dt);
-	void OnCollision(Collider* c1, Collider* c2);
+	virtual void Draw() {}
+	void OnCollision(Collider* c1, Collider* c2) {}
 
-	const Collider* GetCollider() const;
+	const Collider* GetCollider() const { return collider; }
 	 //Mix_Chunk* Explosion = nullptr;
 
+	virtual bool UpdateLogic() { return true; }
 
 public:
 
+	p2SString		name;
 
 	int				health;
 	bool			alive;

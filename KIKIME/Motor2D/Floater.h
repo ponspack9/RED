@@ -6,15 +6,21 @@ class Floater : public Entity
 private:
 
 public:
-	Floater(iPoint pos);
+
+	Floater() {}
+	Floater(iPoint pos, Entity* e, SDL_Texture* sprites);
 	~Floater();
 
 	bool Update(float dt);
 	bool PostUpdate();
 	bool CleanUp();
-	bool Save(pugi::xml_node & node, const p2List<Entity*>* entities) const;
-	bool Load(pugi::xml_node & node, p2List<Entity*>* entities);
 
+	void Draw();
 	void Move();
 	void Shoot();
+
+	bool UpdateLogic();
+
+public:
+	SDL_Texture * sprites = nullptr;
 };

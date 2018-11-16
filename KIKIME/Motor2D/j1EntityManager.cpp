@@ -1,13 +1,12 @@
-#include "j1App.h"
 #include "j1Render.h"
 #include "j1Collision.h"
 #include "Animation.h"
 #include "Path.h"
-#include "j1EntityManager.h"
 #include "j1Textures.h"
 #include "Floater.h"
 #include "Roller.h"
 #include "Static.h"
+#include "j1EntityManager.h"
 
 j1EntityManager::j1EntityManager()
 {
@@ -16,6 +15,7 @@ j1EntityManager::j1EntityManager()
 
 j1EntityManager::~j1EntityManager()
 {
+
 }
 
 bool j1EntityManager::Awake(pugi::xml_node & config)
@@ -147,47 +147,52 @@ bool j1EntityManager::CleanUp()
 	return true;
 }
 
-bool j1EntityManager::Save(pugi::xml_node & node) const
+bool j1EntityManager::Save(pugi::xml_node & node)
 {
-	bool ret = false;
 	p2List_item<Entity*>* item;
+	LOG("saving enemiesHHHHHHHHHHHHHHHHHHHHHHHHHHHHH");
+
 
 	for (item = entities.start; item != nullptr; item = item->next)
 	{
-		ret = item->data->Save(node, &entities);
+		if (item->data->type == PLAYER)
+		{
+			//////////////////////////////////
+		}
+		else
+		{
+			pugi::xml_node n = node.append_child(item->data->name.GetString());
+			n.append_attribute("alive") = item->data->alive;
+			n.append_attribute("hp") = item->data->health;
+
+			if (item->data->alive)
+			{
+				n.append_attribute("x") = item->data->position.x;
+				n.append_attribute("y") = item->data->position.y;
+			}
+		}
 	}
 
-	return ret;
+	return true;
 }
 
 bool j1EntityManager::Load(pugi::xml_node & node)
 {
-	p2List_item<Entity*>* item = entities.start;
-	pugi::xml_node floater = node.child("enemyair");
-	pugi::xml_node roller = node.child("enemyground");
-	pugi::xml_node e_static = node.child("enemystatic");
-	pugi::xml_node player = node.child("player");
+	p2List_item<Entity*>* item;
+	LOG("loading enemies");
 
-	while (item != nullptr)
+	for (item = entities.start; item != nullptr; item = item->next)
 	{
-		if (item->data->type == entityType::FLOATER)
-		{
-			item->data->Load(floater, &entities);
-		}
-		if (item->data->type == entityType::ROLLER)
-		{
-			item->data->Load(roller, &entities);
-		}
-		if (item->data->type == entityType::STATIC)
-		{
-			item->data->Load(e_static, &entities);
-		}
-		if (item->data->type == entityType::PLAYER)
-		{
-			item->data->Load(player, &entities);
-		}
+		node = node.child(item->data->name.GetString());
 
-		item = item->next;
+		item->data->alive =	 node.attribute("value").as_bool();
+		item->data->health = node.attribute("hp").as_int();
+
+		if (item->data->alive)
+		{
+			item->data->position.x = node.attribute("x").as_int();
+			item->data->position.y = node.attribute("y").as_int();
+		}
 	}
 	return true;
 }
@@ -201,13 +206,18 @@ void j1EntityManager::UpdateAll(float dt,bool run)
 		{
 			item->data->Update(dt);
 		}
+		else
+		{
+			item->data->Update(dt);
+		}
 	}
+
 
 	if (run)
 	{
 		for (item = entities.start; item != nullptr; item = item->next)
 		{
-			item->data->Update(dt);
+			item->data->UpdateLogic();
 		}
 	}
 }
@@ -218,19 +228,20 @@ Entity * j1EntityManager::CreateEntity(entityType type, iPoint pos)
 	static_assert(entityType::NO_TYPE == 4, "NO TYPE TO CREATE, CODE NEEDS UPDATE");
 
 	Entity* entity = nullptr;
+	Entity* e = nullptr;
 	switch (type)
 	{
 	case entityType::FLOATER:
-
-		entity = new Floater(pos);
+		e = &floaterinfo;
+		entity = new Floater(pos, e, enemyTex);
 		break;
 		
-	//case Entity::entityType::ROLLER:
-	//	
-	//	entity = new Roller(pos.x, pos.y);
-	//	break;
-	//	
-	//case Entity::entityType::STATIC:
+	case entityType::ROLLER:
+		e = &rollerinfo;
+		entity = new Roller(pos, e, enemyTex);
+		break;
+		
+	//case entityType::STATIC:
 	//	
 	//	entity = new Static(pos.x, pos.y);
 	//	break;

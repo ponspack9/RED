@@ -9,11 +9,19 @@
 		<current current_map="MapLvl1.tmx" />
 	</scene>
 	<debug />
-	<collisions />
 	<player>
-		<position x="2188" y="624" />
+		<position x="97" y="720" />
 	</player>
+	<collisions />
+	<fade />
+	<entitymanager>
+		<floater alive="true" hp="1" x="608" y="480" />
+		<floater alive="true" hp="1" x="448" y="512" />
+		<floater alive="true" hp="1" x="384" y="544" />
+		<floater alive="true" hp="1" x="320" y="544" />
+	</entitymanager>
+	<pathfinding />
 	<renderer>
-		<camera x="-1848" y="-250" />
+		<camera x="0" y="-336" />
 	</renderer>
 </save>

@@ -223,12 +223,6 @@ void j1App::FinishUpdate()
 	uint32 last_frame_ms = frame_time.Read();
 	frames_on_last_update = last_sec_fcount;
 
-	//LOG("Av.FPS: %.2f", avg_fps);
-	//LOG("Last Frame Ms: %02u ", last_frame_ms);
-	//LOG("Last sec frames: %i ", frames_on_last_update);
-	//LOG("Last dt : %.3f ", dt);
-	//LOG("Time since startup : %.3f", seconds_since_startup); 
-	//LOG("Frame Count : %lu ", frame_count);
 	int x, y;
 	App->input->GetMousePosition(x, y);
 	iPoint map_coordinates = App->map->WorldToMap(x - App->render->camera.x, y - App->render->camera.y);
@@ -244,7 +238,6 @@ void j1App::FinishUpdate()
 	if (delay_is_active)
 	{
 		SDL_Delay(abs((float)(1000 / framerate_cap) - last_frame_ms));
-		//LOG("SDL_Delay is active");
 	}
 }
 

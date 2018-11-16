@@ -80,7 +80,6 @@
     <ClCompile Include="Floater.cpp" />
     <ClCompile Include="j1Collision.cpp" />
     <ClCompile Include="j1Debug.cpp" />
-    <ClCompile Include="Entity.cpp" />
     <ClCompile Include="j1FadeToBlack.cpp" />
     <ClCompile Include="j1Main.cpp" />
     <ClCompile Include="j1App.cpp" />
@@ -98,7 +97,6 @@
     <ClCompile Include="j1Window.cpp" />
     <ClCompile Include="PugiXml\src\pugixml.cpp" />
     <ClCompile Include="Roller.cpp" />
-    <ClCompile Include="Static.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Animation.h" />
@@ -131,7 +129,6 @@
     <ClInclude Include="PugiXml\src\pugiconfig.hpp" />
     <ClInclude Include="PugiXml\src\pugixml.hpp" />
     <ClInclude Include="Roller.h" />
-    <ClInclude Include="Static.h" />
   </ItemGroup>
   <ItemGroup>
     <Xml Include="..\Game\config.xml">
