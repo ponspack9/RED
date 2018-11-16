@@ -7,7 +7,7 @@
 #include "j1Map.h"
 #include "p2Log.h"
 #include "j1Player.h"
-
+#include "Brofiler/Brofiler.h"
 
 j1Player::j1Player()
 {
@@ -22,6 +22,7 @@ j1Player::~j1Player()
 
 bool j1Player::Awake(pugi::xml_node & config)
 {
+	//BROFILER_CATEGORY("Player->Awake", Profiler::Color::BlueViolet)
 	pugi::xml_node player_node = config;
 
 	//LVL 1 INITIAL POSITION
@@ -164,6 +165,7 @@ bool j1Player::Awake(pugi::xml_node & config)
 
 bool j1Player::Start()
 {
+	BROFILER_CATEGORY("Player->Start", Profiler::Color::BlueViolet)
 	graphics = App->tex->Load(texture_path.GetString());
 
 	//PLACING PLAYER AT INITIAL POS
@@ -190,12 +192,14 @@ bool j1Player::Start()
 
 bool j1Player::PreUpdate()
 {
+	BROFILER_CATEGORY("Player->PreUpdate", Profiler::Color::BlueViolet)
 	if (!godmode)Move();
 	return true;
 }
 
 bool j1Player::Update(float dt)
 {
+	BROFILER_CATEGORY("Player->Update", Profiler::Color::BlueViolet)
 	vertical_movement	= true;
 	horizontal_movement = true;
 
@@ -227,6 +231,7 @@ bool j1Player::Update(float dt)
 			vertical_collided = false;
 			
 			PlayerAnimations();
+			on_floor = false;
 		}
 		else
 		{
@@ -241,6 +246,7 @@ bool j1Player::Update(float dt)
 
 bool j1Player::PostUpdate()
 {
+	BROFILER_CATEGORY("Player->PostUpdate", Profiler::Color::BlueViolet)
 	//App->render->MoveCamera(-dx, -dy);
 	if (position.x > App->map->world_limits.x || position.y > App->map->world_limits.y || position.x < 0 || position.y < 0)
 		dead = true;
@@ -255,6 +261,7 @@ bool j1Player::PostUpdate()
 
 bool j1Player::CleanUp()
 {
+	BROFILER_CATEGORY("Player->CleanUp", Profiler::Color::BlueViolet)
 	App->tex->UnLoad(graphics);
 	if (player_collider) player_collider->to_delete = true;
 	return true;
@@ -386,8 +393,7 @@ void j1Player::Move()
 
 	
 	MovePlayer(dx, dy);
-	//if (!vertical_collided && on_floor)	
-	on_floor = false;
+		
 }
 
 
@@ -428,6 +434,8 @@ void j1Player::OnCollision(Collider * c1, Collider * c2)
 	if (!can_move_down && !can_move_left && !can_move_right) {
 		can_move_left = true;
 		can_move_right = true;
+		is_falling = false;
+		on_floor = true;
 		//LOG("SPECIAL CASE");
 	}
 
@@ -509,27 +517,27 @@ void j1Player::MoveFree()
 
 void j1Player::PlayerAnimations()
 {
+	if (is_falling && !is_jumping && !djump && !on_floor)
+	{
+		current_animation = &fall;
+	}
+	else if (!is_jumping && !move_left && !move_right && !djump && !is_falling)
+	{
+		current_animation = &idle;
+	}
 	if (!is_jumping && move_right)
 	{
 		current_animation = &walk;
 	}
-	if (!is_jumping && move_left)
+	else if (!is_jumping && move_left)
 	{
 		current_animation = &walk;
-	}
-	if (!is_jumping && !move_left && !move_right)
-	{
-		current_animation = &idle;
 	}
 	if (is_jumping && !is_falling && !djump)
 	{
 		current_animation = &jump;
 	}
-	if (is_falling && !is_jumping && !djump)
-	{
-		current_animation = &fall;
-	}
-	if (djump && !is_falling && !is_jumping)
+	else if (djump && !is_falling && !is_jumping)
 	{
 		current_animation = &doublejump;
 	}

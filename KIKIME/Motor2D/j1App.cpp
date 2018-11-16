@@ -19,10 +19,12 @@
 #include "j1EntityManager.h"
 #include "j1PathFinding.h"
 #include "j1EntityManager.h"
+#include "Brofiler/Brofiler.h"
 
 // Constructor
 j1App::j1App(int argc, char* args[]) : argc(argc), args(args)
 {
+	BROFILER_CATEGORY("App->Constructor", Profiler::Color::AliceBlue)
 	timer.Start();
 	perf_timer.Start();
 
@@ -87,7 +89,8 @@ void j1App::AddModule(j1Module* module)
 
 // Called before render is available
 bool j1App::Awake()
-{
+{	
+	//BROFILER_CATEGORY("App->Awake", Profiler::Color::AntiqueWhite)
 	timer.Start();
 	perf_timer.Start();
 
@@ -138,6 +141,7 @@ bool j1App::Awake()
 // Called before the first frame
 bool j1App::Start()
 {
+	BROFILER_CATEGORY("App->Start", Profiler::Color::Aqua)
 	perf_timer.Start();
 	timer.Start();
 	aux_timer.Start();
@@ -160,6 +164,7 @@ bool j1App::Start()
 // Called each loop iteration
 bool j1App::Update()
 {
+	BROFILER_CATEGORY("App->Update", Profiler::Color::LightGreen)
 	bool ret = true;
 	PrepareUpdate();
 
@@ -197,6 +202,7 @@ pugi::xml_parse_result j1App::LoadXML(pugi::xml_document& doc, const char* path)
 // ---------------------------------------------
 void j1App::PrepareUpdate()
 {
+	BROFILER_CATEGORY("App->PrepareUpdate", Profiler::Color::Aquamarine)
 	frame_count++;
 	aux_frames_counter++;
 
@@ -208,6 +214,7 @@ void j1App::PrepareUpdate()
 // ---------------------------------------------
 void j1App::FinishUpdate()
 {
+	BROFILER_CATEGORY("App->FinishUpdate", Profiler::Color::Azure)
 	if (want_to_save) SaveGameFile();
 	if (want_to_load) LoadGameFile();
 
@@ -243,6 +250,7 @@ void j1App::FinishUpdate()
 
 bool j1App::SaveGameFile() 
 {
+	BROFILER_CATEGORY("App->SaveGameFile", Profiler::Color::Beige)
 	LOG("Saving new Game State to %s...", save_path.GetString());
 
 	pugi::xml_document		save_game_doc; 
@@ -275,6 +283,7 @@ bool j1App::SaveGameFile()
 
 bool j1App::LoadGameFile()
 {
+	BROFILER_CATEGORY("App->LoadGameFile", Profiler::Color::Bisque)
 		pugi::xml_document		save_game_doc;
 		pugi::xml_node			save_node;
 		pugi::xml_parse_result	result = LoadXML(save_game_doc, load_path.GetString());
@@ -309,6 +318,7 @@ bool j1App::LoadGameFile()
 // Call modules before each loop iteration
 bool j1App::PreUpdate()
 {
+	BROFILER_CATEGORY("App->PreUpdate", Profiler::Color::Blue)
 	bool ret = true;
 	p2List_item<j1Module*>* item = modules.start;
 	
@@ -326,6 +336,7 @@ bool j1App::PreUpdate()
 // Call modules on each loop iteration
 bool j1App::DoUpdate()
 {
+	BROFILER_CATEGORY("App->DoUpdate", Profiler::Color::Orange)
 	bool ret = true;
 	p2List_item<j1Module*>* item = modules.start;
 
@@ -343,6 +354,7 @@ bool j1App::DoUpdate()
 // Call modules after each loop iteration
 bool j1App::PostUpdate()
 {
+	BROFILER_CATEGORY("App->PostUpdate", Profiler::Color::BlueViolet)
 	bool ret = true;
 	p2List_item<j1Module*>* item = modules.start;
 	
@@ -361,6 +373,7 @@ bool j1App::PostUpdate()
 // Called before quitting
 bool j1App::CleanUp()
 {
+	BROFILER_CATEGORY("App->CleanUp", Profiler::Color::CadetBlue)
 	timer.Start();
 	perf_timer.Start();
 
@@ -420,8 +433,8 @@ void j1App::SaveGame() const
 {
 	// we should be checking if that file actually exist
 	// from the "GetSaveGames" list ... should we overwrite ?
-	p2List<p2SString> saved_games;
-	GetSaveGames(saved_games);
+	//p2List<p2SString> saved_games;
+	//GetSaveGames(saved_games);
 
 	want_to_save = true;
 }
@@ -443,11 +456,13 @@ bool j1App::RestartGame()
 
 bool j1App::RestartLevel()
 {
+	BROFILER_CATEGORY("App->RestartLevel", Profiler::Color::Red)
 	App->fade->FadeToBlack(App->scene, App->scene);
 	return true;
 }
 bool j1App::SoftRestartLevel()
 {
+	BROFILER_CATEGORY("App->SoftRestartLevel", Profiler::Color::Red)
 	render->ResetCamera();
 	player->position.x = map->start_collider->rect.x;
 	player->position.y = map->start_collider->rect.y;
