@@ -231,6 +231,7 @@ bool j1Player::Update(float dt)
 			vertical_collided = false;
 			
 			PlayerAnimations();
+
 			on_floor = false;
 		}
 		else
@@ -240,6 +241,7 @@ bool j1Player::Update(float dt)
 		}
 
 	}
+
 	Draw();
 	return true;
 }
@@ -377,7 +379,7 @@ void j1Player::Move()
 			//is_falling = true;
 		}
 	}
-	else if (!on_floor && !is_jumping && !djump)
+	else if (can_move_down)
 	{
 		is_falling = true;
 
@@ -416,6 +418,7 @@ void j1Player::OnCollision(Collider * c1, Collider * c2)
 	}
 	if (c1->type == COLLIDER_RAY_UP && c2->type == COLLIDER_FLOOR) {
 		can_move_up = false;
+		can_move_down = true;
 		on_floor = false;
 		vertical_collided = true;
 		//LOG("COLLIDED_RAY_UP");
@@ -525,11 +528,11 @@ void j1Player::PlayerAnimations()
 	{
 		current_animation = &idle;
 	}
-	if (!is_jumping && move_right)
+	if (!is_jumping && move_right && !is_falling)
 	{
 		current_animation = &walk;
 	}
-	else if (!is_jumping && move_left)
+	else if (!is_jumping && move_left && !is_falling)
 	{
 		current_animation = &walk;
 	}

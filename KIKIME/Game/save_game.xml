@@ -15,12 +15,9 @@
 	<collisions />
 	<fade />
 	<entitymanager>
-		<enemy type="floater" alive="true" hp="1" x="352" y="576" />
-		<enemy type="roller" alive="true" hp="2" x="192" y="736" />
-		<enemy type="floater" alive="true" hp="1" x="576" y="512" />
-		<enemy type="roller" alive="true" hp="2" x="512" y="800" />
-		<enemy type="roller" alive="true" hp="2" x="704" y="800" />
-		<enemy type="floater" alive="true" hp="1" x="864" y="384" />
+		<enemy type="floater" alive="true" hp="1" x="320" y="544" />
+		<enemy type="floater" alive="true" hp="1" x="448" y="544" />
+		<enemy type="floater" alive="true" hp="1" x="512" y="768" />
 	</entitymanager>
 	<pathfinding />
 	<renderer>

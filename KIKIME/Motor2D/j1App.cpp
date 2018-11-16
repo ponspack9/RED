@@ -54,8 +54,8 @@ j1App::j1App(int argc, char* args[]) : argc(argc), args(args)
 	AddModule(map);
 	AddModule(scene);
 	AddModule(debug);
-	AddModule(player);
 	AddModule(collision);
+	AddModule(player);
 	AddModule(fade);
 	AddModule(entitymanager);
 	AddModule(pathfinding);
