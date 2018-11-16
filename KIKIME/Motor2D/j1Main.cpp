@@ -12,7 +12,7 @@
 
 //Brofiler
 #include "Brofiler/Brofiler.h"
-//#pragma comment( lib, "Brofiler/ProfilerCore32.lib" )
+#pragma comment( lib, "Brofiler/ProfilerCore32.lib" )
 
 enum MainState
 {

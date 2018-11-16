@@ -43,6 +43,7 @@ bool j1Input::Awake(pugi::xml_node& config)
 bool j1Input::Start()
 {
 	//BROFILER_CATEGORY("Input->Start", Profiler::Color::Yellow)
+	windowEvents[WE_QUIT] = false;
 	SDL_StopTextInput();
 	return true;
 }
