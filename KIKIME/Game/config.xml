@@ -84,35 +84,56 @@
     </TextureAtlas>
   </player>
 
-  <enemies>
-    <rect width="32" height="32"/>
-    <speed movingVel="4" defaultAnimationSpeed="0.03"/>    
-    <TextureAtlas imagePath="textures/enemies/spritesheet_enemies.png">
-      <FloatIdle   name="enemyFloating_3.png"	x="117"	y="113"	width="40"	height="40"       frameX="-0" frameY="-0" frameWidth="40" frameHeight="40"/>
-      <FloatFollow   name="enemyFloating_1.png"	x="110"	y="72"	width="42"	height="40"       frameX="-0" frameY="-0" frameWidth="42" frameHeight="40"/>
-      <FloatFollow   name="enemyFloating_4.png"	x="115"	y="0"	width="42"	height="40"         frameX="-0" frameY="-0" frameWidth="42" frameHeight="40"/>
-      <FloatFollow   name="enemyFloating_2.png"	x="61"	y="147"	width="55"	height="55"       frameX="-0" frameY="-0" frameWidth="55" frameHeight="55"/>
-      <FlyAlt  name="enemyFlyingAlt_1.png"	x="0"	y="203"	width="52"	height="36"       frameX="-0" frameY="-0" frameWidth="52" frameHeight="36"/>
-      <FlyAlt  name="enemyFlyingAlt_2.png"	x="0"	y="122"	width="63"	height="24"       frameX="-0" frameY="-0" frameWidth="63" frameHeight="24"/>
-      <FlyAlt  name="enemyFlyingAlt_3.png"	x="53"	y="203"	width="52"	height="29"     frameX="-0" frameY="-0" frameWidth="52" frameHeight="29"/>
-      <FlyAlt  name="enemyFlyingAlt_4.png"	x="0"	y="173"	width="60"	height="29"       frameX="-0" frameY="-0" frameWidth="60" frameHeight="29"/>
-      <Fly     name="enemyFlying_1.png"	x="0"	y="83"	width="64"	height="38"           frameX="-0" frameY="-0" frameWidth="64" frameHeight="38"/>
-      <Fly     name="enemyFlying_2.png"	x="0"	y="44"	width="64"	height="38"           frameX="-0" frameY="-0" frameWidth="64" frameHeight="38"/>
-      <Fly     name="enemyFlying_3.png"	x="0"	y="0"	width="64"	height="43"             frameX="-0" frameY="-0" frameWidth="64" frameHeight="43"/>
-      <Fly     name="enemyFlying_4.png"	x="0"	y="147"	width="60"	height="25"           frameX="-0" frameY="-0" frameWidth="60" frameHeight="25"/>
-      <Spikey  name="enemySpikey_1.png"	x="158"	y="0"	width="32"	height="40"           frameX="-0" frameY="-0" frameWidth="32" frameHeight="40"/>
-      <Spikey  name="enemySpikey_2.png"	x="112"	y="41"	width="32"	height="28"         frameX="-0" frameY="-0" frameWidth="32" frameHeight="28"/>
-      <Spikey  name="enemySpikey_3.png"	x="153"	y="41"	width="32"	height="64"         frameX="-0" frameY="-0" frameWidth="32" frameHeight="64"/>
-      <Spikey  name="enemySpikey_4.png"	x="151"	y="196"	width="32"	height="40"         frameX="-0" frameY="-0" frameWidth="32" frameHeight="40"/>
-      <Swim    name="enemySwimming_1.png"	x="65"	y="105"	width="44"	height="32"       frameX="-0" frameY="-0" frameWidth="44" frameHeight="32"/>
-      <Swim    name="enemySwimming_2.png"	x="106"	y="203"	width="44"	height="32"       frameX="-0" frameY="-0" frameWidth="44" frameHeight="32"/>
-      <Swim    name="enemySwimming_3.png"	x="65"	y="39"	width="46"	height="32"       frameX="-0" frameY="-0" frameWidth="46" frameHeight="32"/>
-      <Swim    name="enemySwimming_4.png"	x="65"	y="72"	width="44"	height="32"       frameX="-0" frameY="-0" frameWidth="44" frameHeight="32"/>
-      <Walk    name="enemyWalking_1.png"	x="158"	y="106"	width="32"	height="44"       frameX="-0" frameY="-0" frameWidth="32" frameHeight="44"/>
-      <Walk    name="enemyWalking_2.png"	x="158"	y="151"	width="32"	height="42"       frameX="-0" frameY="-0" frameWidth="32" frameHeight="42"/>
-      <Walk    name="enemyWalking_3.png"	x="65"	y="0"	width="49"	height="38"         frameX="-0" frameY="-0" frameWidth="49" frameHeight="38"/>
-      <Walk    name="enemyWalking_4.png"	x="117"	y="154"	width="35"	height="41"       frameX="-0" frameY="-0" frameWidth="35" frameHeight="41"/>
-    </TextureAtlas>
-  </enemies>
+  <entitymanager>
+    <enemypath path="textures/enemies/spritesheet_enemies.png"/>
+    <playerpath path="textures/player/sprites.png"/>
+    <updatems time="0.25"/>
+    <enemies>      
+      <enemyair>
+        <size w="32" h="32"/>
+        <speed x="2" y="2"/>
+        <range value="100"/>
+        <health hp="1"/>
+        <alive value="true"/>             
+      </enemyair>
+      <enemyground>
+        <size w="32" h="32"/>
+        <speed x="3" y="3"/>
+        <range value="100"/>
+        <health hp="2"/>
+        <alive value="true"/>        
+      </enemyground>
+      <enemyanimations>
+        <speed defaultAnimationSpeed="0.03"/>    
+        <TextureAtlas imagePath="textures/enemies/spritesheet_enemies.png">
+          <FloatIdle   name="enemyFloating_3.png"	x="117"	y="113"	width="40"	height="40"/>
+          <FloatFollow   name="enemyFloating_1.png"	x="110"	y="72"	width="42"	height="40"/>
+          <FloatFollow   name="enemyFloating_4.png"	x="115"	y="0"	width="42"	height="40"/>
+          <FloatFollow   name="enemyFloating_2.png"	x="61"	y="147"	width="55"	height="55"/>
+          <FlyAlt  name="enemyFlyingAlt_1.png"	x="0"	y="203"	width="52"	height="36"/>
+          <FlyAlt  name="enemyFlyingAlt_2.png"	x="0"	y="122"	width="63"	height="24"/>
+          <FlyAlt  name="enemyFlyingAlt_3.png"	x="53"	y="203"	width="52"	height="29"/>
+          <FlyAlt  name="enemyFlyingAlt_4.png"	x="0"	y="173"	width="60"	height="29"/>
+          <Fly     name="enemyFlying_1.png"	x="0"	y="83"	width="64"	height="38"/>
+          <Fly     name="enemyFlying_2.png"	x="0"	y="44"	width="64"	height="38"/>
+          <Fly     name="enemyFlying_3.png"	x="0"	y="0"	width="64"	height="43"/>
+          <Fly     name="enemyFlying_4.png"	x="0"	y="147"	width="60"	height="25"/>
+          <Spikey  name="enemySpikey_1.png"	x="158"	y="0"	width="32"	height="40"/>
+          <Spikey  name="enemySpikey_2.png"	x="112"	y="41"	width="32"	height="28"/>
+          <Spikey  name="enemySpikey_3.png"	x="153"	y="41"	width="32"	height="64"/>
+          <Spikey  name="enemySpikey_4.png"	x="151"	y="196"	width="32"	height="40"/>
+          <Swim    name="enemySwimming_1.png"	x="65"	y="105"	width="44"	height="32"/>
+          <Swim    name="enemySwimming_2.png"	x="106"	y="203"	width="44"	height="32"/>
+          <Swim    name="enemySwimming_3.png"	x="65"	y="39"	width="46"	height="32"/>
+          <Swim    name="enemySwimming_4.png"	x="65"	y="72"	width="44"	height="32"/>
+          <Walk    name="enemyWalking_1.png"	x="158"	y="106"	width="32"	height="44"/>
+          <Walk    name="enemyWalking_2.png"	x="158"	y="151"	width="32"	height="42"/>
+          <Walk    name="enemyWalking_3.png"	x="65"	y="0"	width="49"	height="38"/>
+          <Walk    name="enemyWalking_4.png"	x="117"	y="154"	width="35"	height="41"/>
+        </TextureAtlas>
+      </enemyanimations>
+    </enemies>
+  </entitymanager>
+
 
 </config>
