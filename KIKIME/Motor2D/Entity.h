@@ -29,7 +29,7 @@ public:
 
 	Entity(entityType type)
 	{
-
+		
 	}
 
 	~Entity()

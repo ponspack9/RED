@@ -21,9 +21,14 @@ Roller::Roller(iPoint pos, Entity* e, SDL_Texture* sprites) : Entity(type)
 	rect = { pos.x,pos.y,e->rect.w,e->rect.h };
 	speed = e->speed;
 
+	idle = e->idle;
 	health = e->health;
 	alive = e->alive;
 	vision_range = e->vision_range;
+
+	current_animation = &idle;
+	LOG("Roller Created");
+	LOG("pos %d, %d", position.x, position.y);
 }
 
 Roller::~Roller()
@@ -38,6 +43,7 @@ bool Roller::Update(float dt)
 
 bool Roller::PostUpdate()
 {
+	Draw();
 	return true;
 }
 
@@ -48,7 +54,7 @@ bool Roller::CleanUp()
 
 void Roller::Draw()
 {
-
+	App->render->Blit(sprites, position.x, position.y, &current_animation->GetCurrentFrame(), 1, 0);
 }
 
 void Roller::Move()

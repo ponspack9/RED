@@ -63,7 +63,7 @@ bool j1EntityManager::Awake(pugi::xml_node & config)
 	SDL_Rect r;
 	float node_speed = -1;
 
-	pugi::xml_node n = config.child("enemyanimations").child("FloatIdle");
+	pugi::xml_node n = config.child("enemies").child("enemyanimations").child("TextureAtlas").child("FloatIdle");
 	for (n; n; n = n.next_sibling("FloatIdle"))
 	{
 		r.x = n.attribute("x").as_int();
@@ -76,7 +76,7 @@ bool j1EntityManager::Awake(pugi::xml_node & config)
 	floaterinfo.idle.speed = (node_speed <= 0) ? floaterinfo.def_anim_speed_enem : node_speed;
 
 	//floater Follow
-	n = config.child("enemyanimations").child("FloatFollow");
+	n = config.child("enemies").child("enemyanimations").child("TextureAtlas").child("FloatFollow");
 	for (n; n; n = n.next_sibling("FloatFollow"))
 	{
 		r.x = n.attribute("x").as_int();
@@ -89,7 +89,19 @@ bool j1EntityManager::Awake(pugi::xml_node & config)
 	floaterinfo.follow.speed = (node_speed <= 0) ? floaterinfo.def_anim_speed_enem : node_speed;
 
 	//floater die
-	//...
+	//ROLLER IDLE
+
+	n = config.child("enemies").child("enemyanimations").child("TextureAtlas").child("Walk");
+	for (n; n; n = n.next_sibling("Walk"))
+	{
+		r.x = n.attribute("x").as_int();
+		r.y = n.attribute("y").as_int();
+		r.w = n.attribute("width").as_int();
+		r.h = n.attribute("height").as_int();
+		rollerinfo.idle.PushBack(r);
+	}
+	node_speed = n.attribute("speed").as_float();
+	rollerinfo.idle.speed = (node_speed <= 0) ? rollerinfo.def_anim_speed_enem : node_speed;
 
 	return true;
 }
@@ -161,7 +173,10 @@ bool j1EntityManager::Save(pugi::xml_node & node)
 		}
 		else
 		{
-			pugi::xml_node n = node.append_child(item->data->name.GetString());
+			//pugi::xml_node n = node.append_child(item->data->name.GetString());
+			pugi::xml_node n = node.append_child("enemy");
+
+			n.append_attribute("type") = item->data->name.GetString();
 			n.append_attribute("alive") = item->data->alive;
 			n.append_attribute("hp") = item->data->health;
 
@@ -171,6 +186,8 @@ bool j1EntityManager::Save(pugi::xml_node & node)
 				n.append_attribute("y") = item->data->position.y;
 			}
 		}
+		LOG("SAVE POS: %d  ,  %d", item->data->position.x, item->data->position.y);
+		LOG("SAVE HP:  %d", item->data->health);
 	}
 
 	return true;
@@ -179,13 +196,13 @@ bool j1EntityManager::Save(pugi::xml_node & node)
 bool j1EntityManager::Load(pugi::xml_node & node)
 {
 	p2List_item<Entity*>* item;
-	LOG("loading enemies");
+	LOG("loading enemiesEEEEEEEEEEEEEEEEEEEEEEE");
+
+	node = node.child("enemy");
 
 	for (item = entities.start; item != nullptr; item = item->next)
 	{
-		node = node.child(item->data->name.GetString());
-
-		item->data->alive =	 node.attribute("value").as_bool();
+		item->data->alive =	 node.attribute("alive").as_bool();
 		item->data->health = node.attribute("hp").as_int();
 
 		if (item->data->alive)
@@ -193,6 +210,10 @@ bool j1EntityManager::Load(pugi::xml_node & node)
 			item->data->position.x = node.attribute("x").as_int();
 			item->data->position.y = node.attribute("y").as_int();
 		}
+		LOG("LOAD POS: %d  ,  %d", item->data->position.x, item->data->position.y);
+		LOG("LOAD HP:  %d", item->data->health);
+
+		node = node.next_sibling("enemy");
 	}
 	return true;
 }

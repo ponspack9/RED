@@ -110,6 +110,9 @@ bool j1Scene::Update(float dt)
 	if (App->input->GetKey(SDL_SCANCODE_E) == KEY_DOWN)
 		App->entitymanager->CreateEntity(FLOATER, p);
 
+	if (App->input->GetKey(SDL_SCANCODE_R) == KEY_DOWN)
+		App->entitymanager->CreateEntity(ROLLER, p);
+
 	if (App->input->GetKey(SDL_SCANCODE_1) == KEY_DOWN)
 	{
 		if (App->delay_is_active)

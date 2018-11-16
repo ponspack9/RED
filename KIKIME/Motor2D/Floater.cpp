@@ -20,11 +20,14 @@ Floater::Floater(iPoint pos,Entity* e, SDL_Texture* sprites) : Entity(type)
 	rect = { pos.x,pos.y,e->rect.w,e->rect.h };
 	speed = e->speed;
 
+	idle = e->idle;
 	health = e->health;
 	alive = e->alive;
 	vision_range = e->vision_range;
+
+	current_animation = &idle;
 	LOG("Floater Created");
-	LOG("pos %d %d");
+	LOG("pos %d, %d",position.x,position.y);
 }
 
 Floater::~Floater()
@@ -35,13 +38,13 @@ Floater::~Floater()
 bool Floater::Update(float dt)
 {
 	bool ret = true;
-	Draw();
-
+	Move();
 	return ret;
 }
 
 bool Floater::PostUpdate()
 {
+	Draw();
 	return true;
 }
 
@@ -62,7 +65,7 @@ bool Floater::UpdateLogic()
 
 void Floater::Draw()
 {
-	App->render->Blit(sprites, position.x, position.y, NULL, 1, 0);
+	App->render->Blit(sprites, position.x, position.y, &current_animation->GetCurrentFrame(), 1, 0);
 }
 
 void Floater::Move()
