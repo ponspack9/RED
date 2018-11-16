@@ -67,6 +67,15 @@
     <ClCompile Include="Enemy_Ground.cpp">
       <Filter>Desenvolupament  ========\Enemies</Filter>
     </ClCompile>
+    <ClCompile Include="Floater.cpp">
+      <Filter>Desenvolupament  ========\Enemies</Filter>
+    </ClCompile>
+    <ClCompile Include="Roller.cpp">
+      <Filter>Desenvolupament  ========\Enemies</Filter>
+    </ClCompile>
+    <ClCompile Include="j1EntityManager.cpp">
+      <Filter>Desenvolupament  ========\Enemies</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="j1Window.h">
@@ -157,6 +166,18 @@
       <Filter>Desenvolupament  ========\Enemies</Filter>
     </ClInclude>
     <ClInclude Include="Enemy_Ground.h">
+      <Filter>Desenvolupament  ========\Enemies</Filter>
+    </ClInclude>
+    <ClInclude Include="Entity.h">
+      <Filter>Desenvolupament  ========\Enemies</Filter>
+    </ClInclude>
+    <ClInclude Include="Floater.h">
+      <Filter>Desenvolupament  ========\Enemies</Filter>
+    </ClInclude>
+    <ClInclude Include="Roller.h">
+      <Filter>Desenvolupament  ========\Enemies</Filter>
+    </ClInclude>
+    <ClInclude Include="j1EntityManager.h">
       <Filter>Desenvolupament  ========\Enemies</Filter>
     </ClInclude>
   </ItemGroup>

@@ -18,7 +18,7 @@
 #include "j1FileSystem.h"
 #include "j1EntityManager.h"
 #include "j1PathFinding.h"
-#include "j1EntityManager.h"
+
 #include "Brofiler/Brofiler.h"
 
 // Constructor
