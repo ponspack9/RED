@@ -275,6 +275,9 @@ bool j1Map::Load(const char* file_name)
 							else if (group_name == "Collider_end") {
 								end_collider = App->collision->AddCollider(r, COLLIDER_END);
 							}
+							else if (group_name == "Enemy_spawns") {
+								App->collision->AddCollider(r, COLLIDER_SPAWN);
+							}
 							continue;
 						}
 						//ellipse

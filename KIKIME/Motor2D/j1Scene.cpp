@@ -11,8 +11,9 @@
 #include "j1Map.h"
 #include "j1Player.h"
 #include "j1FadeToBlack.h"
-#include "j1Enemies.h"
+#include "j1EntityManager.h"
 #include "j1Pathfinding.h"
+#include "Entity.h"
 
 j1Scene::j1Scene() : j1Module()
 {
@@ -107,7 +108,10 @@ bool j1Scene::Update(float dt)
 		App->render->MoveCamera(-1, 0);
 
 	if (App->input->GetKey(SDL_SCANCODE_E) == KEY_DOWN)
-		App->enemies->AddEnemy(ENEMY_AIR, p.x, p.y);
+		App->entitymanager->CreateEntity(FLOATER, p);
+
+	if (App->input->GetKey(SDL_SCANCODE_R) == KEY_DOWN)
+		App->entitymanager->CreateEntity(ROLLER, p);
 
 	if (App->input->GetKey(SDL_SCANCODE_R) == KEY_DOWN)
 		App->enemies->AddEnemy(ENEMY_GROUND, p.x, p.y);

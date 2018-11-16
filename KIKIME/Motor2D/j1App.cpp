@@ -16,8 +16,9 @@
 #include "j1Player.h"
 #include "j1App.h"
 #include "j1FileSystem.h"
-#include "j1Enemies.h"
+#include "j1EntityManager.h"
 #include "j1PathFinding.h"
+#include "j1EntityManager.h"
 #include "Brofiler/Brofiler.h"
 
 // Constructor
@@ -29,19 +30,19 @@ j1App::j1App(int argc, char* args[]) : argc(argc), args(args)
 
 	want_to_save = want_to_load = false;
 
-	input		= new j1Input();
-	win			= new j1Window();
-	render		= new j1Render();
-	tex			= new j1Textures();
-	audio		= new j1Audio();
-	scene		= new j1Scene();
-	map			= new j1Map();
-	debug		= new j1Debug();
-	collision   = new j1Collision();
-	fade		= new j1FadeToBlack();
-	player		= new j1Player();
-	enemies		= new j1Enemies();
-	pathfinding = new j1PathFinding();
+	input			= new j1Input();
+	win				= new j1Window();
+	render			= new j1Render();
+	tex				= new j1Textures();
+	audio			= new j1Audio();
+	scene			= new j1Scene();
+	map				= new j1Map();
+	debug			= new j1Debug();
+	collision		= new j1Collision();
+	fade			= new j1FadeToBlack();
+	player			= new j1Player();
+	pathfinding		= new j1PathFinding();
+	entitymanager	= new j1EntityManager();
 
 	// Ordered for awake / Start / Update
 	// Reverse order of CleanUp
@@ -56,7 +57,7 @@ j1App::j1App(int argc, char* args[]) : argc(argc), args(args)
 	AddModule(player);
 	AddModule(collision);
 	AddModule(fade);
-	AddModule(enemies);
+	AddModule(entitymanager);
 	AddModule(pathfinding);
 
 	AddModule(render);
@@ -229,12 +230,6 @@ void j1App::FinishUpdate()
 	uint32 last_frame_ms = frame_time.Read();
 	frames_on_last_update = last_sec_fcount;
 
-	//LOG("Av.FPS: %.2f", avg_fps);
-	//LOG("Last Frame Ms: %02u ", last_frame_ms);
-	//LOG("Last sec frames: %i ", frames_on_last_update);
-	//LOG("Last dt : %.3f ", dt);
-	//LOG("Time since startup : %.3f", seconds_since_startup); 
-	//LOG("Frame Count : %lu ", frame_count);
 	int x, y;
 	App->input->GetMousePosition(x, y);
 	iPoint map_coordinates = App->map->WorldToMap(x - App->render->camera.x, y - App->render->camera.y);
@@ -250,7 +245,6 @@ void j1App::FinishUpdate()
 	if (delay_is_active)
 	{
 		SDL_Delay(abs((float)(1000 / framerate_cap) - last_frame_ms));
-		//LOG("SDL_Delay is active");
 	}
 }
 
