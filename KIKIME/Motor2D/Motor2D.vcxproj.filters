@@ -46,12 +46,6 @@
     <ClCompile Include="j1Player.cpp">
       <Filter>Desenvolupament  ========\Modules</Filter>
     </ClCompile>
-    <ClCompile Include="j1Enemies.cpp">
-      <Filter>Desenvolupament  ========\Enemies</Filter>
-    </ClCompile>
-    <ClCompile Include="Enemy.cpp">
-      <Filter>Desenvolupament  ========\Enemies</Filter>
-    </ClCompile>
     <ClCompile Include="j1Timer.cpp">
       <Filter>Desenvolupament  ========\Tools</Filter>
     </ClCompile>
@@ -60,12 +54,6 @@
     </ClCompile>
     <ClCompile Include="j1Pathfinding.cpp">
       <Filter>Desenvolupament  ========\Modules</Filter>
-    </ClCompile>
-    <ClCompile Include="Enemy_Air.cpp">
-      <Filter>Desenvolupament  ========\Enemies</Filter>
-    </ClCompile>
-    <ClCompile Include="Enemy_Ground.cpp">
-      <Filter>Desenvolupament  ========\Enemies</Filter>
     </ClCompile>
     <ClCompile Include="Floater.cpp">
       <Filter>Desenvolupament  ========\Enemies</Filter>
@@ -144,12 +132,6 @@
     <ClInclude Include="Animation.h">
       <Filter>Programacio 2 ===========</Filter>
     </ClInclude>
-    <ClInclude Include="j1Enemies.h">
-      <Filter>Desenvolupament  ========\Enemies</Filter>
-    </ClInclude>
-    <ClInclude Include="Enemy.h">
-      <Filter>Desenvolupament  ========\Enemies</Filter>
-    </ClInclude>
     <ClInclude Include="Path.h">
       <Filter>Programacio 2 ===========</Filter>
     </ClInclude>
@@ -161,12 +143,6 @@
     </ClInclude>
     <ClInclude Include="j1Pathfinding.h">
       <Filter>Desenvolupament  ========\Modules</Filter>
-    </ClInclude>
-    <ClInclude Include="Enemy_Air.h">
-      <Filter>Desenvolupament  ========\Enemies</Filter>
-    </ClInclude>
-    <ClInclude Include="Enemy_Ground.h">
-      <Filter>Desenvolupament  ========\Enemies</Filter>
     </ClInclude>
     <ClInclude Include="Entity.h">
       <Filter>Desenvolupament  ========\Enemies</Filter>
