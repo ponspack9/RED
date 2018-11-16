@@ -26,6 +26,9 @@ bool j1EntityManager::Awake(pugi::xml_node & config)
 
 	update_cycle = config.child("updatems").attribute("time").as_float();
 
+	floaterinfo.def_anim_speed_enem = config.child("enemies").child("enemyanimations").child("speed").attribute("defaultAnimationSpeed").as_float();
+
+	//floater
 	pugi::xml_node f_enem = config.child("enemies").child("enemyair");
 
 	floaterinfo.speed.x = f_enem.child("speed").attribute("x").as_float();
@@ -37,25 +40,10 @@ bool j1EntityManager::Awake(pugi::xml_node & config)
 
 	floaterinfo.alive = f_enem.child("alive").attribute("value").as_bool();
 
-	pugi::xml_node i = f_enem.child("spawn");
+	floaterinfo.rect.w = f_enem.child("size").attribute("w").as_int();
+	floaterinfo.rect.h = f_enem.child("size").attribute("h").as_int();
 
-	p2List_item<SDL_Rect>* item1 = floaterinfo.rect.start;
-	p2List_item<iPoint>* item2 = floaterinfo.spawns.start;
-
-	for (i; i; i = i.next_sibling("spawn"))
-	{
-		item2->data.x = i.attribute("x").as_int();
-		item1->data.x = item2->data.x;
-		item2->data.y = i.attribute("y").as_int();
-		item1->data.y = item2->data.y;
-
-		item1->data.w = f_enem.child("size").attribute("w").as_int();
-		item1->data.h = f_enem.child("size").attribute("h").as_int();
-
-		item2 = item2->next;
-		item1 = item1->next;
-	}
-
+	//roller
 	pugi::xml_node r_enem = config.child("enemies").child("enemyground");
 
 	rollerinfo.speed.x = r_enem.child("speed").attribute("x").as_float();
@@ -67,24 +55,8 @@ bool j1EntityManager::Awake(pugi::xml_node & config)
 			  
 	rollerinfo.alive = r_enem.child("alive").attribute("value").as_bool();
 
-	i = r_enem.child("spawn");
-
-	item1 = rollerinfo.rect.start;
-	item2 = rollerinfo.spawns.start;
-
-	for (i; i; i = i.next_sibling("spawn"))
-	{
-		item2->data.x = i.attribute("x").as_int();
-		item1->data.x = item2->data.x;
-		item2->data.y = i.attribute("y").as_int();
-		item1->data.y = item2->data.y;
-
-		item1->data.w = f_enem.child("size").attribute("w").as_int();
-		item1->data.h = f_enem.child("size").attribute("h").as_int();
-
-		item2 = item2->next;
-		item1 = item1->next;
-	}
+	rollerinfo.rect.w = f_enem.child("size").attribute("w").as_int();
+	rollerinfo.rect.h = f_enem.child("size").attribute("h").as_int();
 
 	//reading animations
 	//floater Idle
@@ -159,7 +131,7 @@ bool j1EntityManager::PostUpdate()
 		ret = item->data->PostUpdate();
 	}
 
-	return ret;
+	return true;
 }
 
 bool j1EntityManager::CleanUp()
@@ -172,7 +144,7 @@ bool j1EntityManager::CleanUp()
 		ret = item->data->CleanUp();
 	}
 
-	return ret;
+	return true;
 }
 
 bool j1EntityManager::Save(pugi::xml_node & node) const
@@ -182,7 +154,7 @@ bool j1EntityManager::Save(pugi::xml_node & node) const
 
 	for (item = entities.start; item != nullptr; item = item->next)
 	{
-		ret = item->data->Save(node);
+		ret = item->data->Save(node, &entities);
 	}
 
 	return ret;
@@ -200,19 +172,19 @@ bool j1EntityManager::Load(pugi::xml_node & node)
 	{
 		if (item->data->type == entityType::FLOATER)
 		{
-			item->data->Load(floater);
+			item->data->Load(floater, &entities);
 		}
 		if (item->data->type == entityType::ROLLER)
 		{
-			item->data->Load(roller);
+			item->data->Load(roller, &entities);
 		}
 		if (item->data->type == entityType::STATIC)
 		{
-			item->data->Load(e_static);
+			item->data->Load(e_static, &entities);
 		}
 		if (item->data->type == entityType::PLAYER)
 		{
-			item->data->Load(player);
+			item->data->Load(player, &entities);
 		}
 
 		item = item->next;

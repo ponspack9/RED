@@ -1,24 +1,24 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.1" tiledversion="2018.09.12" orientation="orthogonal" renderorder="right-down" width="100" height="40" tilewidth="32" tileheight="32" infinite="0" nextlayerid="10" nextobjectid="1603">
+<map version="1.0" tiledversion="1.1.5" orientation="orthogonal" renderorder="right-down" width="100" height="40" tilewidth="32" tileheight="32" infinite="0" nextobjectid="1603">
  <properties>
   <property name="Collider" type="bool" value="true"/>
  </properties>
  <tileset firstgid="1" name="platformPack_tilesheet" tilewidth="32" tileheight="32" tilecount="392" columns="28">
   <image source="platformPack_tilesheet.png" width="896" height="448"/>
  </tileset>
- <imagelayer id="1" name="bg_fade" locked="1">
+ <imagelayer name="bg_fade">
   <image source="bgLvl2fade.png" width="3200" height="1280"/>
   <properties>
    <property name="parallax_speed" type="float" value="0.7"/>
   </properties>
  </imagelayer>
- <imagelayer id="2" name="bg_build" locked="1">
+ <imagelayer name="bg_build">
   <image source="bgLvl2_buildings.png" width="3200" height="1280"/>
   <properties>
    <property name="parallax_speed" type="float" value="1"/>
   </properties>
  </imagelayer>
- <layer id="3" name="Tile Layer 1" width="100" height="40" locked="1">
+ <layer name="Tile Layer 1" width="100" height="40">
   <data>
    <tile/>
    <tile/>
@@ -4022,7 +4022,7 @@
    <tile gid="262"/>
   </data>
  </layer>
- <objectgroup id="5" name="Colliders_floor" locked="1">
+ <objectgroup name="Colliders_floor">
   <object id="1341" x="223.25" y="355.625" width="93.2188" height="58.4688"/>
   <object id="1343" x="96.0625" y="548.063" width="63.9375" height="56.0833"/>
   <object id="1344" x="160" y="612" width="127.909" height="56.7273"/>
@@ -4101,7 +4101,7 @@
   <object id="1580" x="2240.33" y="577.081" width="64" height="59.837"/>
   <object id="1581" x="2818.67" y="320.409" width="26.9844" height="187.849"/>
  </objectgroup>
- <objectgroup id="6" name="Colliders_death" locked="1">
+ <objectgroup name="Colliders_death">
   <object id="1423" x="0" y="137.333" width="31" height="15"/>
   <object id="1424" x="-0.5" y="296.833" width="31" height="15"/>
   <object id="1425" x="-0.333333" y="457.5" width="31" height="15"/>
@@ -4235,29 +4235,26 @@
   <object id="1556" x="2504.33" y="861.333" width="14" height="32"/>
   <object id="1557" x="2600.67" y="864" width="14" height="32"/>
  </objectgroup>
- <objectgroup id="7" name="Colliders_start" locked="1">
+ <objectgroup name="Colliders_start">
   <object id="1420" x="192" y="544" width="64" height="64"/>
  </objectgroup>
- <objectgroup id="8" name="Colliders_end" locked="1">
+ <objectgroup name="Colliders_end">
   <object id="1421" x="2880" y="384" width="64" height="64"/>
  </objectgroup>
- <objectgroup id="9" name="Enemy_spawns" locked="1">
-  <object id="1583" x="608" y="544" width="32" height="32"/>
-  <object id="1584" x="672" y="416" width="32" height="32"/>
-  <object id="1585" x="480" y="192" width="32" height="32"/>
-  <object id="1587" x="1056" y="192" width="32" height="32"/>
-  <object id="1588" x="1376" y="384" width="32" height="32"/>
-  <object id="1589" x="1600" y="384" width="32" height="32"/>
-  <object id="1590" x="992" y="448" width="32" height="32"/>
-  <object id="1591" x="2048" y="576" width="32" height="32"/>
-  <object id="1592" x="1728" y="640" width="32" height="32"/>
-  <object id="1593" x="2400" y="416" width="32" height="32"/>
-  <object id="1594" x="2048" y="800" width="32" height="32"/>
-  <object id="1596" x="2560" y="672" width="32" height="32"/>
-  <object id="1597" x="1760" y="64" width="32" height="32"/>
-  <object id="1598" x="2720" y="96" width="32" height="32"/>
-  <object id="1599" x="2848" y="224" width="32" height="32"/>
-  <object id="1601" x="2912" y="800" width="32" height="32"/>
-  <object id="1602" x="3104" y="96" width="32" height="32"/>
+ <objectgroup name="Enemy_spawns">
+  <object id="1584" x="320" y="734" width="32" height="64"/>
+  <object id="1585" x="480" y="192" width="64" height="32"/>
+  <object id="1587" x="1024" y="192" width="64" height="32"/>
+  <object id="1588" x="1312" y="384" width="62" height="32"/>
+  <object id="1590" x="832" y="512" width="32" height="64"/>
+  <object id="1591" x="2048" y="576" width="32" height="62"/>
+  <object id="1592" x="1728" y="640" width="64" height="32"/>
+  <object id="1593" x="2400" y="416" width="32" height="62"/>
+  <object id="1594" x="2048" y="800" width="32" height="62"/>
+  <object id="1596" x="2560" y="672" width="66" height="32"/>
+  <object id="1597" x="1760" y="64" width="64" height="32"/>
+  <object id="1598" x="2720" y="96" width="64" height="32"/>
+  <object id="1601" x="2912" y="800" width="32" height="60"/>
+  <object id="1602" x="3070" y="96" width="66" height="32"/>
  </objectgroup>
 </map>

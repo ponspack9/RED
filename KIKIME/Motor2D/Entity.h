@@ -4,7 +4,6 @@
 #include "Animation.h"
 #include "p2Point.h"
 #include "p2Log.h"
-#include "j1EntityManager.h"
 #include "j1App.h"
 
 #define MAX_ENEMIES 100
@@ -34,8 +33,8 @@ public:
 	virtual bool Update(float dt) { return true; }
 	virtual bool PostUpdate() { return true; }
 	virtual bool CleanUp() { return true; }
-	virtual bool Save(pugi::xml_node & node) const { return true; }
-	virtual bool Load(pugi::xml_node & node) { return true; }
+	virtual bool Save(pugi::xml_node & node, const p2List<Entity*>* entities) const { return true; }
+	virtual bool Load(pugi::xml_node & node, p2List<Entity*>* entities) { return true; }
 
 	void Draw(float dt);
 	void OnCollision(Collider* c1, Collider* c2);
@@ -47,13 +46,13 @@ public:
 public:
 
 
-	int						health;
-	bool					alive;
-	int						vision_range;
-	iPoint					speed;
-	p2List<iPoint>			spawns;
-	p2List<SDL_Rect>		rect;	
-	iPoint					position;
+	int				health;
+	bool			alive;
+	int				vision_range;
+	iPoint			speed;
+	//p2List<iPoint>spawns;
+	SDL_Rect		rect;	
+	iPoint			position;
 
 	Animation idle;
 	Animation follow;

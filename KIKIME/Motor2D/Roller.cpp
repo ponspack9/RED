@@ -1,4 +1,14 @@
 #include "Roller.h"
+#include "j1App.h"
+#include "j1Input.h"
+#include "j1Pathfinding.h"
+#include "j1Player.h"
+#include "j1Map.h"
+#include "j1Scene.h"
+#include "j1Render.h"
+#include "p2Log.h"
+#include "Entity.h"
+#include "j1EntityManager.h"
 
 Roller::Roller(int x, int y)
 {
@@ -12,20 +22,20 @@ Roller::~Roller()
 
 bool Roller::Update(float dt)
 {
-	return false;
+	return true;
 }
 
 bool Roller::PostUpdate()
 {
-	return false;
+	return true;
 }
 
 bool Roller::CleanUp()
 {
-	return false;
+	return true;
 }
 
-bool Roller::Save(pugi::xml_node & node) const
+bool Roller::Save(pugi::xml_node & node, const p2List<Entity*>* entities) const
 {
 	LOG("Saving floater stats");
 
@@ -52,7 +62,7 @@ bool Roller::Save(pugi::xml_node & node) const
 	return true;
 }
 
-bool Roller::Load(pugi::xml_node & node)
+bool Roller::Load(pugi::xml_node & node, p2List<Entity*>* entities)
 {
 	LOG("Loading floater stats");
 

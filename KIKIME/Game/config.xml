@@ -94,11 +94,7 @@
         <speed x="2" y="2"/>
         <range value="100"/>
         <health hp="1"/>
-        <alive value="true"/>        
-        <spawn x="600" y="450"/>
-        <spawn x="900" y="450"/>
-        <spawn x="1000" y="450"/>
-        <spawn x="1500" y="450"/>        
+        <alive value="true"/>             
       </enemyair>
       <enemyground>
         <size w="32" h="32"/>
@@ -106,14 +102,9 @@
         <range value="100"/>
         <health hp="2"/>
         <alive value="true"/>        
-        <spawn x="600" y="450"/>
-        <spawn x="900" y="450"/>
-        <spawn x="1000" y="450"/>
-        <spawn x="1500" y="450"/>  
       </enemyground>
       <enemyanimations>
-        <rect width="32" height="32"/>
-        <speed movingVel="4" defaultAnimationSpeed="0.03"/>    
+        <speed defaultAnimationSpeed="0.03"/>    
         <TextureAtlas imagePath="textures/enemies/spritesheet_enemies.png">
           <FloatIdle   name="enemyFloating_3.png"	x="117"	y="113"	width="40"	height="40"/>
           <FloatFollow   name="enemyFloating_1.png"	x="110"	y="72"	width="42"	height="40"/>

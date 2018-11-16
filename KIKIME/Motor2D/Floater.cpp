@@ -30,7 +30,17 @@ bool Floater::Update(float dt)
 	return ret;
 }
 
-bool Floater::Save(pugi::xml_node & node) const
+bool Floater::PostUpdate()
+{
+	return true;
+}
+
+bool Floater::CleanUp()
+{
+	return true;
+}
+
+bool Floater::Save(pugi::xml_node & node, const p2List<Entity*>* entities) const
 {
 	LOG("Saving floater stats");
 
@@ -57,7 +67,7 @@ bool Floater::Save(pugi::xml_node & node) const
 	return true;
 }
 
-bool Floater::Load(pugi::xml_node & node)
+bool Floater::Load(pugi::xml_node & node, p2List<Entity*>* entities)
 {
 	LOG("Loading floater stats");
 

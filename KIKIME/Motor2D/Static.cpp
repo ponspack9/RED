@@ -1,3 +1,13 @@
+#include "j1App.h"
+#include "j1Input.h"
+#include "j1Pathfinding.h"
+#include "j1Player.h"
+#include "j1Map.h"
+#include "j1Scene.h"
+#include "j1Render.h"
+#include "p2Log.h"
+#include "Entity.h"
+#include "j1EntityManager.h"
 #include "Static.h"
 
 Static::Static(int x, int y)
@@ -12,20 +22,20 @@ Static::~Static()
 
 bool Static::Update(float dt)
 {
-	return false;
+	return true;
 }
 
 bool Static::PostUpdate()
 {
-	return false;
+	return true;
 }
 
 bool Static::CleanUp()
 {
-	return false;
+	return true;
 }
 
-bool Static::Save(pugi::xml_node & node) const
+bool Static::Save(pugi::xml_node & node, const p2List<Entity*>* entities) const
 {
 	LOG("Saving floater stats");
 
@@ -52,7 +62,7 @@ bool Static::Save(pugi::xml_node & node) const
 	return true;
 }
 
-bool Static::Load(pugi::xml_node & node)
+bool Static::Load(pugi::xml_node & node, p2List<Entity*>* entities)
 {
 	LOG("Loading floater stats");
 
