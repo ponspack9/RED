@@ -25,6 +25,7 @@ j1Input::~j1Input()
 // Called before render is available
 bool j1Input::Awake(pugi::xml_node& config)
 {
+	//BROFILER_CATEGORY("Input->Awake", Profiler::Color::Yellow)
 	LOG("Init SDL input event system");
 	bool ret = true;
 	SDL_Init(0);
@@ -41,6 +42,8 @@ bool j1Input::Awake(pugi::xml_node& config)
 // Called before the first frame
 bool j1Input::Start()
 {
+	//BROFILER_CATEGORY("Input->Start", Profiler::Color::Yellow)
+	windowEvents[WE_QUIT] = false;
 	SDL_StopTextInput();
 	return true;
 }
@@ -48,6 +51,7 @@ bool j1Input::Start()
 // Called each loop iteration
 bool j1Input::PreUpdate()
 {
+	BROFILER_CATEGORY("Input->PreUpdate", Profiler::Color::Yellow)
 	static SDL_Event event;
 	
 	const Uint8* keys = SDL_GetKeyboardState(NULL);
@@ -134,6 +138,7 @@ bool j1Input::PreUpdate()
 // Called before quitting
 bool j1Input::CleanUp()
 {
+	BROFILER_CATEGORY("Input->CleanUp", Profiler::Color::Yellow)
 	LOG("Quitting SDL event subsystem");
 	SDL_QuitSubSystem(SDL_INIT_EVENTS);
 	return true;

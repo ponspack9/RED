@@ -52,10 +52,13 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_ITERATOR_DEBUG_LEVEL=0;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ShowIncludes>false</ShowIncludes>
+      <AdditionalIncludeDirectories>
+      </AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalDependencies>kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;Brofiler/ProfilerCore32.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -76,10 +79,12 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="j1EntityManager.cpp" />
-    <ClCompile Include="Floater.cpp" />
+    <ClCompile Include="Enemy.cpp" />
+    <ClCompile Include="Enemy_Air.cpp" />
+    <ClCompile Include="Enemy_Ground.cpp" />
     <ClCompile Include="j1Collision.cpp" />
     <ClCompile Include="j1Debug.cpp" />
+    <ClCompile Include="j1Enemies.cpp" />
     <ClCompile Include="j1FadeToBlack.cpp" />
     <ClCompile Include="j1Main.cpp" />
     <ClCompile Include="j1App.cpp" />
@@ -96,15 +101,15 @@
     <ClCompile Include="j1Textures.cpp" />
     <ClCompile Include="j1Window.cpp" />
     <ClCompile Include="PugiXml\src\pugixml.cpp" />
-    <ClCompile Include="Roller.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Animation.h" />
-    <ClInclude Include="j1EntityManager.h" />
-    <ClInclude Include="Floater.h" />
+    <ClInclude Include="Enemy.h" />
+    <ClInclude Include="Enemy_Air.h" />
+    <ClInclude Include="Enemy_Ground.h" />
     <ClInclude Include="j1Collision.h" />
     <ClInclude Include="j1Debug.h" />
-    <ClInclude Include="Entity.h" />
+    <ClInclude Include="j1Enemies.h" />
     <ClInclude Include="j1FadeToBlack.h" />
     <ClInclude Include="j1Map.h" />
     <ClInclude Include="j1Pathfinding.h" />
@@ -128,7 +133,6 @@
     <ClInclude Include="Path.h" />
     <ClInclude Include="PugiXml\src\pugiconfig.hpp" />
     <ClInclude Include="PugiXml\src\pugixml.hpp" />
-    <ClInclude Include="Roller.h" />
   </ItemGroup>
   <ItemGroup>
     <Xml Include="..\Game\config.xml">

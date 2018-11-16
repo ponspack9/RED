@@ -21,7 +21,6 @@ class j1FadeToBlack;
 class j1Player;
 class j1Enemies;
 class j1PathFinding;
-class j1EntityManager;
 
 class j1App
 {
@@ -111,7 +110,6 @@ public:
 	j1Player*			player;
 	j1Enemies*			enemies;
 	j1PathFinding*		pathfinding;
-	j1EntityManager*	entitymanager;
 
 
 	bool				delay_is_active = true;
