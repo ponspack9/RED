@@ -200,8 +200,8 @@ bool j1Player::PreUpdate()
 bool j1Player::Update(float dt)
 {
 	BROFILER_CATEGORY("Player->Update", Profiler::Color::BlueViolet)
-	vertical_movement	= true;
-	horizontal_movement = true;
+	//vertical_movement	= true;
+	//horizontal_movement = true;
 
 	if (level_finished) App->NextLevel();
 	
@@ -212,26 +212,25 @@ bool j1Player::Update(float dt)
 			//Move();
 			if (dx > 0 && !can_move_right) {
 				MovePlayer(-dx, 0);
-				horizontal_movement = false;
+				//horizontal_movement = false;
 			}
 			else if (dx < 0 && !can_move_left) {
 				MovePlayer(-dx, 0);
-				horizontal_movement = false;
+				//horizontal_movement = false;
 			}
 			if (dy > 0 && !can_move_down) {
 				MovePlayer(0, -dy);
-				vertical_movement = false;
+				//vertical_movement = false;
 			}
 			else if (dy < 0 && !can_move_up) {
 				MovePlayer(0, -dy);
-				vertical_movement = false;
+				//vertical_movement = false;
 			}
 			
 			horizontal_collided = false;
 			vertical_collided = false;
 			
 			PlayerAnimations();
-
 			on_floor = false;
 		}
 		else
@@ -553,11 +552,11 @@ void j1Player::PlayerAnimations()
 	player_rect.h = current_animation->GetCurrentFrame().h;
 }
 
-void j1Player::OnCollisionLine(Collider * c, int x1, int y1, int x2, int y2)
-{
-	LOG("COLLISION LINE");
-	g = 255;
-}
+//void j1Player::OnCollisionLine(Collider * c, int x1, int y1, int x2, int y2)
+//{
+//	LOG("COLLISION LINE");
+//	//g = 255;
+//}
 
 bool j1Player::Load(pugi::xml_node & node)
 {

@@ -33,7 +33,7 @@ public:
 
 	void OnCollision(Collider* c1, Collider* c2);
 
-	void OnCollisionLine(Collider* c, int x1, int y1, int x2, int y2);
+	//void OnCollisionLine(Collider* c, int x1, int y1, int x2, int y2);
 
 public:
 	p2SString texture_path;
@@ -86,8 +86,8 @@ public:
 	bool horizontal_collided;
 
 	//Camera
-	bool vertical_movement;
-	bool horizontal_movement;
+	//bool vertical_movement;
+	//bool horizontal_movement;
 
 	Collider* collider_ray_right;
 	Collider* collider_ray_left;
@@ -98,6 +98,4 @@ public:
 
 	int collider_offset = 0;
 	COLLIDER_TYPE last_collision;
-
-	int r, g, b;
 };
