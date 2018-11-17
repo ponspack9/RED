@@ -9,7 +9,7 @@
 #include "p2Log.h"
 
 
-Floater::Floater(iPoint pos,Entity* e, SDL_Texture* sprites) : Entity(type)
+Floater::Floater(iPoint pos,Entity* e, SDL_Texture* sprites,entityType type) : Entity(type)
 {
 	name.create("floater");
 	

@@ -122,5 +122,5 @@ public:
 	Collider*	collider_ray_down;
 	Collider*	collider_identifier;
 
-	int				collider_offset = 0;
+	int			collider_offset = 0;
 };

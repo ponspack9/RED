@@ -8,7 +8,7 @@ private:
 public:
 
 	Roller() {}
-	Roller(iPoint pos, Entity*e, SDL_Texture* sprites);
+	Roller(iPoint pos, Entity*e, SDL_Texture* sprites,entityType type);
 	~Roller();
 
 	bool Update(float dt);

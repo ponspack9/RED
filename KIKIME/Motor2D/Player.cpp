@@ -10,7 +10,7 @@
 #include "Brofiler/Brofiler.h"
 #include "Player.h"
 
-Player::Player(iPoint pos, Entity * e, SDL_Texture * sprites) : Entity(type)
+Player::Player(iPoint pos, Entity * e, SDL_Texture * sprites,entityType type) : Entity(type)
 {
 	name.create("player");
 
@@ -20,6 +20,20 @@ Player::Player(iPoint pos, Entity * e, SDL_Texture * sprites) : Entity(type)
 	position = pos;
 	rect = { pos.x,pos.y,e->rect.w,e->rect.h };
 	speed = e->speed;
+	gravity = e->gravity;
+
+	max_speed_y = e->max_speed_y;
+	collider_offset = e->collider_offset;
+	
+	idle = e->idle;
+	fall = e->fall;
+	walk = e->walk;
+	death = e->death;
+	jump = e->jump;
+	doublejump = e->doublejump;
+	god = e->god;
+
+	current_animation = &idle;
 
 	level_finished = false;
 	on_floor = false;
@@ -31,8 +45,6 @@ Player::Player(iPoint pos, Entity * e, SDL_Texture * sprites) : Entity(type)
 	can_move_left = true;
 	can_move_up = true;
 	can_move_down = true;
-
-	collider = App->collision->AddCollider(rect, COLLIDER_PLAYER);
 }
 
 Player::~Player()
@@ -163,9 +175,7 @@ void Player::Move()
 	if (!vertical_collided && !can_move_up)		can_move_up = true;
 
 	if (!horizontal_collided && !can_move_right)	can_move_right = true;
-	if (!horizontal_collided && !can_move_left)		can_move_left = true;
-
-	
+	if (!horizontal_collided && !can_move_left)		can_move_left = true;	
 
 	can_move_down &= !on_floor && !is_jumping && !djump;
 
@@ -235,61 +245,10 @@ void Player::Move()
 	}
 
 	
-	MovePlayer(dx, dy);
-		
+	MovePlayer(dx, dy);		
 }
 
 
-
-void Player::OnCollision(Collider * c1, Collider * c2)
-{
-	*collider_identifier = c2;
-
-	if (c1->type == COLLIDER_RAY_RIGHT && c2->type == COLLIDER_FLOOR) {
-		can_move_right = false;
-		horizontal_collided = true;
-		//LOG("COLLIDED_RAY_RIGHT");
-	}
-	if (c1->type == COLLIDER_RAY_LEFT && c2->type == COLLIDER_FLOOR) {
-		can_move_left = false;
-		horizontal_collided = true;
-		//LOG("COLLIDED_RAY_LEFT");
-
-	}
-	if (c1->type == COLLIDER_RAY_UP && c2->type == COLLIDER_FLOOR) {
-		can_move_up = false;
-		can_move_down = true;
-		on_floor = false;
-		vertical_collided = true;
-		//LOG("COLLIDED_RAY_UP");
-
-	}
-	if (c1->type == COLLIDER_RAY_DOWN && c2->type == COLLIDER_FLOOR) {
-		can_move_down = false;
-		on_floor = true;
-		is_falling = false;
-		djump = false;
-		aux_djump = false;
-		vertical_collided = true;
-		//LOG("COLLIDED_RAY_DOWN");
-
-	}
-	if (!can_move_down && !can_move_left && !can_move_right) {
-		can_move_left = true;
-		can_move_right = true;
-		is_falling = false;
-		on_floor = true;
-		//LOG("SPECIAL CASE");
-	}
-
-	if (c1->type == COLLIDER_PLAYER && c2->type == COLLIDER_END && !level_finished) {
-		level_finished = true;
-	}
-	if (c1->type == COLLIDER_PLAYER && c2->type == COLLIDER_DEATH) {
-		Die();
-	}
-
-}
 bool Player::Jump()
 {
 	if (!is_jumping)

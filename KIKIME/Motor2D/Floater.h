@@ -8,7 +8,7 @@ private:
 public:
 
 	Floater() {}
-	Floater(iPoint pos, Entity* e, SDL_Texture* sprites);
+	Floater(iPoint pos, Entity* e, SDL_Texture* sprites,entityType type);
 	~Floater();
 
 	bool Update(float dt);

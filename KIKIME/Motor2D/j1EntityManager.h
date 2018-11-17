@@ -46,10 +46,14 @@ public:
 
 	//Creators
 
-	Entity*	 CreateEntity(entityType type, iPoint pos);	
+	Entity*	 CreateEntity(entityType type, iPoint pos);
+
+	void OnCollision(Collider * c1, Collider * c2);
+
+
 
 public:
-
+	int n = 0;
 	
 	SDL_Texture*	enemyTex = nullptr;
 	SDL_Texture*	playerTex = nullptr;
@@ -61,6 +65,6 @@ public:
 	Roller			rollerinfo;
 	Player			playerinfo;
 
-	Entity*			player_ref =nullptr;
+	Entity*			player_ref = nullptr;
 };
 

@@ -5,7 +5,7 @@
 #include "j1Textures.h"
 #include "Floater.h"
 #include "Roller.h"
-#include "Static.h"
+#include "Player.h"
 #include "j1EntityManager.h"
 
 j1EntityManager::j1EntityManager()
@@ -221,17 +221,7 @@ bool j1EntityManager::Awake(pugi::xml_node & config)
 
 	//LOG("%d  %d", player_rect.h, player_rect.w);
 	LOG("%d  %d", playerinfo.speed.x, playerinfo.speed.y);
-	//PL. COLLIDER
-	playerinfo.collider_identifier = App->collision->AddCollider(playerinfo.rect, COLLIDER_NONE, this);
-	SDL_Rect temp = playerinfo.rect;
-	temp.h -= playerinfo.speed.x;
-	playerinfo.collider_ray_right = App->collision->AddCollider(temp, COLLIDER_RAY_RIGHT, this);
-	playerinfo.collider_ray_left = App->collision->AddCollider(temp, COLLIDER_RAY_LEFT, this);
-	temp = playerinfo.rect;
-	temp.w -= playerinfo.speed.y;
-	playerinfo.collider_ray_down = App->collision->AddCollider(temp, COLLIDER_RAY_DOWN, this);
-	playerinfo.collider_ray_up = App->collision->AddCollider(temp, COLLIDER_RAY_UP, this);
-
+	
 	playerinfo.collider_offset = playerinfo.speed.x;
 	playerinfo.max_speed_y = playerinfo.speed.y;
 	return true;
@@ -265,6 +255,19 @@ bool j1EntityManager::Start()
 		{
 			iPoint pos = { App->collision->colliders[i]->rect.x , App->collision->colliders[i]->rect.y };
 			player_ref = CreateEntity(PLAYER, pos);
+
+			player_ref->collider_identifier = App->collision->AddCollider(player_ref->rect, COLLIDER_NONE, this);
+			player_ref->collider = App->collision->AddCollider(player_ref->rect, COLLIDER_PLAYER, this);
+
+			SDL_Rect temp = player_ref->rect;
+			temp.h -= player_ref->speed.x;
+			player_ref->collider_ray_right = App->collision->AddCollider(player_ref->rect, COLLIDER_RAY_RIGHT, this);
+			player_ref->collider_ray_left = App->collision->AddCollider(player_ref->rect, COLLIDER_RAY_LEFT, this);
+			temp = player_ref->rect;
+			temp.w -= player_ref->speed.y;
+			player_ref->collider_ray_down = App->collision->AddCollider(player_ref->rect, COLLIDER_RAY_DOWN, this);
+			player_ref->collider_ray_up = App->collision->AddCollider(player_ref->rect, COLLIDER_RAY_UP, this);
+
 		}
 	}
 	return true;
@@ -446,21 +449,23 @@ Entity * j1EntityManager::CreateEntity(entityType type, iPoint pos)
 
 	Entity* entity = nullptr;
 	Entity* e = nullptr;
+	Player* pl = nullptr;
 	switch (type)
 	{
 	case entityType::FLOATER:
 		e = &floaterinfo;
-		entity = new Floater(pos, e, enemyTex);
+		entity = new Floater(pos, e, enemyTex,type);
 		break;
 		
 	case entityType::ROLLER:
 		e = &rollerinfo;
-		entity = new Roller(pos, e, enemyTex);
+		entity = new Roller(pos, e, enemyTex,type);
 		break;
 		
 	case entityType::PLAYER:
-		e = &playerinfo;
-		entity = new Player(pos, e, playerTex);
+		pl = &playerinfo;
+		entity = new Player(pos, pl, playerTex, type);
+		n++;
 		break;
 	}
 	//case entityType::STATIC:
@@ -471,4 +476,54 @@ Entity * j1EntityManager::CreateEntity(entityType type, iPoint pos)
 	entities.add(entity);
 
 	return entity;
+}
+
+void j1EntityManager::OnCollision(Collider * c1, Collider * c2)
+{
+	//*collider_identifier = c2;
+
+	if (c1->type == COLLIDER_RAY_RIGHT && c2->type == COLLIDER_FLOOR) {
+		player_ref->can_move_right = false;
+		player_ref->horizontal_collided = true;
+		//LOG("COLLIDED_RAY_RIGHT");
+	}
+	if (c1->type == COLLIDER_RAY_LEFT && c2->type == COLLIDER_FLOOR) {
+		player_ref->can_move_left = false;
+		player_ref->horizontal_collided = true;
+		//LOG("COLLIDED_RAY_LEFT");
+
+	}
+	if (c1->type == COLLIDER_RAY_UP && c2->type == COLLIDER_FLOOR) {
+		player_ref->can_move_up = false;
+		player_ref->can_move_down = true;
+		player_ref->on_floor = false;
+		player_ref->vertical_collided = true;
+		//LOG("COLLIDED_RAY_UP");
+
+	}
+	if (c1->type == COLLIDER_RAY_DOWN && c2->type == COLLIDER_FLOOR) {
+		player_ref->can_move_down = false;
+		player_ref->on_floor = true;
+		player_ref->is_falling = false;
+		player_ref->djump = false;
+		player_ref->aux_djump = false;
+		player_ref->vertical_collided = true;
+		//LOG("COLLIDED_RAY_DOWN");
+
+	}
+	if (!player_ref->can_move_down && !player_ref->can_move_left && !player_ref->can_move_right) {
+		player_ref->can_move_left = true;
+		player_ref->can_move_right = true;
+		player_ref->is_falling = false;
+		player_ref->on_floor = true;
+		//LOG("SPECIAL CASE");
+	}
+
+	if (c1->type == COLLIDER_PLAYER && c2->type == COLLIDER_END && !player_ref->level_finished) {
+		player_ref->level_finished = true;
+	}
+	if (c1->type == COLLIDER_PLAYER && c2->type == COLLIDER_DEATH) {
+		//player_ref->Die();
+	}
+
 }

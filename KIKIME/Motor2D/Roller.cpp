@@ -10,7 +10,7 @@
 #include "Entity.h"
 
 
-Roller::Roller(iPoint pos, Entity* e, SDL_Texture* sprites) : Entity(type)
+Roller::Roller(iPoint pos, Entity* e, SDL_Texture* sprites,entityType type) : Entity(type)
 {
 	name.create("roller");
 

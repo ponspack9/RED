@@ -11,7 +11,7 @@ class Player : public Entity
 public:
 
 	Player() {}
-	Player(iPoint pos, Entity* e, SDL_Texture* sprites);
+	Player(iPoint pos, Entity* e, SDL_Texture* sprites,entityType type);
 	~Player();
 
 	bool PreUpdate();
@@ -26,8 +26,6 @@ public:
 	bool Jump();
 	bool DoubleJump();
 	void PlayerAnimations();
-
-	void OnCollision(Collider* c1, Collider* c2);
 
 public:
 
