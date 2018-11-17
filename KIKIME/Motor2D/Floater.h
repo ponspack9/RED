@@ -1,26 +1,25 @@
 #pragma once
 #include "Entity.h"
+#include "p2DynArray.h"
 
 class Floater : public Entity 
 {
 private:
 
+	p2DynArray<iPoint>* path;
+
 public:
 
 	Floater() {}
-	Floater(iPoint pos, Entity* e, SDL_Texture* sprites);
+	Floater(iPoint pos, Entity* e);
 	~Floater();
 
 	bool Update(float dt);
 	bool PostUpdate();
 	bool CleanUp();
 
-	void Draw();
-	void Move();
 	void Shoot();
 
 	bool UpdateLogic();
 
-public:
-	SDL_Texture * sprites = nullptr;
 };

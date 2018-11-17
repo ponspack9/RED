@@ -9,16 +9,16 @@
 #include "p2Log.h"
 
 
-Floater::Floater(iPoint pos,Entity* e, SDL_Texture* sprites) : Entity(type)
+Floater::Floater(iPoint pos,Entity* e) : Entity(type)
 {
 	name.create("floater");
 	
-	this->sprites = sprites;
 	this->type = type;
 
 	position = pos;
 	rect = { pos.x,pos.y,e->rect.w,e->rect.h };
-	speed = e->speed;
+	speed = { 0,0 };
+	speed_mult = e->speed;
 
 	idle = e->idle;
 	health = e->health;
@@ -39,13 +39,12 @@ Floater::~Floater()
 
 bool Floater::Update(float dt)
 {
-	Move();
+	position += speed;
 	return true;
 }
 
 bool Floater::PostUpdate()
 {
-	Draw();
 	return true;
 }
 
@@ -59,17 +58,8 @@ void Floater::Shoot()
 	//App->particles->AddParticle(App->particles->Eshot1, position.x, position.y + animation->GetCurrentFrame().h / 2, COLLIDER_ENEMY_SHOT);
 }
 
+//This is called 5 times per second / called every ~15 frames
 bool Floater::UpdateLogic()
-{
-	return false;
-}
-
-void Floater::Draw()
-{
-	App->render->Blit(sprites, position.x, position.y, &current_animation->GetCurrentFrame(), 1, 0);
-}
-
-void Floater::Move()
 {
 	//Origin
 	iPoint p = App->render->ScreenToWorld(position.x + App->render->camera.x, position.y + App->render->camera.y);
@@ -78,12 +68,13 @@ void Floater::Move()
 	iPoint a = App->render->ScreenToWorld(App->player->position.x + App->render->camera.x, App->player->position.y + App->render->camera.y);
 	a = App->map->WorldToMap(a.x, a.y);
 
-	App->pathfinding->CreatePath(p, a);
-	p2DynArray<iPoint>* path = App->pathfinding->GetLastPathNotConst();
-	if (first_iteration) {
-		speed = iPoint(path->At(1)->x, path->At(1)->y) - p;
-		first_iteration = false;
+	if (p.DistanceTo(a) >= vision_range) {
+		speed = { 0,0 };
+		return false;
 	}
+
+	App->pathfinding->CreatePath(p, a);
+	path = App->pathfinding->GetLastPathNotConst();
 	//Blit path to screen
 	for (uint i = 0; i < path->Count(); ++i)
 	{
@@ -92,23 +83,29 @@ void Floater::Move()
 	}
 
 	//Move the enemy towards player
-	if (path->Count() > 1 && App->input->GetKey(SDL_SCANCODE_B) == KEY_REPEAT/* && path->Count() < can_see*/) {
+	if (path->Count() > 1) {
+		
+		if (first_iteration) {
+			speed = iPoint(path->At(1)->x, path->At(1)->y) - p;
+			speed = speed * speed_mult;
+			first_iteration = false;
+		}
 
-		if (desired_position == position) 	speed = iPoint(path->At(1)->x, path->At(1)->y) - p;
+		if (speed.x < 0 && desired_position.x >= position.x) 		speed = (iPoint(path->At(1)->x, path->At(1)->y) - p) * speed_mult;
+		else if (speed.x > 0 && desired_position.x <= position.x) 	speed = (iPoint(path->At(1)->x, path->At(1)->y) - p) * speed_mult;
+		if (speed.y < 0 && desired_position.y >= position.y) 		speed = (iPoint(path->At(1)->x, path->At(1)->y) - p) * speed_mult;
+		else if (speed.y > 0 && desired_position.y <= position.y) 	speed = (iPoint(path->At(1)->x, path->At(1)->y) - p) * speed_mult;
 
 		desired_position = App->map->MapToWorld(p.x, p.y);
 
 		if (speed.x > 0 && speed.y == 0) {
-			desired_position = App->map->MapToWorld(p.x +1, p.y);
+			desired_position = App->map->MapToWorld(p.x + 1, p.y);
 		}
 		else if (speed.y > 0 && speed.x == 0) {
-			desired_position = App->map->MapToWorld(p.x, p.y +1);
-		}
-		//Happens only when diagonal movemnt implemented
-		/*if (speed.y > 0 && speed.x > 0) {
-			desired_position = App->map->MapToWorld(p.x+1, p.y + 1);
-		}*/
-		position += speed;
+			desired_position = App->map->MapToWorld(p.x, p.y + 1);
+		}		
 	}
 	path->Clear();
+
+	return false;
 }
