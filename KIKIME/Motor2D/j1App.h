@@ -18,7 +18,7 @@ class j1Map;
 class j1Debug;
 class j1Collision;
 class j1FadeToBlack;
-class j1Player;
+class Player;
 class j1PathFinding;
 class j1EntityManager;
 
@@ -108,7 +108,6 @@ public:
 	j1Debug*			debug;
 	j1Collision*		collision;
 	j1FadeToBlack*		fade;
-	j1Player*			player;
 	j1PathFinding*		pathfinding;
 	j1EntityManager*	entitymanager;
 

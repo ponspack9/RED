@@ -57,38 +57,36 @@
     <!--<level>MapLvl4.tmx</level><!-Does not exist, just for testing-->
   </map>
 
-  <player>
-    <lvl1 x="300" y="300"/>
-    <rect width="64" height="64"/>
-    <speed scrollspeed="4" jumpspeed="5" defaultAnimationSpeed="0.03"/>
-    <gravity value="2"/>
-    <TextureAtlas imagePath="textures/player/sprites.png">
-      <idle height="48" width="39" y="116" x="180"  name="player_idle"/>
-      <idle height="48" width="39" y="58" x="222"   name="player_05"/>
-      <idle height="45" width="39" y="174" x="180"  name="player_12"/>
-      <idle height="45" width="39" y="100" x="124"  name="player_45"/>
-      <doublejump height="38" width="56" y="48" x="0"     name="player_55"/>
-      <jump height="46" width="39" y="0" x="223"    name="player_19"/>
-      <jump height="48" width="39" y="0" x="174"    name="player_37"/>
-      <fall height="38" width="56" y="140" x="0"    name="player_32"/>
-      <fall height="38" width="56" y="48" x="0"     name="player_55"/>
-      <walk height="48" width="52" y="188" x="0"    name="player_67"/>
-      <walk height="48" width="51" y="188" x="62"   name="player_60"/>
-      <walk height="50" width="47" y="161" x="123"  name="player_34"/> 
-      <walk height="51" width="48" y="100" x="66"   name="player_68"/>
-      <death height="46" width="39" y="60" x="173"  name="player_24"/>
-      <god height="40" width="40" y="221" x="123"   name="player_52"/>
-      <SubTexture height="34" width="56" y="96" x="0"     name="player_40"/>
-      <SubTexture height="42" width="49" y="48" x="66"    name="player_16"/>
-      <SubTexture height="38" width="64" y="0" x="0"      name="player_01"/>
-    </TextureAtlas>
-  </player>
-
   <entitymanager>
     <enemypath path="textures/enemies/spritesheet_enemies.png"/>
     <playerpath path="textures/player/sprites.png"/>
-    <updatems time="0.25"/>
+    <player>
+      <rect width="64" height="64"/>
+      <speed scrollspeed="4" jumpspeed="5"/>
+      <gravity value="2"/>
+      <playeranimations defaultAnimationSpeed="0.03">        
+        <idle height="48" width="39" y="116" x="180"  name="player_idle"/>
+        <idle height="48" width="39" y="58" x="222"   name="player_05"/>
+        <idle height="45" width="39" y="174" x="180"  name="player_12"/>
+        <idle height="45" width="39" y="100" x="124"  name="player_45"/>
+        <doublejump height="38" width="56" y="48" x="0"     name="player_55"/>
+        <jump height="46" width="39" y="0" x="223"    name="player_19"/>
+        <jump height="48" width="39" y="0" x="174"    name="player_37"/>
+        <fall height="38" width="56" y="140" x="0"    name="player_32"/>
+        <fall height="38" width="56" y="48" x="0"     name="player_55"/>
+        <walk height="48" width="52" y="188" x="0"    name="player_67"/>
+        <walk height="48" width="51" y="188" x="62"   name="player_60"/>
+        <walk height="50" width="47" y="161" x="123"  name="player_34"/> 
+        <walk height="51" width="48" y="100" x="66"   name="player_68"/>
+        <death height="46" width="39" y="60" x="173"  name="player_24"/>
+        <god height="40" width="40" y="221" x="123"   name="player_52"/>
+        <SubTexture height="34" width="56" y="96" x="0"     name="player_40"/>
+        <SubTexture height="42" width="49" y="48" x="66"    name="player_16"/>
+        <SubTexture height="38" width="64" y="0" x="0"      name="player_01"/>
+      </playeranimations>
+    </player>
     <enemies>      
+      <updatems time="0.20"/>
       <enemyair>
         <size w="32" h="32"/>
         <speed x="2" y="2"/>
@@ -105,32 +103,30 @@
       </enemyground>
       <enemyanimations>
         <speed defaultAnimationSpeed="0.03"/>    
-        <TextureAtlas imagePath="textures/enemies/spritesheet_enemies.png">
-          <FloatIdle   name="enemyFloating_3.png"	x="117"	y="113"	width="40"	height="40"/>
-          <FloatFollow   name="enemyFloating_1.png"	x="110"	y="72"	width="42"	height="40"/>
-          <FloatFollow   name="enemyFloating_4.png"	x="115"	y="0"	width="42"	height="40"/>
-          <FloatFollow   name="enemyFloating_2.png"	x="61"	y="147"	width="55"	height="55"/>
-          <FlyAlt  name="enemyFlyingAlt_1.png"	x="0"	y="203"	width="52"	height="36"/>
-          <FlyAlt  name="enemyFlyingAlt_2.png"	x="0"	y="122"	width="63"	height="24"/>
-          <FlyAlt  name="enemyFlyingAlt_3.png"	x="53"	y="203"	width="52"	height="29"/>
-          <FlyAlt  name="enemyFlyingAlt_4.png"	x="0"	y="173"	width="60"	height="29"/>
-          <Fly     name="enemyFlying_1.png"	x="0"	y="83"	width="64"	height="38"/>
-          <Fly     name="enemyFlying_2.png"	x="0"	y="44"	width="64"	height="38"/>
-          <Fly     name="enemyFlying_3.png"	x="0"	y="0"	width="64"	height="43"/>
-          <Fly     name="enemyFlying_4.png"	x="0"	y="147"	width="60"	height="25"/>
-          <Spikey  name="enemySpikey_1.png"	x="158"	y="0"	width="32"	height="40"/>
-          <Spikey  name="enemySpikey_2.png"	x="112"	y="41"	width="32"	height="28"/>
-          <Spikey  name="enemySpikey_3.png"	x="153"	y="41"	width="32"	height="64"/>
-          <Spikey  name="enemySpikey_4.png"	x="151"	y="196"	width="32"	height="40"/>
-          <Swim    name="enemySwimming_1.png"	x="65"	y="105"	width="44"	height="32"/>
-          <Swim    name="enemySwimming_2.png"	x="106"	y="203"	width="44"	height="32"/>
-          <Swim    name="enemySwimming_3.png"	x="65"	y="39"	width="46"	height="32"/>
-          <Swim    name="enemySwimming_4.png"	x="65"	y="72"	width="44"	height="32"/>
-          <Walk    name="enemyWalking_1.png"	x="158"	y="106"	width="32"	height="44"/>
-          <Walk    name="enemyWalking_2.png"	x="158"	y="151"	width="32"	height="42"/>
-          <Walk    name="enemyWalking_3.png"	x="65"	y="0"	width="49"	height="38"/>
-          <Walk    name="enemyWalking_4.png"	x="117"	y="154"	width="35"	height="41"/>
-        </TextureAtlas>
+        <FloatIdle   name="enemyFloating_3.png"	x="117"	y="113"	width="40"	height="40"/>
+        <FloatFollow   name="enemyFloating_1.png"	x="110"	y="72"	width="42"	height="40"/>
+        <FloatFollow   name="enemyFloating_4.png"	x="115"	y="0"	width="42"	height="40"/>
+        <FloatFollow   name="enemyFloating_2.png"	x="61"	y="147"	width="55"	height="55"/>
+        <FlyAlt  name="enemyFlyingAlt_1.png"	x="0"	y="203"	width="52"	height="36"/>
+        <FlyAlt  name="enemyFlyingAlt_2.png"	x="0"	y="122"	width="63"	height="24"/>
+        <FlyAlt  name="enemyFlyingAlt_3.png"	x="53"	y="203"	width="52"	height="29"/>
+        <FlyAlt  name="enemyFlyingAlt_4.png"	x="0"	y="173"	width="60"	height="29"/>
+        <Fly     name="enemyFlying_1.png"	x="0"	y="83"	width="64"	height="38"/>
+        <Fly     name="enemyFlying_2.png"	x="0"	y="44"	width="64"	height="38"/>
+        <Fly     name="enemyFlying_3.png"	x="0"	y="0"	width="64"	height="43"/>
+        <Fly     name="enemyFlying_4.png"	x="0"	y="147"	width="60"	height="25"/>
+        <Spikey  name="enemySpikey_1.png"	x="158"	y="0"	width="32"	height="40"/>
+        <Spikey  name="enemySpikey_2.png"	x="112"	y="41"	width="32"	height="28"/>
+        <Spikey  name="enemySpikey_3.png"	x="153"	y="41"	width="32"	height="64"/>
+        <Spikey  name="enemySpikey_4.png"	x="151"	y="196"	width="32"	height="40"/>
+        <Swim    name="enemySwimming_1.png"	x="65"	y="105"	width="44"	height="32"/>
+        <Swim    name="enemySwimming_2.png"	x="106"	y="203"	width="44"	height="32"/>
+        <Swim    name="enemySwimming_3.png"	x="65"	y="39"	width="46"	height="32"/>
+        <Swim    name="enemySwimming_4.png"	x="65"	y="72"	width="44"	height="32"/>
+        <Walk    name="enemyWalking_1.png"	x="158"	y="106"	width="32"	height="44"/>
+        <Walk    name="enemyWalking_2.png"	x="158"	y="151"	width="32"	height="42"/>
+        <Walk    name="enemyWalking_3.png"	x="65"	y="0"	width="49"	height="38"/>
+        <Walk    name="enemyWalking_4.png"	x="117"	y="154"	width="35"	height="41"/>        
       </enemyanimations>
     </enemies>
   </entitymanager>

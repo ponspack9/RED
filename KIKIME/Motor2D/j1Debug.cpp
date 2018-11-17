@@ -8,8 +8,9 @@
 #include "j1Collision.h"
 #include "j1Scene.h"
 #include "j1FadeToBlack.h"
-#include "j1Player.h"
+#include "Player.h"
 #include "j1Debug.h"
+#include "j1EntityManager.h"
 
 
 
@@ -79,25 +80,25 @@ bool j1Debug::Update(float dt)
 
 	if (App->input->GetKey(SDL_SCANCODE_F10) == KEY_DOWN)
 	{
-		if (!App->player->godmode) {
-			App->player->godmode = true;
-			if (App->player->player_collider) App->player->player_collider->type = COLLIDER_NONE;
+		if (!App->entitymanager->player_ref->godmode) {
+			App->entitymanager->player_ref->godmode = true;
+			if (App->entitymanager->player_ref->collider) App->entitymanager->player_ref->collider->type = COLLIDER_NONE;
 		}
 		else {
-			App->player->godmode = false;
-			if (App->player->player_collider) App->player->player_collider->type = COLLIDER_PLAYER;
+			App->entitymanager->player_ref->godmode = false;
+			if (App->entitymanager->player_ref->collider) App->entitymanager->player_ref->collider->type = COLLIDER_PLAYER;
 		}
 	}
 	
 	//////////////// spawn a debug cvollider in mousepos
-	if (App->input->GetMouseButtonDown(SDL_BUTTON_RIGHT) == KEY_DOWN) {
+	/*if (App->input->GetMouseButtonDown(SDL_BUTTON_RIGHT) == KEY_DOWN) {
 		LOG("RIGHT CLICK");
 		
 		if (!debug_col) {
 			int x, y;
 			App->input->GetMousePosition(x, y);
 			SDL_Rect r{ x,y,32,32 };
-			debug_col = App->collision->AddCollider(r, COLLIDER_PLAYER, App->player);
+			debug_col = App->collision->AddCollider(r, COLLIDER_PLAYER, App->entitymanager->player_ref);
 			debug_bool = true;
 		}
 	}
@@ -105,7 +106,7 @@ bool j1Debug::Update(float dt)
 		int x, y;
 		App->input->GetMousePosition(x, y);
 		debug_col->SetPos(x, y);
-	}
+	}*/
 	/////////////////
 
 	//// Camera drag through mouse click -> useless with new cameraFollow
