@@ -50,13 +50,13 @@ bool Roller::PostUpdate()
 	return true;
 }
 
-bool Roller::UpdateLogic()
+bool Roller::UpdateLogic(iPoint pos)
 {
 	//Origin
 	iPoint p = App->render->ScreenToWorld(position.x + App->render->camera.x, position.y + App->render->camera.y);
 	p = App->map->WorldToMap(p.x, p.y);
 	//Destination
-	iPoint a = App->render->ScreenToWorld(App->player->position.x + App->render->camera.x, App->player->position.y + App->render->camera.y);
+	iPoint a = App->render->ScreenToWorld(pos.x + App->render->camera.x, pos.y + App->render->camera.y);
 	a = App->map->WorldToMap(a.x, a.y);
 	/*if (App->pathfinding->IsWalkable(p) && App->pathfinding->IsWalkable({p.x,p.y+1})) {
 		speed = -speed;

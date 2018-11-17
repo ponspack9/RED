@@ -18,6 +18,6 @@ public:
 	bool Update(float dt);
 	bool PostUpdate();
 
-	bool UpdateLogic();
+	bool UpdateLogic(iPoint pos);
 
 };

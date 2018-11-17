@@ -49,7 +49,7 @@ public:
 	const Collider* GetCollider() const { return collider; }
 	 //Mix_Chunk* Explosion = nullptr;
 
-	virtual bool UpdateLogic() { return true; }
+	virtual bool UpdateLogic(iPoint pos) { return true; }
 
 public:
 
@@ -64,7 +64,6 @@ public:
 	iPoint			speed;
 	iPoint			speed_mult;
 	SDL_Rect		rect;	
-	iPoint			speed;
 	iPoint			position;
 	Collider*		collider;
 	entityType		type;

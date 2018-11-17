@@ -118,16 +118,11 @@ bool Player::PostUpdate()
 
 	if (dead)
 	{
+		current_animation = &death;
 		App->SoftRestartLevel();
 		dead = false;
 	}
 	return true;
-}
-
-void Player::Die()
-{
-	dead = true;
-	current_animation = &death;
 }
 
 void Player::Draw()
@@ -183,7 +178,7 @@ void Player::Move()
 	dy = 0;
 	if (App->input->GetKey(SDL_SCANCODE_Q) == KEY_DOWN)
 	{
-		Die();
+		dead = true;
 	}
 	if (App->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT && can_move_right)
 	{

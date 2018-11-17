@@ -64,7 +64,7 @@ bool j1EntityManager::Awake(pugi::xml_node & config)
 	SDL_Rect r;
 	float node_speed = -1;
 
-	pugi::xml_node n = config.child("enemies").child("enemyanimations").child("TextureAtlas").child("FloatIdle");
+	pugi::xml_node n = config.child("enemies").child("enemyanimations").child("FloatIdle");
 	for (n; n; n = n.next_sibling("FloatIdle"))
 	{
 		r.x = n.attribute("x").as_int();
@@ -427,7 +427,7 @@ void j1EntityManager::UpdateAll(float dt,bool run)
 		if (item->data->type == entityType::PLAYER)
 		{
 			item->data->Update(dt);
-			item->data->Draw(playerTex);
+			//item->data->Draw(playerTex);
 		}
 		else
 		{
@@ -439,7 +439,7 @@ void j1EntityManager::UpdateAll(float dt,bool run)
 	{
 		for (item = entities.start; item != nullptr; item = item->next)
 		{
-			item->data->UpdateLogic();
+			item->data->UpdateLogic(player_ref->position);
 		}
 	}
 }
@@ -525,7 +525,7 @@ void j1EntityManager::OnCollision(Collider * c1, Collider * c2)
 		player_ref->level_finished = true;
 	}
 	if (c1->type == COLLIDER_PLAYER && c2->type == COLLIDER_DEATH) {
-		//player_ref->Die();
+		player_ref->dead = true;
 	}
 
 }

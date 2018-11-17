@@ -18,7 +18,6 @@ public:
 	bool Update(float dt);
 	bool PostUpdate();
 
-	void Die();
 	void Draw();
 	bool MovePlayer(float vel_x, float vel_y);
 	void Move();
