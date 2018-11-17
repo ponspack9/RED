@@ -13,7 +13,7 @@
 #include "j1Debug.h"
 #include "j1Collision.h"
 #include "j1FadeToBlack.h"
-#include "j1Player.h"
+#include "Player.h"
 #include "j1App.h"
 #include "j1FileSystem.h"
 #include "j1EntityManager.h"
@@ -40,7 +40,6 @@ j1App::j1App(int argc, char* args[]) : argc(argc), args(args)
 	debug			= new j1Debug();
 	collision		= new j1Collision();
 	fade			= new j1FadeToBlack();
-	player			= new j1Player();
 	pathfinding		= new j1PathFinding();
 	entitymanager	= new j1EntityManager();
 
@@ -55,7 +54,6 @@ j1App::j1App(int argc, char* args[]) : argc(argc), args(args)
 	AddModule(scene);
 	AddModule(debug);
 	AddModule(collision);
-	AddModule(player);
 	AddModule(fade);
 	AddModule(entitymanager);
 	AddModule(pathfinding);
@@ -464,8 +462,8 @@ bool j1App::SoftRestartLevel()
 {
 	BROFILER_CATEGORY("App->SoftRestartLevel", Profiler::Color::Red)
 	render->ResetCamera();
-	player->position.x = map->start_collider->rect.x;
-	player->position.y = map->start_collider->rect.y;
+	entitymanager->player_ref->position.x = map->start_collider->rect.x;
+	entitymanager->player_ref->position.y = map->start_collider->rect.y;
 	return true;
 }
 

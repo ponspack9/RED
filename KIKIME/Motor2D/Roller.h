@@ -11,16 +11,13 @@ private:
 public:
 
 	Roller() {}
-	Roller(iPoint pos, Entity*e);
+	Roller(iPoint pos, Entity*e,entityType type);
+
 	~Roller();
 
 	bool Update(float dt);
 	bool PostUpdate();
-	bool CleanUp();
-
-	void Shoot();
 
 	bool UpdateLogic();
 
-public: 
 };

@@ -2,7 +2,7 @@
 #include "j1App.h"
 #include "j1Input.h"
 #include "j1Pathfinding.h"
-#include "j1Player.h"
+#include "Player.h"
 #include "j1Map.h"
 #include "j1Scene.h"
 #include "j1Render.h"
@@ -10,7 +10,8 @@
 #include "Entity.h"
 
 
-Roller::Roller(iPoint pos, Entity* e) : Entity(type)
+
+Roller::Roller(iPoint pos, Entity* e,entityType type) : Entity(type)
 {
 	name.create("roller");
 
@@ -48,13 +49,6 @@ bool Roller::PostUpdate()
 {
 	return true;
 }
-
-bool Roller::CleanUp()
-{
-	return true;
-}
-
-
 
 bool Roller::UpdateLogic()
 {
@@ -112,10 +106,6 @@ bool Roller::UpdateLogic()
 	//else { speed = { 0,0 }; }
 	path->Clear();
 	return true;
-}
-
-void Roller::Shoot()
-{
 
 }
 

@@ -11,15 +11,12 @@ private:
 public:
 
 	Floater() {}
-	Floater(iPoint pos, Entity* e);
+	Floater(iPoint pos, Entity* e,entityType type);
+
 	~Floater();
 
 	bool Update(float dt);
 	bool PostUpdate();
-	bool CleanUp();
 
-	void Shoot();
-
-	bool UpdateLogic();
-
+	bool UpdateLogic(iPoint pos);
 };

@@ -30,20 +30,16 @@ public:
 	Entity(){}
 
 	Entity(entityType type)
-	{
-		
+	{		
 	}
 
 	~Entity()
 	{
-
 	}
 
+	virtual bool PreUpdate() { return true; }
 	virtual bool Update(float dt) { return true; }
 	virtual bool PostUpdate() { return true; }
-	virtual bool CleanUp() { return true; }
-	virtual bool Save(pugi::xml_node & node, const p2List<Entity*>* entities) const { return true; }
-	virtual bool Load(pugi::xml_node & node, p2List<Entity*>* entities) { return true; }
 
 	virtual void Draw(SDL_Texture *sprites) {
 		App->render->Blit(sprites, position.x, position.y, &current_animation->GetCurrentFrame(), 1, 0);
@@ -57,6 +53,9 @@ public:
 
 public:
 
+	////////// GENERAL /////////
+
+
 	p2SString		name;
 
 	int				health;
@@ -64,26 +63,70 @@ public:
 	int				vision_range;
 	iPoint			speed;
 	iPoint			speed_mult;
-	//p2List<iPoint>spawns;
 	SDL_Rect		rect;	
+	iPoint			speed;
 	iPoint			position;
+	Collider*		collider;
+	entityType		type;
 
-	Animation idle;
-	Animation follow;
-	Animation die;
-	//Animation shoot;
+	/////////////// ENEMIES /////////////////
 
-	entityType	type;
+	Animation	 follow;
+	float		 def_anim_speed_enem;
 
-	bool first_iteration = true;
+	bool		 first_iteration = true;
 
-	iPoint desired_position;
-	Animation* current_animation = nullptr;
+	iPoint		 desired_position;
 
-	Collider* collider;
+	///////////////// PLAYER ///////////////////
+	//fPoint position;
+	//fPoint speed;
+	Animation*	 current_animation = nullptr;
+	Animation	 idle;
+	Animation	 walk;
+	Animation	 jump;
+	Animation	 doublejump;
+	Animation	 fall;
+	Animation	 death;
+	Animation	 god;
+	float        def_anim_speed;
+	SDL_Rect	 anim_rect;
+	float		 dx = 0;
+	float		 dy = 0;
+	float		 falling_y;
+	int			 max_speed_y;
+	float		 gravity;
+	float		 jumpspeed;
 
-	p2SString texture_path;
-	SDL_Texture* sprites;
-	
-	float def_anim_speed_enem;
+
+	//Animations
+	bool	level_finished;
+	bool	on_floor;
+	bool	dead;
+	bool	move_left;
+	bool	move_right;
+	bool	is_jumping;
+	bool	is_falling;
+	bool	djump;
+	bool	aux_djump;
+	bool	top, bottom, left, right;
+	bool	can_left, can_right;
+	bool	godmode = false;
+
+	//NEW approach
+	bool	can_move_right;
+	bool	can_move_left;
+	bool	can_move_up;
+	bool	can_move_down;
+
+	bool	vertical_collided;
+	bool	horizontal_collided;
+
+	Collider*	collider_ray_right;
+	Collider*	collider_ray_left;
+	Collider*	collider_ray_up;
+	Collider*	collider_ray_down;
+	Collider*	collider_identifier;
+
+	int			collider_offset = 0;
 };

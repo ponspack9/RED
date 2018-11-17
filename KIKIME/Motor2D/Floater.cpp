@@ -2,14 +2,13 @@
 #include "Floater.h"
 #include "j1Input.h"
 #include "j1Pathfinding.h"
-#include "j1Player.h"
+#include "Player.h"
 #include "j1Map.h"
 #include "j1Scene.h"
 #include "j1Render.h"
 #include "p2Log.h"
 
-
-Floater::Floater(iPoint pos,Entity* e) : Entity(type)
+Floater::Floater(iPoint pos,Entity* e,entityType type) : Entity(type)
 {
 	name.create("floater");
 	
@@ -46,16 +45,6 @@ bool Floater::Update(float dt)
 bool Floater::PostUpdate()
 {
 	return true;
-}
-
-bool Floater::CleanUp()
-{
-	return true;
-}
-
-void Floater::Shoot() 
-{
-	//App->particles->AddParticle(App->particles->Eshot1, position.x, position.y + animation->GetCurrentFrame().h / 2, COLLIDER_ENEMY_SHOT);
 }
 
 //This is called 5 times per second / called every ~15 frames

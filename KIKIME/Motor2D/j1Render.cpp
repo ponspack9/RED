@@ -3,8 +3,9 @@
 #include "j1App.h"
 #include "j1Window.h"
 #include "j1Render.h"
-#include "j1Player.h"
+#include "Player.h"
 #include "j1Map.h"
+#include "j1EntityManager.h"
 
 #define VSYNC false
 
@@ -164,8 +165,8 @@ bool j1Render::MoveCamera(const int & vel_x, const int & vel_y)
 void j1Render::FollowPlayer()
 {
 	BROFILER_CATEGORY("Render->FollowCamera", Profiler::Color::Beige)
-	camera.x = -App->player->position.x + camera.w / 3;
-	camera.y = -App->player->position.y + camera.h / 2;
+	camera.x = -App->entitymanager->player_ref->position.x + camera.w / 3;
+	camera.y = -App->entitymanager->player_ref->position.y + camera.h / 2;
 
 	if (camera.x > 0) //left limit
 	{

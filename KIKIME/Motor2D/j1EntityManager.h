@@ -9,6 +9,7 @@
 #include "Entity.h"
 #include "Floater.h"
 #include "Roller.h"
+#include "Player.h"
 
 
 
@@ -32,21 +33,27 @@ public:
 	//Controllers
 	bool Awake(pugi::xml_node& config);
 	bool Start();
+	bool PreUpdate();
 	bool Update(float dt);
 	bool PostUpdate();
 	bool CleanUp();
 	bool Save(pugi::xml_node &node);
 	bool Load(pugi::xml_node &node);
 
+	bool Restart();
+
 	void UpdateAll(float dt, bool run);
 
 	//Creators
 
 	Entity*	 CreateEntity(entityType type, iPoint pos);
-	bool	 DeleteEntity(Entity* entity);	
+
+	void OnCollision(Collider * c1, Collider * c2);
+
+
 
 public:
-
+	int n = 0;
 	
 	SDL_Texture*	enemyTex = nullptr;
 	SDL_Texture*	playerTex = nullptr;
@@ -56,6 +63,8 @@ public:
 
 	Floater		    floaterinfo;
 	Roller			rollerinfo;
-	//Entity*			playerinfo = new Entity();
+	Player			playerinfo;
+
+	Entity*			player_ref = nullptr;
 };
 

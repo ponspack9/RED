@@ -9,7 +9,7 @@
 #include "j1Scene.h"
 #include "j1Collision.h"
 #include "j1Map.h"
-#include "j1Player.h"
+#include "Player.h"
 #include "j1FadeToBlack.h"
 #include "j1EntityManager.h"
 #include "j1Pathfinding.h"
@@ -51,7 +51,7 @@ bool j1Scene::Start()
 	debug_tex = App->tex->Load("maps/path3.png");
 	
 	App->render->ResetCamera();
-	App->player->Start();
+	//App->entitymanager->Start();
 	
 
 	return ret;
