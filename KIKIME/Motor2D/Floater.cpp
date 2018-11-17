@@ -28,6 +28,8 @@ Floater::Floater(iPoint pos,Entity* e, SDL_Texture* sprites) : Entity(type)
 	current_animation = &idle;
 	LOG("Floater Created");
 	LOG("pos %d, %d",position.x,position.y);
+
+	App->collision->AddCollider(rect, COLLIDER_DEATH);
 }
 
 Floater::~Floater()
@@ -37,9 +39,8 @@ Floater::~Floater()
 
 bool Floater::Update(float dt)
 {
-	bool ret = true;
 	Move();
-	return ret;
+	return true;
 }
 
 bool Floater::PostUpdate()

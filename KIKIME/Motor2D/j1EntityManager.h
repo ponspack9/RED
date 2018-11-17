@@ -14,7 +14,7 @@
 
 //class Entity;
 struct SDL_Texture;
-struct Collider;
+//struct Collider;
 
 class j1EntityManager : public j1Module 
 {

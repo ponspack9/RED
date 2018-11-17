@@ -96,10 +96,12 @@ public:
 	//int polylines[MAX_LINES][MAX_LINE_LENGTH];
 	//int n_lines = 0;
 	//int n_lines_col[MAX_LINES];
+public:
+
+	Collider * colliders[MAX_COLLIDERS];
 
 private:
 
-	Collider * colliders[MAX_COLLIDERS];
 	bool matrix[COLLIDER_MAX][COLLIDER_MAX] = { false };
 };
 

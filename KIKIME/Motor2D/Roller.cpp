@@ -29,6 +29,8 @@ Roller::Roller(iPoint pos, Entity* e, SDL_Texture* sprites) : Entity(type)
 	current_animation = &idle;
 	LOG("Roller Created");
 	LOG("pos %d, %d", position.x, position.y);
+
+	App->collision->AddCollider(rect, COLLIDER_DEATH);
 }
 
 Roller::~Roller()

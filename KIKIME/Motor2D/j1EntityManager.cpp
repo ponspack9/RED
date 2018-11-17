@@ -108,9 +108,27 @@ bool j1EntityManager::Awake(pugi::xml_node & config)
 
 bool j1EntityManager::Start()
 {
+	//Loading textures
 	enemyTex = App->tex->Load(enemyPath.GetString());
 	playerTex = App->tex->Load(playerPath.GetString());
 
+	//Creating all entities
+	for (int i = 0; App->collision->colliders[i] != NULL; i++)
+	{
+		if (App->collision->colliders[i]->type == COLLIDER_SPAWN)
+		{
+			if (App->collision->colliders[i]->rect.w > App->collision->colliders[i]->rect.h)
+			{
+				iPoint pos = { App->collision->colliders[i]->rect.x , App->collision->colliders[i]->rect.y };
+				CreateEntity(FLOATER, pos);
+			}
+			if (App->collision->colliders[i]->rect.w < App->collision->colliders[i]->rect.h)
+			{
+				iPoint pos = { App->collision->colliders[i]->rect.x , App->collision->colliders[i]->rect.y + (App->collision->colliders[i]->rect.h / 2) };
+				CreateEntity(ROLLER, pos);
+			}
+		}
+	}
 	return true;
 }
 
