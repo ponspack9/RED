@@ -6,6 +6,7 @@
 #include "p2Point.h"
 #include "p2Log.h"
 #include "j1App.h"
+#include "j1Render.h"
 #include "j1Collision.h"
 
 #define MAX_ENEMIES 100
@@ -40,7 +41,9 @@ public:
 	virtual bool Update(float dt) { return true; }
 	virtual bool PostUpdate() { return true; }
 
-	virtual void Draw() {}
+	virtual void Draw(SDL_Texture *sprites) {
+		App->render->Blit(sprites, position.x, position.y, &current_animation->GetCurrentFrame(), 1, 0);
+	}
 	void OnCollision(Collider* c1, Collider* c2) {}
 
 	const Collider* GetCollider() const { return collider; }
@@ -52,7 +55,14 @@ public:
 
 	////////// GENERAL /////////
 
+
 	p2SString		name;
+
+	int				health;
+	bool			alive;
+	int				vision_range;
+	iPoint			speed;
+	iPoint			speed_mult;
 	SDL_Rect		rect;	
 	iPoint			speed;
 	iPoint			position;
@@ -61,11 +71,7 @@ public:
 
 	/////////////// ENEMIES /////////////////
 
-	int			 health;
-	bool		 alive;
-	int			 vision_range;
 	Animation	 follow;
-	//Animation  shoot;
 	float		 def_anim_speed_enem;
 
 	bool		 first_iteration = true;

@@ -427,10 +427,12 @@ void j1EntityManager::UpdateAll(float dt,bool run)
 		if (item->data->type == entityType::PLAYER)
 		{
 			item->data->Update(dt);
+			item->data->Draw(playerTex);
 		}
 		else
 		{
 			item->data->Update(dt);
+			item->data->Draw(enemyTex);
 		}
 	}
 	if (run)
@@ -454,12 +456,12 @@ Entity * j1EntityManager::CreateEntity(entityType type, iPoint pos)
 	{
 	case entityType::FLOATER:
 		e = &floaterinfo;
-		entity = new Floater(pos, e, enemyTex,type);
+		entity = new Floater(pos, e,type);
 		break;
 		
 	case entityType::ROLLER:
 		e = &rollerinfo;
-		entity = new Roller(pos, e, enemyTex,type);
+		entity = new Roller(pos, e, type);
 		break;
 		
 	case entityType::PLAYER:

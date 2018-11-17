@@ -10,16 +10,17 @@
 #include "Entity.h"
 
 
-Roller::Roller(iPoint pos, Entity* e, SDL_Texture* sprites,entityType type) : Entity(type)
+
+Roller::Roller(iPoint pos, Entity* e,entityType type) : Entity(type)
 {
 	name.create("roller");
 
-	this->sprites = sprites;
 	this->type = type;
 
 	position = pos;
 	rect = { pos.x,pos.y,e->rect.w,e->rect.h };
-	speed = e->speed;
+	speed = { 0,0 };
+	speed_mult = e->speed;
 
 	idle = e->idle;
 	health = e->health;
@@ -40,70 +41,72 @@ Roller::~Roller()
 
 bool Roller::Update(float dt)
 {
+	position += speed;
 	return true;
 }
 
 bool Roller::PostUpdate()
 {
-	Draw();
 	return true;
-}
-
-void Roller::Draw()
-{
-	App->render->Blit(sprites, position.x, position.y, &current_animation->GetCurrentFrame(), 1, 0);
-}
-
-void Roller::Move()
-{
-	////Origin
-	//iPoint p = App->render->ScreenToWorld(position.x + App->render->camera.x, position.y + App->render->camera.y);
-	//p = App->map->WorldToMap(p.x, p.y);
-	////Destination
-	//iPoint a = App->render->ScreenToWorld(App->player->position.x + App->render->camera.x, App->player->position.y + App->render->camera.y);
-	//a = App->map->WorldToMap(a.x, a.y);
-
-	//App->pathfinding->CreatePath(p, a, true);
-	//p2DynArray<iPoint>* path = App->pathfinding->GetLastPathNotConst();
-	//if (first_iteration && path->Count() > 1) {
-	//	speed = iPoint(path->At(1)->x, path->At(1)->y) - p;
-	//	first_iteration = false;
-	//}
-	////Blit path to screen
-	//for (uint i = 0; i < path->Count(); ++i)
-	//{
-	//	iPoint pos = App->map->MapToWorld(path->At(i)->x, path->At(i)->y);
-	//	App->render->Blit(App->scene->debug_tex, pos.x, pos.y);
-	//}
-
-	////Move the enemy towards player
-	//if (path->Count() > 1 && App->input->GetKey(SDL_SCANCODE_B) == KEY_REPEAT/* && path->Count() < can_see*/) {
-
-	//	if (desired_position == position) 	speed = iPoint(path->At(1)->x, path->At(1)->y) - p;
-
-	//	desired_position = App->map->MapToWorld(p.x, p.y);
-
-	//	if (speed.x > 0 && speed.y == 0) {
-	//		desired_position = App->map->MapToWorld(p.x + 1, p.y);
-	//	}
-	//	else if (speed.y > 0 && speed.x == 0) {
-	//		desired_position = App->map->MapToWorld(p.x, p.y + 1);
-	//	}
-	//	//Happens only when diagonal movemnt implemented
-	//	/*if (speed.y > 0 && speed.x > 0) {
-	//	desired_position = App->map->MapToWorld(p.x+1, p.y + 1);
-	//	}*/
-	//	position += speed;
-	//}
-	//path->Clear();
-}
-
-void Roller::Shoot()
-{
-
 }
 
 bool Roller::UpdateLogic()
 {
-	return false;
+	//Origin
+	iPoint p = App->render->ScreenToWorld(position.x + App->render->camera.x, position.y + App->render->camera.y);
+	p = App->map->WorldToMap(p.x, p.y);
+	//Destination
+	iPoint a = App->render->ScreenToWorld(App->player->position.x + App->render->camera.x, App->player->position.y + App->render->camera.y);
+	a = App->map->WorldToMap(a.x, a.y);
+	/*if (App->pathfinding->IsWalkable(p) && App->pathfinding->IsWalkable({p.x,p.y+1})) {
+		speed = -speed;
+
+	}*/
+	if (!App->pathfinding->IsWalkable(a) || App->pathfinding->IsWalkable({ a.x,a.y + 2 })) {
+		LOG("a [%d,%d]", a.x, a.y);
+		speed = { 0,0 };
+		return false;
+	}
+	if (p.DistanceTo(a) >= vision_range) {
+		speed = { 0,0 };
+		return false;
+	}
+
+	App->pathfinding->CreatePath(p, a, true);
+	path = App->pathfinding->GetLastPathNotConst();
+	//Blit path to screen
+	for (uint i = 0; i < path->Count(); ++i)
+	{
+		iPoint pos = App->map->MapToWorld(path->At(i)->x, path->At(i)->y);
+		App->render->Blit(App->scene->debug_tex, pos.x, pos.y);
+	}
+
+	if (path->Count() > 1) {
+
+		if (first_iteration) {
+			speed = iPoint(path->At(1)->x, path->At(1)->y) - p;
+			speed = speed * speed_mult;
+			first_iteration = false;
+		}
+
+		if (speed.x < 0 && desired_position.x >= position.x) 		speed = (iPoint(path->At(1)->x, path->At(1)->y) - p) * speed_mult;
+		else if (speed.x > 0 && desired_position.x <= position.x) 	speed = (iPoint(path->At(1)->x, path->At(1)->y) - p) * speed_mult;
+		if (speed.y < 0 && desired_position.y >= position.y) 		speed = (iPoint(path->At(1)->x, path->At(1)->y) - p) * speed_mult;
+		else if (speed.y > 0 && desired_position.y <= position.y) 	speed = (iPoint(path->At(1)->x, path->At(1)->y) - p) * speed_mult;
+
+		desired_position = App->map->MapToWorld(p.x, p.y);
+
+		if (speed.x > 0 && speed.y == 0) {
+			desired_position = App->map->MapToWorld(p.x + 1, p.y);
+		}
+		else if (speed.y > 0 && speed.x == 0) {
+			desired_position = App->map->MapToWorld(p.x, p.y + 1);
+		}
+	}
+	//else { speed = { 0,0 }; }
+	path->Clear();
+	return true;
+
 }
+
+

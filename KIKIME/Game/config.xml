@@ -90,14 +90,14 @@
       <enemyair>
         <size w="32" h="32"/>
         <speed x="2" y="2"/>
-        <range value="100"/>
+        <range value="10"/>
         <health hp="1"/>
         <alive value="true"/>             
       </enemyair>
       <enemyground>
         <size w="32" h="32"/>
         <speed x="3" y="3"/>
-        <range value="100"/>
+        <range value="10"/>
         <health hp="2"/>
         <alive value="true"/>        
       </enemyground>

@@ -48,6 +48,16 @@ public:
 
 		return(r);
 	}
+	// Negate values
+	p2Point operator -() const
+	{
+		p2Point r;
+
+		r.x = -x;
+		r.y = -y;
+
+		return(r);
+	}
 
 	p2Point operator + (const p2Point &v) const
 	{
@@ -55,6 +65,15 @@ public:
 
 		r.x = x + v.x;
 		r.y = y + v.y;
+
+		return(r);
+	}
+	p2Point operator * (const p2Point &v) const
+	{
+		p2Point r;
+
+		r.x = x * v.x;
+		r.y = y * v.y;
 
 		return(r);
 	}
