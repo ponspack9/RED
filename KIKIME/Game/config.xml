@@ -109,7 +109,7 @@
         <FloatIdle   name="enemyFloating_3.png"	  x="96"	y="32"	width="32"	height="32"/>
         <FloatFollow   name="enemyFloating_1.png"	x="64"	y="32"	width="32"	height="32"/>
         <FloatFollow   name="enemyFloating_4.png"	x="96"	y="0"	  width="32"	height="32"/>
-        <FloatFollow   name="enemyFloating_2.png"	x="128"	y="0"	width="32"	height="32"/>
+        <FloatDead   name="enemyFloating_2.png"	x="128"	y="0"	width="32"	height="32"/>
         <FlyAlt  name="enemyFlyingAlt_1.png"	x="0"	y="203"	      width="32"	height="32"/>
         <FlyAlt  name="enemyFlyingAlt_2.png"	x="0"	y="122"	      width="32"	height="32"/>
         <FlyAlt  name="enemyFlyingAlt_3.png"	x="53"	y="203"	    width="32"	height="32"/>

@@ -13,13 +13,16 @@ Floater::Floater(iPoint pos,Entity* e,entityType type) : Entity(type)
 	name.create("floater");
 	
 	this->type = type;
+	return_origin = false;
 
 	position = pos;
+	initial_pos = pos;
 	rect = { pos.x,pos.y,e->rect.w,e->rect.h };
 	speed = { 0,0 };
 	speed_mult = e->speed;
 
 	idle = e->idle;
+	follow = e->follow;
 	health = e->health;
 	alive = e->alive;
 	vision_range = e->vision_range;
@@ -38,7 +41,15 @@ Floater::~Floater()
 
 bool Floater::Update(float dt)
 {
+	/*if (speed.x < 0 && desired_position.x >= position.x)	  speed = next_speed;
+	else if (speed.x > 0 && desired_position.x <= position.x) speed = next_speed;
+	if (speed.y < 0 && desired_position.y >= position.y)	  speed = next_speed;
+	else if (speed.y > 0 && desired_position.y <= position.y) speed = next_speed;*/
 	position += speed;
+
+	/*if (App->pathfinding->IsWalkable(position)) {
+
+	}*/
 	return true;
 }
 
@@ -57,23 +68,30 @@ bool Floater::UpdateLogic(iPoint pos)
 	iPoint a = App->render->ScreenToWorld(pos.x + App->render->camera.x, pos.y + App->render->camera.y);
 	a = App->map->WorldToMap(a.x, a.y);
 
-	if (p.DistanceTo(a) >= vision_range) {
-		speed = { 0,0 };
-		return false;
+	if (p.DistanceTo(a) >= vision_range || !App->pathfinding->IsWalkable(a)) {
+		return_origin = true;
+		a = App->render->ScreenToWorld(initial_pos.x + App->render->camera.x,initial_pos.y + App->render->camera.y);
+		a = App->map->WorldToMap(a.x, a.y);
+		first_iteration = true;
 	}
 
-	App->pathfinding->CreatePath(p, a);
+	if (App->pathfinding->CreatePath(p, a) == -1) {
+		//origin not walkable
+		speed = -speed;
+	}
 	path = App->pathfinding->GetLastPathNotConst();
+
 	//Blit path to screen
-	for (uint i = 0; i < path->Count(); ++i)
-	{
-		iPoint pos = App->map->MapToWorld(path->At(i)->x, path->At(i)->y);
-		App->render->Blit(App->scene->debug_tex, pos.x, pos.y);
+	if (App->debug->show_colliders){
+		for (uint i = 0; i < path->Count(); ++i)
+		{
+			iPoint pos = App->map->MapToWorld(path->At(i)->x, path->At(i)->y);
+			App->render->Blit(App->scene->debug_tex, pos.x, pos.y);
+		}
 	}
 
-	//Move the enemy towards player
-	if (path->Count() > 1) {
-		
+	//Set the speed of the enemy
+	if (path->Count() > 1 && a != p) {
 		if (first_iteration) {
 			speed = iPoint(path->At(1)->x, path->At(1)->y) - p;
 			speed = speed * speed_mult;
@@ -92,9 +110,21 @@ bool Floater::UpdateLogic(iPoint pos)
 		}
 		else if (speed.y > 0) {
 			desired_position = App->map->MapToWorld(p.x, p.y + 1);
-		}		
+		}
+		/*if (path->Count() > 2) {
+			next_speed = iPoint(path->At(2)->x, path->At(2)->y) - iPoint(path->At(1)->x, path->At(1)->y);
+		}
+		else { next_speed = { 0,0 }; }*/
+	}
+	else { speed = { 0,0 }; }
+	if (return_origin) {
+		current_animation = &idle;
+	}
+	else {
+		current_animation = &follow;
 	}
 	path->Clear();
+	return_origin = false;
 
 	return false;
 }

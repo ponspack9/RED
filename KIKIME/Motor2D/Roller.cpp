@@ -14,10 +14,11 @@
 Roller::Roller(iPoint pos, Entity* e,entityType type) : Entity(type)
 {
 	name.create("roller");
-
+	return_origin = false;
 	this->type = type;
 
 	position = pos;
+	initial_pos = pos;
 	rect = { pos.x,pos.y,e->rect.w,e->rect.h };
 	speed = { 0,0 };
 	speed_mult = e->speed;
@@ -58,10 +59,7 @@ bool Roller::UpdateLogic(iPoint pos)
 	//Destination
 	iPoint a = App->render->ScreenToWorld(pos.x + App->render->camera.x, pos.y + App->render->camera.y);
 	a = App->map->WorldToMap(a.x, a.y);
-	/*if (App->pathfinding->IsWalkable(p) && App->pathfinding->IsWalkable({p.x,p.y+1})) {
-		speed = -speed;
-
-	}*/
+	
 	if (p.DistanceTo(a) >= vision_range) {
 		speed = { 0,0 };
 		return false;
@@ -76,6 +74,7 @@ bool Roller::UpdateLogic(iPoint pos)
 	App->pathfinding->CreatePath(p, a, true);
 	path = App->pathfinding->GetLastPathNotConst();
 	//Blit path to screen
+	if (App->debug->show_colliders)
 	for (uint i = 0; i < path->Count(); ++i)
 	{
 		iPoint pos = App->map->MapToWorld(path->At(i)->x, path->At(i)->y);

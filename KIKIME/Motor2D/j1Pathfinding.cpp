@@ -344,12 +344,12 @@ int j1PathFinding::CreatePath(const iPoint& origin, const iPoint& destination, b
 	if (ground) dest.y += 1;
 
 	if (!IsWalkable(origin)) {
-		//LOG("origin not walkable");
+		LOG("origin not walkable");
 		return -1;
 	}
 	if (!IsWalkable(dest)) {
-		//LOG("destination not walkable");
-		return -1;
+		LOG("destination not walkable");
+		return -2;
 	}
 	
 	

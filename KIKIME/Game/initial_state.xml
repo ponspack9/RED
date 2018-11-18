@@ -25,6 +25,6 @@
 	<fade />
 	<pathfinding />
 	<renderer>
-		<camera x="-976" y="-242" />
+		<camera x="-1147" y="-275" />
 	</renderer>
 </save>

@@ -8,6 +8,7 @@
 #include "j1App.h"
 #include "j1Render.h"
 #include "j1Collision.h"
+#include "j1Debug.h"
 
 #define MAX_ENEMIES 100
 
@@ -64,16 +65,19 @@ public:
 	int				vision_range;
 	iPoint			speed;
 	iPoint			speed_mult;
+	iPoint			next_speed;
 	SDL_Rect		rect;	
 	iPoint			position;
+	iPoint			initial_pos;
 	Collider*		collider;
 	entityType		type;
+
 
 	/////////////// ENEMIES /////////////////
 
 	Animation		follow;
 	float			def_anim_speed_enem;
-
+	bool			return_origin;
 	bool			first_iteration = true;
 
 	iPoint			desired_position;
