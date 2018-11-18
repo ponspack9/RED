@@ -43,7 +43,19 @@ Roller::~Roller()
 
 bool Roller::Update(float dt)
 {
-	iPoint pos = App->entitymanager->player_ref->position;
+	//iPoint pos = App->entitymanager->player_ref->position;
+	
+	position += speed;
+	return true;
+}
+
+bool Roller::PostUpdate()
+{
+	return true;
+}
+
+bool Roller::UpdateLogic(iPoint pos)
+{
 	//Origin
 	iPoint p = App->render->ScreenToWorld(position.x + App->render->camera.x, position.y + App->render->camera.y);
 	p = App->map->WorldToMap(p.x, p.y);
@@ -100,22 +112,13 @@ bool Roller::Update(float dt)
 			desired_position = App->map->MapToWorld(p.x, p.y + 1);
 		}
 	}
-	else { speed = { 0,0 }; }
+	else {
+		first_iteration = true;
+		speed = { 0,0 };
+	}
 	//else { speed = { 0,0 }; }
 	path->Clear();
 	return_origin = false;
-	position += speed;
-	return true;
-}
-
-bool Roller::PostUpdate()
-{
-	return true;
-}
-
-bool Roller::UpdateLogic(iPoint pos)
-{
-	
 	return true;
 
 }
