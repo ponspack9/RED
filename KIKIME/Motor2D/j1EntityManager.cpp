@@ -347,7 +347,8 @@ bool j1EntityManager::PostUpdate()
 	bool ret = false;
 	p2List_item<Entity*>* item;
 	if (player_ref->dead) {
-		LoadInitialState();
+		Restart();
+		//LoadInitialState();
 		LOG("DEAD BY POSTUOPDATEDSAF");
 		player_ref->dead = false;
 		return true;
