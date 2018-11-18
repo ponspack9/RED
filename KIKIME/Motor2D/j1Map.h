@@ -155,7 +155,9 @@ public:
 	
 	MapData						data;
 	p2List<p2SString>			maps_path;
+	p2List<p2SString>			walk_maps_path;
 	p2List_item<p2SString>*		current_map;
+	p2List_item<p2SString>*		current_walk_map;
 	iPoint						world_limits;
 	Collider*					start_collider;
 	Collider*					end_collider;

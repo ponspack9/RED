@@ -33,7 +33,6 @@ public:
 	//Controllers
 	bool Awake(pugi::xml_node& config);
 	bool Start();
-	void CreatePlayerColliders();
 	bool PreUpdate();
 	bool Update(float dt);
 	bool PostUpdate();
@@ -49,6 +48,9 @@ public:
 
 	Entity*	 CreateEntity(entityType type, iPoint pos);
 
+	void CreatePlayerColliders();
+	void DeletePlayerColliders();
+	
 	void OnCollision(Collider * c1, Collider * c2);
 
 

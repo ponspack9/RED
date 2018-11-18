@@ -278,6 +278,16 @@ void j1EntityManager::CreatePlayerColliders()
 	player_ref->collider_ray_up = App->collision->AddCollider (temp, COLLIDER_RAY_UP, this);
 }
 
+void j1EntityManager::DeletePlayerColliders()
+{
+	player_ref->collider_identifier->to_delete = true;
+	player_ref->collider->to_delete = true;
+	player_ref->collider_ray_right->to_delete = true;
+	player_ref->collider_ray_left->to_delete = true;
+	player_ref->collider_ray_down->to_delete = true;
+	player_ref->collider_ray_up->to_delete = true;
+}
+
 bool j1EntityManager::PreUpdate()
 {
 	BROFILER_CATEGORY("Entities->PreUpdate", Profiler::Color::BlueViolet)
@@ -335,7 +345,11 @@ bool j1EntityManager::CleanUp()
 
 	for (item = entities.start; item != nullptr; item = item->next)
 	{
-		if (item->data->collider != nullptr)
+		if (item->data->type == PLAYER)
+		{
+			DeletePlayerColliders();
+		}
+		else if (item->data->collider != nullptr)
 		{
 			item->data->collider->to_delete = true;
 		}

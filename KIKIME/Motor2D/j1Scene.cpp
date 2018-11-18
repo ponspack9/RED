@@ -51,7 +51,6 @@ bool j1Scene::Start()
 	debug_tex = App->tex->Load("maps/path3.png");
 	
 	App->render->ResetCamera();
-	//App->entitymanager->Start();
 	
 
 	return ret;

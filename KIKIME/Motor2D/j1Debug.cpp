@@ -54,7 +54,7 @@ bool j1Debug::Update(float dt)
 	}
 	if (App->input->GetKey(SDL_SCANCODE_F2) == KEY_DOWN)
 	{
-		App->RestartLevel();
+		App->SoftRestartLevel();
 	}
 	// Next level
 	if (App->input->GetKey(SDL_SCANCODE_F3) == KEY_DOWN)
