@@ -116,7 +116,9 @@ bool Floater::UpdateLogic(iPoint pos)
 		}
 		else { next_speed = { 0,0 }; }*/
 	}
-	else { speed = { 0,0 }; }
+	else { 
+		first_iteration = true;
+		speed = { 0,0 }; }
 	if (return_origin) {
 		current_animation = &idle;
 	}

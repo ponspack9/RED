@@ -8,6 +8,7 @@
 #include "j1Render.h"
 #include "p2Log.h"
 #include "Entity.h"
+#include "j1EntityManager.h"
 
 
 
@@ -42,46 +43,42 @@ Roller::~Roller()
 
 bool Roller::Update(float dt)
 {
-	position += speed;
-	return true;
-}
-
-bool Roller::PostUpdate()
-{
-	return true;
-}
-
-bool Roller::UpdateLogic(iPoint pos)
-{
+	iPoint pos = App->entitymanager->player_ref->position;
 	//Origin
 	iPoint p = App->render->ScreenToWorld(position.x + App->render->camera.x, position.y + App->render->camera.y);
 	p = App->map->WorldToMap(p.x, p.y);
 	//Destination
 	iPoint a = App->render->ScreenToWorld(pos.x + App->render->camera.x, pos.y + App->render->camera.y);
 	a = App->map->WorldToMap(a.x, a.y);
-	
-	if (p.DistanceTo(a) >= vision_range) {
-		speed = { 0,0 };
-		return false;
-	}
-	if (!App->pathfinding->IsWalkable(a) || App->pathfinding->IsWalkable({ a.x,a.y + 2 })) {
-		//LOG("a [%d,%d]", a.x, a.y);
-		speed = { 0,0 };
-		return false;
-	}
-	
 
-	App->pathfinding->CreatePath(p, a, true);
+	if (p.DistanceTo(a) >= vision_range || !App->pathfinding->IsWalkable(a)) {
+		return_origin = true;
+		a = App->render->ScreenToWorld(initial_pos.x + App->render->camera.x, initial_pos.y + App->render->camera.y);
+		a = App->map->WorldToMap(a.x, a.y);
+		first_iteration = true;
+	}
+
+	//if (!App->pathfinding->IsWalkable(a) || App->pathfinding->IsWalkable({ a.x,a.y + 2 })) {
+	//	//LOG("a [%d,%d]", a.x, a.y);
+	//	speed = { 0,0 };
+	//	return false;
+	//}
+
+	if (App->pathfinding->CreatePath(p, a, true) == -1) {
+		//origin not walkable
+		speed = -speed;
+	}
+	//App->pathfinding->CreatePath(p, a, true);
 	path = App->pathfinding->GetLastPathNotConst();
 	//Blit path to screen
 	if (App->debug->show_colliders)
-	for (uint i = 0; i < path->Count(); ++i)
-	{
-		iPoint pos = App->map->MapToWorld(path->At(i)->x, path->At(i)->y);
-		App->render->Blit(App->scene->debug_tex, pos.x, pos.y);
-	}
+		for (uint i = 0; i < path->Count(); ++i)
+		{
+			iPoint pos = App->map->MapToWorld(path->At(i)->x, path->At(i)->y);
+			App->render->Blit(App->scene->debug_tex, pos.x, pos.y);
+		}
 
-	if (path->Count() > 1) {
+	if (path->Count() > 1 && a != p) {
 
 		if (first_iteration) {
 			speed = iPoint(path->At(1)->x, path->At(1)->y) - p;
@@ -103,8 +100,22 @@ bool Roller::UpdateLogic(iPoint pos)
 			desired_position = App->map->MapToWorld(p.x, p.y + 1);
 		}
 	}
+	else { speed = { 0,0 }; }
 	//else { speed = { 0,0 }; }
 	path->Clear();
+	return_origin = false;
+	position += speed;
+	return true;
+}
+
+bool Roller::PostUpdate()
+{
+	return true;
+}
+
+bool Roller::UpdateLogic(iPoint pos)
+{
+	
 	return true;
 
 }
