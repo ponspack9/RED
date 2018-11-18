@@ -6,7 +6,7 @@
   
 -->
 <config>
-  <app framerate_cap ="90">
+  <app framerate_cap ="30">
     <title>KIKIME</title>
     <organization>ORISO</organization>
   </app>
@@ -62,7 +62,7 @@
     <playerpath path="textures/player/sprites.png"/>
     <player>
       <rect width="64" height="64"/>
-      <speed scrollspeed="4" jumpspeed="5"/>
+      <speed scrollspeed="4" jumpspeed="4"/>
       <gravity value="2"/>
       <playeranimations defaultAnimationSpeed="0.03">        
         <idle height="48" width="39" y="116" x="180"  name="player_idle"/>

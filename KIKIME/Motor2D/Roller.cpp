@@ -62,15 +62,16 @@ bool Roller::UpdateLogic(iPoint pos)
 		speed = -speed;
 
 	}*/
-	if (!App->pathfinding->IsWalkable(a) || App->pathfinding->IsWalkable({ a.x,a.y + 2 })) {
-		LOG("a [%d,%d]", a.x, a.y);
-		speed = { 0,0 };
-		return false;
-	}
 	if (p.DistanceTo(a) >= vision_range) {
 		speed = { 0,0 };
 		return false;
 	}
+	if (!App->pathfinding->IsWalkable(a) || App->pathfinding->IsWalkable({ a.x,a.y + 2 })) {
+		//LOG("a [%d,%d]", a.x, a.y);
+		speed = { 0,0 };
+		return false;
+	}
+	
 
 	App->pathfinding->CreatePath(p, a, true);
 	path = App->pathfinding->GetLastPathNotConst();
@@ -96,10 +97,10 @@ bool Roller::UpdateLogic(iPoint pos)
 
 		desired_position = App->map->MapToWorld(p.x, p.y);
 
-		if (speed.x > 0 && speed.y == 0) {
+		if (speed.x > 0) {
 			desired_position = App->map->MapToWorld(p.x + 1, p.y);
 		}
-		else if (speed.y > 0 && speed.x == 0) {
+		else if (speed.y > 0) {
 			desired_position = App->map->MapToWorld(p.x, p.y + 1);
 		}
 	}

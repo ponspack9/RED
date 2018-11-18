@@ -35,16 +35,16 @@ Player::Player(iPoint pos, Entity * e, SDL_Texture * sprites,entityType type) : 
 
 	current_animation = &idle;
 
-	level_finished = false;
-	on_floor = false;
-	is_jumping = false;
-	is_falling = true;
-	dead = false;
+	level_finished	= false;
+	on_floor		= false;
+	is_jumping		= false;
+	is_falling		= true;
+	dead			= false;
 
-	can_move_right = true;
-	can_move_left = true;
-	can_move_up = true;
-	can_move_down = true;
+	can_move_right	= true;
+	can_move_left	= true;
+	can_move_up		= true;
+	can_move_down	= true;
 }
 
 Player::~Player()
@@ -55,8 +55,13 @@ Player::~Player()
 bool Player::PreUpdate()
 {
 	BROFILER_CATEGORY("Player->PreUpdate", Profiler::Color::BlueViolet)
-
-	if (!godmode)Move();
+		int x; int y;
+	App->input->GetMousePosition(x, y);
+		if (App->input->GetMouseButtonDown(SDL_BUTTON_RIGHT) == KEY_DOWN) {
+			position.x = x + abs(App->render->camera.x);
+			position.y = y + abs(App->render->camera.y);
+	}
+	else if (!godmode)Move();
 
 	return true;
 }
@@ -73,26 +78,38 @@ bool Player::Update(float dt)
 	{
 		if (!godmode)
 		{
-			//Move();
-			if (dx > 0 && !can_move_right) {
-				MovePlayer(-dx, 0);
-				//horizontal_movement = false;
+
+			if (go_back) {
+				MovePlayer(-2*dx, 0);
+				if (!can_move_up) {
+					int y = collider_identifier->rect.y + collider_identifier->rect.h;
+					MovePlayer(0, -(position.y - y)+1);
+				}
+				
 			}
-			else if (dx < 0 && !can_move_left) {
-				MovePlayer(-dx, 0);
-				//horizontal_movement = false;
-			}
-			if (dy > 0 && !can_move_down) {
-				MovePlayer(0, -dy);
-				//vertical_movement = false;
-			}
-			else if (dy < 0 && !can_move_up) {
-				MovePlayer(0, -dy);
-				//vertical_movement = false;
+			else {
+				if (dx > 0 && !can_move_right) {
+					MovePlayer(-dx, 0);
+					//horizontal_movement = false;
+				}
+				else if (dx < 0 && !can_move_left) {
+					MovePlayer(-dx, 0);
+					//horizontal_movement = false;
+				}
+				if (dy > 0 && !can_move_down) {
+					MovePlayer(0, -dy);
+					//vertical_movement = false;
+				}
+				else if (dy < 0 && !can_move_up) {
+					MovePlayer(0, -jumpspeed);
+					//aux_djump = false;
+					//vertical_movement = false;
+				}
 			}
 			
 			horizontal_collided = false;
 			vertical_collided = false;
+			go_back = false;
 			
 			PlayerAnimations();
 			on_floor = false;
@@ -155,6 +172,26 @@ bool Player::MovePlayer(float vel_x, float vel_y)
 		collider_ray_left	->SetPos(position.x - collider_offset, position.y + collider_offset);
 		collider_ray_up		->SetPos(position.x + collider_offset, position.y - collider_offset);
 		collider_ray_down	->SetPos(position.x + collider_offset, position.y + collider_offset);
+	}
+	else LOG("MISSING PLAYER COLLIDER");
+
+	return true;
+}
+
+bool Player::SetPlayer(float x, float y)
+{
+	position.x = x;
+	rect.x = position.x;
+
+	position.y = y;
+	rect.y = position.y;
+
+	if (collider != nullptr) {
+		collider->SetPos(position.x, position.y);
+		collider_ray_right->SetPos(position.x + collider_offset, position.y + collider_offset);
+		collider_ray_left->SetPos(position.x - collider_offset, position.y + collider_offset);
+		collider_ray_up->SetPos(position.x + collider_offset, position.y - collider_offset);
+		collider_ray_down->SetPos(position.x + collider_offset, position.y + collider_offset);
 	}
 	else LOG("MISSING PLAYER COLLIDER");
 
@@ -260,7 +297,7 @@ bool Player::Jump()
 		dy -= jumpspeed;
 		jumpspeed -= gravity / 2;
 	}
-	return (jumpspeed >= 0);
+	return (jumpspeed >= 0) && can_move_up;
 }
 
 bool Player::DoubleJump()
@@ -281,7 +318,7 @@ bool Player::DoubleJump()
 		dy -= jumpspeed;
 		jumpspeed -= gravity / 2;
 	}
-	return (jumpspeed >= 0);
+	return (jumpspeed >= 0) && can_move_up;
 }
 
 void Player::MoveFree()
@@ -316,7 +353,7 @@ void Player::PlayerAnimations()
 {
 	if (is_falling && !is_jumping && !djump && !on_floor)
 	{
-		current_animation = &fall;
+		current_animation = &fall;	
 	}
 	else if (!is_jumping && !move_left && !move_right && !djump && !is_falling)
 	{

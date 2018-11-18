@@ -70,12 +70,12 @@ public:
 
 	/////////////// ENEMIES /////////////////
 
-	Animation	 follow;
-	float		 def_anim_speed_enem;
+	Animation		follow;
+	float			def_anim_speed_enem;
 
-	bool		 first_iteration = true;
+	bool			first_iteration = true;
 
-	iPoint		 desired_position;
+	iPoint			desired_position;
 
 	///////////////// PLAYER ///////////////////
 	//fPoint position;
@@ -113,6 +113,7 @@ public:
 	bool	godmode = false;
 
 	//NEW approach
+	bool	go_back;
 	bool	can_move_right;
 	bool	can_move_left;
 	bool	can_move_up;

@@ -87,10 +87,10 @@ bool Floater::UpdateLogic(iPoint pos)
 
 		desired_position = App->map->MapToWorld(p.x, p.y);
 
-		if (speed.x > 0 && speed.y == 0) {
+		if (speed.x > 0) {
 			desired_position = App->map->MapToWorld(p.x + 1, p.y);
 		}
-		else if (speed.y > 0 && speed.x == 0) {
+		else if (speed.y > 0) {
 			desired_position = App->map->MapToWorld(p.x, p.y + 1);
 		}		
 	}

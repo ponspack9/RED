@@ -10,19 +10,8 @@
 	</scene>
 	<debug />
 	<collisions />
-	<fade />
 	<entitymanager>
-		<player x="829" y="2209" />
-		<enemy type="floater" alive="true" hp="1" x="832" y="384" />
-		<enemy type="floater" alive="true" hp="1" x="1314" y="768" />
-		<enemy type="floater" alive="true" hp="1" x="1344" y="416" />
-		<enemy type="roller" alive="true" hp="2" x="2752" y="609" />
-		<enemy type="roller" alive="true" hp="2" x="1568" y="736" />
-		<enemy type="floater" alive="true" hp="1" x="576" y="352" />
-		<enemy type="floater" alive="true" hp="1" x="2368" y="352" />
-		<enemy type="floater" alive="true" hp="1" x="1792" y="736" />
-		<enemy type="floater" alive="true" hp="1" x="2944" y="416" />
-		<player x="97" y="384" />
+		<player x="57" y="646" />
 		<enemy type="floater" alive="true" hp="1" x="832" y="384" />
 		<enemy type="floater" alive="true" hp="1" x="1314" y="768" />
 		<enemy type="floater" alive="true" hp="1" x="1344" y="416" />
@@ -33,8 +22,9 @@
 		<enemy type="floater" alive="true" hp="1" x="1792" y="736" />
 		<enemy type="floater" alive="true" hp="1" x="2944" y="416" />
 	</entitymanager>
+	<fade />
 	<pathfinding />
 	<renderer>
-		<camera x="0" y="-10" />
+		<camera x="0" y="-262" />
 	</renderer>
 </save>

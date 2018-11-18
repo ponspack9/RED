@@ -33,6 +33,7 @@ public:
 	//Controllers
 	bool Awake(pugi::xml_node& config);
 	bool Start();
+	void CreatePlayerColliders();
 	bool PreUpdate();
 	bool Update(float dt);
 	bool PostUpdate();

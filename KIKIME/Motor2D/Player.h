@@ -20,11 +20,13 @@ public:
 
 	void Draw();
 	bool MovePlayer(float vel_x, float vel_y);
+	bool SetPlayer(float x, float y);
 	void Move();
 	void MoveFree();
 	bool Jump();
 	bool DoubleJump();
 	void PlayerAnimations();
+	
 
 public:
 
