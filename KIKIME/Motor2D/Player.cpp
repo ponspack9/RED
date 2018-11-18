@@ -55,12 +55,7 @@ Player::~Player()
 bool Player::PreUpdate()
 {
 	BROFILER_CATEGORY("Player->PreUpdate", Profiler::Color::BlueViolet)
-	/*	int x; int y;
-	App->input->GetMousePosition(x, y);
-		if (App->input->GetMouseButtonDown(SDL_BUTTON_RIGHT) == KEY_DOWN) {
-			position.x = x + abs(App->render->camera.x);
-			position.y = y + abs(App->render->camera.y);
-	}*/
+
 	if (!godmode)Move();
 
 	return true;
@@ -78,7 +73,7 @@ bool Player::Update(float dt)
 		{
 
 			if (go_back) {
-				MovePlayer(-2*dx, 0);
+				//MovePlayer(-2*dx, 0);
 				if (!can_move_up) {
 					int y = collider_identifier->rect.y + collider_identifier->rect.h;
 					MovePlayer(0, -(position.y - y)+1);
@@ -127,10 +122,7 @@ bool Player::PostUpdate()
 
 	if (dead)
 	{
-		current_animation = &death;
-		//App->SoftRestartLevel();
-
-		//dead = false;
+		current_animation = &death;	
 	}
 	return true;
 }
@@ -141,7 +133,7 @@ void Player::Draw()
 	{
 		App->render->Blit(graphics, position.x, position.y, &current_animation->GetCurrentFrame(), 1, 0, SDL_FLIP_HORIZONTAL);
 	}
-	else if (djump)
+	else if (djump && !dead)
 	{
 		App->render->Blit(graphics, position.x, position.y, &current_animation->GetCurrentFrame(), 1, 0, SDL_FLIP_VERTICAL);
 	}
@@ -282,7 +274,7 @@ bool Player::Jump()
 		is_falling = false;
 		on_floor = false;
 
-		jumpspeed = 15;
+		jumpspeed = 3 * speed.y;
 		return true;
 	}
 	else if (can_move_up)
@@ -303,7 +295,7 @@ bool Player::DoubleJump()
 		is_falling = false;
 		is_jumping = false;
 
-		jumpspeed = 20;
+		jumpspeed = 4 * speed.y;
 		return true;
 	}
 	else if (can_move_up)

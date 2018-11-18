@@ -6,7 +6,7 @@
   
 -->
 <config>
-  <app framerate_cap ="90">
+  <app framerate_cap ="60">
     <title>KIKIME</title>
     <organization>ORISO</organization>
   </app>
@@ -15,7 +15,7 @@
     <debugtexture>maps/path3.png</debugtexture>
     <showlogic value="false"/>
   </debug>
-  
+
   <renderer>
     <vsync value="false"/>
   </renderer>
@@ -32,22 +32,29 @@
     <path>data.zip</path>
     <load_path>save_game.xml</load_path>
     <save_path>save_game.xml</save_path>
+    <init_state_path>initial_state.xml</init_state_path>
   </file_system>
 
   <audio>
     <music>
       <folder>audio/music</folder>
       <track>music_sadpiano.ogg</track>
-      <track>music_happypiano.ogg</track> <!--Does not exist, just for testing-->
-	  <track>music_guitar.ogg</track> <!--Does not exist, just for testing-->
-	  <track>music_violin.ogg</track> <!--Does not exist, just for testing-->
+      <track>music_happypiano.ogg</track>
+      <!--Does not exist, just for testing-->
+      <track>music_guitar.ogg</track>
+      <!--Does not exist, just for testing-->
+      <track>music_violin.ogg</track>
+      <!--Does not exist, just for testing-->
     </music>
     <fx>
       <folder>audio/fx</folder>
       <sound name="hello">hello_man.wav</sound>
-      <sound name="shoot">pew.wav</sound> <!--Does not exist, just for testing-->
-      <sound name="life">lifeup.wav</sound> <!--Does not exist, just for testing-->
-      <sound name="die">die.wav</sound> <!--Does not exist, just for testing-->
+      <sound name="shoot">pew.wav</sound>
+      <!--Does not exist, just for testing-->
+      <sound name="life">lifeup.wav</sound>
+      <!--Does not exist, just for testing-->
+      <sound name="die">die.wav</sound>
+      <!--Does not exist, just for testing-->
     </fx>
   </audio>
 
@@ -60,14 +67,15 @@
   </map>
 
   <entitymanager>
+    <timer currenttime="0.0"/>
     <enemypath path="textures/enemies/spritesheet32.png"/>
     <playerpath path="textures/player/sprites.png"/>
     <player>
       <rect width="64" height="64"/>
-      <speed scrollspeed="4" jumpspeed="4"/>
+      <speed scrollspeed="4" jumpspeed="5"/>
       <gravity value="2"/>
       <godmode value="false"/>
-      <playeranimations defaultAnimationSpeed="0.03">        
+      <playeranimations defaultAnimationSpeed="0.03">
         <idle height="48" width="39" y="116" x="180"  name="player_idle"/>
         <idle height="48" width="39" y="58" x="222"   name="player_05"/>
         <idle height="45" width="39" y="174" x="180"  name="player_12"/>
@@ -79,7 +87,7 @@
         <fall height="38" width="56" y="48" x="0"     name="player_55"/>
         <walk height="48" width="52" y="188" x="0"    name="player_67"/>
         <walk height="48" width="51" y="188" x="62"   name="player_60"/>
-        <walk height="50" width="47" y="161" x="123"  name="player_34"/> 
+        <walk height="50" width="47" y="161" x="123"  name="player_34"/>
         <walk height="51" width="48" y="100" x="66"   name="player_68"/>
         <death height="46" width="39" y="60" x="173"  name="player_24"/>
         <god height="40" width="40" y="221" x="123"   name="player_52"/>
@@ -88,24 +96,24 @@
         <SubTexture height="38" width="64" y="0" x="0"      name="player_01"/>
       </playeranimations>
     </player>
-    <enemies>      
+    <enemies>
       <updatems time="0.20"/>
       <enemyair>
         <size w="32" h="32"/>
         <speed x="2" y="2"/>
         <range value="10"/>
         <health hp="1"/>
-        <alive value="true"/>             
+        <alive value="true"/>
       </enemyair>
       <enemyground>
         <size w="32" h="32"/>
         <speed x="3" y="3"/>
         <range value="10"/>
         <health hp="2"/>
-        <alive value="true"/>        
+        <alive value="true"/>
       </enemyground>
       <enemyanimations>
-        <speed defaultAnimationSpeed="0.03"/>    
+        <speed defaultAnimationSpeed="0.03"/>
         <FloatIdle   name="enemyFloating_3.png"	  x="96"	y="32"	width="32"	height="32"/>
         <FloatFollow   name="enemyFloating_1.png"	x="64"	y="32"	width="32"	height="32"/>
         <FloatFollow   name="enemyFloating_4.png"	x="96"	y="0"	  width="32"	height="32"/>
@@ -129,7 +137,7 @@
         <Walk    name="enemyWalking_1.png"	x="64"	y="0"	      width="32"	height="32"/>
         <Walk    name="enemyWalking_2.png"	x="32"	y="32"	      width="32"	height="32"/>
         <!--<Walk    name="enemyWalking_3.png"	x="65"	y="0"	        width="32"	height="32"/>
-        <Walk    name="enemyWalking_4.png"	x="117"	y="154"	      width="32"	height="32"/>-->        
+        <Walk    name="enemyWalking_4.png"	x="117"	y="154"	      width="32"	height="32"/>-->
       </enemyanimations>
     </enemies>
   </entitymanager>

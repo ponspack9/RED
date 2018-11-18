@@ -120,6 +120,7 @@ public:
 	float				dt;
 	mutable p2SString	save_path;
 	p2SString			load_path;
+	p2SString			init_state_path;
 
 private:
 

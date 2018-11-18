@@ -114,6 +114,8 @@ bool j1App::Awake()
 
 		load_path.create(file_system.child("load_path").child_value());
 		save_path.create(file_system.child("save_path").child_value());
+		init_state_path.create(file_system.child("init_state_path").child_value());
+
 		LOG("LoadPath: %s", load_path.GetString());
 
 		framerate_cap = app_config.attribute("framerate_cap").as_uint();

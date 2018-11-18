@@ -22,7 +22,7 @@ class j1EntityManager : public j1Module
 
 private:
 
-	float	current_time = 0.0f;
+	float	current_time;
 	float	update_cycle;
 	bool	do_update;
 
@@ -59,7 +59,6 @@ public:
 
 
 public:
-	int n = 0;
 	
 	SDL_Texture*	enemyTex = nullptr;
 	SDL_Texture*	playerTex = nullptr;
@@ -72,5 +71,7 @@ public:
 	Player			playerinfo;
 
 	Entity*			player_ref = nullptr;
+	j1Timer		    timer_death;
+	bool			is_started;
 };
 

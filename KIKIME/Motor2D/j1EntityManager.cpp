@@ -11,6 +11,7 @@
 j1EntityManager::j1EntityManager()
 {
 	name.create("entitymanager");
+	is_started = false;
 }
 
 j1EntityManager::~j1EntityManager()
@@ -21,6 +22,8 @@ j1EntityManager::~j1EntityManager()
 bool j1EntityManager::Awake(pugi::xml_node & config)
 {
 	//reading all info
+	current_time = config.child("timer").attribute("currenttime").as_float();
+
 	enemyPath = (config.child("enemypath").attribute("path").as_string());
 	playerPath = (config.child("playerpath").attribute("path").as_string());
 
@@ -225,6 +228,7 @@ bool j1EntityManager::Awake(pugi::xml_node & config)
 	
 	playerinfo.collider_offset = playerinfo.speed.x;
 	playerinfo.max_speed_y = playerinfo.speed.y;
+
 	return true;
 }
 
@@ -248,7 +252,7 @@ bool j1EntityManager::Start()
 			}
 			if (App->collision->colliders[i]->rect.w < App->collision->colliders[i]->rect.h)
 			{
-				iPoint pos = { App->collision->colliders[i]->rect.x , App->collision->colliders[i]->rect.y /*+ (App->collision->colliders[i]->rect.h / 2)*/ };
+				iPoint pos = { App->collision->colliders[i]->rect.x , App->collision->colliders[i]->rect.y };
 				CreateEntity(ROLLER, pos);
 			}
 		}
@@ -268,14 +272,14 @@ bool j1EntityManager::Start()
 void j1EntityManager::SaveInitialState()
 {
 	p2SString temp = App->save_path;
-	App->save_path = "initial_state.xml";
+	App->save_path = App->init_state_path;
 	App->SaveGameFile();
 	App->save_path = temp;
 }
 void j1EntityManager::LoadInitialState()
 {
 	p2SString temp = App->load_path;
-	App->load_path = "initial_state.xml";
+	App->load_path = App->init_state_path;
 	App->LoadGameFile();
 	App->load_path = temp;
 }
@@ -309,17 +313,16 @@ void j1EntityManager::DeletePlayerColliders()
 bool j1EntityManager::PreUpdate()
 {
 	BROFILER_CATEGORY("Entities->PreUpdate", Profiler::Color::BlueViolet)
-	
 
-	bool ret = player_ref->PreUpdate();
-	/*p2List_item<Entity*>* item;
-	for (item = entities.start; item != nullptr; item = item->next)
-	{
-		if (item->data->type == PLAYER)
-			ret = item->data->PreUpdate();
-	}*/
+		if (!player_ref->dead)
+			player_ref->PreUpdate();
+		else if (is_started == false)
+		{
+			timer_death.Start();
+			is_started = true;
+		}
 
-	return ret;
+	return true;
 }
 
 bool j1EntityManager::Update(float dt)
@@ -348,10 +351,13 @@ bool j1EntityManager::PostUpdate()
 	bool ret = false;
 	p2List_item<Entity*>* item;
 	if (player_ref->dead) {
-		Restart();
-		//LoadInitialState();
-		LOG("DEAD BY POSTUOPDATEDSAF");
-		player_ref->dead = false;
+		if (timer_death.ReadSec() >= 0.5f)
+		{
+			Restart();
+			LOG("DEAD BY POSTUOPDATEDSAF");
+			player_ref->dead = false;
+			is_started = false;
+		}
 		return true;
 	}
 
@@ -371,10 +377,6 @@ bool j1EntityManager::CleanUp()
 	DeletePlayerColliders();
 	for (item = entities.start; item != nullptr; item = item->next)
 	{
-		/*if (item->data->type == PLAYER)
-		{
-			
-		}*/
 		if (item->data->collider != nullptr)
 		{
 			item->data->collider->to_delete = true;
@@ -394,9 +396,7 @@ bool j1EntityManager::Restart()
 	bool ret = true;
 
 	ret = CleanUp();
-	//LoadInitialState();
 	ret = Start();
-
 
 	return ret;
 }
@@ -448,14 +448,8 @@ Entity * j1EntityManager::CreateEntity(entityType type, iPoint pos)
 	case entityType::PLAYER:
 		e = &playerinfo;
 		entity = new Player(pos, e, playerTex, type);
-		n++;
 		break;
 	}
-	//case entityType::STATIC:
-	//	
-	//	entity = new Static(pos.x, pos.y);
-	//	break;
-	//	
 	entities.add(entity);
 
 	return entity;
