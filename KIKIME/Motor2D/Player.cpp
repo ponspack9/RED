@@ -292,11 +292,12 @@ bool Player::Jump()
 		jumpspeed = 15;
 		return true;
 	}
-	else
+	else if (can_move_up)
 	{
 		dy -= jumpspeed;
 		jumpspeed -= gravity / 2;
 	}
+	else jumpspeed = 0;
 	return (jumpspeed >= 0) && can_move_up;
 }
 
@@ -312,12 +313,13 @@ bool Player::DoubleJump()
 		jumpspeed = 20;
 		return true;
 	}
-	else
+	else if (can_move_up)
 	{
 		dx = 0;
 		dy -= jumpspeed;
 		jumpspeed -= gravity / 2;
 	}
+	else jumpspeed = 0;
 	return (jumpspeed >= 0) && can_move_up;
 }
 

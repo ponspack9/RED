@@ -280,6 +280,7 @@ void j1EntityManager::CreatePlayerColliders()
 
 bool j1EntityManager::PreUpdate()
 {
+	BROFILER_CATEGORY("Entities->PreUpdate", Profiler::Color::BlueViolet)
 	
 
 	bool ret = player_ref->PreUpdate();
@@ -295,6 +296,7 @@ bool j1EntityManager::PreUpdate()
 
 bool j1EntityManager::Update(float dt)
 {
+	BROFILER_CATEGORY("Entities->Update", Profiler::Color::BlueViolet)
 	current_time += dt;
 	if (current_time >= update_cycle)
 	{
@@ -314,6 +316,7 @@ bool j1EntityManager::Update(float dt)
 
 bool j1EntityManager::PostUpdate()
 {
+	BROFILER_CATEGORY("Entities->PostUpdate", Profiler::Color::BlueViolet)
 	bool ret = false;
 	p2List_item<Entity*>* item;
 
@@ -327,6 +330,7 @@ bool j1EntityManager::PostUpdate()
 
 bool j1EntityManager::CleanUp()
 {
+	BROFILER_CATEGORY("Entities->CleanUp", Profiler::Color::BlueViolet)
 	p2List_item<Entity*>* item;
 
 	for (item = entities.start; item != nullptr; item = item->next)
@@ -474,7 +478,7 @@ void j1EntityManager::OnCollision(Collider * c1, Collider * c2)
 bool j1EntityManager::Save(pugi::xml_node & node)
 {
 	p2List_item<Entity*>* item;
-	LOG("saving enemiesHHHHHHHHHHHHHHHHHHHHHHHHHHHHH");
+	//LOG("saving enemiesHHHHHHHHHHHHHHHHHHHHHHHHHHHHH");
 
 
 	for (item = entities.start; item != nullptr; item = item->next)
@@ -501,8 +505,8 @@ bool j1EntityManager::Save(pugi::xml_node & node)
 				n.append_attribute("y") = item->data->position.y;
 			}
 		}
-		LOG("SAVE POS: %d  ,  %d", item->data->position.x, item->data->position.y);
-		LOG("SAVE HP:  %d", item->data->health);
+		//LOG("SAVE POS: %d  ,  %d", item->data->position.x, item->data->position.y);
+		//LOG("SAVE HP:  %d", item->data->health);
 	}
 
 	return true;
@@ -511,7 +515,7 @@ bool j1EntityManager::Save(pugi::xml_node & node)
 bool j1EntityManager::Load(pugi::xml_node & node)
 {
 	p2List_item<Entity*>* item;
-	LOG("loading enemiesEEEEEEEEEEEEEEEEEEEEEEE");
+	//LOG("loading enemiesEEEEEEEEEEEEEEEEEEEEEEE");
 
 
 	for (item = entities.start; item != nullptr; item = item->next)
@@ -533,8 +537,8 @@ bool j1EntityManager::Load(pugi::xml_node & node)
 				item->data->position.x = node.attribute("x").as_int();
 				item->data->position.y = node.attribute("y").as_int();
 			}
-			LOG("LOAD POS: %d  ,  %d", item->data->position.x, item->data->position.y);
-			LOG("LOAD HP:  %d", item->data->health);
+			//LOG("LOAD POS: %d  ,  %d", item->data->position.x, item->data->position.y);
+			//LOG("LOAD HP:  %d", item->data->health);
 
 			node = node.next_sibling("enemy");
 		}
