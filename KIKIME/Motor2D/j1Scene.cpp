@@ -14,6 +14,7 @@
 #include "j1EntityManager.h"
 #include "j1Pathfinding.h"
 #include "Entity.h"
+#include "j1Debug.h"
 
 j1Scene::j1Scene() : j1Module()
 {
@@ -27,7 +28,7 @@ j1Scene::~j1Scene()
 
 // Called before render is available
 bool j1Scene::Awake(pugi::xml_node& config)
-{
+{ 
 	
 	LOG("Loading Scene");
 
@@ -37,7 +38,6 @@ bool j1Scene::Awake(pugi::xml_node& config)
 // Called before the first frame
 bool j1Scene::Start()
 {
-
 	bool ret = true;
 	// App->audio->PlayMusic(PATH(App->audio->folder_music.GetString(), App->audio->tracks_path.start->data.GetString()));
 	//if (ret) App->map->Load(App->map->current_map->data.GetString());
@@ -54,7 +54,7 @@ bool j1Scene::Start()
 	//App->entitymanager->Restart();
 	App->render->ResetCamera();
 
-	debug_tex = App->tex->Load("maps/path3.png");
+	debug_tex = App->tex->Load(App->debug->debug_path.GetString());
 	if (first_load) {
 		first_load = false;
 	}

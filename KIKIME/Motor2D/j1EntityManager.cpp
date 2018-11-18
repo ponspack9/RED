@@ -119,6 +119,7 @@ bool j1EntityManager::Awake(pugi::xml_node & config)
 	playerinfo.speed.y = player_node.child("speed").attribute("jumpspeed").	 as_int();
 
 	playerinfo.gravity = player_node.child("gravity").attribute("value").as_float();
+	playerinfo.godmode = player_node.child("godmode").attribute("value").as_bool();
 
 	// Parsing animations ----------------
 

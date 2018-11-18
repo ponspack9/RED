@@ -12,6 +12,8 @@
   </app>
 
   <debug>
+    <debugtexture>maps/path3.png</debugtexture>
+    <showlogic value="false"/>
   </debug>
   
   <renderer>
@@ -64,6 +66,7 @@
       <rect width="64" height="64"/>
       <speed scrollspeed="4" jumpspeed="4"/>
       <gravity value="2"/>
+      <godmode value="false"/>
       <playeranimations defaultAnimationSpeed="0.03">        
         <idle height="48" width="39" y="116" x="180"  name="player_idle"/>
         <idle height="48" width="39" y="58" x="222"   name="player_05"/>

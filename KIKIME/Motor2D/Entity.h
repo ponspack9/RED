@@ -111,7 +111,7 @@ public:
 	bool	aux_djump;
 	bool	top, bottom, left, right;
 	bool	can_left, can_right;
-	bool	godmode = false;
+	bool	godmode;
 
 	//NEW approach
 	bool	go_back;
@@ -129,5 +129,5 @@ public:
 	Collider*	collider_ray_down;
 	Collider*	collider_identifier;
 
-	int			collider_offset = 0;
+	int			collider_offset;
 };

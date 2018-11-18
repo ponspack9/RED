@@ -27,8 +27,10 @@ j1Debug::~j1Debug()
 bool j1Debug::Awake(pugi::xml_node & config)
 {
 	//BROFILER_CATEGORY("Debug->Awake", Profiler::Color::HotPink)
-	show_colliders = true;
-	start_motion = false;
+
+	show_colliders = config.child("showlogic").attribute("value").as_bool();
+	debug_path.create(config.child("debugtexture").child_value());
+
 	zero.SetToZero();
 
 	return true;
