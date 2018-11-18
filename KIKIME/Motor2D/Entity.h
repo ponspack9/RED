@@ -39,7 +39,11 @@ public:
 	}
 
 	virtual bool PreUpdate() { return true; }
-	virtual bool Update(float dt) { return true; }
+	virtual bool Update(float dt) { 
+		position.x += (int)(speed.x * dt);
+		position.y += (int)(speed.y * dt);
+		return true; 
+	}
 	virtual bool PostUpdate() { return true; }
 
 	virtual void Draw(SDL_Texture *sprites) {
@@ -95,8 +99,8 @@ public:
 	Animation	 god;
 	float        def_anim_speed;
 	SDL_Rect	 anim_rect;
-	float		 dx = 0;
-	float		 dy = 0;
+	int		 dx = 0;
+	int		 dy = 0;
 	float		 falling_y;
 	int			 max_speed_y;
 	float		 gravity;

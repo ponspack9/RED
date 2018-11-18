@@ -482,6 +482,7 @@ bool j1App::NextLevel() {
 
 	LOG("Next level: %s", App->map->current_map->data.GetString());
 	App->fade->FadeToBlack(App->scene, App->scene);
+	//App->entitymanager->LoadInitialState();
 	/*App->entitymanager->CleanUp();
 	App->entitymanager->Start();*/
 	return true;

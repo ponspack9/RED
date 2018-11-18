@@ -39,24 +39,6 @@ Floater::~Floater()
 
 }
 
-bool Floater::Update(float dt)
-{
-	/*if (speed.x < 0 && desired_position.x >= position.x)	  speed = next_speed;
-	else if (speed.x > 0 && desired_position.x <= position.x) speed = next_speed;
-	if (speed.y < 0 && desired_position.y >= position.y)	  speed = next_speed;
-	else if (speed.y > 0 && desired_position.y <= position.y) speed = next_speed;*/
-	position += speed;
-
-	/*if (App->pathfinding->IsWalkable(position)) {
-
-	}*/
-	return true;
-}
-
-bool Floater::PostUpdate()
-{
-	return true;
-}
 
 //This is called 5 times per second / called every ~15 frames
 bool Floater::UpdateLogic(iPoint pos)

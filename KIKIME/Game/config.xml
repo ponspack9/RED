@@ -6,7 +6,7 @@
   
 -->
 <config>
-  <app framerate_cap ="60">
+  <app framerate_cap ="30">
     <title>KIKIME</title>
     <organization>ORISO</organization>
   </app>
@@ -73,7 +73,7 @@
     <player>
       <rect width="64" height="64"/>
       <speed scrollspeed="4" jumpspeed="5"/>
-      <gravity value="2"/>
+      <gravity value="3"/>
       <godmode value="false"/>
       <playeranimations defaultAnimationSpeed="0.03">
         <idle height="48" width="39" y="116" x="180"  name="player_idle"/>
@@ -100,14 +100,14 @@
       <updatems time="0.20"/>
       <enemyair>
         <size w="32" h="32"/>
-        <speed x="2" y="2"/>
+        <speed x="100" y="100"/>
         <range value="10"/>
         <health hp="1"/>
         <alive value="true"/>
       </enemyair>
       <enemyground>
         <size w="32" h="32"/>
-        <speed x="3" y="3"/>
+        <speed x="100" y="100"/>
         <range value="10"/>
         <health hp="2"/>
         <alive value="true"/>

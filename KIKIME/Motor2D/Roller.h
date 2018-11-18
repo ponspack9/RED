@@ -15,9 +15,6 @@ public:
 
 	~Roller();
 
-	bool Update(float dt);
-	bool PostUpdate();
-
 	bool UpdateLogic(iPoint pos);
 
 };

@@ -57,58 +57,63 @@ bool Player::PreUpdate()
 	BROFILER_CATEGORY("Player->PreUpdate", Profiler::Color::BlueViolet)
 
 	if (!godmode)Move();
+	else MoveFree();
 
+	next_speed = { dx,dy };
 	return true;
 }
 
 bool Player::Update(float dt)
 {
 	BROFILER_CATEGORY("Player->Update", Profiler::Color::BlueViolet)
+		////MovePlayer(dx, dy, dt);
+		//next_speed = { dx,dy };
+		//if (level_finished) App->NextLevel();
+		//
+		//else
+		//{
+		//	if (!godmode)
+		//	{
 
-	if (level_finished) App->NextLevel();
-	
-	else
-	{
-		if (!godmode)
-		{
+		//		if (go_back) {
+		//			//MovePlayer(-2*dx, 0);
+		//			if (!can_move_up) {
+		//				int y = collider_identifier->rect.y + collider_identifier->rect.h;
+		//				//MovePlayer(0, -(position.y - y)+1, dt);
+		//				next_speed = { 0,-(position.y - y) + 1 };
+		//			}
+		//		}
+		//		else {
+		//			if (dx > 0 && !can_move_right) {
+		//				//MovePlayer(-dx, 0, dt);
+		//				next_speed = { dx,dy };
+		//			}
+		//			else if (dx < 0 && !can_move_left) {
+		//				MovePlayer(-dx, 0, dt);
+		//			}
+		//			if (dy > 0 && !can_move_down) {
+		//				MovePlayer(0, -dy, dt);
+		//			}
+		//			else if (dy < 0 && !can_move_up) {
+		//				MovePlayer(0, -jumpspeed, dt);
+		//			}
+		//		}
+		//		
+		//		horizontal_collided = false;
+		//		vertical_collided = false;
+		//		go_back = false;
+		//		
+		//		PlayerAnimations();
+		//		on_floor = false;
+		//	}
+		//	else
+		//	{
+		//		current_animation = &god;
+		//		MoveFree();
+		//	}
 
-			if (go_back) {
-				//MovePlayer(-2*dx, 0);
-				if (!can_move_up) {
-					int y = collider_identifier->rect.y + collider_identifier->rect.h;
-					MovePlayer(0, -(position.y - y)+1);
-				}
-			}
-			else {
-				if (dx > 0 && !can_move_right) {
-					MovePlayer(-dx, 0);
-				}
-				else if (dx < 0 && !can_move_left) {
-					MovePlayer(-dx, 0);
-				}
-				if (dy > 0 && !can_move_down) {
-					MovePlayer(0, -dy);
-				}
-				else if (dy < 0 && !can_move_up) {
-					MovePlayer(0, -jumpspeed);
-				}
-			}
-			
-			horizontal_collided = false;
-			vertical_collided = false;
-			go_back = false;
-			
-			PlayerAnimations();
-			on_floor = false;
-		}
-		else
-		{
-			current_animation = &god;
-			MoveFree();
-		}
-
-	}
-
+		//}
+		PlayerAnimations();
 	Draw();
 	return true;
 }
@@ -143,11 +148,12 @@ void Player::Draw()
 
 }
 
-bool Player::MovePlayer(float vel_x, float vel_y)
+bool Player::MovePlayer(float vel_x, float vel_y, float dt)
 {
-	position.x += vel_x;
+	//position.x += (int) (dt*vel_x*(75*App->framerate_cap/60));
 	rect.x = position.x;
-	
+	position.x += vel_x;
+	//position.y += (int)(dt*vel_y*(75 * App->framerate_cap / 60));
 	position.y += vel_y;
 	rect.y = position.y;
 
@@ -157,26 +163,6 @@ bool Player::MovePlayer(float vel_x, float vel_y)
 		collider_ray_left	->SetPos(position.x - collider_offset, position.y + collider_offset);
 		collider_ray_up		->SetPos(position.x + collider_offset, position.y - collider_offset);
 		collider_ray_down	->SetPos(position.x + collider_offset, position.y + collider_offset);
-	}
-	else LOG("MISSING PLAYER COLLIDER");
-
-	return true;
-}
-
-bool Player::SetPlayer(float x, float y)
-{
-	position.x = x;
-	rect.x = position.x;
-
-	position.y = y;
-	rect.y = position.y;
-
-	if (collider != nullptr) {
-		collider->SetPos(position.x, position.y);
-		collider_ray_right->SetPos(position.x + collider_offset, position.y + collider_offset);
-		collider_ray_left->SetPos(position.x - collider_offset, position.y + collider_offset);
-		collider_ray_up->SetPos(position.x + collider_offset, position.y - collider_offset);
-		collider_ray_down->SetPos(position.x + collider_offset, position.y + collider_offset);
 	}
 	else LOG("MISSING PLAYER COLLIDER");
 
@@ -262,7 +248,7 @@ void Player::Move()
 	}
 
 	
-	MovePlayer(dx, dy);		
+			
 }
 
 
@@ -273,14 +259,17 @@ bool Player::Jump()
 		is_jumping = true;
 		is_falling = false;
 		on_floor = false;
-
+		//jtimer.Start();
 		jumpspeed = 3 * speed.y;
 		return true;
 	}
 	else if (can_move_up)
 	{
-		dy -= jumpspeed;
-		jumpspeed -= gravity / 2;
+		//if (jtimer.ReadMs() >= 100 *App->dt) {
+			dy -= jumpspeed;
+			jumpspeed -= gravity / 2;
+
+		//}
 	}
 	else jumpspeed = 0;
 	return (jumpspeed >= 0) && can_move_up;
@@ -294,15 +283,17 @@ bool Player::DoubleJump()
 		aux_djump = true;
 		is_falling = false;
 		is_jumping = false;
-
+		//jtimer.Start();
 		jumpspeed = 4 * speed.y;
 		return true;
 	}
 	else if (can_move_up)
 	{
-		dx = 0;
-		dy -= jumpspeed;
-		jumpspeed -= gravity / 2;
+		//if (jtimer.ReadMs() >= 100 * App->dt) {
+			dx = 0;
+			dy -= jumpspeed;
+			jumpspeed -= gravity / 2;
+		//}
 	}
 	else jumpspeed = 0;
 	return (jumpspeed >= 0) && can_move_up;
@@ -330,8 +321,8 @@ void Player::MoveFree()
 		dy -= speed.y + 5;
 	}
 
-	position.x += dx;
-	position.y += dy;
+	//position.x += dx;
+	//position.y += dy;
   
 	vertical_collided = false;
 }

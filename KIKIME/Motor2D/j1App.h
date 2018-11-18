@@ -121,6 +121,7 @@ public:
 	mutable p2SString	save_path;
 	p2SString			load_path;
 	p2SString			init_state_path;
+	uint				framerate_cap;
 
 private:
 
@@ -143,7 +144,7 @@ private:
 	uint32				frames_on_last_update = 0;
 	uint32				aux_frames_counter = 0; //to control the amount of frames in the last second
 	uint32				last_sec_fcount = 0;
-	uint				framerate_cap;
+	
 
 
 };

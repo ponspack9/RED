@@ -19,13 +19,13 @@ public:
 	bool PostUpdate();
 
 	void Draw();
-	bool MovePlayer(float vel_x, float vel_y);
-	bool SetPlayer(float x, float y);
+	bool MovePlayer(float vel_x, float vel_y,float dt);
 	void Move();
 	void MoveFree();
 	bool Jump();
 	bool DoubleJump();
 	void PlayerAnimations();
+	j1PerfTimer jtimer;
 	
 
 public:

@@ -41,18 +41,6 @@ Roller::~Roller()
 
 }
 
-bool Roller::Update(float dt)
-{
-	//iPoint pos = App->entitymanager->player_ref->position;
-	
-	position += speed;
-	return true;
-}
-
-bool Roller::PostUpdate()
-{
-	return true;
-}
 
 bool Roller::UpdateLogic(iPoint pos)
 {
