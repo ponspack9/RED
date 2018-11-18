@@ -66,55 +66,53 @@ bool Player::PreUpdate()
 bool Player::Update(float dt)
 {
 	BROFILER_CATEGORY("Player->Update", Profiler::Color::BlueViolet)
-		////MovePlayer(dx, dy, dt);
+		//MovePlayer(dx, dy, dt);
 		//next_speed = { dx,dy };
-		//if (level_finished) App->NextLevel();
-		//
-		//else
-		//{
-		//	if (!godmode)
-		//	{
+		if (level_finished) App->NextLevel();
+		
+		else
+		{
+			if (!godmode)
+			{
 
-		//		if (go_back) {
-		//			//MovePlayer(-2*dx, 0);
-		//			if (!can_move_up) {
-		//				int y = collider_identifier->rect.y + collider_identifier->rect.h;
-		//				//MovePlayer(0, -(position.y - y)+1, dt);
-		//				next_speed = { 0,-(position.y - y) + 1 };
-		//			}
-		//		}
-		//		else {
-		//			if (dx > 0 && !can_move_right) {
-		//				//MovePlayer(-dx, 0, dt);
-		//				next_speed = { dx,dy };
-		//			}
-		//			else if (dx < 0 && !can_move_left) {
-		//				MovePlayer(-dx, 0, dt);
-		//			}
-		//			if (dy > 0 && !can_move_down) {
-		//				MovePlayer(0, -dy, dt);
-		//			}
-		//			else if (dy < 0 && !can_move_up) {
-		//				MovePlayer(0, -jumpspeed, dt);
-		//			}
-		//		}
-		//		
-		//		horizontal_collided = false;
-		//		vertical_collided = false;
-		//		go_back = false;
-		//		
-		//		PlayerAnimations();
-		//		on_floor = false;
-		//	}
-		//	else
-		//	{
-		//		current_animation = &god;
-		//		MoveFree();
-		//	}
+				if (go_back) {
+					//MovePlayer(-2*dx, 0);
+					if (!can_move_up) {
+						int y = collider_identifier->rect.y + collider_identifier->rect.h;
+						//MovePlayer(0, -(position.y - y)+1, dt);
+						next_speed = { 0,-(position.y - y) + 1 };
+					}
+				}
+				else {
+					if (dx > 0 && !can_move_right) {
+						next_speed = { 0,next_speed.y };
+					}
+					else if (dx < 0 && !can_move_left) {
+						next_speed = { 0,next_speed.y };
+					}
+					if (dy > 0 && !can_move_down) {
+						next_speed = { next_speed.x,0 };
+					}
+					else if (dy < 0 && !can_move_up) {
+						next_speed = { next_speed.x,0 };
+					}
+				}
+				
+				horizontal_collided = false;
+				vertical_collided = false;
+				go_back = false;
+				
+				PlayerAnimations();
+				on_floor = false;
+			}
+			else
+			{
+				current_animation = &god;
+				MoveFree();
+			}
 
-		//}
-		PlayerAnimations();
-	Draw();
+		}
+		Draw();
 	return true;
 }
 

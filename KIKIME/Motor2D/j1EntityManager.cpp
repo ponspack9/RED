@@ -405,54 +405,6 @@ bool j1EntityManager::Restart()
 
 void j1EntityManager::UpdateAll(float dt,bool run)
 {
-	int dx = player_ref->next_speed.x;
-	int dy = player_ref->next_speed.y;
-	//MovePlayer(dx, dy, dt);
-	if (player_ref->level_finished) App->NextLevel();
-	else
-	{
-		if (!player_ref->godmode)
-		{
-
-			if (player_ref->go_back) {
-				if (!player_ref->can_move_up) {
-					int y = player_ref->collider_identifier->rect.y + player_ref->collider_identifier->rect.h;
-					player_ref->next_speed = { 0,-(player_ref->position.y - y) + 1 };
-				}
-			}
-			else {
-				if (dx > 0 && !player_ref->can_move_right) {
-					//MovePlayer(-dx, 0, dt);
-					player_ref->next_speed = { 0,player_ref->next_speed.y };
-				}
-				else if (dx < 0 && !player_ref->can_move_left) {
-					//MovePlayer(-dx, 0, dt);
-					player_ref->next_speed = { 0,player_ref->next_speed.y };
-				}
-				if (dy > 0 && !player_ref->can_move_down) {
-					//MovePlayer(0, -dy, dt);
-					player_ref->next_speed = { player_ref->next_speed.x,0 };
-				}
-				else if (dy < 0 && !player_ref->can_move_up) {
-					//MovePlayer(0, -jumpspeed, dt);
-					player_ref->next_speed = { player_ref->next_speed.x,0 };
-				}
-			}
-
-			player_ref->horizontal_collided = false;
-			player_ref->vertical_collided = false;
-			player_ref->go_back = false;
-
-			//player_ref->PlayerAnimations();
-			player_ref->on_floor = false;
-		}
-		/*else
-		{
-			player_ref->current_animation = &player_ref->god;
-			player_ref->MoveFree();
-		}*/
-
-	}
 	if (player_ref->dead) {
 		player_ref->next_speed.x = 0;
 		player_ref->next_speed.y = 0;
