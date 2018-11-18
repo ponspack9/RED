@@ -462,8 +462,8 @@ bool j1App::SoftRestartLevel()
 {
 	BROFILER_CATEGORY("App->SoftRestartLevel", Profiler::Color::Red)
 	render->ResetCamera();
-	entitymanager->player_ref->position.x = map->start_collider->rect.x;
-	entitymanager->player_ref->position.y = map->start_collider->rect.y;
+	entitymanager->Restart();
+	
 	return true;
 }
 
