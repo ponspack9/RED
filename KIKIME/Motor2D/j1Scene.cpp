@@ -36,9 +36,11 @@ bool j1Scene::Awake(pugi::xml_node& config)
 // Called before the first frame
 bool j1Scene::Start()
 {
-	bool ret = true;// App->audio->PlayMusic(PATH(App->audio->folder_music.GetString(), App->audio->tracks_path.start->data.GetString()));
-	if (ret) App->map->Load(App->map->current_map->data.GetString());
-	if (App->map->Load("MapLvl1Walk.tmx") == true)
+
+	bool ret = true;
+	// App->audio->PlayMusic(PATH(App->audio->folder_music.GetString(), App->audio->tracks_path.start->data.GetString()));
+	//if (ret) App->map->Load(App->map->current_map->data.GetString());
+	if (App->map->Load(App->map->current_map->data.GetString()))
 	{
 		int w, h;
 		uchar* data = NULL;
@@ -47,10 +49,13 @@ bool j1Scene::Start()
 
 		RELEASE_ARRAY(data);
 	}
+	
+	//App->entitymanager->Restart();
+	App->render->ResetCamera();
 
 	debug_tex = App->tex->Load("maps/path3.png");
 	
-	App->render->ResetCamera();
+	//App->entitymanager->Restart();
 	
 
 	return ret;
@@ -153,7 +158,7 @@ bool j1Scene::PostUpdate()
 bool j1Scene::CleanUp()
 {
 	LOG("Freeing scene");
-	App->map->CleanMap();
+	App->map->CleanUp();
 
 	return true;
 }

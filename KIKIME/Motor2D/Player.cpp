@@ -55,13 +55,13 @@ Player::~Player()
 bool Player::PreUpdate()
 {
 	BROFILER_CATEGORY("Player->PreUpdate", Profiler::Color::BlueViolet)
-		int x; int y;
+	/*	int x; int y;
 	App->input->GetMousePosition(x, y);
 		if (App->input->GetMouseButtonDown(SDL_BUTTON_RIGHT) == KEY_DOWN) {
 			position.x = x + abs(App->render->camera.x);
 			position.y = y + abs(App->render->camera.y);
-	}
-	else if (!godmode)Move();
+	}*/
+	if (!godmode)Move();
 
 	return true;
 }
@@ -69,8 +69,6 @@ bool Player::PreUpdate()
 bool Player::Update(float dt)
 {
 	BROFILER_CATEGORY("Player->Update", Profiler::Color::BlueViolet)
-	//vertical_movement	= true;
-	//horizontal_movement = true;
 
 	if (level_finished) App->NextLevel();
 	
@@ -85,25 +83,19 @@ bool Player::Update(float dt)
 					int y = collider_identifier->rect.y + collider_identifier->rect.h;
 					MovePlayer(0, -(position.y - y)+1);
 				}
-				
 			}
 			else {
 				if (dx > 0 && !can_move_right) {
 					MovePlayer(-dx, 0);
-					//horizontal_movement = false;
 				}
 				else if (dx < 0 && !can_move_left) {
 					MovePlayer(-dx, 0);
-					//horizontal_movement = false;
 				}
 				if (dy > 0 && !can_move_down) {
 					MovePlayer(0, -dy);
-					//vertical_movement = false;
 				}
 				else if (dy < 0 && !can_move_up) {
 					MovePlayer(0, -jumpspeed);
-					//aux_djump = false;
-					//vertical_movement = false;
 				}
 			}
 			
