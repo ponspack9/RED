@@ -31,7 +31,7 @@ Roller::Roller(iPoint pos, Entity* e,entityType type) : Entity(type)
 	LOG("Roller Created");
 	LOG("pos %d, %d", position.x, position.y);
 
-	App->collision->AddCollider(rect, COLLIDER_DEATH);
+	collider = App->collision->AddCollider(rect, COLLIDER_DEATH);
 }
 
 Roller::~Roller()

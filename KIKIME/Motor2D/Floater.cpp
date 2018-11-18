@@ -28,7 +28,7 @@ Floater::Floater(iPoint pos,Entity* e,entityType type) : Entity(type)
 	LOG("Floater Created");
 	LOG("pos %d, %d",position.x,position.y);
 
-	App->collision->AddCollider(rect, COLLIDER_DEATH);
+	collider = App->collision->AddCollider(rect, COLLIDER_DEATH);
 }
 
 Floater::~Floater()

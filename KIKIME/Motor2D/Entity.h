@@ -43,6 +43,7 @@ public:
 
 	virtual void Draw(SDL_Texture *sprites) {
 		App->render->Blit(sprites, position.x, position.y, &current_animation->GetCurrentFrame(), 1, 0);
+		if (collider) collider->SetPos(position.x, position.y);
 	}
 	void OnCollision(Collider* c1, Collider* c2) {}
 
