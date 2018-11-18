@@ -479,7 +479,10 @@ bool j1App::NextLevel() {
 	}
 
 	LOG("Next level: %s", App->map->current_map->data.GetString());
-	return App->fade->FadeToBlack(App->scene, App->scene);
+	App->fade->FadeToBlack(App->scene, App->scene);
+	/*App->entitymanager->CleanUp();
+	App->entitymanager->Start();*/
+	return true;
 }
 
 

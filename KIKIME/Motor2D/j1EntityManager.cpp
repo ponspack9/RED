@@ -247,7 +247,7 @@ bool j1EntityManager::Start()
 			}
 			if (App->collision->colliders[i]->rect.w < App->collision->colliders[i]->rect.h)
 			{
-				iPoint pos = { App->collision->colliders[i]->rect.x , App->collision->colliders[i]->rect.y + (App->collision->colliders[i]->rect.h / 2) };
+				iPoint pos = { App->collision->colliders[i]->rect.x , App->collision->colliders[i]->rect.y /*+ (App->collision->colliders[i]->rect.h / 2)*/ };
 				CreateEntity(ROLLER, pos);
 			}
 		}
@@ -260,8 +260,25 @@ bool j1EntityManager::Start()
 
 		}
 	}
+	SaveInitialState();
 	return true;
 }
+
+void j1EntityManager::SaveInitialState()
+{
+	p2SString temp = App->save_path;
+	App->save_path = "initial_state.xml";
+	App->SaveGameFile();
+	App->save_path = temp;
+}
+void j1EntityManager::LoadInitialState()
+{
+	p2SString temp = App->load_path;
+	App->load_path = "initial_state.xml";
+	App->LoadGameFile();
+	App->load_path = temp;
+}
+
 
 void j1EntityManager::CreatePlayerColliders()
 {
@@ -329,10 +346,17 @@ bool j1EntityManager::PostUpdate()
 	BROFILER_CATEGORY("Entities->PostUpdate", Profiler::Color::BlueViolet)
 	bool ret = false;
 	p2List_item<Entity*>* item;
+	if (player_ref->dead) {
+		LoadInitialState();
+		LOG("DEAD BY POSTUOPDATEDSAF");
+		player_ref->dead = false;
+		return true;
+	}
 
 	for (item = entities.start; item != nullptr; item = item->next)
 	{
 		ret = item->data->PostUpdate();
+		//LOG("FUCKIIIIIIIIIIIIIIIING NAME: %s",item->data->name.GetString());
 	}
 
 	return true;
@@ -342,14 +366,14 @@ bool j1EntityManager::CleanUp()
 {
 	BROFILER_CATEGORY("Entities->CleanUp", Profiler::Color::BlueViolet)
 	p2List_item<Entity*>* item;
-
+	DeletePlayerColliders();
 	for (item = entities.start; item != nullptr; item = item->next)
 	{
-		if (item->data->type == PLAYER)
+		/*if (item->data->type == PLAYER)
 		{
-			DeletePlayerColliders();
-		}
-		else if (item->data->collider != nullptr)
+			
+		}*/
+		if (item->data->collider != nullptr)
 		{
 			item->data->collider->to_delete = true;
 		}
@@ -365,10 +389,12 @@ bool j1EntityManager::CleanUp()
 
 bool j1EntityManager::Restart()
 {
-	bool ret = false;
+	bool ret = true;
 
 	ret = CleanUp();
+	//LoadInitialState();
 	ret = Start();
+
 
 	return ret;
 }

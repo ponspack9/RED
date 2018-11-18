@@ -37,7 +37,7 @@ public:
 
 	SDL_Texture* debug_tex;
 private:
-
+	bool first_load;
 };
 
 #endif // __j1SCENE_H__

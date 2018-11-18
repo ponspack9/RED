@@ -72,6 +72,11 @@ public:
 
 	bool NextLevel();
 
+	//Saving iteration ONLY SAVING ACTIVE MODULES
+	bool SaveGameFile();
+
+	//Loading iteration ONLY LOADING ACTIVE MODULES
+	bool LoadGameFile();
 private:
 
 	// Call modules before each loop iteration
@@ -89,11 +94,7 @@ private:
 	// Call modules after each loop iteration
 	bool PostUpdate();
 
-	//Saving iteration ONLY SAVING ACTIVE MODULES
-	bool SaveGameFile();
-
-	//Loading iteration ONLY LOADING ACTIVE MODULES
-	bool LoadGameFile();
+	
 
 public:
 
@@ -117,6 +118,9 @@ public:
 	mutable bool		want_to_save;
 
 	float				dt;
+	mutable p2SString	save_path;
+	p2SString			load_path;
+
 private:
 
 	p2List<j1Module*>	modules;
@@ -126,8 +130,6 @@ private:
 	p2SString			title;
 	p2SString			organization;
 
-	p2SString			load_path;
-	mutable p2SString	save_path;
 	
 	//Framerate control
 	j1Timer				timer;

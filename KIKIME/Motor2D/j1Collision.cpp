@@ -179,7 +179,7 @@ bool j1Collision::CleanUp()
 void j1Collision::CleanColliders()
 {
 	for (uint i = 0; i < MAX_COLLIDERS; ++i)
-		if (colliders[i] != nullptr && colliders[i]->type != COLLIDER_PLAYER) {
+		if (colliders[i] != nullptr) {
 			colliders[i] = nullptr;
 		}
 }

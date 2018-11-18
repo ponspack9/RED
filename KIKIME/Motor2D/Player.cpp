@@ -128,8 +128,9 @@ bool Player::PostUpdate()
 	if (dead)
 	{
 		current_animation = &death;
-		App->SoftRestartLevel();
-		dead = false;
+		//App->SoftRestartLevel();
+
+		//dead = false;
 	}
 	return true;
 }

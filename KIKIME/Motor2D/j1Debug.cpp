@@ -61,6 +61,10 @@ bool j1Debug::Update(float dt)
 	{
 		App->NextLevel();
 	}
+	if (App->input->GetKey(SDL_SCANCODE_F4) == KEY_DOWN)
+	{
+		App->delay_is_active = !App->delay_is_active;
+	}
 
 	if (App->input->GetKey(SDL_SCANCODE_F5) == KEY_DOWN)
 	{

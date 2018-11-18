@@ -33,6 +33,8 @@ public:
 	//Controllers
 	bool Awake(pugi::xml_node& config);
 	bool Start();
+	void SaveInitialState();
+	void LoadInitialState();
 	bool PreUpdate();
 	bool Update(float dt);
 	bool PostUpdate();
@@ -40,6 +42,7 @@ public:
 	bool Save(pugi::xml_node &node);
 	bool Load(pugi::xml_node &node);
 
+	//void SaveInitial();
 	bool Restart();
 
 	void UpdateAll(float dt, bool run);

@@ -18,6 +18,7 @@
 j1Scene::j1Scene() : j1Module()
 {
 	name.create("scene");
+	first_load = true;
 }
 
 // Destructor
@@ -54,8 +55,12 @@ bool j1Scene::Start()
 	App->render->ResetCamera();
 
 	debug_tex = App->tex->Load("maps/path3.png");
-	
-	//App->entitymanager->Restart();
+	if (first_load) {
+		first_load = false;
+	}
+	else {
+		App->entitymanager->Restart();
+	}
 	
 
 	return ret;
@@ -158,7 +163,8 @@ bool j1Scene::PostUpdate()
 bool j1Scene::CleanUp()
 {
 	LOG("Freeing scene");
-	App->map->CleanUp();
+	//App->map->CleanUp();
+	App->map->CleanMap();
 
 	return true;
 }
