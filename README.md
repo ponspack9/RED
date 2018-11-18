@@ -61,6 +61,10 @@ F10 --------> ENABLE AND DISABLE PLAYER'S GODMODE
 
 <====================================================================>
 
+We have made the whole assignment together, we work better together than each one at his home;
+doing this we have noticed an improvement of the quality of our work.
+
+We have had a lot of problems with "dt", specially at player's jump; the enemies move properly with "dt" implemented.
 
 by Oscar Pons Gallart & Oriol Sabaté Solé
 
