@@ -41,15 +41,16 @@ bool j1Scene::Start()
 	bool ret = true;
 	// App->audio->PlayMusic(PATH(App->audio->folder_music.GetString(), App->audio->tracks_path.start->data.GetString()));
 	//if (ret) App->map->Load(App->map->current_map->data.GetString());
-	if (App->map->Load(App->map->current_map->data.GetString()))
-	{
+	App->map->Load(App->map->current_map->data.GetString());
+	
+	/*{
 		int w, h;
 		uchar* data = NULL;
 		if (App->map->CreateWalkabilityMap(w, h, &data))
 			App->pathfinding->SetMap(w, h, data);
 
 		RELEASE_ARRAY(data);
-	}
+	}*/
 	
 	//App->entitymanager->Restart();
 	App->render->ResetCamera();

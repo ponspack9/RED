@@ -13,10 +13,9 @@
 	<entitymanager>
 		<player x="97" y="384" />
 		<enemy type="floater" alive="true" hp="1" x="832" y="384" />
-		<enemy type="floater" alive="true" hp="1" x="1314" y="768" />
 		<enemy type="floater" alive="true" hp="1" x="1344" y="416" />
 		<enemy type="roller" alive="true" hp="2" x="2752" y="608" />
-		<enemy type="roller" alive="true" hp="2" x="1568" y="736" />
+		<enemy type="roller" alive="true" hp="2" x="1410" y="674" />
 		<enemy type="floater" alive="true" hp="1" x="576" y="352" />
 		<enemy type="floater" alive="true" hp="1" x="2368" y="352" />
 		<enemy type="floater" alive="true" hp="1" x="1792" y="736" />
@@ -25,6 +24,6 @@
 	<fade />
 	<pathfinding />
 	<renderer>
-		<camera x="-231" y="-153" />
+		<camera x="0" y="0" />
 	</renderer>
 </save>

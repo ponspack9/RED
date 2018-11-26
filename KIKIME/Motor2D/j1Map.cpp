@@ -7,6 +7,8 @@
 #include "j1Map.h"
 #include "j1Collision.h"
 #include "Brofiler/Brofiler.h"
+#include "j1Debug.h"
+#include "j1Pathfinding.h"
 #include <cmath>
 
 j1Map::j1Map() : j1Module(), map_loaded(false)
@@ -21,54 +23,29 @@ j1Map::~j1Map()
 //{
 //	App->tex->UnLoad(texture);
 //}
-bool j1Map::CreateWalkabilityMap(int& width, int& height, uchar** buffer) const
+
+bool j1Map::CreateWalkabilityMap(pugi::xml_node& node, int & width, int & height, uchar ** buffer) const
 {
-	BROFILER_CATEGORY("Map->CreateWalkabilityMap", Profiler::Color::LightCyan)
-	bool ret = false;
-	p2List_item<MapLayer*>* item;
-	item = data.map_layers.start;
 
-	for (item = data.map_layers.start; item != NULL; item = item->next)
+	width = node.attribute("width").as_int();
+	height = node.attribute("height").as_int();
+
+	uchar* map = new uchar[width*height];
+	memset(map, 1, width*height);
+
+	int i = 0;
+	for (pugi::xml_node tile = node.child("data").child("tile"); tile; tile = tile.next_sibling("tile"))
 	{
-		MapLayer* layer = item->data;
-
-		if (layer->properties.Get("Navigation", 0) == 0)
-			continue;
-
-		uchar* map = new uchar[layer->width*layer->height];
-		memset(map, 1, layer->width*layer->height);
-
-		for (int y = 0; y < data.height; ++y)
-		{
-			for (int x = 0; x < data.width; ++x)
-			{
-				int i = (y*layer->width) + x;
-
-				int tile_id = layer->GetMapId(x, y);
-				TileSet* tileset = (tile_id > 0) ? GetTilesetFromTileId(tile_id) : NULL;
-
-				if (tileset != NULL)
-				{
-					map[i] = (tile_id - tileset->firstgid) > 0 ? 0 : 1;
-					/*TileType* ts = tileset->GetTileType(tile_id);
-					if(ts != NULL)
-					{
-						map[i] = ts->properties.Get("walkable", 1);
-					}*/
-				}
-			}
-		}
-
-		*buffer = map;
-		width = data.width;
-		height = data.height;
-		ret = true;
-
-		break;
+		int tile_value = tile.attribute("gid").as_int();
+		map[i] = (tile_value > 0) ? 0 : 1;
+		i++;
 	}
 
-	return ret;
+	*buffer = map;
+
+	return true;
 }
+
 // Load a group of properties from a node and fill a list with it
 bool j1Map::LoadProperties(pugi::xml_node& node, Properties& properties)
 {
@@ -133,6 +110,7 @@ void j1Map::Draw()
 	BROFILER_CATEGORY("Map->Draw", Profiler::Color::LightCyan)
 	if(!map_loaded)
 		return;
+
 	//Draw background
 	p2List_item<ImageLayer*>* imagelayer = data.image_layers.start;
 	for (imagelayer; imagelayer; imagelayer = imagelayer->next)
@@ -181,7 +159,6 @@ void j1Map::Draw()
 		}
 	}
 	//layer->~p2List_item();
-
 }
 
 bool j1Map::Load(const char* file_name)
@@ -201,6 +178,7 @@ bool j1Map::Load(const char* file_name)
 		pugi::xml_node tileset = map_doc.child("map").child("tileset");
 		for(tileset; tileset && ret; tileset = tileset.next_sibling("tileset"))
 		{
+			LOG("TILESET NAME: %s", tileset.attribute("name").as_string());
 			TileSet* set = new TileSet();
 
 			if(ret)	ret = LoadTilesetDetails(tileset, set);
@@ -223,9 +201,19 @@ bool j1Map::Load(const char* file_name)
 		for (layer; layer && ret; layer = layer.next_sibling("layer"))
 		{
 			MapLayer* set = new MapLayer();
-
-			if (ret) ret = LoadLayer(layer, set);
-			if (ret) data.map_layers.add(set);
+			p2SString name = layer.attribute("name").as_string();
+			if (name == "Walkability")
+			{
+				int w, h;
+				uchar* data = NULL;
+				if (CreateWalkabilityMap(layer, w, h, &data))
+					App->pathfinding->SetMap(w, h, data);
+				else LOG("ERROR LOADING WALKABILITY MAP");
+			}
+			else {
+				if (ret) ret = LoadLayer(layer, set);
+				if (ret) data.map_layers.add(set);
+			}
 		}
 
 		//BEGIN TRIP POLYLINE

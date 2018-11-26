@@ -2,6 +2,8 @@
 #include "p2Log.h"
 #include "j1App.h"
 #include "j1PathFinding.h"
+#include "j1Scene.h"
+#include "j1Render.h"
 
 j1PathFinding::j1PathFinding() : j1Module(), map(NULL), last_path(DEFAULT_PATH_LENGTH),width(0), height(0)
 {
@@ -62,6 +64,28 @@ uchar j1PathFinding::GetTileAt(const iPoint& pos) const
 	//else LOG("Not in boundaries");
 
 	return INVALID_WALK_CODE;
+}
+
+bool j1PathFinding::Update(float dt) {
+//	int a = 1;
+	DrawMap();
+	return true;
+}
+
+void j1PathFinding::DrawMap()
+{
+	for (int y = 0; y < height; ++y)
+	{
+		for (int x = 0; x < width; ++x)
+		{
+			int i = (y*width) + x;
+			//LOG("PRIIIINT [%d,%d]", x, y);
+			//LOG("I: %d", i);
+			if (map[i] == 0) {
+				App->render->Blit(App->scene->debug_tex, x*32, y*32);
+			}
+		}
+	}
 }
 
 // To request all tiles involved in the last generated path
