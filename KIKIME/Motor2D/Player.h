@@ -18,17 +18,20 @@ public:
 	bool Update(float dt);
 	bool PostUpdate();
 
-	void Draw();
 	bool MovePlayer(float vel_x, float vel_y,float dt);
 	void Move();
 	void MoveFree();
 	bool Jump();
 	bool DoubleJump();
 	void PlayerAnimations();
-	j1PerfTimer jtimer;
 	
 
 public:
+
+	bool want_right;
+	bool want_left;
+	bool want_up;
+	bool want_down;
 
 	SDL_Texture* graphics = nullptr;
 };

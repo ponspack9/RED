@@ -131,11 +131,16 @@ public:
 	bool	vertical_collided;
 	bool	horizontal_collided;
 
-	Collider*	collider_ray_right;
+	/*Collider*	collider_ray_right;
 	Collider*	collider_ray_left;
 	Collider*	collider_ray_up;
 	Collider*	collider_ray_down;
-	Collider*	collider_identifier;
+	Collider*	collider_identifier;*/
 
 	int			collider_offset;
+
+	////////////////////////////////////////////////////////
+	
+	bool get_out;
+
 };

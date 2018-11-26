@@ -287,27 +287,12 @@ void j1EntityManager::LoadInitialState()
 
 void j1EntityManager::CreatePlayerColliders()
 {
-	player_ref->collider_identifier = App->collision->AddCollider(player_ref->rect, COLLIDER_NONE, this);
 	player_ref->collider = App->collision->AddCollider(player_ref->rect, COLLIDER_PLAYER, this);
-
-	SDL_Rect temp = player_ref->rect;
-	temp.h -= 2*player_ref->speed.y;
-	player_ref->collider_ray_right = App->collision->AddCollider(temp, COLLIDER_RAY_RIGHT, this);
-	player_ref->collider_ray_left = App->collision->AddCollider (temp, COLLIDER_RAY_LEFT, this);
-	temp = player_ref->rect;
-	temp.w -= 2*player_ref->speed.x;
-	player_ref->collider_ray_down = App->collision->AddCollider(temp, COLLIDER_RAY_DOWN, this);
-	player_ref->collider_ray_up = App->collision->AddCollider (temp, COLLIDER_RAY_UP, this);
 }
 
 void j1EntityManager::DeletePlayerColliders()
 {
-	player_ref->collider_identifier->to_delete = true;
 	player_ref->collider->to_delete = true;
-	player_ref->collider_ray_right->to_delete = true;
-	player_ref->collider_ray_left->to_delete = true;
-	player_ref->collider_ray_down->to_delete = true;
-	player_ref->collider_ray_up->to_delete = true;
 }
 
 bool j1EntityManager::PreUpdate()
@@ -365,7 +350,6 @@ bool j1EntityManager::PostUpdate()
 	for (item = entities.start; item != nullptr; item = item->next)
 	{
 		ret = item->data->PostUpdate();
-		//LOG("FUCKIIIIIIIIIIIIIIIING NAME: %s",item->data->name.GetString());
 	}
 
 	return true;
@@ -405,38 +389,16 @@ bool j1EntityManager::Restart()
 
 void j1EntityManager::UpdateAll(float dt,bool run)
 {
-	if (player_ref->dead) {
-		player_ref->next_speed.x = 0;
-		player_ref->next_speed.y = 0;
-	}
-	player_ref->position.x += (int)(player_ref->next_speed.x * dt * 50);
-	player_ref->position.y += (int)(player_ref->next_speed.y * dt * 50);
-
-	player_ref->rect.x = player_ref->position.x;	
-	player_ref->rect.y = player_ref->position.y;
-
-	if (player_ref->collider != nullptr) {
-		player_ref->collider->SetPos(player_ref->position.x, player_ref->position.y);
-		player_ref->collider_ray_right->SetPos(player_ref->position.x + player_ref->collider_offset, player_ref->position.y + player_ref->collider_offset);
-		player_ref->collider_ray_left->SetPos (player_ref->position.x - player_ref->collider_offset, player_ref->position.y + player_ref->collider_offset);
-		player_ref->collider_ray_up->SetPos   (player_ref->position.x + player_ref->collider_offset, player_ref->position.y - player_ref->collider_offset);
-		player_ref->collider_ray_down->SetPos (player_ref->position.x + player_ref->collider_offset, player_ref->position.y + player_ref->collider_offset);
-	}
-
 	p2List_item<Entity*>* item;
 	for (item = entities.start; item != nullptr; item = item->next)
 	{
-		if (item->data->type == entityType::PLAYER)
-		{
 			item->data->Update(dt);
-			//item->data->Draw(playerTex);
-		}
-		else
+		if (item->data->type != entityType::PLAYER)
 		{
-			item->data->Update(dt);
 			item->data->Draw(enemyTex);
 		}
 	}
+	player_ref->Draw(playerTex);
 	if (run)
 	{
 		for (item = entities.start; item != nullptr; item = item->next)
@@ -448,7 +410,6 @@ void j1EntityManager::UpdateAll(float dt,bool run)
 
 Entity * j1EntityManager::CreateEntity(entityType type, iPoint pos)
 {
-	//falta crear classes especifiques
 	static_assert(entityType::NO_TYPE == 4, "NO TYPE TO CREATE, CODE NEEDS UPDATE");
 
 	Entity* entity = nullptr;
@@ -477,65 +438,22 @@ Entity * j1EntityManager::CreateEntity(entityType type, iPoint pos)
 
 void j1EntityManager::OnCollision(Collider * c1, Collider * c2)
 {
-	*player_ref->collider_identifier = c2;
+	//if (c1->type == COLLIDER_PLAYER && c2->type == COLLIDER_FLOOR) 
+	//{
+	//	//Right
+	//	//X
+	//	if (c1->rect.x + c1->rect.w >= c2->rect.x) {
+	//		player_ref->want_right = false;
+	//		player_ref->position.x = c2->rect.x - player_ref->collider->rect.w;
+	//	}
+	//}
 
-	if (c1->type == COLLIDER_RAY_RIGHT && c2->type == COLLIDER_FLOOR) {
-		player_ref->can_move_right = false;
-		player_ref->horizontal_collided = true;
-		//LOG("COLLIDED_RAY_RIGHT");
-	}
-	if (c1->type == COLLIDER_RAY_LEFT && c2->type == COLLIDER_FLOOR) {
-		player_ref->can_move_left = false;
-		player_ref->horizontal_collided = true;
-		//LOG("COLLIDED_RAY_LEFT");
 
-	}
-	if (c1->type == COLLIDER_RAY_UP && c2->type == COLLIDER_FLOOR) {
-		player_ref->can_move_up = false;
-		player_ref->can_move_down = true;
-		player_ref->on_floor = false;
-		player_ref->vertical_collided = true;
-		//LOG("COLLIDED_RAY_UP");
-
-	}
-	if (c1->type == COLLIDER_RAY_DOWN && c2->type == COLLIDER_FLOOR) {
-		player_ref->can_move_down = false;
-		player_ref->on_floor = true;
-		player_ref->is_falling = false;
-		player_ref->djump = false;
-		player_ref->aux_djump = false;
-		player_ref->vertical_collided = true;
-		//LOG("COLLIDED_RAY_DOWN");
-
-	}
-	if (!player_ref->can_move_down && !player_ref->can_move_left && !player_ref->can_move_right) {
-		player_ref->can_move_left = true;
-		player_ref->can_move_right = true;
-		player_ref->is_falling = false;
-		player_ref->on_floor = true;
-		//LOG("SPECIAL CASE");
-	}
-	if (c1->type == COLLIDER_PLAYER && c2->type == COLLIDER_FLOOR) {
-		player_ref->go_back = true;
-	}
-
-	if (c1->type == COLLIDER_PLAYER && c2->type == COLLIDER_END && !player_ref->level_finished) {
-		player_ref->level_finished = true;
-	}
-	if (c1->type == COLLIDER_PLAYER && c2->type == COLLIDER_DEATH) {
-		player_ref->dead = true;
-		for (int i = 0; i < entities.count(); i++) {
-			if (entities.At(i)->data->type == FLOATER || entities.At(i)->data->type == FLOATER)
-				entities.At(i)->data->first_iteration = true;
-		}
-	}
 
 }
 bool j1EntityManager::Save(pugi::xml_node & node)
 {
 	p2List_item<Entity*>* item;
-	//LOG("saving enemiesHHHHHHHHHHHHHHHHHHHHHHHHHHHHH");
-
 
 	for (item = entities.start; item != nullptr; item = item->next)
 	{
@@ -548,7 +466,6 @@ bool j1EntityManager::Save(pugi::xml_node & node)
 		}
 		else
 		{
-			//pugi::xml_node n = node.append_child(item->data->name.GetString());
 			pugi::xml_node n = node.append_child("enemy");
 
 			n.append_attribute("type") = item->data->name.GetString();
@@ -561,8 +478,6 @@ bool j1EntityManager::Save(pugi::xml_node & node)
 				n.append_attribute("y") = item->data->position.y;
 			}
 		}
-		//LOG("SAVE POS: %d  ,  %d", item->data->position.x, item->data->position.y);
-		//LOG("SAVE HP:  %d", item->data->health);
 	}
 
 	return true;
@@ -571,7 +486,6 @@ bool j1EntityManager::Save(pugi::xml_node & node)
 bool j1EntityManager::Load(pugi::xml_node & node)
 {
 	p2List_item<Entity*>* item;
-	//LOG("loading enemiesEEEEEEEEEEEEEEEEEEEEEEE");
 
 
 	for (item = entities.start; item != nullptr; item = item->next)
@@ -593,9 +507,6 @@ bool j1EntityManager::Load(pugi::xml_node & node)
 				item->data->position.x = node.attribute("x").as_int();
 				item->data->position.y = node.attribute("y").as_int();
 			}
-			//LOG("LOAD POS: %d  ,  %d", item->data->position.x, item->data->position.y);
-			//LOG("LOAD HP:  %d", item->data->health);
-
 			node = node.next_sibling("enemy");
 		}
 	}

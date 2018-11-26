@@ -68,7 +68,7 @@
     <playerpath path="textures/player/sprites.png"/>
     <player>
       <rect width="64" height="64"/>
-      <speed scrollspeed="4" jumpspeed="5"/>
+      <speed scrollspeed="100" jumpspeed="200"/>
       <gravity value="3"/>
       <godmode value="false"/>
       <playeranimations defaultAnimationSpeed="0.03">
