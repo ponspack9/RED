@@ -24,6 +24,7 @@ public:
 	iPoint last_motion;
 	iPoint zero;
 	bool show_colliders;
+	bool start_motion;
 
 	bool debug_bool = false;
 	Collider * debug_col;

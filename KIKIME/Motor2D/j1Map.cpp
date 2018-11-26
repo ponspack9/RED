@@ -7,6 +7,7 @@
 #include "j1Map.h"
 #include "j1Collision.h"
 #include "Brofiler/Brofiler.h"
+#include "j1Debug.h"
 #include <cmath>
 
 j1Map::j1Map() : j1Module(), map_loaded(false)
@@ -21,6 +22,7 @@ j1Map::~j1Map()
 //{
 //	App->tex->UnLoad(texture);
 //}
+
 bool j1Map::CreateWalkabilityMap(int& width, int& height, uchar** buffer) const
 {
 	BROFILER_CATEGORY("Map->CreateWalkabilityMap", Profiler::Color::LightCyan)
@@ -28,6 +30,7 @@ bool j1Map::CreateWalkabilityMap(int& width, int& height, uchar** buffer) const
 	p2List_item<MapLayer*>* item;
 	item = data.map_layers.start;
 
+	SDL_Texture* debug_tex = App->tex->Load(App->debug->debug_path.GetString());
 	for (item = data.map_layers.start; item != NULL; item = item->next)
 	{
 		MapLayer* layer = item->data;
@@ -43,15 +46,19 @@ bool j1Map::CreateWalkabilityMap(int& width, int& height, uchar** buffer) const
 			for (int x = 0; x < data.width; ++x)
 			{
 				int i = (y*layer->width) + x;
-
+				LOG("I: %d", i);
 				int tile_id = layer->GetMapId(x, y);
 				TileSet* tileset = (tile_id > 0) ? GetTilesetFromTileId(tile_id) : NULL;
 
 				if (tileset != NULL)
 				{
 					map[i] = (tile_id - tileset->firstgid) > 0 ? 0 : 1;
-					/*TileType* ts = tileset->GetTileType(tile_id);
-					if(ts != NULL)
+					if (map[i] == 0) {
+						//App->render->Blit(debug_tex, x, y);
+						
+					}
+					//TileType* ts = tileset->GetTileType(tile_id);
+					/*if(ts != NULL)
 					{
 						map[i] = ts->properties.Get("walkable", 1);
 					}*/
@@ -181,7 +188,6 @@ void j1Map::Draw()
 		}
 	}
 	//layer->~p2List_item();
-
 }
 
 bool j1Map::Load(const char* file_name)
@@ -201,6 +207,7 @@ bool j1Map::Load(const char* file_name)
 		pugi::xml_node tileset = map_doc.child("map").child("tileset");
 		for(tileset; tileset && ret; tileset = tileset.next_sibling("tileset"))
 		{
+			LOG("TILESET NAME: %s", tileset.attribute("name").as_string());
 			TileSet* set = new TileSet();
 
 			if(ret)	ret = LoadTilesetDetails(tileset, set);

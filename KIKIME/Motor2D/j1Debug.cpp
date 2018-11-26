@@ -115,34 +115,34 @@ bool j1Debug::Update(float dt)
 	}*/
 	/////////////////
 
-	//// Camera drag through mouse click -> useless with new cameraFollow
-	//if (App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KEY_DOWN) {
-	//	LOG("CLICK");
-	//	App->input->GetMousePosition(camera_motion.x, camera_motion.y);
-	//	start_motion = true;
-	//}
+	// Camera drag through mouse click -> useless with new cameraFollow
+	if (App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KEY_DOWN) {
+		LOG("CLICK");
+		App->input->GetMousePosition(camera_motion.x, camera_motion.y);
+		start_motion = true;
+	}
 
-	//if (App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KEY_UP) {
-	//	LOG("CLICK UP");
-	//	start_motion = false;
-	//	//App->input->GetMousePosition(camera_motion.x, camera_motion.y);
-	//}
-	//if (start_motion) {
+	if (App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KEY_UP) {
+		LOG("CLICK UP");
+		start_motion = false;
+		//App->input->GetMousePosition(camera_motion.x, camera_motion.y);
+	}
+	if (start_motion) {
 
-	//	iPoint final;
-	//	App->input->GetMousePosition(final.x, final.y);
-	//	SDL_SetRenderDrawColor(App->render->renderer, 255, 0, 0, SDL_ALPHA_OPAQUE);
-	//	if (show_colliders)SDL_RenderDrawLine(App->render->renderer, camera_motion.x, camera_motion.y, final.x, final.y);
+		iPoint final;
+		App->input->GetMousePosition(final.x, final.y);
+		SDL_SetRenderDrawColor(App->render->renderer, 255, 0, 0, SDL_ALPHA_OPAQUE);
+		if (show_colliders)SDL_RenderDrawLine(App->render->renderer, camera_motion.x, camera_motion.y, final.x, final.y);
 
-	//	App->input->GetMouseMotion(final.x, final.y);
+		App->input->GetMouseMotion(final.x, final.y);
 
-	//	last_motion -= final;
-	//	if (last_motion != zero) {
-	//		App->render->MoveCamera(final.x, final.y);
-	//	}
+		last_motion -= final;
+		if (last_motion != zero) {
+			App->render->MoveCamera(final.x, final.y);
+		}
 
-	//	last_motion = { final.x, final.y };
-	//}
+		last_motion = { final.x, final.y };
+	}
 	
 
 	//App->win->SetTitle(App->map->DebugToString().GetString());
