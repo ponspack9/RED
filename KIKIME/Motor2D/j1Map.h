@@ -90,6 +90,8 @@ struct TileSet
 	int					offset_x;
 	int					offset_y;
 
+	Properties			properties;
+
 };
 
 struct MapData
@@ -114,7 +116,7 @@ public:
 	// Destructor
 	virtual ~j1Map();
 
-	bool CreateWalkabilityMap(int & width, int & height, uchar ** buffer) const;
+	bool CreateWalkabilityMap(pugi::xml_node & node, int & width, int & height, uchar ** buffer) const;
 
 	bool LoadProperties(pugi::xml_node & node, Properties & properties);
 
