@@ -34,11 +34,13 @@ enemies among other things.
 
 ##Controls
 
-W , Space --> JUMP and DOUBLEJUMP(only while falling)
+W , Space --> JUMP and DOUBLEJUMP(only while falling) / MOVING UP (GODMODE)
 
 A ----------> MOVING LEFT
 
 D ----------> MOVING RIGHT
+
+S ----------> MOVING DOWN (GODMODE)
 
 ##Debug Keys
 
@@ -54,9 +56,11 @@ F5 ---------> SAVE THE CURRENT GAME STATE
 
 F6 ---------> LOAD THE PREVIOUSLY SAVED GAME STATE
 
-F9 ---------> SHOW AND HIDE LOGIC (colliders)
+F9 ---------> SHOW AND HIDE LOGIC (COLLIDERS & WALKABILITY MAP & ENEMIES' PATH)
 
 F10 --------> ENABLE AND DISABLE PLAYER'S GODMODE
+
+F11 --------> CAMERA FOLLOWS PLAYER/DRAG AND RELEASE MOUSE TO FREELY MOVE THE CAMERA
 
 
 <====================================================================>
@@ -66,7 +70,7 @@ doing this we have noticed an improvement of the quality of our work.
 
 We have had a lot of problems with "dt", specially at player's jump; the enemies move properly with "dt" implemented.
 
-by Oscar Pons Gallart & Oriol Sabaté Solé
+by Òscar Pons Gallart & Oriol Sabaté Solé
 
 
 

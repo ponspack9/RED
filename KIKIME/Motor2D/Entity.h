@@ -30,13 +30,9 @@ public:
 
 	Entity(){}
 
-	Entity(entityType type)
-	{		
-	}
+	Entity(entityType type) {}
 
-	~Entity()
-	{
-	}
+	~Entity(){}
 
 	virtual bool PreUpdate() { return true; }
 	virtual bool Update(float dt) { 
@@ -50,9 +46,6 @@ public:
 		App->render->Blit(sprites, position.x, position.y, &current_animation->GetCurrentFrame(), 1, 0);
 		if (collider) collider->SetPos(position.x, position.y);
 	}
-	void OnCollision(Collider* c1, Collider* c2) {}
-
-	const Collider* GetCollider() const { return collider; }
 
 	virtual bool UpdateLogic(iPoint pos) { return true; }
 
@@ -94,26 +87,26 @@ public:
 
 	///////////////// PLAYER ///////////////////
 
-	SDL_Rect	 anim_rect;
-	Animation*	 current_animation = nullptr;
-	Animation	 idle;
-	Animation	 walk;
-	Animation	 jump;
-	Animation	 doublejump;
-	Animation	 fall;
-	Animation	 death;
-	Animation	 god;
+	SDL_Rect		anim_rect;
+	Animation*		current_animation = nullptr;
+	Animation		idle;
+	Animation		walk;
+	Animation		jump;
+	Animation		doublejump;
+	Animation		fall;
+	Animation		death;
+	Animation		god;
 
-	float        def_anim_speed;
-	float		 gravity;
-	float		 god_speed;
+	float			def_anim_speed;
+	float			gravity;
+	float			god_speed;
 
-	bool		 level_finished;
+	bool			level_finished;
 
 	//Animations
 
-	bool		 dead;
-	bool	god_mode;
+	bool			dead;
+	bool			god_mode;
 
 
 };

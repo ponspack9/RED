@@ -31,6 +31,7 @@ Player::Player(iPoint pos, Entity * e, SDL_Texture * sprites,entityType type) : 
 	jump = e->jump;
 	doublejump = e->doublejump;
 	god = e->god;
+	def_anim_speed = e->def_anim_speed;
 
 	current_animation = &idle;
 	alive = true;
@@ -77,85 +78,26 @@ bool Player::Update(float dt)
 	BROFILER_CATEGORY("Player->Update", Profiler::Color::BlueViolet);
 
 	if (!god_mode) {
-		if (want_right)
-		{
-			iPoint pos = App->render->ScreenToWorld(position.x + collider->rect.w + App->render->camera.x + (int)(speed.x * dt), position.y + App->render->camera.y);
-			pos = App->map->WorldToMap(pos.x, pos.y);
-			iPoint pos2 = App->render->ScreenToWorld(position.x + collider->rect.w + App->render->camera.x + (int)(speed.x * dt), position.y + App->render->camera.y + 32);
-			pos2 = App->map->WorldToMap(pos2.x, pos2.y);
-			iPoint pos3 = App->render->ScreenToWorld(position.x + collider->rect.w + App->render->camera.x + (int)(speed.x * dt), position.y + App->render->camera.y + collider->rect.h);
-			pos3 = App->map->WorldToMap(pos3.x, pos3.y);
-
-			if (App->pathfinding->IsWalkable(pos) && App->pathfinding->IsWalkable(pos2) && App->pathfinding->IsWalkable(pos3)) {
-				position.x += (int)(speed.x * dt);
-				//Animation
-				//going_right = true;
-			}
-			want_right = false;
-		}
-		else if (want_left)
-		{
-			iPoint pos = App->render->ScreenToWorld(position.x + App->render->camera.x - (int)(speed.x * dt), position.y + App->render->camera.y);
-			pos = App->map->WorldToMap(pos.x, pos.y);
-			iPoint pos2 = App->render->ScreenToWorld(position.x + App->render->camera.x - (int)(speed.x * dt), position.y + App->render->camera.y + 32);
-			pos2 = App->map->WorldToMap(pos2.x, pos2.y);
-			iPoint pos3 = App->render->ScreenToWorld(position.x + App->render->camera.x - (int)(speed.x * dt), position.y + App->render->camera.y + collider->rect.h);
-			pos3 = App->map->WorldToMap(pos3.x, pos3.y);
-
-			if (App->pathfinding->IsWalkable(pos) && App->pathfinding->IsWalkable(pos2) && App->pathfinding->IsWalkable(pos3)) {
-				position.x -= (int)(speed.x * dt);
-				//Animation
-				//going_left = true;
-			}
-			want_left = false;
-		}
-		if (want_up)
-		{
-			iPoint pos = App->render->ScreenToWorld(position.x + App->render->camera.x, position.y + App->render->camera.y - (int)(speed.y * dt));
-			pos = App->map->WorldToMap(pos.x, pos.y);
-			iPoint pos2 = App->render->ScreenToWorld(position.x + App->render->camera.x + 32, position.y + App->render->camera.y - (int)(speed.y * dt));
-			pos2 = App->map->WorldToMap(pos2.x, pos2.y);
-			iPoint pos3 = App->render->ScreenToWorld(position.x + App->render->camera.x + collider->rect.w, position.y + App->render->camera.y - (int)(speed.y * dt));
-			pos3 = App->map->WorldToMap(pos3.x, pos3.y);
-
-			if (App->pathfinding->IsWalkable(pos) && App->pathfinding->IsWalkable(pos2) && App->pathfinding->IsWalkable(pos3)) {
-				position.y -= (int)(speed.y * dt);
-				//Animation
-				//going_up = true;
-			}
-			want_up = false;
-		}
-		//Always move down if gravity is true, and player can, obviously
-		if (gravity_enabled)
-		{
-			iPoint pos = App->render->ScreenToWorld(position.x + App->render->camera.x, position.y + App->render->camera.y + collider->rect.h + (int)(gravity * dt));
-			pos = App->map->WorldToMap(pos.x, pos.y);
-			iPoint pos2 = App->render->ScreenToWorld(position.x + App->render->camera.x + 32, position.y + App->render->camera.y + collider->rect.h + (int)(gravity * dt));
-			pos2 = App->map->WorldToMap(pos2.x, pos2.y);
-			iPoint pos3 = App->render->ScreenToWorld(position.x + App->render->camera.x + collider->rect.w, position.y + App->render->camera.y + collider->rect.h + (int)(gravity * dt));
-			pos3 = App->map->WorldToMap(pos3.x, pos3.y);
-
-			if (App->pathfinding->IsWalkable(pos) && App->pathfinding->IsWalkable(pos2) && App->pathfinding->IsWalkable(pos3)) {
-				position.y += (int)(gravity * dt);
-				//Animation
-				//going_down = true;
-			}
-		}
+		Move(dt);
 	}
 	else {
 		MoveFree(dt);
 	}
-	
+	PlayerAnimations(dt);
 	
 	return true;
 }
 
 void Player::PlayerAnimations(float dt)
 {
-	current_animation = &idle;
-	if (want_right) {
-		current_animation = &walk;
+	if (!god_mode) {
+		current_animation = &idle;
 	}
+	else {
+		current_animation = &god;
+	}
+
+	current_animation->speed = def_anim_speed * dt;
 }
 
 
@@ -182,63 +124,94 @@ bool Player::DoubleJump()
 	
 }
 
-void Player::MoveFree(float dt)
+void Player::Move(float dt)
 {
 	if (want_right)
 	{
-		/*iPoint pos = App->render->ScreenToWorld(position.x + collider->rect.w + App->render->camera.x + (int)(speed.x * dt), position.y + App->render->camera.y);
+		iPoint pos = App->render->ScreenToWorld(position.x + collider->rect.w + App->render->camera.x + (int)(speed.x * dt), position.y + App->render->camera.y);
 		pos = App->map->WorldToMap(pos.x, pos.y);
 		iPoint pos2 = App->render->ScreenToWorld(position.x + collider->rect.w + App->render->camera.x + (int)(speed.x * dt), position.y + App->render->camera.y + 32);
 		pos2 = App->map->WorldToMap(pos2.x, pos2.y);
 		iPoint pos3 = App->render->ScreenToWorld(position.x + collider->rect.w + App->render->camera.x + (int)(speed.x * dt), position.y + App->render->camera.y + collider->rect.h);
-		pos3 = App->map->WorldToMap(pos3.x, pos3.y);*/
+		pos3 = App->map->WorldToMap(pos3.x, pos3.y);
 
-		//if (App->pathfinding->IsWalkable(pos) && App->pathfinding->IsWalkable(pos2) && App->pathfinding->IsWalkable(pos3)) {
-			position.x += (int)(god_speed * dt);
-		//}
+		if (App->pathfinding->IsWalkable(pos) && App->pathfinding->IsWalkable(pos2) && App->pathfinding->IsWalkable(pos3)) {
+			position.x += (int)(speed.x * dt);
+			//Animation
+			//going_right = true;
+		}
 		want_right = false;
 	}
 	else if (want_left)
 	{
-		/*iPoint pos = App->render->ScreenToWorld(position.x + App->render->camera.x - (int)(speed.x * dt), position.y + App->render->camera.y);
+		iPoint pos = App->render->ScreenToWorld(position.x + App->render->camera.x - (int)(speed.x * dt), position.y + App->render->camera.y);
 		pos = App->map->WorldToMap(pos.x, pos.y);
 		iPoint pos2 = App->render->ScreenToWorld(position.x + App->render->camera.x - (int)(speed.x * dt), position.y + App->render->camera.y + 32);
 		pos2 = App->map->WorldToMap(pos2.x, pos2.y);
 		iPoint pos3 = App->render->ScreenToWorld(position.x + App->render->camera.x - (int)(speed.x * dt), position.y + App->render->camera.y + collider->rect.h);
-		pos3 = App->map->WorldToMap(pos3.x, pos3.y);*/
+		pos3 = App->map->WorldToMap(pos3.x, pos3.y);
 
-		//if (App->pathfinding->IsWalkable(pos) && App->pathfinding->IsWalkable(pos2) && App->pathfinding->IsWalkable(pos3)) {
-			position.x -= (int)(god_speed * dt);
-		//}
+		if (App->pathfinding->IsWalkable(pos) && App->pathfinding->IsWalkable(pos2) && App->pathfinding->IsWalkable(pos3)) {
+			position.x -= (int)(speed.x * dt);
+			//Animation
+			//going_left = true;
+		}
 		want_left = false;
 	}
 	if (want_up)
 	{
-		/*iPoint pos = App->render->ScreenToWorld(position.x + App->render->camera.x, position.y + App->render->camera.y - (int)(speed.y * dt));
+		iPoint pos = App->render->ScreenToWorld(position.x + App->render->camera.x, position.y + App->render->camera.y - (int)(speed.y * dt));
 		pos = App->map->WorldToMap(pos.x, pos.y);
 		iPoint pos2 = App->render->ScreenToWorld(position.x + App->render->camera.x + 32, position.y + App->render->camera.y - (int)(speed.y * dt));
 		pos2 = App->map->WorldToMap(pos2.x, pos2.y);
 		iPoint pos3 = App->render->ScreenToWorld(position.x + App->render->camera.x + collider->rect.w, position.y + App->render->camera.y - (int)(speed.y * dt));
-		pos3 = App->map->WorldToMap(pos3.x, pos3.y);*/
+		pos3 = App->map->WorldToMap(pos3.x, pos3.y);
 
-		//if (App->pathfinding->IsWalkable(pos) && App->pathfinding->IsWalkable(pos2) && App->pathfinding->IsWalkable(pos3)) {
-			position.y -= (int)(god_speed * dt);
-		//}
+		if (App->pathfinding->IsWalkable(pos) && App->pathfinding->IsWalkable(pos2) && App->pathfinding->IsWalkable(pos3)) {
+			position.y -= (int)(speed.y * dt);
+			//Animation
+			//going_up = true;
+		}
 		want_up = false;
 	}
-	//Always move down if gravity is true, and player can obvious
-	if (want_down)
+	//Always move down if gravity is true, and player can, obviously
+	if (gravity_enabled)
 	{
-		/*iPoint pos = App->render->ScreenToWorld(position.x + App->render->camera.x, position.y + App->render->camera.y + collider->rect.h + (int)(gravity * dt));
+		iPoint pos = App->render->ScreenToWorld(position.x + App->render->camera.x, position.y + App->render->camera.y + collider->rect.h + (int)(gravity * dt));
 		pos = App->map->WorldToMap(pos.x, pos.y);
 		iPoint pos2 = App->render->ScreenToWorld(position.x + App->render->camera.x + 32, position.y + App->render->camera.y + collider->rect.h + (int)(gravity * dt));
 		pos2 = App->map->WorldToMap(pos2.x, pos2.y);
 		iPoint pos3 = App->render->ScreenToWorld(position.x + App->render->camera.x + collider->rect.w, position.y + App->render->camera.y + collider->rect.h + (int)(gravity * dt));
-		pos3 = App->map->WorldToMap(pos3.x, pos3.y);*/
+		pos3 = App->map->WorldToMap(pos3.x, pos3.y);
 
-		//if (App->pathfinding->IsWalkable(pos) && App->pathfinding->IsWalkable(pos2) && App->pathfinding->IsWalkable(pos3)) {
-			position.y += (int)(god_speed * dt);
-		//}
+		if (App->pathfinding->IsWalkable(pos) && App->pathfinding->IsWalkable(pos2) && App->pathfinding->IsWalkable(pos3)) {
+			position.y += (int)(gravity * dt);
+			//Animation
+			//going_down = true;
+		}
+	}
+}
+
+void Player::MoveFree(float dt)
+{
+	if (want_right)
+	{
+		position.x += (int)(god_speed * dt);
+		want_right = false;
+	}
+	else if (want_left)
+	{
+		position.x -= (int)(god_speed * dt);
+		want_left = false;
+	}
+	if (want_up)
+	{
+		position.y -= (int)(god_speed * dt);
+		want_up = false;
+	}
+	else if (want_down)
+	{
+		position.y += (int)(god_speed * dt);
 		want_down = false;
 	}
 }

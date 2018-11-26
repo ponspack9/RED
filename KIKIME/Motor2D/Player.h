@@ -17,7 +17,8 @@ public:
 	bool PreUpdate();
 	bool Update(float dt);
 	bool PostUpdate();
-
+	
+	void Move(float dt);
 	void MoveFree(float dt);
 	bool Jump();
 	bool DoubleJump();

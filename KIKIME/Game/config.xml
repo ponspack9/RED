@@ -71,7 +71,7 @@
       <speed scrollspeed="100" jumpspeed="200"/>
       <gravity value="300"/>
       <godmode value="false" speed ="500"/>
-      <playeranimations defaultAnimationSpeed="0.03">
+      <playeranimations defaultAnimationSpeed="10">
         <idle height="48" width="39" y="116" x="180"  name="player_idle"/>
         <idle height="48" width="39" y="58" x="222"   name="player_05"/>
         <idle height="45" width="39" y="174" x="180"  name="player_12"/>
