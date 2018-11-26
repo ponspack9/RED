@@ -122,7 +122,7 @@ bool j1EntityManager::Awake(pugi::xml_node & config)
 	playerinfo.speed.y = player_node.child("speed").attribute("jumpspeed").	 as_int();
 
 	playerinfo.gravity = player_node.child("gravity").attribute("value").as_float();
-	playerinfo.godmode = player_node.child("godmode").attribute("value").as_bool();
+	playerinfo.god_mode = player_node.child("godmode").attribute("value").as_bool();
 
 	// Parsing animations ----------------
 
@@ -225,9 +225,8 @@ bool j1EntityManager::Awake(pugi::xml_node & config)
 
 	//LOG("%d  %d", player_rect.h, player_rect.w);
 	LOG("%d  %d", playerinfo.speed.x, playerinfo.speed.y);
-	
-	playerinfo.collider_offset = playerinfo.speed.x;
-	playerinfo.max_speed_y = playerinfo.speed.y;
+	playerinfo.god_speed = player_node.child("godmode").attribute("speed").as_float();
+	//playerinfo.max_speed_y = playerinfo.speed.y;
 
 	return true;
 }

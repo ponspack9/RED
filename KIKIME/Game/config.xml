@@ -1,6 +1,6 @@
 <!-- Config file for the game -->
 <config>
-  <app framerate_cap ="30">
+  <app framerate_cap ="90">
     <title>KIKIME</title>
     <organization>ORISO</organization>
   </app>
@@ -69,8 +69,8 @@
     <player>
       <rect width="64" height="64"/>
       <speed scrollspeed="100" jumpspeed="200"/>
-      <gravity value="3"/>
-      <godmode value="false"/>
+      <gravity value="300"/>
+      <godmode value="false" speed ="500"/>
       <playeranimations defaultAnimationSpeed="0.03">
         <idle height="48" width="39" y="116" x="180"  name="player_idle"/>
         <idle height="48" width="39" y="58" x="222"   name="player_05"/>

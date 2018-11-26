@@ -18,12 +18,10 @@ public:
 	bool Update(float dt);
 	bool PostUpdate();
 
-	bool MovePlayer(float vel_x, float vel_y,float dt);
-	void Move();
-	void MoveFree();
+	void MoveFree(float dt);
 	bool Jump();
 	bool DoubleJump();
-	void PlayerAnimations();
+	void PlayerAnimations(float dt);
 	
 
 public:
@@ -32,6 +30,7 @@ public:
 	bool want_left;
 	bool want_up;
 	bool want_down;
+	bool gravity_enabled;
 
 	SDL_Texture* graphics = nullptr;
 };

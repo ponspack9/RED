@@ -53,7 +53,6 @@ public:
 	void OnCollision(Collider* c1, Collider* c2) {}
 
 	const Collider* GetCollider() const { return collider; }
-	 //Mix_Chunk* Explosion = nullptr;
 
 	virtual bool UpdateLogic(iPoint pos) { return true; }
 
@@ -64,31 +63,38 @@ public:
 
 	p2SString		name;
 
-	int				health;
 	bool			alive;
+
+	int				health;
 	int				vision_range;
+
+	SDL_Rect		rect;	
+
 	iPoint			speed;
 	iPoint			speed_mult;
-	iPoint			next_speed;
-	SDL_Rect		rect;	
 	iPoint			position;
 	iPoint			initial_pos;
+
 	Collider*		collider;
+
 	entityType		type;
 
+	//Mix_Chunk*	die_FX;
 
 	/////////////// ENEMIES /////////////////
 
-	Animation		follow;
 	float			def_anim_speed_enem;
-	bool			return_origin;
+
 	bool			first_iteration = true;
+	bool			return_origin;
+
+	Animation		follow;
 
 	iPoint			desired_position;
 
 	///////////////// PLAYER ///////////////////
-	//fPoint position;
-	//fPoint speed;
+
+	SDL_Rect	 anim_rect;
 	Animation*	 current_animation = nullptr;
 	Animation	 idle;
 	Animation	 walk;
@@ -97,50 +103,17 @@ public:
 	Animation	 fall;
 	Animation	 death;
 	Animation	 god;
-	float        def_anim_speed;
-	SDL_Rect	 anim_rect;
-	int		 dx = 0;
-	int		 dy = 0;
-	float		 falling_y;
-	int			 max_speed_y;
-	float		 gravity;
-	float		 jumpspeed;
 
+	float        def_anim_speed;
+	float		 gravity;
+	float		 god_speed;
+
+	bool		 level_finished;
 
 	//Animations
-	bool	level_finished;
-	bool	on_floor;
-	bool	dead;
-	bool	move_left;
-	bool	move_right;
-	bool	is_jumping;
-	bool	is_falling;
-	bool	djump;
-	bool	aux_djump;
-	bool	top, bottom, left, right;
-	bool	can_left, can_right;
-	bool	godmode;
 
-	//NEW approach
-	bool	go_back;
-	bool	can_move_right;
-	bool	can_move_left;
-	bool	can_move_up;
-	bool	can_move_down;
+	bool		 dead;
+	bool	god_mode;
 
-	bool	vertical_collided;
-	bool	horizontal_collided;
-
-	/*Collider*	collider_ray_right;
-	Collider*	collider_ray_left;
-	Collider*	collider_ray_up;
-	Collider*	collider_ray_down;
-	Collider*	collider_identifier;*/
-
-	int			collider_offset;
-
-	////////////////////////////////////////////////////////
-	
-	bool get_out;
 
 };
