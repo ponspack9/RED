@@ -3,6 +3,7 @@
 #include "j1App.h"
 #include "j1PathFinding.h"
 #include "j1Scene.h"
+#include "j1Debug.h"
 #include "j1Render.h"
 
 j1PathFinding::j1PathFinding() : j1Module(), map(NULL), last_path(DEFAULT_PATH_LENGTH),width(0), height(0)
@@ -68,7 +69,7 @@ uchar j1PathFinding::GetTileAt(const iPoint& pos) const
 
 bool j1PathFinding::Update(float dt) {
 //	int a = 1;
-	DrawMap();
+	if (App->debug->show_colliders) DrawMap();
 	return true;
 }
 
@@ -82,7 +83,7 @@ void j1PathFinding::DrawMap()
 			//LOG("PRIIIINT [%d,%d]", x, y);
 			//LOG("I: %d", i);
 			if (map[i] == 0) {
-				App->render->Blit(App->scene->debug_tex, x*32, y*32);
+				App->render->Blit(App->debug->not_tex, x*32, y*32);
 			}
 		}
 	}

@@ -1,10 +1,4 @@
 <!-- Config file for the game -->
-<!--QUESTIONS
-  - 
-  -
-  -
-  
--->
 <config>
   <app framerate_cap ="30">
     <title>KIKIME</title>
@@ -13,7 +7,9 @@
 
   <debug>
     <debugtexture>maps/path3.png</debugtexture>
+    <nottexture>maps/not.png</nottexture>
     <showlogic value="false"/>
+    <free_camera value="false"/>
   </debug>
 
   <renderer>
