@@ -110,6 +110,7 @@ void j1Map::Draw()
 	BROFILER_CATEGORY("Map->Draw", Profiler::Color::LightCyan)
 	if(!map_loaded)
 		return;
+
 	//Draw background
 	p2List_item<ImageLayer*>* imagelayer = data.image_layers.start;
 	for (imagelayer; imagelayer; imagelayer = imagelayer->next)
@@ -402,7 +403,6 @@ bool j1Map::LoadTilesetDetails(pugi::xml_node& tileset_node, TileSet* set)
 		set->margin			  = tileset_node.attribute("margin").as_int();
 		set->spacing		  = tileset_node.attribute("spacing").as_int();
 		pugi::xml_node offset = tileset_node.child("tileoffset");
-		LoadProperties(tileset_node, set->properties);
 
 		if(offset != NULL)
 		{

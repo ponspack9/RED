@@ -90,8 +90,6 @@ struct TileSet
 	int					offset_x;
 	int					offset_y;
 
-	Properties			properties;
-
 };
 
 struct MapData
