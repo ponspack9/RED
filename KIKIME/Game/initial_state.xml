@@ -23,6 +23,8 @@
 	</entitymanager>
 	<fade />
 	<pathfinding />
+	<fonts />
+	<gui />
 	<renderer>
 		<camera x="0" y="0" />
 	</renderer>

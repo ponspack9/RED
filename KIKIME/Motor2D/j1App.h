@@ -21,6 +21,8 @@ class j1FadeToBlack;
 class Player;
 class j1PathFinding;
 class j1EntityManager;
+class j1Fonts;
+class j1Gui;
 
 class j1App
 {
@@ -111,6 +113,8 @@ public:
 	j1FadeToBlack*		fade;
 	j1PathFinding*		pathfinding;
 	j1EntityManager*	entitymanager;
+	j1Fonts*			font;
+	j1Gui*				gui;
 
 
 	bool				delay_is_active = true;

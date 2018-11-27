@@ -81,6 +81,8 @@
   <ItemGroup>
     <ClCompile Include="j1EntityManager.cpp" />
     <ClCompile Include="Floater.cpp" />
+    <ClCompile Include="j1Fonts.cpp" />
+    <ClCompile Include="j1Gui.cpp" />
     <ClCompile Include="Roller.cpp" />
     <ClCompile Include="j1Collision.cpp" />
     <ClCompile Include="j1Debug.cpp" />
@@ -106,6 +108,8 @@
     <ClInclude Include="j1EntityManager.h" />
     <ClInclude Include="Entity.h" />
     <ClInclude Include="Floater.h" />
+    <ClInclude Include="j1Fonts.h" />
+    <ClInclude Include="j1Gui.h" />
     <ClInclude Include="Roller.h" />
     <ClInclude Include="j1Collision.h" />
     <ClInclude Include="j1Debug.h" />

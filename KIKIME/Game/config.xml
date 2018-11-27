@@ -53,6 +53,9 @@
       <!--Does not exist, just for testing-->
     </fx>
   </audio>
+  <gui>
+    <atlas file="gui/atlas.png"/>
+  </gui>
 
   <map>
     <folder>maps</folder>
