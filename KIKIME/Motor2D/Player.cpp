@@ -20,7 +20,10 @@ Player::Player(iPoint pos, Entity * e, SDL_Texture * sprites,entityType type) : 
 
 	position = pos;
 	rect = { pos.x,pos.y,e->rect.w,e->rect.h };
-	speed = e->speed;
+	speed.x = e->speed.x;
+	speed.y = 0;
+	jump_speed = -e->speed.y;
+	
 	god_speed = e->god_speed;
 	gravity = e->gravity;
 	
@@ -117,7 +120,7 @@ bool Player::PostUpdate()
 
 bool Player::Jump()
 {
-	speed.y = -800.0f;
+	speed.y = jump_speed;
 	jumping = true;
 
 	return true;
@@ -179,7 +182,7 @@ void Player::Move(float dt)
 			//Animation
 			//going_up = true;
 		}
-		else { speed.y = (int)(gravity * dt);; }
+		else { speed.y = (int)(gravity * dt); }
 		want_up = false;
 	}
 	//Always move down if gravity is true, and player can, obviously

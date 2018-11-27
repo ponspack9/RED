@@ -35,5 +35,7 @@ public:
 
 	bool jumping;
 
+	int jump_speed;
+
 	SDL_Texture* graphics = nullptr;
 };

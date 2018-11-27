@@ -491,8 +491,8 @@ bool j1EntityManager::Load(pugi::xml_node & node)
 	{
 		if (item->data->type == PLAYER)
 		{
-			item->data->position.x = node.child("player").attribute("x").as_float();
-			item->data->position.y = node.child("player").attribute("y").as_float();
+			item->data->position.x = node.child("player").attribute("x").as_int();
+			item->data->position.y = node.child("player").attribute("y").as_int();
 		}
 		else
 		{

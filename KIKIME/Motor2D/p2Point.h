@@ -93,6 +93,13 @@ public:
 
 		return(*this);
 	}
+	const p2Point& operator *=(const TYPE &v)
+	{
+		x *= v;
+		y *= v;
+
+		return(*this);
+	}
 	p2Point operator *(const TYPE &v)
 	{
 		p2Point r;
@@ -158,7 +165,7 @@ public:
 		TYPE fx = x - v.x;
 		TYPE fy = y - v.y;
 
-		return sqrtf((fx*fx) + (fy*fy));
+		return (TYPE)(sqrtf((fx*fx) + (fy*fy)));
 	}
 
 	TYPE DistanceNoSqrt(const p2Point& v) const
