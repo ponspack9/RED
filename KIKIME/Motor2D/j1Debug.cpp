@@ -95,12 +95,12 @@ bool j1Debug::Update(float dt)
 
 	if (App->input->GetKey(SDL_SCANCODE_F10) == KEY_DOWN)
 	{
-		if (!App->entitymanager->player_ref->godmode) {
-			App->entitymanager->player_ref->godmode = true;
+		if (!App->entitymanager->player_ref->god_mode) {
+			App->entitymanager->player_ref->god_mode = true;
 			if (App->entitymanager->player_ref->collider) App->entitymanager->player_ref->collider->type = COLLIDER_NONE;
 		}
 		else {
-			App->entitymanager->player_ref->godmode = false;
+			App->entitymanager->player_ref->god_mode = false;
 			if (App->entitymanager->player_ref->collider) App->entitymanager->player_ref->collider->type = COLLIDER_PLAYER;
 		}
 	}

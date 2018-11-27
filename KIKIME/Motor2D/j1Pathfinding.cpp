@@ -75,9 +75,9 @@ bool j1PathFinding::Update(float dt) {
 
 void j1PathFinding::DrawMap()
 {
-	for (int y = 0; y < height; ++y)
+	for (uint y = 0; y < height; ++y)
 	{
-		for (int x = 0; x < width; ++x)
+		for (uint x = 0; x < width; ++x)
 		{
 			int i = (y*width) + x;
 			//LOG("PRIIIINT [%d,%d]", x, y);

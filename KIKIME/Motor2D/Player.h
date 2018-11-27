@@ -17,18 +17,25 @@ public:
 	bool PreUpdate();
 	bool Update(float dt);
 	bool PostUpdate();
-
-	void Draw();
-	bool MovePlayer(float vel_x, float vel_y,float dt);
-	void Move();
-	void MoveFree();
+	
+	void Move(float dt);
+	void MoveFree(float dt);
 	bool Jump();
 	bool DoubleJump();
-	void PlayerAnimations();
-	j1PerfTimer jtimer;
+	void PlayerAnimations(float dt);
 	
 
 public:
+
+	bool want_right;
+	bool want_left;
+	bool want_up;
+	bool want_down;
+	bool gravity_enabled;
+
+	bool jumping;
+
+	int jump_speed;
 
 	SDL_Texture* graphics = nullptr;
 };
