@@ -33,5 +33,7 @@ public:
 	bool want_down;
 	bool gravity_enabled;
 
+	bool jumping;
+
 	SDL_Texture* graphics = nullptr;
 };
