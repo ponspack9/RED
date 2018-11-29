@@ -33,10 +33,12 @@ public:
 	bool CleanUp();
 
 	bool Save(pugi::xml_node& node);
+
 	bool Load(pugi::xml_node& node);
 
-	SDL_Texture* debug_tex;
+	
 private:
+
 	bool first_load;
 };
 

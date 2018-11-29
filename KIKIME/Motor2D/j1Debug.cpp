@@ -43,6 +43,7 @@ bool j1Debug::Awake(pugi::xml_node & config)
 
 bool j1Debug::Start() {
 	not_tex = App->tex->Load(not.GetString());
+	debug_tex = App->tex->Load(debug_path.GetString());
 	return true;
 }
 bool j1Debug::PostUpdate()

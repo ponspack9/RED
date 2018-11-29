@@ -12,16 +12,10 @@ j1Collision::j1Collision()
 		colliders[i] = nullptr;
 
 	matrix[COLLIDER_PLAYER][COLLIDER_PLAYER] = false;
-	matrix[COLLIDER_PLAYER][COLLIDER_FLOOR]	 = true;
-	matrix[COLLIDER_PLAYER][COLLIDER_WALL]   = true;
-	matrix[COLLIDER_PLAYER][COLLIDER_DEATH]  = true;
 	matrix[COLLIDER_PLAYER][COLLIDER_START]  = false;
+	matrix[COLLIDER_PLAYER][COLLIDER_SPAWN]	 = false;
+	matrix[COLLIDER_PLAYER][COLLIDER_DEATH]  = true;
 	matrix[COLLIDER_PLAYER][COLLIDER_END]    = true;
-
-	matrix[COLLIDER_RAY_RIGHT][COLLIDER_FLOOR] = true;
-	matrix[COLLIDER_RAY_LEFT][COLLIDER_FLOOR] = true;
-	matrix[COLLIDER_RAY_UP][COLLIDER_FLOOR] = true;
-	matrix[COLLIDER_RAY_DOWN][COLLIDER_FLOOR] = true;
 
 	name.create("collisions");
 }
@@ -103,9 +97,7 @@ void j1Collision::Draw()
 	for (uint i = 0; i < MAX_COLLIDERS; ++i)
 	{
 		if (colliders[i] == nullptr)
-			continue;
-
-		//LOG("x: %d y: %d w: %d h: %d", colliders[i]->rect.x, colliders[i]->rect.y, colliders[i]->rect.w, colliders[i]->rect.h);
+			break;
 
 			switch (colliders[i]->type)
 			{
@@ -114,12 +106,6 @@ void j1Collision::Draw()
 				break;
 			case COLLIDER_PLAYER:
 				App->render->DrawQuad(colliders[i]->rect, 255, 0, 0, alpha);
-				break;
-			case COLLIDER_FLOOR:
-				App->render->DrawQuad(colliders[i]->rect, 0, 255, 0, alpha);
-				break;
-			case COLLIDER_WALL:
-				App->render->DrawQuad(colliders[i]->rect, 0, 0, 255, alpha);
 				break;
 			case COLLIDER_DEATH:
 				App->render->DrawQuad(colliders[i]->rect, 255, 0, 255, alpha);
@@ -130,37 +116,10 @@ void j1Collision::Draw()
 			case COLLIDER_END:
 				App->render->DrawQuad(colliders[i]->rect, 0, 0, 0, alpha);
 				break;
-			case COLLIDER_RAY_RIGHT:
-				App->render->DrawQuad(colliders[i]->rect, 0, 0, 0, alpha);
-				break;
-			case COLLIDER_RAY_LEFT:
-				App->render->DrawQuad(colliders[i]->rect, 0, 0, 0, alpha);
-				break;
-			case COLLIDER_RAY_UP:
-				App->render->DrawQuad(colliders[i]->rect, 0, 0, 0, alpha);
-				break;
-			case COLLIDER_RAY_DOWN:
-				App->render->DrawQuad(colliders[i]->rect, 0, 0, 0, alpha);
-				break;
 			}
-
 	}
 
-	//Drawing polylines
-	/*SDL_SetRenderDrawColor(App->render->renderer, 255, 0, 0, SDL_ALPHA_OPAQUE);
-
-	for (int i = 0; i < App->collision->n_lines; i++) {
-		int offx = polylines[i][0] + App->render->camera.x;
-		int offy = polylines[i][1] + App->render->camera.y;
-
-		for (int j = 2; j < n_lines_col[i]; j += 2) {
-			SDL_RenderDrawLine(App->render->renderer,
-				polylines[i][j] + offx, polylines[i][j + 1] + offy,
-				polylines[i][j + 2] + offx, polylines[i][j + 3] + offy);
-		}
-	}*/
-
-	
+	//DrawPolylines();
 }
 
 // Called before quitting
@@ -206,6 +165,23 @@ bool Collider::CheckCollision(const SDL_Rect& r) const
 	if ((rect.x > r.x + r.w) || (rect.y > r.y + r.h)) { return false; }
 	return true;
 }
+
+/// POLYLINES -------------------------------------------------
+/*
+//void j1Collision::DrawPolylines() {
+//	SDL_SetRenderDrawColor(App->render->renderer, 255, 0, 0, SDL_ALPHA_OPAQUE);
+//
+//	for (int i = 0; i < n_lines; i++) {
+//		int offx = polylines[i][0] + App->render->camera.x;
+//		int offy = polylines[i][1] + App->render->camera.y;
+//
+//		for (int j = 2; j < n_lines_col[i]; j += 2) {
+//			SDL_RenderDrawLine(App->render->renderer,
+//				polylines[i][j] + offx, polylines[i][j + 1] + offy,
+//				polylines[i][j + 2] + offx, polylines[i][j + 3] + offy);
+//		}
+//	}
+//}
 
 //void j1Collision::AddPolyLine(int startX, int startY, const char* line)
 //{
@@ -287,3 +263,4 @@ bool Collider::CheckCollision(const SDL_Rect& r) const
 //	if (uA >= 0 && uA <= 1 && uB >= 0 && uB <= 1) return true;
 //	return false;
 //}
+*/

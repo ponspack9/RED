@@ -16,16 +16,9 @@ enum COLLIDER_TYPE
 {
 	COLLIDER_NONE = -1,
 	COLLIDER_PLAYER,
-	COLLIDER_FLOOR,
-	COLLIDER_WALL,
 	COLLIDER_DEATH,
 	COLLIDER_START,
 	COLLIDER_END,
-
-	COLLIDER_RAY_RIGHT,
-	COLLIDER_RAY_LEFT,
-	COLLIDER_RAY_UP,
-	COLLIDER_RAY_DOWN,
 
 	COLLIDER_SPAWN,
 
@@ -92,6 +85,7 @@ public:
 	Collider* AddCollider(SDL_Rect rect, COLLIDER_TYPE type, j1Module* callback = nullptr);
 	//void AddPolyLine(int startX, int startY, const char * c);
 	void Draw();
+	//void DrawPolylines();
 
 	//int polylines[MAX_LINES][MAX_LINE_LENGTH];
 	//int n_lines = 0;

@@ -34,8 +34,8 @@ bool j1Gui::Start()
 
 	atlas = App->tex->Load(atlas_file_name.GetString());
 	SDL_RenderGetViewport(App->render->renderer, &App->render->viewport);
-	CreateElement(PICTURE, iPoint(App->render->viewport.w / 2 , App->render->viewport.h / 12 + 25));
-	CreateElement(PICTURE, iPoint(App->render->viewport.w /2 , App->render->viewport.h / 12  + 100));
+	//CreateElement(PICTURE, iPoint(App->render->viewport.w / 2 , App->render->viewport.h / 12 + 25));
+	//CreateElement(PICTURE, iPoint(App->render->viewport.w /2 , App->render->viewport.h / 12  + 100));
 
 	return true;
 }

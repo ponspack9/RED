@@ -75,7 +75,7 @@ bool Roller::UpdateLogic(iPoint pos)
 		for (uint i = 0; i < path->Count(); ++i)
 		{
 			iPoint pos = App->map->MapToWorld(path->At(i)->x, path->At(i)->y);
-			App->render->Blit(App->scene->debug_tex, pos.x, pos.y);
+			App->render->Blit(App->debug->debug_tex, pos.x, pos.y);
 		}
 
 	if (path->Count() > 1 && a != p) {
