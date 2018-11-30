@@ -22,7 +22,7 @@ Player::Player(iPoint pos, Entity * e, SDL_Texture * sprites,entityType type) : 
 	rect = { pos.x,pos.y,e->rect.w,e->rect.h };
 	speed.x = e->speed.x;
 	speed.y = 0;
-	jump_speed = -e->speed.y;
+	jump_speed = e->speed.y;
 	
 	god_speed = e->god_speed;
 	gravity = e->gravity;
@@ -37,8 +37,9 @@ Player::Player(iPoint pos, Entity * e, SDL_Texture * sprites,entityType type) : 
 	def_anim_speed = e->def_anim_speed;
 
 	current_animation = &idle;
-	alive = true;
-	jumping = false;
+	alive			= true;
+	jumping			= false;
+	double_jumping	= false;
 }
 
 Player::~Player()
@@ -53,9 +54,9 @@ bool Player::PreUpdate()
 	if (alive) {
 		
 		//Jump
-		if ((App->input->GetKey(SDL_SCANCODE_W) == KEY_REPEAT) || (App->input->GetKey(SDL_SCANCODE_SPACE) == KEY_REPEAT))
+		if ((App->input->GetKey(SDL_SCANCODE_W) == KEY_DOWN) || (App->input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN))
 		{
-			if (!jumping) Jump();
+			Jump();
 			want_up = true;
 		}
 		//Smash //want_down only in god mode
@@ -113,23 +114,18 @@ bool Player::PostUpdate()
 	return true;
 }
 
-
-
-
-
-
 bool Player::Jump()
 {
-	speed.y = jump_speed;
-	jumping = true;
+	if (!jumping) {
+		speed.y = -jump_speed;
+		jumping = true;
+	}
+	else if (!double_jumping) {
+		speed.y = -jump_speed;
+		double_jumping = true;
+	}
 
 	return true;
-}
-
-bool Player::DoubleJump()
-{
-	return true;
-	
 }
 
 void Player::Move(float dt)
@@ -168,7 +164,7 @@ void Player::Move(float dt)
 	}
 
 	//if (want_up)
-	if (speed.y < 0) // going up
+	if (speed.y < 0) // jumping or double jumping
 	{
 		iPoint pos = App->render->ScreenToWorld(position.x + App->render->camera.x, position.y + App->render->camera.y + (int)(speed.y * dt));
 		pos = App->map->WorldToMap(pos.x, pos.y);
@@ -203,6 +199,7 @@ void Player::Move(float dt)
 		else {
 			//position.y = pos.y - position.y + collider->rect.h -5;
 			jumping = false;
+			double_jumping = false;
 		}
 	}
 

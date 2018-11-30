@@ -112,7 +112,7 @@
         <alive value="true"/>
       </enemyground>
       <enemyanimations>
-        <speed defaultAnimationSpeed="10"/>
+        <speed defaultAnimationSpeed="7"/>
         <FloatIdle   name="enemyFloating_3.png"	  x="96"	y="32"	width="32"	height="32"/>
         <FloatFollow   name="enemyFloating_1.png"	x="64"	y="32"	width="32"	height="32"/>
         <FloatFollow   name="enemyFloating_4.png"	x="96"	y="0"	  width="32"	height="32"/>

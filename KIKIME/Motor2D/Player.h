@@ -21,7 +21,6 @@ public:
 	void Move(float dt);
 	void MoveFree(float dt);
 	bool Jump();
-	bool DoubleJump();
 	void PlayerAnimations(float dt);
 	
 
@@ -34,6 +33,7 @@ public:
 	bool gravity_enabled;
 
 	bool jumping;
+	bool double_jumping;
 
 	int jump_speed;
 
