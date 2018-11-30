@@ -79,6 +79,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Button.cpp" />
     <ClCompile Include="j1EntityManager.cpp" />
     <ClCompile Include="Floater.cpp" />
     <ClCompile Include="j1Fonts.cpp" />
@@ -102,9 +103,12 @@
     <ClCompile Include="j1Textures.cpp" />
     <ClCompile Include="j1Window.cpp" />
     <ClCompile Include="PugiXml\src\pugixml.cpp" />
+    <ClCompile Include="Image.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Animation.h" />
+    <ClInclude Include="Button.h" />
+    <ClInclude Include="Image.h" />
     <ClInclude Include="j1EntityManager.h" />
     <ClInclude Include="Entity.h" />
     <ClInclude Include="Floater.h" />
@@ -136,6 +140,7 @@
     <ClInclude Include="Path.h" />
     <ClInclude Include="PugiXml\src\pugiconfig.hpp" />
     <ClInclude Include="PugiXml\src\pugixml.hpp" />
+    <ClInclude Include="UIElement.h" />
   </ItemGroup>
   <ItemGroup>
     <Xml Include="..\Game\config.xml">
