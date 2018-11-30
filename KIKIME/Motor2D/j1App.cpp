@@ -151,7 +151,7 @@ bool j1App::Start()
 	perf_timer.Start();
 	timer.Start();
 	aux_timer.Start();
-
+	pause = false;
 	bool ret = true;
 	p2List_item<j1Module*>* item = modules.start;
 
@@ -177,16 +177,17 @@ bool j1App::Update()
 	if(input->GetWindowEvent(WE_QUIT))
 		ret = false;
 
-	if(ret)
-		ret = PreUpdate();
+		if(ret)
+			ret = PreUpdate();
 
-	if(ret)
-		ret = DoUpdate();
+		if(ret)
+			ret = DoUpdate();
 
-	if(ret)
-		ret = PostUpdate();
+		if(ret)
+			ret = PostUpdate();
 
-	FinishUpdate();
+		FinishUpdate();
+
 	return ret;
 }
 
@@ -330,7 +331,7 @@ bool j1App::PreUpdate()
 	
 	while (item != NULL && ret)
 	{
-		if (item->data->active) {
+		if (item->data->active && !item->data->to_pause) {
 			ret = item->data->PreUpdate();
 		}
 		item = item->next;
@@ -348,7 +349,7 @@ bool j1App::DoUpdate()
 
 	while (item != NULL && ret)
 	{
-		if (item->data->active) {
+		if (item->data->active && !item->data->to_pause) {
 			ret = item->data->Update(dt);
 		}
 		item = item->next;
@@ -366,7 +367,7 @@ bool j1App::PostUpdate()
 	
 	while (item != NULL && ret)
 	{
-		if (item->data->active) {
+		if (item->data->active && !item->data->to_pause) {
 			ret = item->data->PostUpdate();
 		}
 		item = item->next;
@@ -460,17 +461,33 @@ bool j1App::RestartGame()
 	return true;
 }
 
-bool j1App::RestartLevel()
+void j1App::PauseGame()
 {
-	BROFILER_CATEGORY("App->RestartLevel", Profiler::Color::Red)
-	App->fade->FadeToBlack(App->scene, App->scene);
-	return true;
+	if (!pause) {
+		pause = true;
+		entitymanager->to_pause = true;
+		collision->to_pause		= true;
+		map->to_pause			= true;
+		pathfinding->to_pause	= true;
+	}
+	else LOG("Game already paused");
 }
-bool j1App::SoftRestartLevel()
+void j1App::UnPauseGame()
+{
+	if (pause) {
+		pause = false;
+		entitymanager->to_pause = false;
+		collision->to_pause		= false;
+		map->to_pause			= false;
+		pathfinding->to_pause	= false;
+	}
+	else LOG("Game is not paused");
+}
+bool j1App::RestartLevel()
 {
 	BROFILER_CATEGORY("App->SoftRestartLevel", Profiler::Color::Red)
 	render->ResetCamera();
-	entitymanager->Restart();
+	entitymanager->LoadInitialState();
 	
 	return true;
 }
@@ -488,9 +505,6 @@ bool j1App::NextLevel() {
 
 	LOG("Next level: %s", App->map->current_map->data.GetString());
 	App->fade->FadeToBlack(App->scene, App->scene);
-	//App->entitymanager->LoadInitialState();
-	/*App->entitymanager->CleanUp();
-	App->entitymanager->Start();*/
 	return true;
 }
 

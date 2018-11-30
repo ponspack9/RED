@@ -28,6 +28,7 @@ Roller::Roller(iPoint pos, Entity* e,entityType type) : Entity(type)
 	health = e->health;
 	alive = e->alive;
 	vision_range = e->vision_range;
+	def_anim_speed = e->def_anim_speed;
 
 	current_animation = &idle;
 	LOG("Roller Created");

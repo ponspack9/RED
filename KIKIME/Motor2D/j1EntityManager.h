@@ -48,6 +48,11 @@ public:
 
 	void UpdateAll(float dt, bool run);
 
+	//Extracted draw function to implement pause
+	// TO DO swap player to first position in list to optimize
+	// Also would effect updateAll
+	void Draw();
+
 	//Creators
 
 	Entity*	 CreateEntity(entityType type, iPoint pos);

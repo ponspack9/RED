@@ -16,7 +16,7 @@
 #include "Entity.h"
 #include "j1Debug.h"
 
-j1Scene::j1Scene() : j1Module()
+j1Scene::j1Scene() : j1Module() 
 {
 	name.create("scene");
 	first_load = true;
@@ -40,11 +40,8 @@ bool j1Scene::Start()
 {
 	bool ret = true;
 	// App->audio->PlayMusic(PATH(App->audio->folder_music.GetString(), App->audio->tracks_path.start->data.GetString()));
-	//if (ret) App->map->Load(App->map->current_map->data.GetString());
 	App->map->Load(App->map->current_map->data.GetString());
 
-	
-	//App->entitymanager->Restart();
 	App->render->ResetCamera();
 
 	if (first_load) {
@@ -52,6 +49,7 @@ bool j1Scene::Start()
 	}
 	else {
 		App->entitymanager->Restart();
+		LOG("ENTITY RESTAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAART");
 	}
 	
 
@@ -115,12 +113,11 @@ bool j1Scene::Update(float dt)
 		App->entitymanager->CreateEntity(ROLLER, p);
 
 	App->map->Draw();
+	App->entitymanager->Draw();
 
 	// Debug pathfinding ------------------------------
 	//int x, y;
 	//App->input->GetMousePosition(x, y);
-	
-	
 
 	//App->render->Blit(debug_tex, p.x, p.y);
 	//

@@ -29,8 +29,8 @@ bool j1EntityManager::Awake(pugi::xml_node & config)
 
 	update_cycle = config.child("enemies").child("updatems").attribute("time").as_float();
 
-	floaterinfo.def_anim_speed_enem = config.child("enemies").child("enemyanimations").child("speed").attribute("defaultAnimationSpeed").as_float();
-	rollerinfo.def_anim_speed_enem = floaterinfo.def_anim_speed_enem;
+	floaterinfo.def_anim_speed = config.child("enemies").child("enemyanimations").child("speed").attribute("defaultAnimationSpeed").as_float();
+	rollerinfo.def_anim_speed = floaterinfo.def_anim_speed;
 
 	//floater
 	pugi::xml_node f_enem = config.child("enemies").child("enemyair");
@@ -77,7 +77,7 @@ bool j1EntityManager::Awake(pugi::xml_node & config)
 		floaterinfo.idle.PushBack(r);
 	}
 	node_speed = n.attribute("speed").as_float();
-	floaterinfo.idle.speed = (node_speed <= 0) ? floaterinfo.def_anim_speed_enem : node_speed;
+	floaterinfo.idle.speed = (node_speed <= 0) ? floaterinfo.def_anim_speed : node_speed;
 
 	//floater Follow
 	n = config.child("enemies").child("enemyanimations").child("FloatFollow");
@@ -90,7 +90,7 @@ bool j1EntityManager::Awake(pugi::xml_node & config)
 		floaterinfo.follow.PushBack(r);
 	}
 	node_speed = n.attribute("speed").as_float();
-	floaterinfo.follow.speed = (node_speed <= 0) ? floaterinfo.def_anim_speed_enem : node_speed;
+	floaterinfo.follow.speed = (node_speed <= 0) ? floaterinfo.def_anim_speed : node_speed;
 
 	//floater die
 	//......
@@ -108,7 +108,7 @@ bool j1EntityManager::Awake(pugi::xml_node & config)
 		rollerinfo.idle.PushBack(r);
 	}
 	node_speed = n.attribute("speed").as_float();
-	rollerinfo.idle.speed = (node_speed <= 0) ? rollerinfo.def_anim_speed_enem : node_speed;
+	rollerinfo.idle.speed = (node_speed <= 0) ? rollerinfo.def_anim_speed : node_speed;
 
 	//Loading Player
 
@@ -392,12 +392,8 @@ void j1EntityManager::UpdateAll(float dt,bool run)
 	for (item = entities.start; item != nullptr; item = item->next)
 	{
 			item->data->Update(dt);
-		if (item->data->type != entityType::PLAYER)
-		{
-			item->data->Draw(enemyTex);
-		}
 	}
-	player_ref->Draw(playerTex);
+
 	if (run)
 	{
 		for (item = entities.start; item != nullptr; item = item->next)
@@ -405,6 +401,17 @@ void j1EntityManager::UpdateAll(float dt,bool run)
 			item->data->UpdateLogic(player_ref->position);
 		}
 	}
+}
+void j1EntityManager::Draw() {
+	p2List_item<Entity*>* item;
+	for (item = entities.start; item != nullptr; item = item->next)
+	{
+		if (item->data->type != entityType::PLAYER)
+		{
+			item->data->Draw(enemyTex);
+		}
+	}
+	player_ref->Draw(playerTex);
 }
 
 Entity * j1EntityManager::CreateEntity(entityType type, iPoint pos)
@@ -486,6 +493,7 @@ bool j1EntityManager::Load(pugi::xml_node & node)
 {
 	p2List_item<Entity*>* item;
 
+	pugi::xml_node Enode = node.child("enemy");
 
 	for (item = entities.start; item != nullptr; item = item->next)
 	{
@@ -496,17 +504,15 @@ bool j1EntityManager::Load(pugi::xml_node & node)
 		}
 		else
 		{
-			node = node.child("enemy");
-
-			item->data->alive = node.attribute("alive").as_bool();
-			item->data->health = node.attribute("hp").as_int();
+			item->data->alive = Enode.attribute("alive").as_bool();
+			item->data->health = Enode.attribute("hp").as_int();
 
 			if (item->data->alive)
 			{
-				item->data->position.x = node.attribute("x").as_int();
-				item->data->position.y = node.attribute("y").as_int();
+				item->data->position.x = Enode.attribute("x").as_int();
+				item->data->position.y = Enode.attribute("y").as_int();
 			}
-			node = node.next_sibling("enemy");
+			Enode = Enode.next_sibling("enemy");
 		}
 	}
 	return true;

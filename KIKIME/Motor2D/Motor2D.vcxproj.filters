@@ -195,5 +195,6 @@
   <ItemGroup>
     <Xml Include="..\Game\config.xml" />
     <Xml Include="..\Game\save_game.xml" />
+    <Xml Include="..\Game\initial_state.xml" />
   </ItemGroup>
 </Project>

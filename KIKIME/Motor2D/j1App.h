@@ -18,11 +18,11 @@ class j1Map;
 class j1Debug;
 class j1Collision;
 class j1FadeToBlack;
-class Player;
 class j1PathFinding;
 class j1EntityManager;
 class j1Fonts;
 class j1Gui;
+class Player;
 
 class j1App
 {
@@ -67,10 +67,12 @@ public:
 	//Restarts the game from the very first level
 	bool RestartGame();
 
+	void PauseGame();
+
+	void UnPauseGame();
+
 	//Restarts the current level
 	bool RestartLevel();
-
-	bool SoftRestartLevel();
 
 	bool NextLevel();
 
@@ -81,10 +83,10 @@ public:
 	bool LoadGameFile();
 private:
 
-	// Call modules before each loop iteration
+	// framerate management
 	void PrepareUpdate();
 
-	// Call modules before each loop iteration
+	// Saves & loads the game and framerate management
 	void FinishUpdate();
 
 	// Call modules before each loop iteration
@@ -120,6 +122,8 @@ public:
 	bool				delay_is_active = true;
 	bool				want_to_load;
 	mutable bool		want_to_save;
+
+	bool				pause;
 
 	float				dt;
 	mutable p2SString	save_path;

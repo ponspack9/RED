@@ -43,6 +43,9 @@ public:
 	virtual bool PostUpdate() { return true; }
 
 	virtual void Draw(SDL_Texture *sprites) {
+		if (App->pause) {
+			current_animation->speed = 0;
+		} else current_animation->speed = def_anim_speed * App->dt;
 		App->render->Blit(sprites, position.x, position.y, &current_animation->GetCurrentFrame(), 1, 0);
 		if (collider) collider->SetPos(position.x, position.y);
 	}
@@ -72,11 +75,12 @@ public:
 
 	entityType		type;
 
+	float			def_anim_speed;
+
 	//Mix_Chunk*	die_FX;
 
 	/////////////// ENEMIES /////////////////
 
-	float			def_anim_speed_enem;
 
 	bool			first_iteration = true;
 	bool			return_origin;
@@ -97,7 +101,6 @@ public:
 	Animation		death;
 	Animation		god;
 
-	float			def_anim_speed;
 	float			gravity;
 	float			god_speed;
 
