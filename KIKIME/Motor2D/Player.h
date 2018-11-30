@@ -11,7 +11,7 @@ class Player : public Entity
 public:
 
 	Player() {}
-	Player(iPoint pos, Entity* e, SDL_Texture* sprites,entityType type);
+	Player(iPoint pos, Entity* e);
 	~Player();
 
 	bool PreUpdate();
@@ -30,12 +30,9 @@ public:
 	bool want_left;
 	bool want_up;
 	bool want_down;
-	bool gravity_enabled;
 
 	bool jumping;
 	bool double_jumping;
 
 	int jump_speed;
-
-	SDL_Texture* graphics = nullptr;
 };

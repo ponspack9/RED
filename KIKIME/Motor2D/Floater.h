@@ -11,7 +11,7 @@ private:
 public:
 
 	Floater() {}
-	Floater(iPoint pos, Entity* e,entityType type);
+	Floater(iPoint pos, Entity* e);
 
 	~Floater();
 

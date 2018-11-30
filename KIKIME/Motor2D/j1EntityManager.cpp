@@ -29,12 +29,11 @@ bool j1EntityManager::Awake(pugi::xml_node & config)
 
 	update_cycle = config.child("enemies").child("updatems").attribute("time").as_float();
 
-	floaterinfo.def_anim_speed = config.child("enemies").child("enemyanimations").child("speed").attribute("defaultAnimationSpeed").as_float();
-	rollerinfo.def_anim_speed = floaterinfo.def_anim_speed;
-
+	// reading enemies attributes
 	//floater
 	pugi::xml_node f_enem = config.child("enemies").child("enemyair");
 
+	floaterinfo.type = entityType::FLOATER;
 	floaterinfo.rect.w = f_enem.child("size").attribute("w").as_uint();
 	floaterinfo.rect.h = f_enem.child("size").attribute("h").as_uint();
 
@@ -50,6 +49,7 @@ bool j1EntityManager::Awake(pugi::xml_node & config)
 	//roller
 	pugi::xml_node r_enem = config.child("enemies").child("enemyground");
 
+	rollerinfo.type = entityType::ROLLER;
 	rollerinfo.rect.w = f_enem.child("size").attribute("w").as_uint();
 	rollerinfo.rect.h = f_enem.child("size").attribute("h").as_uint();
 
@@ -62,7 +62,12 @@ bool j1EntityManager::Awake(pugi::xml_node & config)
 			  
 	rollerinfo.alive = r_enem.child("alive").attribute("value").as_bool();
 
+
 	//reading animations
+
+	floaterinfo.def_anim_speed = config.child("enemies").child("enemyanimations").child("speed").attribute("defaultAnimationSpeed").as_float();
+	rollerinfo.def_anim_speed = floaterinfo.def_anim_speed;
+
 	//floater Idle
 	SDL_Rect r;
 	float node_speed = -1;
@@ -114,7 +119,8 @@ bool j1EntityManager::Awake(pugi::xml_node & config)
 
 	//BROFILER_CATEGORY("Player->Awake", Profiler::Color::BlueViolet)
 	pugi::xml_node player_node = config.child("player");
-
+	
+	playerinfo.type = entityType::PLAYER;
 	playerinfo.rect.w = player_node.child("rect").attribute("width").as_uint();
 	playerinfo.rect.h = player_node.child("rect").attribute("height").as_uint();
 
@@ -298,7 +304,7 @@ bool j1EntityManager::PreUpdate()
 {
 	BROFILER_CATEGORY("Entities->PreUpdate", Profiler::Color::BlueViolet)
 
-		if (!player_ref->dead)
+		if (player_ref->alive)
 			player_ref->PreUpdate();
 		else if (is_started == false)
 		{
@@ -334,13 +340,13 @@ bool j1EntityManager::PostUpdate()
 	BROFILER_CATEGORY("Entities->PostUpdate", Profiler::Color::BlueViolet)
 	bool ret = false;
 	p2List_item<Entity*>* item;
-	if (player_ref->dead) {
+	if (!player_ref->alive) {
 		
 		if (timer_death.ReadSec() >= 0.5f)
 		{
 			Restart();
-			LOG("DEAD BY POSTUOPDATEDSAF");
-			player_ref->dead = false;
+			LOG("DEAD BY POST UPDATE");
+			player_ref->alive = true;
 			is_started = false;
 		}
 		return true;
@@ -419,22 +425,18 @@ Entity * j1EntityManager::CreateEntity(entityType type, iPoint pos)
 	static_assert(entityType::NO_TYPE == 4, "NO TYPE TO CREATE, CODE NEEDS UPDATE");
 
 	Entity* entity = nullptr;
-	Entity* e = nullptr;
 	switch (type)
 	{
 	case entityType::FLOATER:
-		e = &floaterinfo;
-		entity = new Floater(pos, e,type);
+		entity = new Floater(pos, &floaterinfo);
 		break;
 		
 	case entityType::ROLLER:
-		e = &rollerinfo;
-		entity = new Roller(pos, e, type);
+		entity = new Roller(pos, &rollerinfo);
 		break;
 		
 	case entityType::PLAYER:
-		e = &playerinfo;
-		entity = new Player(pos, e, playerTex, type);
+		entity = new Player(pos,&playerinfo);
 		break;
 	}
 	entities.add(entity);
@@ -444,19 +446,10 @@ Entity * j1EntityManager::CreateEntity(entityType type, iPoint pos)
 
 void j1EntityManager::OnCollision(Collider * c1, Collider * c2)
 {
-	//if (c1->type == COLLIDER_PLAYER && c2->type == COLLIDER_FLOOR) 
-	//{
-	//	//Right
-	//	//X
-	//	if (c1->rect.x + c1->rect.w >= c2->rect.x) {
-	//		player_ref->want_right = false;
-	//		player_ref->position.x = c2->rect.x - player_ref->collider->rect.w;
-	//	}
-	//}
-
-
+	
 
 }
+
 bool j1EntityManager::Save(pugi::xml_node & node)
 {
 	p2List_item<Entity*>* item;

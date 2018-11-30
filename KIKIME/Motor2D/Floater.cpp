@@ -8,12 +8,11 @@
 #include "j1Render.h"
 #include "p2Log.h"
 
-Floater::Floater(iPoint pos,Entity* e,entityType type) : Entity(type)
+Floater::Floater(iPoint pos,Entity* e) : Entity(type)
 {
 	name.create("floater");
 	
-	this->type = type;
-	return_origin = false;
+	type = e->type;
 
 	position = pos;
 	initial_pos = pos;
@@ -31,6 +30,11 @@ Floater::Floater(iPoint pos,Entity* e,entityType type) : Entity(type)
 	current_animation = &idle;
 	LOG("Floater Created");
 	LOG("pos %d, %d",position.x,position.y);
+
+	// initializing
+	first_iteration = true;
+	return_origin = false;
+	desired_position = { 0,0 };
 
 	collider = App->collision->AddCollider(rect, COLLIDER_DEATH);
 }

@@ -56,7 +56,6 @@ public:
 
 	////////// GENERAL /////////
 
-
 	p2SString		name;
 
 	bool			alive;
@@ -79,18 +78,20 @@ public:
 
 	//Mix_Chunk*	die_FX;
 
+
 	/////////////// ENEMIES /////////////////
 
-
-	bool			first_iteration = true;
+	bool			first_iteration;
 	bool			return_origin;
 
 	Animation		follow;
 
 	iPoint			desired_position;
 
-	///////////////// PLAYER ///////////////////
 
+	///////////////// PLAYER ///////////////////
+	
+	//Animations
 	SDL_Rect		anim_rect;
 	Animation*		current_animation = nullptr;
 	Animation		idle;
@@ -104,12 +105,9 @@ public:
 	float			gravity;
 	float			god_speed;
 
+	bool			god_mode;
 	bool			level_finished;
 
-	//Animations
-
-	bool			dead;
-	bool			god_mode;
 
 
 };

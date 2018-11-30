@@ -12,11 +12,11 @@
 
 
 
-Roller::Roller(iPoint pos, Entity* e,entityType type) : Entity(type)
+Roller::Roller(iPoint pos, Entity* e) : Entity(type)
 {
 	name.create("roller");
-	return_origin = false;
-	this->type = type;
+
+	type = e->type;
 
 	position = pos;
 	initial_pos = pos;
@@ -25,6 +25,7 @@ Roller::Roller(iPoint pos, Entity* e,entityType type) : Entity(type)
 	speed_mult = e->speed;
 
 	idle = e->idle;
+	follow = e->follow;
 	health = e->health;
 	alive = e->alive;
 	vision_range = e->vision_range;
@@ -33,6 +34,11 @@ Roller::Roller(iPoint pos, Entity* e,entityType type) : Entity(type)
 	current_animation = &idle;
 	LOG("Roller Created");
 	LOG("pos %d, %d", position.x, position.y);
+
+	// initializing
+	first_iteration = true;
+	return_origin = false;
+	desired_position = { 0,0 };
 
 	collider = App->collision->AddCollider(rect, COLLIDER_DEATH);
 }

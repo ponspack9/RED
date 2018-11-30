@@ -11,7 +11,7 @@ private:
 public:
 
 	Roller() {}
-	Roller(iPoint pos, Entity*e,entityType type);
+	Roller(iPoint pos, Entity*e);
 
 	~Roller();
 
