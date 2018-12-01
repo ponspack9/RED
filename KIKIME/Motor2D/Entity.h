@@ -30,7 +30,40 @@ public:
 
 	Entity(){}
 
-	Entity(entityType type) {}
+	Entity(iPoint pos, Entity * e) {
+
+		type = e->type;
+		rect = { pos.x,pos.y,e->rect.w,e->rect.h };
+
+		switch (type)
+		{
+		case FLOATER:
+			name.create("floater");
+			break;
+		case ROLLER:
+			name.create("roller");
+			break;
+		case STATIC:
+			name.create("static");
+			break;
+		case PLAYER:
+			name.create("player");
+			break;
+		case NO_TYPE:
+			LOG("ERROR creating enemy, no type parsed");
+			break;
+		}
+
+		position = pos;
+		alive = e->alive;
+
+		idle = e->idle;
+		current_animation = &idle;
+		def_anim_speed = e->def_anim_speed;
+
+		LOG("Entity Created, type: %s", name.GetString());
+		LOG("pos %d, %d", position.x, position.y);
+	}
 
 	~Entity(){}
 
@@ -54,8 +87,6 @@ public:
 
 public:
 
-	////////// GENERAL /////////
-
 	p2SString		name;
 
 	bool			alive;
@@ -63,7 +94,9 @@ public:
 	int				health;
 	int				vision_range;
 
-	SDL_Rect		rect;	
+	float			def_anim_speed;
+
+	SDL_Rect		rect;
 
 	iPoint			speed;
 	iPoint			speed_mult;
@@ -74,40 +107,8 @@ public:
 
 	entityType		type;
 
-	float			def_anim_speed;
-
-	//Mix_Chunk*	die_FX;
-
-
-	/////////////// ENEMIES /////////////////
-
-	bool			first_iteration;
-	bool			return_origin;
-
-	Animation		follow;
-
-	iPoint			desired_position;
-
-
-	///////////////// PLAYER ///////////////////
-	
-	//Animations
-	SDL_Rect		anim_rect;
 	Animation*		current_animation = nullptr;
 	Animation		idle;
-	Animation		walk;
-	Animation		jump;
-	Animation		doublejump;
-	Animation		fall;
-	Animation		death;
-	Animation		god;
 
-	float			gravity;
-	float			god_speed;
-
-	bool			god_mode;
-	bool			level_finished;
-
-
-
+	//Mix_Chunk*	die_FX;
 };

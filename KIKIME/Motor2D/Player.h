@@ -11,7 +11,7 @@ class Player : public Entity
 public:
 
 	Player() {}
-	Player(iPoint pos, Entity* e);
+	Player(iPoint pos, Player* e);
 	~Player();
 
 	bool PreUpdate();
@@ -35,4 +35,19 @@ public:
 	bool double_jumping;
 
 	int jump_speed;
+
+	///////////////// PLAYER ///////////////////
+
+	Animation		walk;
+	Animation		jump;
+	Animation		doublejump;
+	Animation		fall;
+	Animation		death;
+	Animation		god;
+
+	float			gravity;
+	float			god_speed;
+
+	bool			god_mode;
+	bool			level_finished;
 };

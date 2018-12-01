@@ -1,53 +1,6 @@
 #include "Roller.h"
-#include "j1App.h"
-#include "j1Input.h"
 #include "j1Pathfinding.h"
-#include "Player.h"
 #include "j1Map.h"
-#include "j1Scene.h"
-#include "j1Render.h"
-#include "p2Log.h"
-#include "Entity.h"
-#include "j1EntityManager.h"
-
-
-
-Roller::Roller(iPoint pos, Entity* e) : Entity(type)
-{
-	name.create("roller");
-
-	type = e->type;
-
-	position = pos;
-	initial_pos = pos;
-	rect = { pos.x,pos.y,e->rect.w,e->rect.h };
-	speed = { 0,0 };
-	speed_mult = e->speed;
-
-	idle = e->idle;
-	follow = e->follow;
-	health = e->health;
-	alive = e->alive;
-	vision_range = e->vision_range;
-	def_anim_speed = e->def_anim_speed;
-
-	current_animation = &idle;
-	LOG("Roller Created");
-	LOG("pos %d, %d", position.x, position.y);
-
-	// initializing
-	first_iteration = true;
-	return_origin = false;
-	desired_position = { 0,0 };
-
-	collider = App->collision->AddCollider(rect, COLLIDER_DEATH);
-}
-
-Roller::~Roller()
-{
-
-}
-
 
 bool Roller::UpdateLogic(iPoint pos)
 {

@@ -75,8 +75,8 @@ public:
 	Floater		    floaterinfo;
 	Roller			rollerinfo;
 	Player			playerinfo;
+	Player*			player_ref = nullptr;
 
-	Entity*			player_ref = nullptr;
 	j1Timer		    timer_death;
 	bool			is_started;
 };

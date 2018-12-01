@@ -105,6 +105,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Animation.h" />
+    <ClInclude Include="Enemy.h" />
     <ClInclude Include="j1EntityManager.h" />
     <ClInclude Include="Entity.h" />
     <ClInclude Include="Floater.h" />

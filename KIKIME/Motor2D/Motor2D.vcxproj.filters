@@ -168,6 +168,9 @@
     <ClInclude Include="j1Scene.h">
       <Filter>Desenvolupament  ========\Modules</Filter>
     </ClInclude>
+    <ClInclude Include="Enemy.h">
+      <Filter>Desenvolupament  ========\Entities</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Programacio 2 ===========">

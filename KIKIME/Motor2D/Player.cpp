@@ -11,13 +11,10 @@
 #include "j1Pathfinding.h"
 #include "Player.h"
 
-Player::Player(iPoint pos, Entity * e) : Entity(type)
+Player::Player(iPoint pos, Player * e) : Entity(pos, e)
 {
-	name.create("player");
 
-	type = e->type;
-	position = pos;
-	rect = { pos.x,pos.y,e->rect.w,e->rect.h };
+	
 	speed.x = e->speed.x;
 	speed.y = 0;
 	jump_speed = e->speed.y;

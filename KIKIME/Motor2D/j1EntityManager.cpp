@@ -250,24 +250,24 @@ bool j1EntityManager::Start()
 	{
 		if (App->collision->colliders[i]->type == COLLIDER_SPAWN)
 		{
+			Entity* e;
 			if (App->collision->colliders[i]->rect.w > App->collision->colliders[i]->rect.h)
 			{
 				iPoint pos = { App->collision->colliders[i]->rect.x , App->collision->colliders[i]->rect.y };
-				CreateEntity(FLOATER, pos);
+				e = CreateEntity(FLOATER, pos);
 			}
 			if (App->collision->colliders[i]->rect.w < App->collision->colliders[i]->rect.h)
 			{
 				iPoint pos = { App->collision->colliders[i]->rect.x , App->collision->colliders[i]->rect.y };
-				CreateEntity(ROLLER, pos);
+				e = CreateEntity(ROLLER, pos);
 			}
+			e->collider = App->collision->AddCollider(e->rect, COLLIDER_DEATH);
 		}
 		if (App->collision->colliders[i]->type == COLLIDER_START)
 		{
 			iPoint pos = { App->collision->colliders[i]->rect.x , App->collision->colliders[i]->rect.y };
-			player_ref = CreateEntity(PLAYER, pos);
-
-			CreatePlayerColliders();
-
+			player_ref = (Player*)CreateEntity(PLAYER, pos);
+			player_ref->collider = App->collision->AddCollider(player_ref->rect, COLLIDER_PLAYER, this);
 		}
 	}
 	SaveInitialState();
@@ -287,17 +287,6 @@ void j1EntityManager::LoadInitialState()
 	App->load_path = App->init_state_path;
 	App->LoadGameFile();
 	App->load_path = temp;
-}
-
-
-void j1EntityManager::CreatePlayerColliders()
-{
-	player_ref->collider = App->collision->AddCollider(player_ref->rect, COLLIDER_PLAYER, this);
-}
-
-void j1EntityManager::DeletePlayerColliders()
-{
-	player_ref->collider->to_delete = true;
 }
 
 bool j1EntityManager::PreUpdate()
@@ -364,7 +353,6 @@ bool j1EntityManager::CleanUp()
 {
 	BROFILER_CATEGORY("Entities->CleanUp", Profiler::Color::BlueViolet)
 	p2List_item<Entity*>* item;
-	DeletePlayerColliders();
 	for (item = entities.start; item != nullptr; item = item->next)
 	{
 		if (item->data->collider != nullptr)
