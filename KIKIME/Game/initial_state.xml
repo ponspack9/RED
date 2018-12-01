@@ -25,6 +25,7 @@
 	<pathfinding />
 	<fonts />
 	<gui />
+	<particles />
 	<renderer>
 		<camera x="0" y="0" />
 	</renderer>

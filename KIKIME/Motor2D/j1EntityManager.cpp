@@ -250,7 +250,7 @@ bool j1EntityManager::Start()
 	{
 		if (App->collision->colliders[i]->type == COLLIDER_SPAWN)
 		{
-			Entity* e;
+			Entity* e = nullptr;
 			if (App->collision->colliders[i]->rect.w > App->collision->colliders[i]->rect.h)
 			{
 				iPoint pos = { App->collision->colliders[i]->rect.x , App->collision->colliders[i]->rect.y };
