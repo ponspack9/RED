@@ -38,8 +38,16 @@ public:
 	UIElement() {}
 	UIElement(UIType type) { this->type = type; }
 
-	virtual bool PreUpdate(float dt) { return true; }
-	virtual bool PostUpdate(float dt) { return true; }
+	virtual bool PreUpdate() { return true; }
+	virtual bool PostUpdate() { return true; }
+
+	virtual void Draw(SDL_Texture* sprites)
+	{
+		App->render->Blit(sprites, position.x, position.y, &rect[state]);
+
+		if(type == BUTTON)
+			LOG("blit pos: %d - %d", position.x, position.y);
+	}
 
 public:
 

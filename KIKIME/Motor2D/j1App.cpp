@@ -1,8 +1,5 @@
 #include <iostream> 
 
-#include "p2Defs.h"
-#include "p2Log.h"
-
 #include "j1Window.h"
 #include "j1Input.h"
 #include "j1Render.h"

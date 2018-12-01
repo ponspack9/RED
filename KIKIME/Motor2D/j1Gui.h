@@ -37,7 +37,7 @@ public:
 	// Gui creation functions
 	UIElement* CreateElement(UIType type, iPoint pos);
 
-	void HandleInput();
+	void HandleInput(UIElement* element);
 	void HandleAction();
 
 	void Draw();

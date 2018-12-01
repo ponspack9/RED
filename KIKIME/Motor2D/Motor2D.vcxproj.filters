@@ -212,8 +212,6 @@
   </ItemGroup>
   <ItemGroup>
     <Xml Include="..\Game\save_game.xml" />
-    <Xml Include="..\Game\config.xml">
-      <Filter>Programacio 2 ===========</Filter>
-    </Xml>
+    <Xml Include="..\Game\config.xml" />
   </ItemGroup>
 </Project>

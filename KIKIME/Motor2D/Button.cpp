@@ -14,6 +14,11 @@ Button::Button(iPoint pos, SDL_Rect rect, UIType type) : UIElement(type)
 
 bool Button::PreUpdate()
 {
+	position.x = App->render->viewport.w / 12 - App->render->camera.x;
+	position.y = App->render->viewport.w / 12 - App->render->camera.y;
+
+	LOG("button pos: %d - %d", position.x, position.y);
+
 	return true;
 }
 

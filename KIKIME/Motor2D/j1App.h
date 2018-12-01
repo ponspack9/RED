@@ -5,6 +5,8 @@
 #include "j1Module.h"
 #include "j1PerfTimer.h"
 #include "j1Timer.h"
+#include "p2Defs.h"
+#include "p2Log.h"
 #include "PugiXml\src\pugixml.hpp"
 
 // Modules

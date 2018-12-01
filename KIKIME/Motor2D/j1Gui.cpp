@@ -34,10 +34,9 @@ bool j1Gui::Start()
 
 	atlas = App->tex->Load(atlas_file_name.GetString());
 	SDL_RenderGetViewport(App->render->renderer, &App->render->viewport);
-	CreateElement(IMAGE, iPoint(App->render->viewport.w / 2 , App->render->viewport.h / 12 + 25));
+	CreateElement(IMAGE, iPoint(App->render->viewport.w / 2 , App->render->viewport.h / 11 + 25));
 
-	CreateElement(BUTTON, iPoint(50, 50));
-	//CreateElement(IMAGE, iPoint(App->render->viewport.w /2 , App->render->viewport.h / 12  + 100));
+	CreateElement(BUTTON, iPoint(App->render->viewport.w / 12, App->render->viewport.h / 12));
 
 	return true;
 }
@@ -45,7 +44,17 @@ bool j1Gui::Start()
 // Update all guis
 bool j1Gui::PreUpdate()
 {
-	HandleInput();
+	p2List_item<UIElement*>* item = elements.start;
+
+	while (item != nullptr)
+	{
+		item->data->PreUpdate();
+
+		if (item->data->type == BUTTON)
+			HandleInput(item->data);
+
+		item = item->next;
+	}
 
 	return true;
 }
@@ -53,8 +62,6 @@ bool j1Gui::PreUpdate()
 // Called after all Updates
 bool j1Gui::PostUpdate()
 {
-	p2List_item<UIElement*>* item = elements.start;
-
 	int w, h;
 
 	SDL_Texture* text = App->font->Print("HELLO WORLD", { 255,0,0,255 }, App->font->default);
@@ -62,9 +69,13 @@ bool j1Gui::PostUpdate()
 
 	App->render->Blit(text, App->render->viewport.w / 2 - App->render->camera.x-w/2, App->render->viewport.h / 12 - App->render->camera.y);
 
+	p2List_item<UIElement*>* item = elements.start;
+
 	while (item != NULL)
 	{
-		App->render->Blit(atlas, item->data->position.x - App->render->camera.x, item->data->position.y - App->render->camera.y, &item->data->rect[item->data->state]);
+		item->data->PostUpdate();
+		item->data->Draw(atlas);
+		//App->render->Blit(atlas, item->data->position.x - App->render->camera.x, item->data->position.y - App->render->camera.y, &item->data->rect[item->data->state]);
 
 		item = item->next;
 	}
@@ -98,18 +109,16 @@ UIElement* j1Gui::CreateElement(UIType type, iPoint pos)
 
 		elem = new Image(pos, SDL_Rect({ 485,829,328,103 }), type);
 		break;
-
 	case LABEL:
 
 		break;
-
 	case BUTTON:
+
 		elem = new Button(pos, SDL_Rect({648,173,217,56}), type);
 		break;
-
 	default:
-		break;
 
+		break;
 	}
 
 	elements.add(elem);
@@ -117,45 +126,40 @@ UIElement* j1Gui::CreateElement(UIType type, iPoint pos)
 	return elem;
 }
 
-void j1Gui::HandleInput()
+void j1Gui::HandleInput(UIElement* element)
 {
-	p2List_item<UIElement*>* item = elements.start;
+	iPoint mouse;
+	App->input->GetMousePosition(mouse.x, mouse.y);
 
-	while (item != nullptr)
+	LOG("mouse pos : %d - %d", mouse.x, mouse.y);
+	LOG("button rect: %d - %d - %d - %d", element->position.x, element->position.y, element->rect[element->state].w, element->rect[element->state].h);
+	
+	if (mouse.x >= element->position.x && mouse.x <= element->position.x + element->rect[element->state].w &&
+		mouse.y >= element->position.y && mouse.y <= element->position.y + element->rect[element->state].h &&
+		App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) != KEY_REPEAT && App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) != KEY_DOWN)
 	{
-		if (item->data->type == BUTTON)
-		{
-			iPoint mouse;
-			App->input->GetMousePosition(mouse.x, mouse.y);
-
-			LOG("mouse pos : %d - %d", mouse.x, mouse.y);
-			LOG("button rect: %d - %d - %d - %d", item->data->position.x, item->data->position.y, item->data->rect[item->data->state].w, item->data->rect[item->data->state].h);
-			
-			if (mouse.x > item->data->position.x && mouse.x < item->data->position.x + item->data->rect[item->data->state].w &&
-				mouse.y > item->data->position.y &&	mouse.y < item->data->position.y + item->data->rect[item->data->state].h &&
-				App->input->GetMouseButtonDown(SDL_SCANCODE_LEFT) == KEY_UP)
-			{
-				item->data->state = HOVER;
-				LOG("hover");
-			}
-			else if (mouse.x > item->data->position.x && mouse.x < item->data->position.x + item->data->rect[item->data->state].w &&
-					 mouse.y > item->data->position.y && mouse.y < item->data->position.y + item->data->rect[item->data->state].h &&
-				     App->input->GetMouseButtonDown(SDL_SCANCODE_LEFT) == KEY_DOWN)
-			{
-				item->data->state = CLICK_DOWN;
-				LOG("click");
-			}
-			else
-			{
-				item->data->state = IDLE;
-				LOG("idle");
-			}
-		}
-
-
-		item = item->next;
+		element->state = HOVER;
+		LOG("hover");
 	}
-
+	else if (mouse.x >= element->position.x && mouse.x <= element->position.x + element->rect[element->state].w &&
+			 mouse.y >= element->position.y && mouse.y <= element->position.y + element->rect[element->state].h && 
+			 (App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KEY_REPEAT || App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KEY_DOWN))
+	{
+		element->state = CLICK_DOWN;
+		LOG("click");
+	}
+	else if (mouse.x >= element->position.x && mouse.x <= element->position.x + element->rect[element->state].w &&
+			 mouse.y >= element->position.y && mouse.y <= element->position.y + element->rect[element->state].h &&
+			 App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KEY_UP)
+	{
+		element->state = CLICK_UP;
+		LOG("click up");
+	}
+	else
+	{
+		element->state = IDLE;
+		LOG("idle");
+	}
 }
 
 void j1Gui::HandleAction()

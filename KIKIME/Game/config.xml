@@ -1,6 +1,6 @@
 <!-- Config file for the game -->
 <config>
-  <app framerate_cap ="60">
+  <app framerate_cap ="90">
     <title>KIKIME</title>
     <organization>ORISO</organization>
   </app>
