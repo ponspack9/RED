@@ -21,7 +21,6 @@ public:
 		speed_mult = e->speed;
 
 		follow = e->follow;
-		health = e->health;
 		vision_range = e->vision_range;
 
 		// initializing
@@ -35,11 +34,15 @@ public:
 
 public:
 
+	int				vision_range;
+
 	bool			first_iteration;
 	bool			return_origin;
 
 	Animation		follow;
 
 	iPoint			desired_position;
+	iPoint			speed_mult;
+	iPoint			initial_pos;
 };
 

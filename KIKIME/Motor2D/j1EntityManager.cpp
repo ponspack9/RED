@@ -42,8 +42,6 @@ bool j1EntityManager::Awake(pugi::xml_node & config)
 
 	floaterinfo.vision_range = f_enem.child("range").attribute("value").as_int();
 
-	floaterinfo.health = f_enem.child("health").attribute("hp").as_int();
-
 	floaterinfo.alive = f_enem.child("alive").attribute("value").as_bool();
 
 	//roller
@@ -57,8 +55,6 @@ bool j1EntityManager::Awake(pugi::xml_node & config)
 	rollerinfo.speed.y = r_enem.child("speed").attribute("y").as_int();
 			  
 	rollerinfo.vision_range = r_enem.child("range").attribute("value").as_int();
-			  
-	rollerinfo.health = r_enem.child("health").attribute("hp").as_int();
 			  
 	rollerinfo.alive = r_enem.child("alive").attribute("value").as_bool();
 
@@ -130,6 +126,7 @@ bool j1EntityManager::Awake(pugi::xml_node & config)
 	playerinfo.gravity = player_node.child("gravity").attribute("value").as_float();
 	playerinfo.god_mode = player_node.child("godmode").attribute("value").as_bool();
 
+	playerinfo.lifes = player_node.child("lifes").attribute("lifes").as_int();
 	// Parsing animations ----------------
 
 	playerinfo.def_anim_speed = player_node.child("playeranimations").attribute("defaultAnimationSpeed").as_float();
@@ -239,8 +236,7 @@ bool j1EntityManager::Awake(pugi::xml_node & config)
 
 bool j1EntityManager::Start()
 {
-	BROFILER_CATEGORY("Entities->Start", Profiler::Color::BlueViolet)
-
+	BROFILER_CATEGORY("Entities->Start", Profiler::Color::BlueViolet);
 	//Loading textures
 	playerTex = App->tex->Load(playerPath.GetString());
 	enemyTex = App->tex->Load(enemyPath.GetString());
@@ -328,19 +324,29 @@ bool j1EntityManager::PostUpdate()
 {
 	BROFILER_CATEGORY("Entities->PostUpdate", Profiler::Color::BlueViolet)
 	bool ret = false;
-	p2List_item<Entity*>* item;
-	if (!player_ref->alive) {
+	
+	if (!player_ref->alive && timer_death.ReadSec() >= 0.5f && !App->game_over) {
 		
-		if (timer_death.ReadSec() >= 0.5f)
-		{
-			Restart();
 			LOG("DEAD BY POST UPDATE");
+			if (player_ref->lifes > 0) {
+				player_ref->lifes -= 1;
+				App->RestartLevel();
+				player_ref->collider->SetPos(player_ref->position.x, player_ref->position.y);
+				LOG("LIFES REMAINING: %d", player_ref->lifes);
+			}
+			else {
+				App->GameOver();
+				player_ref->lifes = playerinfo.lifes;
+				
+			}
 			player_ref->alive = true;
 			is_started = false;
-		}
+			//timer_death.Start();
+		
 		return true;
 	}
 
+	p2List_item<Entity*>* item;
 	for (item = entities.start; item != nullptr; item = item->next)
 	{
 		ret = item->data->PostUpdate();
@@ -434,7 +440,9 @@ Entity * j1EntityManager::CreateEntity(entityType type, iPoint pos)
 
 void j1EntityManager::OnCollision(Collider * c1, Collider * c2)
 {
-	
+	if (c1->type == COLLIDER_PLAYER && c2->type == COLLIDER_DEATH) {
+		player_ref->alive = false;
+	}
 
 }
 
@@ -457,7 +465,6 @@ bool j1EntityManager::Save(pugi::xml_node & node)
 
 			n.append_attribute("type") = item->data->name.GetString();
 			n.append_attribute("alive") = item->data->alive;
-			n.append_attribute("hp") = item->data->health;
 
 			if (item->data->alive)
 			{
@@ -482,11 +489,11 @@ bool j1EntityManager::Load(pugi::xml_node & node)
 		{
 			item->data->position.x = node.child("player").attribute("x").as_int();
 			item->data->position.y = node.child("player").attribute("y").as_int();
+
 		}
 		else
 		{
 			item->data->alive = Enode.attribute("alive").as_bool();
-			item->data->health = Enode.attribute("hp").as_int();
 
 			if (item->data->alive)
 			{

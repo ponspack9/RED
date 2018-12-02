@@ -9,6 +9,7 @@
 #include "Brofiler/Brofiler.h"
 #include "j1Debug.h"
 #include "j1Pathfinding.h"
+#include "j1Particles.h"
 #include <cmath>
 
 j1Map::j1Map() : j1Module(), map_loaded(false)
@@ -737,6 +738,11 @@ void j1Map::CleanMap()
 	if (App->collision->active) {
 		App->collision->CleanColliders();
 		//App->collision->CleanPolylines();
+	}
+
+	//Removes all particles
+	if (App->particles->active) {
+		App->particles->Reset();
 	}
 	map_doc.reset();
 	map_loaded = false;

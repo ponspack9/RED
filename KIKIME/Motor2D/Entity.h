@@ -61,8 +61,7 @@ public:
 		current_animation = &idle;
 		def_anim_speed = e->def_anim_speed;
 
-		LOG("Entity Created, type: %s", name.GetString());
-		LOG("pos %d, %d", position.x, position.y);
+		LOG("Entity created type %s at [%d, %d]", name.GetString(), position.x, position.y);
 	}
 
 	~Entity(){}
@@ -91,17 +90,12 @@ public:
 
 	bool			alive;
 
-	int				health;
-	int				vision_range;
-
 	float			def_anim_speed;
 
 	SDL_Rect		rect;
 
 	iPoint			speed;
-	iPoint			speed_mult;
 	iPoint			position;
-	iPoint			initial_pos;
 
 	Collider*		collider;
 

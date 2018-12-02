@@ -62,6 +62,10 @@ public:
 	//TO BE IMPLEMENTED
 	void GetSaveGames(p2List<p2SString>& list_to_fill) const;
 
+	void GoToMainMenu();
+
+	void GameOver();
+
 	//Load XML, LOGs the result also returning it
 	pugi::xml_parse_result LoadXML(pugi::xml_document & doc, const char* path);
 
@@ -126,6 +130,7 @@ public:
 	mutable bool		want_to_save;
 
 	bool				pause;
+	bool				game_over;
 
 	float				dt;
 	mutable p2SString	save_path;

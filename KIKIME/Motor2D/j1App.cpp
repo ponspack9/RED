@@ -32,6 +32,7 @@ j1App::j1App(int argc, char* args[]) : argc(argc), args(args)
 	perf_timer.Start();
 
 	want_to_save = want_to_load = false;
+	game_over = false;
 
 	input			= new j1Input();
 	win				= new j1Window();
@@ -454,7 +455,19 @@ void j1App::GetSaveGames(p2List<p2SString>& list_to_fill) const
 	// need to add functionality to file_system module for this to work
 
 }
+void j1App::GoToMainMenu() {
+	App->map->current_map = App->map->maps_path.end;
+	LOG("CURRENTMAP FROM TRANSITION: %s", App->map->current_map->data.GetString());
+	App->fade->FadeToBlack(App->scene, App->scene);
+}
+void j1App::GameOver() {
+	//Main menu will be the last map
+	game_over = true;
+	App->map->current_map = App->map->maps_path.end->prev;
+	App->fade->FadeToBlack(App->scene, App->scene);
 
+	LOG("GAME OVER");
+}
 
 bool j1App::RestartGame()
 {

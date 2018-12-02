@@ -35,6 +35,7 @@ public:
 	bool double_jumping;
 
 	int jump_speed;
+	int lifes;
 
 	///////////////// PLAYER ///////////////////
 

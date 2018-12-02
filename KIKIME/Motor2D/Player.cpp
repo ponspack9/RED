@@ -13,7 +13,7 @@
 
 Player::Player(iPoint pos, Player * e) : Entity(pos, e)
 {
-
+	lifes = e->lifes;
 	
 	speed.x = e->speed.x;
 	speed.y = 0;
@@ -59,6 +59,9 @@ bool Player::PreUpdate()
 		if ((App->input->GetKey(SDL_SCANCODE_W) == KEY_DOWN) || (App->input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN))
 		{
 			Jump();
+		}
+		if ((App->input->GetKey(SDL_SCANCODE_W) == KEY_REPEAT))
+		{
 			want_up = true;
 		}
 		//Smash //want_down only in god mode
@@ -85,7 +88,7 @@ bool Player::Update(float dt)
 {
 	BROFILER_CATEGORY("Player->Update", Profiler::Color::BlueViolet);
 
-	if (!god_mode) {
+	if (!god_mode && alive) {
 		Move(dt);
 	}
 	else {
@@ -98,11 +101,17 @@ bool Player::Update(float dt)
 
 void Player::PlayerAnimations(float dt)
 {
-	if (!god_mode) {
-		current_animation = &idle;
+	if (!alive) {
+		current_animation = &death;
 	}
 	else {
-		current_animation = &god;
+		if (!god_mode) {
+			current_animation = &idle;
+		}
+		else {
+			current_animation = &god;
+		}
+
 	}
 
 	current_animation->speed = def_anim_speed * dt;

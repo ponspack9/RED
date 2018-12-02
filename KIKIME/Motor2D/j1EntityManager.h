@@ -56,9 +56,6 @@ public:
 	//Creators
 
 	Entity*	 CreateEntity(entityType type, iPoint pos);
-
-	void CreatePlayerColliders();
-	void DeletePlayerColliders();
 	
 	void OnCollision(Collider * c1, Collider * c2);
 
