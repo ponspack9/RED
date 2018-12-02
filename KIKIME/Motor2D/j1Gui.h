@@ -5,6 +5,7 @@
 #include "UIElement.h"
 #include "Image.h"
 #include "Button.h"
+#include "Label.h"
 
 #define CURSOR_WIDTH 2
 
@@ -35,12 +36,10 @@ public:
 
 	// TODO 2: Create the factory methods
 	// Gui creation functions
-	UIElement* CreateElement(UIType type, iPoint pos);
+	UIElement* CreateElement(UIType type, iPoint pos, p2SString string = nullptr, ActionType action = NO_ACTION);
 
 	void HandleInput(UIElement* element);
-	void HandleAction();
-
-	void Draw();
+	void HandleAction(UIElement* element);
 
 	const SDL_Texture* GetAtlas() const;
 

@@ -6,7 +6,7 @@ class Button : public UIElement
 public:
 
 	Button() {}
-	Button(iPoint pos, SDL_Rect rect, UIType type);
+	Button(ActionType action, iPoint pos, SDL_Rect rect, UIType type);
 
 	~Button() {}
 

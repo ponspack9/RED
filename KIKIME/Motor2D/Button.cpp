@@ -1,15 +1,17 @@
 #include "Button.h"
 
-Button::Button(iPoint pos, SDL_Rect rect, UIType type) : UIElement(type)
+Button::Button(ActionType action, iPoint pos, SDL_Rect rect, UIType type) : UIElement(type)
 {
 	this->position = pos;
 	this->rect[IDLE] = rect;
-	this->type = type;
+	//this->type = type;
 	this->state = IDLE;
 
-	this->rect[HOVER] = SDL_Rect({ 6,117,217,56 });
-	this->rect[CLICK_DOWN] = SDL_Rect({ 417,173,217,56 });
+	this->rect[HOVER] = SDL_Rect({ 0,111,228,68 });
+	this->rect[CLICK_DOWN] = SDL_Rect({ 412,167,228,68 });
 	this->rect[CLICK_UP] = this->rect[HOVER];
+
+	this->action = action;
 }
 
 bool Button::PreUpdate()

@@ -31,12 +31,13 @@ bool j1Gui::Awake(pugi::xml_node& conf)
 // Called before the first frame
 bool j1Gui::Start()
 {
-
 	atlas = App->tex->Load(atlas_file_name.GetString());
-	SDL_RenderGetViewport(App->render->renderer, &App->render->viewport);
-	CreateElement(IMAGE, iPoint(App->render->viewport.w / 2 , App->render->viewport.h / 11 + 25));
 
-	CreateElement(BUTTON, iPoint(App->render->viewport.w / 12, App->render->viewport.h / 12));
+	SDL_RenderGetViewport(App->render->renderer, &App->render->viewport);
+
+	CreateElement(IMAGE, iPoint(App->render->viewport.w / 2, App->render->viewport.h / 11 + 25));
+	CreateElement(BUTTON, iPoint(App->render->viewport.w / 12, App->render->viewport.h / 12), nullptr, SETTINGS);
+	CreateElement(LABEL, iPoint(App->render->viewport.w / 2, App->render->viewport.h / 13), "HELLO WORLD");
 
 	return true;
 }
@@ -62,20 +63,12 @@ bool j1Gui::PreUpdate()
 // Called after all Updates
 bool j1Gui::PostUpdate()
 {
-	int w, h;
-
-	SDL_Texture* text = App->font->Print("HELLO WORLD", { 255,0,0,255 }, App->font->default);
-	App->font->CalcSize("HELLO WORLD", w, h, App->font->default);
-
-	App->render->Blit(text, App->render->viewport.w / 2 - App->render->camera.x-w/2, App->render->viewport.h / 12 - App->render->camera.y);
-
 	p2List_item<UIElement*>* item = elements.start;
 
 	while (item != NULL)
 	{
 		item->data->PostUpdate();
 		item->data->Draw(atlas);
-		//App->render->Blit(atlas, item->data->position.x - App->render->camera.x, item->data->position.y - App->render->camera.y, &item->data->rect[item->data->state]);
 
 		item = item->next;
 	}
@@ -99,7 +92,7 @@ bool j1Gui::CleanUp()
 	return true;
 }
 
-UIElement* j1Gui::CreateElement(UIType type, iPoint pos)
+UIElement* j1Gui::CreateElement(UIType type, iPoint pos, p2SString string, ActionType action)
 {
 	UIElement* elem = nullptr;
 
@@ -111,10 +104,11 @@ UIElement* j1Gui::CreateElement(UIType type, iPoint pos)
 		break;
 	case LABEL:
 
+		elem = new Label(pos, type, string);
 		break;
 	case BUTTON:
 
-		elem = new Button(pos, SDL_Rect({648,173,217,56}), type);
+		elem = new Button(action, pos, SDL_Rect({641,166,228,68}), type);
 		break;
 	default:
 
@@ -128,22 +122,27 @@ UIElement* j1Gui::CreateElement(UIType type, iPoint pos)
 
 void j1Gui::HandleInput(UIElement* element)
 {
+	if (element->state == CLICK_UP)
+		HandleAction(element);
+
 	iPoint mouse;
 	App->input->GetMousePosition(mouse.x, mouse.y);
 
 	LOG("mouse pos : %d - %d", mouse.x, mouse.y);
 	LOG("button rect: %d - %d - %d - %d", element->position.x, element->position.y, element->rect[element->state].w, element->rect[element->state].h);
 	
-	if (mouse.x >= element->position.x && mouse.x <= element->position.x + element->rect[element->state].w &&
+	if (element->state != CLICK_DOWN &&
+		mouse.x >= element->position.x && mouse.x <= element->position.x + element->rect[element->state].w &&
 		mouse.y >= element->position.y && mouse.y <= element->position.y + element->rect[element->state].h &&
-		App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) != KEY_REPEAT && App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) != KEY_DOWN)
+		App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) != KEY_DOWN)
 	{
 		element->state = HOVER;
 		LOG("hover");
 	}
-	else if (mouse.x >= element->position.x && mouse.x <= element->position.x + element->rect[element->state].w &&
-			 mouse.y >= element->position.y && mouse.y <= element->position.y + element->rect[element->state].h && 
-			 (App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KEY_REPEAT || App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KEY_DOWN))
+	else if((element->state == HOVER || element->state == CLICK_DOWN) &&
+		    mouse.x >= element->position.x && mouse.x <= element->position.x + element->rect[element->state].w &&
+	        mouse.y >= element->position.y && mouse.y <= element->position.y + element->rect[element->state].h && 
+	        (App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KEY_REPEAT || App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KEY_DOWN))
 	{
 		element->state = CLICK_DOWN;
 		LOG("click");
@@ -162,12 +161,9 @@ void j1Gui::HandleInput(UIElement* element)
 	}
 }
 
-void j1Gui::HandleAction()
+void j1Gui::HandleAction(UIElement* element)
 {
-}
-
-void j1Gui::Draw()
-{
+	LOG("DOING ACTION");
 }
 
 // const getter for atlas

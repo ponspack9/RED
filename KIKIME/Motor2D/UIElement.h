@@ -4,6 +4,7 @@
 #include "j1Module.h"
 #include "j1App.h"
 #include "j1Render.h"
+#include "j1Fonts.h"
 
 enum UIType 
 { 
@@ -23,11 +24,11 @@ enum UIState
 
 enum ActionType
 {
-	EXIT_GAME,
-	SETTINGS,
 	MAIN_MENU,
+	SETTINGS,
 	NEXT_LEVEL,
 	PREV_LEVEL,
+	EXIT_GAME,
 	NO_ACTION
 };
 
@@ -41,7 +42,7 @@ public:
 	virtual bool PreUpdate() { return true; }
 	virtual bool PostUpdate() { return true; }
 
-	virtual void Draw(SDL_Texture* sprites)
+	virtual void Draw(SDL_Texture* sprites = nullptr)
 	{
 		App->render->Blit(sprites, position.x, position.y, &rect[state]);
 
@@ -57,12 +58,7 @@ public:
 	UIState		state;
 	ActionType	action;
 
+	p2SString	string;
+
 };
-
-
-
-
-
-
-
 #endif //__UIELEMENT_H__
