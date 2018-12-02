@@ -252,6 +252,9 @@ bool j1Map::Load(const char* file_name)
 							else if (group_name == "Enemy_spawns") {
 								App->collision->AddCollider(r, COLLIDER_SPAWN);
 							}
+							else if (group_name == "Coin_spawns") {
+								App->collision->AddCollider(r, COLLIDER_SPAWN_COIN);
+							}
 							continue;
 						}
 						//ellipse

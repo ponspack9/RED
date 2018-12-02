@@ -256,14 +256,14 @@ bool j1EntityManager::Start()
 				iPoint pos = { App->collision->colliders[i]->rect.x , App->collision->colliders[i]->rect.y };
 				e = CreateEntity(FLOATER, pos);
 			}
-			if (App->collision->colliders[i]->rect.w < App->collision->colliders[i]->rect.h)
+			else if (App->collision->colliders[i]->rect.w < App->collision->colliders[i]->rect.h)
 			{
 				iPoint pos = { App->collision->colliders[i]->rect.x , App->collision->colliders[i]->rect.y };
 				e = CreateEntity(ROLLER, pos);
 			}
 			e->collider = App->collision->AddCollider(e->rect, COLLIDER_DEATH);
 		}
-		if (App->collision->colliders[i]->type == COLLIDER_START)
+		else if (App->collision->colliders[i]->type == COLLIDER_START)
 		{
 			iPoint pos = { App->collision->colliders[i]->rect.x , App->collision->colliders[i]->rect.y };
 			player_ref = (Player*)CreateEntity(PLAYER, pos);

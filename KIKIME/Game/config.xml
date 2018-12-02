@@ -6,7 +6,9 @@
   </app>
   <particles def_anim_speed ="5">
     <path>maps/platformPack_tilesheet.png</path>
-    <diamond x="591" y="211" width="36" height="28"></diamond>
+    <green_diamond x="591" y="211" width="36" height="28"></green_diamond>
+    <blue_diamond x="463" y="211" width="36" height="28"></blue_diamond>
+    <heart x="722" y="275" width="36" height="28"></heart>
   </particles>
   <debug>
     <debugtexture>maps/path3.png</debugtexture>

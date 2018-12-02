@@ -125,7 +125,7 @@ bool j1Debug::Update(float dt)
 
 	if (App->input->GetKey(SDL_SCANCODE_T) == KEY_DOWN)
 	{
-		App->particles->AddParticle(App->particles->coin, x - App->render->camera.x, y - App->render->camera.y, COLLIDER_DEATH);
+		App->particles->AddParticle(App->particles->green_diamond, x - App->render->camera.x, y - App->render->camera.y, COLLIDER_DEATH);
 	}
 
 	// Camera drag through mouse click

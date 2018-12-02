@@ -116,6 +116,9 @@ void j1Collision::Draw()
 			case COLLIDER_END:
 				App->render->DrawQuad(colliders[i]->rect, 0, 0, 0, alpha);
 				break;
+			case COLLIDER_COIN:
+				App->render->DrawQuad(colliders[i]->rect, 0, 255, 255, alpha);
+				break;
 			}
 	}
 

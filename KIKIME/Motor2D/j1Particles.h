@@ -58,5 +58,7 @@ public:
 
 	Particle* active[MAX_ACTIVE_PARTICLES];	
 	
-	Particle coin;
+	Particle green_diamond;
+	Particle blue_diamond;
+	Particle heart;
 };

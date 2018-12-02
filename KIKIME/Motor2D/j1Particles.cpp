@@ -23,23 +23,52 @@ bool j1Particles::Awake(pugi::xml_node & config)
 {
 	graphics_path.create(config.child("path").child_value());
 
-	pugi::xml_node n = config.child("diamond");
 
 	float node_speed = -1;
 	float def_anim_speed = config.attribute("def_anim_speed").as_float();
 	SDL_Rect r;
 
-	for (n; n; n = n.next_sibling("FloatIdle"))
+	// Green diamond
+	pugi::xml_node n = config.child("green_diamond");
+	for (n; n; n = n.next_sibling("green_diamond"))
 	{
 		r.x = n.attribute("x").as_int();
 		r.y = n.attribute("y").as_int();
 		r.w = n.attribute("width").as_int();
 		r.h = n.attribute("height").as_int();
-		coin.anim.PushBack(r);
+		green_diamond.anim.PushBack(r);
 	}
 	node_speed = n.attribute("speed").as_float(-1);
-	coin.anim.speed = (node_speed <= 0) ? def_anim_speed : node_speed;
-	coin.anim.loop = true;
+	green_diamond.anim.speed = (node_speed <= 0) ? def_anim_speed : node_speed;
+	green_diamond.anim.loop = true;
+
+	// Blue diamond
+	n = config.child("blue_diamond");
+	for (n; n; n = n.next_sibling("blue_diamond"))
+	{
+		r.x = n.attribute("x").as_int();
+		r.y = n.attribute("y").as_int();
+		r.w = n.attribute("width").as_int();
+		r.h = n.attribute("height").as_int();
+		blue_diamond.anim.PushBack(r);
+	}
+	node_speed = n.attribute("speed").as_float(-1);
+	blue_diamond.anim.speed = (node_speed <= 0) ? def_anim_speed : node_speed;
+	blue_diamond.anim.loop = true;
+
+	// Heart life
+	n = config.child("heart");
+	for (n; n; n = n.next_sibling("heart"))
+	{
+		r.x = n.attribute("x").as_int();
+		r.y = n.attribute("y").as_int();
+		r.w = n.attribute("width").as_int();
+		r.h = n.attribute("height").as_int();
+		heart.anim.PushBack(r);
+	}
+	node_speed = n.attribute("speed").as_float(-1);
+	heart.anim.speed = (node_speed <= 0) ? def_anim_speed : node_speed;
+	heart.anim.loop = true;
 
 
 
@@ -54,6 +83,27 @@ bool j1Particles::Start()
 	LOG("Loading particles");
 	graphics = App->tex->Load(graphics_path.GetString());
 	
+	for (int i = 0; App->collision->colliders[i] != NULL; i++)
+	{
+		if (App->collision->colliders[i]->type == COLLIDER_SPAWN_COIN)
+		{
+			if (App->collision->colliders[i]->rect.w > App->collision->colliders[i]->rect.h)
+			{
+				iPoint pos = { App->collision->colliders[i]->rect.x , App->collision->colliders[i]->rect.y };
+				AddParticle(green_diamond, pos, COLLIDER_COIN);
+			}
+			else if (App->collision->colliders[i]->rect.w < App->collision->colliders[i]->rect.h)
+			{
+				iPoint pos = { App->collision->colliders[i]->rect.x , App->collision->colliders[i]->rect.y };
+				AddParticle(blue_diamond, pos, COLLIDER_COIN);
+			}
+			else {
+				iPoint pos = { App->collision->colliders[i]->rect.x , App->collision->colliders[i]->rect.y };
+				AddParticle(heart, pos, COLLIDER_COIN);
+				//Square collider spawn == most difficult coin to obtain
+			}
+		}
+	}
 	return true;
 }
 
