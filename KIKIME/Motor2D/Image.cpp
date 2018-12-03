@@ -13,7 +13,7 @@ Image::Image(iPoint pos, SDL_Rect rect, UIType type) : UIElement(type)
 bool Image::PreUpdate()
 {
 	position.x = initial_pos.x - App->render->camera.x;
-	position.y = initial_pos.y - App->render->camera.y + 25;
+	position.y = initial_pos.y - App->render->camera.y;
 
 	return true;
 }
