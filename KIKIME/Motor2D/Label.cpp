@@ -12,7 +12,7 @@ Label::Label(iPoint pos, UIType type, p2SString string) : UIElement(type)
 
 	this->string = string;
 
-	text = App->font->Print(string.GetString(), { 255,0,0,255 }, App->font->default);
+	text = App->font->Print(string.GetString(), { 0,255,0,255 }, App->font->default);
 	App->font->CalcSize(string.GetString(), rect[IDLE].w, rect[IDLE].h, App->font->default);
 }
 

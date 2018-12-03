@@ -35,13 +35,15 @@ bool j1Gui::Start()
 
 	SDL_RenderGetViewport(App->render->renderer, &App->render->viewport);
 
+	//HARDCODED
 	CreateElement(IMAGE, iPoint(App->render->viewport.w / 2, App->render->viewport.h / 11 + 25));
 
 	CreateElement(BUTTON, iPoint(App->render->viewport.w / 12, App->render->viewport.h / 12), nullptr, SETTINGS);
 	CreateElement(BUTTON, iPoint(8 * App->render->viewport.w / 12, 8 * App->render->viewport.h / 12), nullptr, SETTINGS);
 	CreateElement(BUTTON, iPoint(5 * App->render->viewport.w / 12, 6 * App->render->viewport.h / 12), nullptr, SETTINGS);
 
-	CreateElement(LABEL, iPoint(App->render->viewport.w / 2, App->render->viewport.h / 13), "HELLO WORLD");
+	CreateElement(LABEL, iPoint(9 * App->render->viewport.w / 10, 20), "SCORE : 9999");
+
 
 	return true;
 }
