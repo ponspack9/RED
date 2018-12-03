@@ -1,46 +1,8 @@
-#include "j1App.h"
 #include "Floater.h"
-#include "j1Input.h"
 #include "j1Pathfinding.h"
-#include "Player.h"
 #include "j1Map.h"
-#include "j1Scene.h"
-#include "j1Render.h"
-#include "p2Log.h"
-
-Floater::Floater(iPoint pos,Entity* e,entityType type) : Entity(type)
-{
-	name.create("floater");
-	
-	this->type = type;
-	return_origin = false;
-
-	position = pos;
-	initial_pos = pos;
-	rect = { pos.x,pos.y,e->rect.w,e->rect.h };
-	speed = { 0,0 };
-	speed_mult = e->speed;
-
-	idle = e->idle;
-	follow = e->follow;
-	health = e->health;
-	alive = e->alive;
-	vision_range = e->vision_range;
-
-	current_animation = &idle;
-	LOG("Floater Created");
-	LOG("pos %d, %d",position.x,position.y);
-
-	collider = App->collision->AddCollider(rect, COLLIDER_DEATH);
-}
-
-Floater::~Floater()
-{
-
-}
 
 
-//This is called 5 times per second / called every ~15 frames
 bool Floater::UpdateLogic(iPoint pos)
 {
 	//Origin
@@ -68,7 +30,7 @@ bool Floater::UpdateLogic(iPoint pos)
 		for (uint i = 0; i < path->Count(); ++i)
 		{
 			iPoint pos = App->map->MapToWorld(path->At(i)->x, path->At(i)->y);
-			App->render->Blit(App->scene->debug_tex, pos.x, pos.y);
+			App->render->Blit(App->debug->debug_tex, pos.x, pos.y);
 		}
 	}
 

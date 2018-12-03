@@ -85,6 +85,7 @@
     <ClCompile Include="j1Fonts.cpp" />
     <ClCompile Include="j1Gui.cpp" />
     <ClCompile Include="Label.cpp" />
+    <ClCompile Include="j1Particles.cpp" />
     <ClCompile Include="Roller.cpp" />
     <ClCompile Include="j1Collision.cpp" />
     <ClCompile Include="j1Debug.cpp" />
@@ -110,12 +111,14 @@
     <ClInclude Include="Animation.h" />
     <ClInclude Include="Button.h" />
     <ClInclude Include="Image.h" />
+    <ClInclude Include="Enemy.h" />
     <ClInclude Include="j1EntityManager.h" />
     <ClInclude Include="Entity.h" />
     <ClInclude Include="Floater.h" />
     <ClInclude Include="j1Fonts.h" />
     <ClInclude Include="j1Gui.h" />
     <ClInclude Include="Label.h" />
+    <ClInclude Include="j1Particles.h" />
     <ClInclude Include="Roller.h" />
     <ClInclude Include="j1Collision.h" />
     <ClInclude Include="j1Debug.h" />
@@ -148,6 +151,7 @@
     <Xml Include="..\Game\config.xml">
       <SubType>Designer</SubType>
     </Xml>
+    <Xml Include="..\Game\initial_state.xml" />
     <Xml Include="..\Game\save_game.xml" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

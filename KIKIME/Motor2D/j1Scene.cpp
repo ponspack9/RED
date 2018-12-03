@@ -16,10 +16,11 @@
 #include "Entity.h"
 #include "j1Debug.h"
 
-j1Scene::j1Scene() : j1Module()
+j1Scene::j1Scene() : j1Module() 
 {
 	name.create("scene");
 	first_load = true;
+	game_over_transition = false;
 }
 
 // Destructor
@@ -39,30 +40,27 @@ bool j1Scene::Awake(pugi::xml_node& config)
 bool j1Scene::Start()
 {
 	bool ret = true;
-	// App->audio->PlayMusic(PATH(App->audio->folder_music.GetString(), App->audio->tracks_path.start->data.GetString()));
-	//if (ret) App->map->Load(App->map->current_map->data.GetString());
-	App->map->Load(App->map->current_map->data.GetString());
-	
-	/*{
-		int w, h;
-		uchar* data = NULL;
-		if (App->map->CreateWalkabilityMap(w, h, &data))
-			App->pathfinding->SetMap(w, h, data);
+	App->game_over = false;
 
-		RELEASE_ARRAY(data);
-	}*/
-	
-	//App->entitymanager->Restart();
+	// App->audio->PlayMusic(PATH(App->audio->folder_music.GetString(), App->audio->tracks_path.start->data.GetString()));
+	App->map->Load(App->map->current_map->data.GetString());
+
 	App->render->ResetCamera();
 
-	debug_tex = App->tex->Load(App->debug->debug_path.GetString());
 	if (first_load) {
 		first_load = false;
 	}
 	else {
 		App->entitymanager->Restart();
+		LOG("ENTITY RESTAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAART");
 	}
-	
+	//LOG("CURRENTMAP FROM SCENE: %s", App->map->current_map->data.GetString());
+	// Game Over transition to main menu
+	if (strcmp(App->map->current_map->data.GetString(), App->map->maps_path.end->prev->data.GetString()) == 0 && !game_over_transition) {
+		LOG("GAMEOVER MAP LOADED");
+		game_over_timer.Start();
+		game_over_transition = true;
+	}
 
 	return ret;
 }
@@ -124,12 +122,22 @@ bool j1Scene::Update(float dt)
 		App->entitymanager->CreateEntity(ROLLER, p);
 
 	App->map->Draw();
+	// Shows up player in main menu
+	//if (!game_over_transition && App->fade->current_step == App->fade->fade_step::none)
+	//No showing entities till playing (player pops up an instant before)
+	if (strcmp(App->map->current_map->data.GetString(), App->map->maps_path.end->prev->data.GetString()) != 0 &&
+		strcmp(App->map->current_map->data.GetString(), App->map->maps_path.end->data.GetString()) != 0 /*&&
+		App->fade->current_step == App->fade->fade_step::none*/)
+	App->entitymanager->Draw();
 
+	if (game_over_timer.ReadSec() > 2.5f && game_over_transition && App->fade->current_step == App->fade->fade_step::none) {
+		LOG("TRANSITIONING TO MAIN MENU");
+		App->GoToMainMenu();
+		game_over_transition = false;
+	}
 	// Debug pathfinding ------------------------------
 	//int x, y;
 	//App->input->GetMousePosition(x, y);
-	
-	
 
 	//App->render->Blit(debug_tex, p.x, p.y);
 	//
@@ -181,7 +189,7 @@ bool j1Scene::Load(pugi::xml_node & node)
 	App->map->current_map->data = node.child("current").attribute("current_map").as_string();
 
 
-	LOG("Current map: %s", App->map->current_map->data);
+	LOG("Current map: %s", App->map->current_map->data.GetString());
 
 	return true;
 }

@@ -1,47 +1,48 @@
 #pragma once
-
-#include "p2Point.h"
-#include "j1Collision.h"
-#include "Animation.h"
-#include "Path.h"
-#include "SDL\include\SDL_timer.h"
+#include "Entity.h"
+#include "p2DynArray.h"
 
 
 struct SDL_Texture;
 struct Collider;
 
-class Enemy {
+class Enemy : public Entity {
 
 protected:
-	Collider* collider = nullptr;
-	uint current_time;
-	uint last_time; 
 
+	p2DynArray<iPoint>* path;
 
 public:
-	Enemy(int x, int y);
-	~Enemy(); //virtual
+	Enemy() {}
+	Enemy(iPoint pos, Enemy* e) : Entity(pos, e){
+		
+		initial_pos = pos;
+		speed = { 0,0 };
+		speed_mult = e->speed;
 
-	const Collider* GetCollider() const;
+		follow = e->follow;
+		vision_range = e->vision_range;
 
-	virtual void Move() {};
-	virtual void Draw(SDL_Texture* sprites);
-	virtual void PowerUp();
+		// initializing
+		first_iteration = true;
+		return_origin = false;
+		desired_position = { 0,0 };
+
+	}
+
+	~Enemy() {}
 
 public:
 
-	int health;
-	bool alive = true;
-	bool first_iteration = true;
-	int can_see = 15;
+	int				vision_range;
 
-	iPoint speed;
-	iPoint position;
-	iPoint desired_position;
-	Animation* current_animation = nullptr;
-	Animation idle;
-	Animation follow;
+	bool			first_iteration;
+	bool			return_origin;
 
-	float def_anim_speed_enem;
+	Animation		follow;
+
+	iPoint			desired_position;
+	iPoint			speed_mult;
+	iPoint			initial_pos;
 };
 

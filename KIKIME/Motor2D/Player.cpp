@@ -11,21 +11,17 @@
 #include "j1Pathfinding.h"
 #include "Player.h"
 
-Player::Player(iPoint pos, Entity * e, SDL_Texture * sprites,entityType type) : Entity(type)
+Player::Player(iPoint pos, Player * e) : Entity(pos, e)
 {
-	name.create("player");
-
-	this->graphics = sprites;
-	this->type = type;
-
-	position = pos;
-	rect = { pos.x,pos.y,e->rect.w,e->rect.h };
+	lifes = e->lifes;
+	
 	speed.x = e->speed.x;
 	speed.y = 0;
-	jump_speed = -e->speed.y;
+	jump_speed = e->speed.y;
 	
 	god_speed = e->god_speed;
 	gravity = e->gravity;
+	god_mode = e->god_mode;
 	
 	idle = e->idle;
 	fall = e->fall;
@@ -37,8 +33,16 @@ Player::Player(iPoint pos, Entity * e, SDL_Texture * sprites,entityType type) : 
 	def_anim_speed = e->def_anim_speed;
 
 	current_animation = &idle;
-	alive = true;
-	jumping = false;
+
+	//Initializing
+	alive			= true;
+	want_right		= false;
+	want_left		= false;
+	want_up			= false;
+	want_down		= false;
+	jumping			= false;
+	double_jumping	= false;
+	level_finished	= false;
 }
 
 Player::~Player()
@@ -48,14 +52,16 @@ Player::~Player()
 
 bool Player::PreUpdate()
 {
-	gravity_enabled = true;
 	BROFILER_CATEGORY("Player->PreUpdate", Profiler::Color::BlueViolet);
 	if (alive) {
 		
 		//Jump
-		if ((App->input->GetKey(SDL_SCANCODE_W) == KEY_REPEAT) || (App->input->GetKey(SDL_SCANCODE_SPACE) == KEY_REPEAT))
+		if ((App->input->GetKey(SDL_SCANCODE_W) == KEY_DOWN) || (App->input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN))
 		{
-			if (!jumping) Jump();
+			Jump();
+		}
+		if ((App->input->GetKey(SDL_SCANCODE_W) == KEY_REPEAT))
+		{
 			want_up = true;
 		}
 		//Smash //want_down only in god mode
@@ -82,7 +88,7 @@ bool Player::Update(float dt)
 {
 	BROFILER_CATEGORY("Player->Update", Profiler::Color::BlueViolet);
 
-	if (!god_mode) {
+	if (!god_mode && alive) {
 		Move(dt);
 	}
 	else {
@@ -95,11 +101,17 @@ bool Player::Update(float dt)
 
 void Player::PlayerAnimations(float dt)
 {
-	if (!god_mode) {
-		current_animation = &idle;
+	if (!alive) {
+		current_animation = &death;
 	}
 	else {
-		current_animation = &god;
+		if (!god_mode) {
+			current_animation = &idle;
+		}
+		else {
+			current_animation = &god;
+		}
+
 	}
 
 	current_animation->speed = def_anim_speed * dt;
@@ -113,23 +125,18 @@ bool Player::PostUpdate()
 	return true;
 }
 
-
-
-
-
-
 bool Player::Jump()
 {
-	speed.y = jump_speed;
-	jumping = true;
+	if (!jumping) {
+		speed.y = -jump_speed;
+		jumping = true;
+	}
+	else if (!double_jumping) {
+		speed.y = -jump_speed;
+		double_jumping = true;
+	}
 
 	return true;
-}
-
-bool Player::DoubleJump()
-{
-	return true;
-	
 }
 
 void Player::Move(float dt)
@@ -138,7 +145,7 @@ void Player::Move(float dt)
 	{
 		iPoint pos = App->render->ScreenToWorld(position.x + collider->rect.w + App->render->camera.x + (int)(speed.x * dt), position.y + App->render->camera.y);
 		pos = App->map->WorldToMap(pos.x, pos.y);
-		iPoint pos2 = App->render->ScreenToWorld(position.x + collider->rect.w + App->render->camera.x + (int)(speed.x * dt), position.y + App->render->camera.y + 32);
+		iPoint pos2 = App->render->ScreenToWorld(position.x + collider->rect.w + App->render->camera.x + (int)(speed.x * dt), position.y + App->render->camera.y + collider->rect.h / 2);
 		pos2 = App->map->WorldToMap(pos2.x, pos2.y);
 		iPoint pos3 = App->render->ScreenToWorld(position.x + collider->rect.w + App->render->camera.x + (int)(speed.x * dt), position.y + App->render->camera.y + collider->rect.h);
 		pos3 = App->map->WorldToMap(pos3.x, pos3.y);
@@ -154,7 +161,7 @@ void Player::Move(float dt)
 	{
 		iPoint pos = App->render->ScreenToWorld(position.x + App->render->camera.x - (int)(speed.x * dt), position.y + App->render->camera.y);
 		pos = App->map->WorldToMap(pos.x, pos.y);
-		iPoint pos2 = App->render->ScreenToWorld(position.x + App->render->camera.x - (int)(speed.x * dt), position.y + App->render->camera.y + 32);
+		iPoint pos2 = App->render->ScreenToWorld(position.x + App->render->camera.x - (int)(speed.x * dt), position.y + App->render->camera.y + collider->rect.h / 2);
 		pos2 = App->map->WorldToMap(pos2.x, pos2.y);
 		iPoint pos3 = App->render->ScreenToWorld(position.x + App->render->camera.x - (int)(speed.x * dt), position.y + App->render->camera.y + collider->rect.h);
 		pos3 = App->map->WorldToMap(pos3.x, pos3.y);
@@ -168,11 +175,11 @@ void Player::Move(float dt)
 	}
 
 	//if (want_up)
-	if (speed.y < 0) // going up
+	if (speed.y < 0) // jumping or double jumping
 	{
 		iPoint pos = App->render->ScreenToWorld(position.x + App->render->camera.x, position.y + App->render->camera.y + (int)(speed.y * dt));
 		pos = App->map->WorldToMap(pos.x, pos.y);
-		iPoint pos2 = App->render->ScreenToWorld(position.x + App->render->camera.x + 32, position.y + App->render->camera.y + (int)(speed.y * dt));
+		iPoint pos2 = App->render->ScreenToWorld(position.x + App->render->camera.x + collider->rect.w / 2, position.y + App->render->camera.y + (int)(speed.y * dt));
 		pos2 = App->map->WorldToMap(pos2.x, pos2.y);
 		iPoint pos3 = App->render->ScreenToWorld(position.x + App->render->camera.x + collider->rect.w, position.y + App->render->camera.y + (int)(speed.y * dt));
 		pos3 = App->map->WorldToMap(pos3.x, pos3.y);
@@ -190,7 +197,7 @@ void Player::Move(float dt)
 	{
 		iPoint pos = App->render->ScreenToWorld(position.x + App->render->camera.x, position.y + App->render->camera.y + collider->rect.h + (int)(speed.y * dt));
 		pos = App->map->WorldToMap(pos.x, pos.y);
-		iPoint pos2 = App->render->ScreenToWorld(position.x + App->render->camera.x + 32, position.y + App->render->camera.y + collider->rect.h + (int)(speed.y * dt));
+		iPoint pos2 = App->render->ScreenToWorld(position.x + App->render->camera.x + collider->rect.w/2, position.y + App->render->camera.y + collider->rect.h + (int)(speed.y * dt));
 		pos2 = App->map->WorldToMap(pos2.x, pos2.y);
 		iPoint pos3 = App->render->ScreenToWorld(position.x + App->render->camera.x + collider->rect.w, position.y + App->render->camera.y + collider->rect.h + (int)(speed.y * dt));
 		pos3 = App->map->WorldToMap(pos3.x, pos3.y);
@@ -203,13 +210,13 @@ void Player::Move(float dt)
 		else {
 			//position.y = pos.y - position.y + collider->rect.h -5;
 			jumping = false;
+			double_jumping = false;
 		}
 	}
 
 	float max_speed = 400.0f;
 	if (speed.y < max_speed) {
-		int g = (int)(gravity * dt);
-		speed.y += (int)(g);
+		speed.y += (int)(gravity * dt);
 		if (speed.y > max_speed) speed.y = max_speed;
 	}
 }

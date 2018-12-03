@@ -30,7 +30,39 @@ public:
 
 	Entity(){}
 
-	Entity(entityType type) {}
+	Entity(iPoint pos, Entity * e) {
+
+		type = e->type;
+		rect = { pos.x,pos.y,e->rect.w,e->rect.h };
+
+		switch (type)
+		{
+		case FLOATER:
+			name.create("floater");
+			break;
+		case ROLLER:
+			name.create("roller");
+			break;
+		case STATIC:
+			name.create("static");
+			break;
+		case PLAYER:
+			name.create("player");
+			break;
+		case NO_TYPE:
+			LOG("ERROR creating enemy, no type parsed");
+			break;
+		}
+
+		position = pos;
+		alive = e->alive;
+
+		idle = e->idle;
+		current_animation = &idle;
+		def_anim_speed = e->def_anim_speed;
+
+		LOG("Entity created type %s at [%d, %d]", name.GetString(), position.x, position.y);
+	}
 
 	~Entity(){}
 
@@ -43,6 +75,9 @@ public:
 	virtual bool PostUpdate() { return true; }
 
 	virtual void Draw(SDL_Texture *sprites) {
+		if (App->pause) {
+			current_animation->speed = 0;
+		} else current_animation->speed = def_anim_speed * App->dt;
 		App->render->Blit(sprites, position.x, position.y, &current_animation->GetCurrentFrame(), 1, 0);
 		if (collider) collider->SetPos(position.x, position.y);
 	}
@@ -51,62 +86,23 @@ public:
 
 public:
 
-	////////// GENERAL /////////
-
-
 	p2SString		name;
 
 	bool			alive;
 
-	int				health;
-	int				vision_range;
+	float			def_anim_speed;
 
-	SDL_Rect		rect;	
+	SDL_Rect		rect;
 
 	iPoint			speed;
-	iPoint			speed_mult;
 	iPoint			position;
-	iPoint			initial_pos;
 
 	Collider*		collider;
 
 	entityType		type;
 
-	//Mix_Chunk*	die_FX;
-
-	/////////////// ENEMIES /////////////////
-
-	float			def_anim_speed_enem;
-
-	bool			first_iteration = true;
-	bool			return_origin;
-
-	Animation		follow;
-
-	iPoint			desired_position;
-
-	///////////////// PLAYER ///////////////////
-
-	SDL_Rect		anim_rect;
 	Animation*		current_animation = nullptr;
 	Animation		idle;
-	Animation		walk;
-	Animation		jump;
-	Animation		doublejump;
-	Animation		fall;
-	Animation		death;
-	Animation		god;
 
-	float			def_anim_speed;
-	float			gravity;
-	float			god_speed;
-
-	bool			level_finished;
-
-	//Animations
-
-	bool			dead;
-	bool			god_mode;
-
-
+	//Mix_Chunk*	die_FX;
 };

@@ -12,6 +12,7 @@
 #include "Player.h"
 #include "j1Debug.h"
 #include "j1EntityManager.h"
+#include "j1Particles.h"
 
 
 
@@ -43,6 +44,7 @@ bool j1Debug::Awake(pugi::xml_node & config)
 
 bool j1Debug::Start() {
 	not_tex = App->tex->Load(not.GetString());
+	debug_tex = App->tex->Load(debug_path.GetString());
 	return true;
 }
 bool j1Debug::PostUpdate()
@@ -58,19 +60,26 @@ bool j1Debug::PostUpdate()
 
 bool j1Debug::Update(float dt)
 {
-	BROFILER_CATEGORY("Debug->Update", Profiler::Color::HotPink)
+	BROFILER_CATEGORY("Debug->Update", Profiler::Color::HotPink);
+	if (App->input->GetKey(SDL_SCANCODE_P) == KEY_DOWN)
+	{
+		if (!App->pause) App->PauseGame();
+		else App->UnPauseGame();
+	}
+
 	if (App->input->GetKey(SDL_SCANCODE_F1) == KEY_DOWN)
 	{
 		App->RestartGame();
 	}
 	if (App->input->GetKey(SDL_SCANCODE_F2) == KEY_DOWN)
 	{
-		App->SoftRestartLevel();
+		App->RestartLevel();
 	}
 	// Next level
 	if (App->input->GetKey(SDL_SCANCODE_F3) == KEY_DOWN)
 	{
-		App->NextLevel();
+		if (App->fade->current_step == App->fade->fade_step::none)  
+			App->NextLevel();
 	}
 	if (App->input->GetKey(SDL_SCANCODE_F4) == KEY_DOWN)
 	{
@@ -97,38 +106,29 @@ bool j1Debug::Update(float dt)
 	{
 		if (!App->entitymanager->player_ref->god_mode) {
 			App->entitymanager->player_ref->god_mode = true;
-			if (App->entitymanager->player_ref->collider) App->entitymanager->player_ref->collider->type = COLLIDER_NONE;
+			if (App->entitymanager->player_ref->collider) 
+				App->entitymanager->player_ref->collider->type = COLLIDER_NONE;
 		}
 		else {
 			App->entitymanager->player_ref->god_mode = false;
-			if (App->entitymanager->player_ref->collider) App->entitymanager->player_ref->collider->type = COLLIDER_PLAYER;
+			if (App->entitymanager->player_ref->collider) 
+				App->entitymanager->player_ref->collider->type = COLLIDER_PLAYER;
 		}
 	}
 	if (App->input->GetKey(SDL_SCANCODE_F11) == KEY_DOWN)
 	{
 		free_camera = !free_camera;
 	}
-	
-	//////////////// spawn a debug cvollider in mousepos
-	/*if (App->input->GetMouseButtonDown(SDL_BUTTON_RIGHT) == KEY_DOWN) {
-		LOG("RIGHT CLICK");
-		
-		if (!debug_col) {
-			int x, y;
-			App->input->GetMousePosition(x, y);
-			SDL_Rect r{ x,y,32,32 };
-			debug_col = App->collision->AddCollider(r, COLLIDER_PLAYER, App->entitymanager->player_ref);
-			debug_bool = true;
-		}
-	}
-	if (debug_bool) {
-		int x, y;
-		App->input->GetMousePosition(x, y);
-		debug_col->SetPos(x, y);
-	}*/
-	/////////////////
+	int x;
+	int y;
+	App->input->GetMousePosition(x, y);
 
-	// Camera drag through mouse click -> useless with new cameraFollow
+	if (App->input->GetKey(SDL_SCANCODE_T) == KEY_DOWN)
+	{
+		App->particles->AddParticle(App->particles->green_diamond, x - App->render->camera.x, y - App->render->camera.y, COLLIDER_DEATH);
+	}
+
+	// Camera drag through mouse click
 	if (free_camera) {
 	
 		if (App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KEY_DOWN) {
@@ -160,7 +160,5 @@ bool j1Debug::Update(float dt)
 		}
 	}
 	
-
-	//App->win->SetTitle(App->map->DebugToString().GetString());
 	return true;
 }

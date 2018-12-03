@@ -1,19 +1,15 @@
 #pragma once
-#include "Entity.h"
-#include "p2DynArray.h"
+#include "Enemy.h"
 
-class Roller : public Entity
+class Roller : public Enemy
 {
-private:
-
-	p2DynArray<iPoint>* path;
 
 public:
 
 	Roller() {}
-	Roller(iPoint pos, Entity*e,entityType type);
+	Roller(iPoint pos, Enemy* e) : Enemy(pos, e) {}
 
-	~Roller();
+	~Roller() {}
 
 	bool UpdateLogic(iPoint pos);
 

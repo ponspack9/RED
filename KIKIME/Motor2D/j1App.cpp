@@ -17,6 +17,7 @@
 #include "j1PathFinding.h"
 #include "j1Fonts.h"
 #include "j1Gui.h"
+#include "j1Particles.h"
 
 #include "Brofiler/Brofiler.h"
 
@@ -28,6 +29,7 @@ j1App::j1App(int argc, char* args[]) : argc(argc), args(args)
 	perf_timer.Start();
 
 	want_to_save = want_to_load = false;
+	game_over = false;
 
 	input			= new j1Input();
 	win				= new j1Window();
@@ -43,6 +45,7 @@ j1App::j1App(int argc, char* args[]) : argc(argc), args(args)
 	entitymanager	= new j1EntityManager();
 	font			= new j1Fonts();
 	gui				= new j1Gui();
+	particles		= new j1Particles();
 
 	// Ordered for awake / Start / Update
 	// Reverse order of CleanUp
@@ -60,6 +63,7 @@ j1App::j1App(int argc, char* args[]) : argc(argc), args(args)
 	AddModule(pathfinding);
 	AddModule(font);
 	AddModule(gui);
+	AddModule(particles);
 
 	AddModule(render);
 
@@ -148,7 +152,7 @@ bool j1App::Start()
 	perf_timer.Start();
 	timer.Start();
 	aux_timer.Start();
-
+	pause = false;
 	bool ret = true;
 	p2List_item<j1Module*>* item = modules.start;
 
@@ -174,16 +178,17 @@ bool j1App::Update()
 	if(input->GetWindowEvent(WE_QUIT))
 		ret = false;
 
-	if(ret)
-		ret = PreUpdate();
+		if(ret)
+			ret = PreUpdate();
 
-	if(ret)
-		ret = DoUpdate();
+		if(ret)
+			ret = DoUpdate();
 
-	if(ret)
-		ret = PostUpdate();
+		if(ret)
+			ret = PostUpdate();
 
-	FinishUpdate();
+		FinishUpdate();
+
 	return ret;
 }
 
@@ -327,7 +332,7 @@ bool j1App::PreUpdate()
 	
 	while (item != NULL && ret)
 	{
-		if (item->data->active) {
+		if (item->data->active && !item->data->to_pause) {
 			ret = item->data->PreUpdate();
 		}
 		item = item->next;
@@ -345,7 +350,7 @@ bool j1App::DoUpdate()
 
 	while (item != NULL && ret)
 	{
-		if (item->data->active) {
+		if (item->data->active && !item->data->to_pause) {
 			ret = item->data->Update(dt);
 		}
 		item = item->next;
@@ -363,7 +368,7 @@ bool j1App::PostUpdate()
 	
 	while (item != NULL && ret)
 	{
-		if (item->data->active) {
+		if (item->data->active && !item->data->to_pause) {
 			ret = item->data->PostUpdate();
 		}
 		item = item->next;
@@ -452,7 +457,19 @@ void j1App::GetSaveGames(p2List<p2SString>& list_to_fill) const
 	// need to add functionality to file_system module for this to work
 
 }
+void j1App::GoToMainMenu() {
+	App->map->current_map = App->map->maps_path.end;
+	LOG("CURRENTMAP FROM TRANSITION: %s", App->map->current_map->data.GetString());
+	App->fade->FadeToBlack(App->scene, App->scene);
+}
+void j1App::GameOver() {
+	//Main menu will be the last map
+	game_over = true;
+	App->map->current_map = App->map->maps_path.end->prev;
+	App->fade->FadeToBlack(App->scene, App->scene);
 
+	LOG("GAME OVER");
+}
 
 bool j1App::RestartGame()
 {
@@ -462,17 +479,33 @@ bool j1App::RestartGame()
 	return true;
 }
 
-bool j1App::RestartLevel()
+void j1App::PauseGame()
 {
-	BROFILER_CATEGORY("App->RestartLevel", Profiler::Color::Red)
-	App->fade->FadeToBlack(App->scene, App->scene);
-	return true;
+	if (!pause) {
+		pause = true;
+		entitymanager->to_pause = true;
+		collision->to_pause		= true;
+		map->to_pause			= true;
+		pathfinding->to_pause	= true;
+	}
+	else LOG("Game already paused");
 }
-bool j1App::SoftRestartLevel()
+void j1App::UnPauseGame()
+{
+	if (pause) {
+		pause = false;
+		entitymanager->to_pause = false;
+		collision->to_pause		= false;
+		map->to_pause			= false;
+		pathfinding->to_pause	= false;
+	}
+	else LOG("Game is not paused");
+}
+bool j1App::RestartLevel()
 {
 	BROFILER_CATEGORY("App->SoftRestartLevel", Profiler::Color::Red)
 	render->ResetCamera();
-	entitymanager->Restart();
+	entitymanager->LoadInitialState();
 	
 	return true;
 }
@@ -490,9 +523,6 @@ bool j1App::NextLevel() {
 
 	LOG("Next level: %s", App->map->current_map->data.GetString());
 	App->fade->FadeToBlack(App->scene, App->scene);
-	//App->entitymanager->LoadInitialState();
-	/*App->entitymanager->CleanUp();
-	App->entitymanager->Start();*/
 	return true;
 }
 

@@ -2,6 +2,7 @@
 #define __j1SCENE_H__
 
 #include "j1Module.h"
+#include "j1Timer.h"
 
 struct SDL_Texture;
 
@@ -33,11 +34,16 @@ public:
 	bool CleanUp();
 
 	bool Save(pugi::xml_node& node);
+
 	bool Load(pugi::xml_node& node);
 
-	SDL_Texture* debug_tex;
+	
+	bool		game_over_transition;
 private:
-	bool first_load;
+
+	bool		first_load;
+
+	j1Timer		game_over_timer;
 };
 
 #endif // __j1SCENE_H__

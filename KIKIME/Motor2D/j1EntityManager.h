@@ -48,12 +48,14 @@ public:
 
 	void UpdateAll(float dt, bool run);
 
+	//Extracted draw function to implement pause
+	// TO DO swap player to first position in list to optimize
+	// Also would effect updateAll
+	void Draw();
+
 	//Creators
 
 	Entity*	 CreateEntity(entityType type, iPoint pos);
-
-	void CreatePlayerColliders();
-	void DeletePlayerColliders();
 	
 	void OnCollision(Collider * c1, Collider * c2);
 
@@ -70,8 +72,8 @@ public:
 	Floater		    floaterinfo;
 	Roller			rollerinfo;
 	Player			playerinfo;
+	Player*			player_ref = nullptr;
 
-	Entity*			player_ref = nullptr;
 	j1Timer		    timer_death;
 	bool			is_started;
 };

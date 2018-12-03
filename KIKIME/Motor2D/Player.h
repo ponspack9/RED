@@ -11,7 +11,7 @@ class Player : public Entity
 public:
 
 	Player() {}
-	Player(iPoint pos, Entity* e, SDL_Texture* sprites,entityType type);
+	Player(iPoint pos, Player* e);
 	~Player();
 
 	bool PreUpdate();
@@ -21,7 +21,6 @@ public:
 	void Move(float dt);
 	void MoveFree(float dt);
 	bool Jump();
-	bool DoubleJump();
 	void PlayerAnimations(float dt);
 	
 
@@ -31,11 +30,25 @@ public:
 	bool want_left;
 	bool want_up;
 	bool want_down;
-	bool gravity_enabled;
 
 	bool jumping;
+	bool double_jumping;
 
 	int jump_speed;
+	int lifes;
 
-	SDL_Texture* graphics = nullptr;
+	///////////////// PLAYER ///////////////////
+
+	Animation		walk;
+	Animation		jump;
+	Animation		doublejump;
+	Animation		fall;
+	Animation		death;
+	Animation		god;
+
+	float			gravity;
+	float			god_speed;
+
+	bool			god_mode;
+	bool			level_finished;
 };

@@ -1,46 +1,6 @@
 #include "Roller.h"
-#include "j1App.h"
-#include "j1Input.h"
 #include "j1Pathfinding.h"
-#include "Player.h"
 #include "j1Map.h"
-#include "j1Scene.h"
-#include "j1Render.h"
-#include "p2Log.h"
-#include "Entity.h"
-#include "j1EntityManager.h"
-
-
-
-Roller::Roller(iPoint pos, Entity* e,entityType type) : Entity(type)
-{
-	name.create("roller");
-	return_origin = false;
-	this->type = type;
-
-	position = pos;
-	initial_pos = pos;
-	rect = { pos.x,pos.y,e->rect.w,e->rect.h };
-	speed = { 0,0 };
-	speed_mult = e->speed;
-
-	idle = e->idle;
-	health = e->health;
-	alive = e->alive;
-	vision_range = e->vision_range;
-
-	current_animation = &idle;
-	LOG("Roller Created");
-	LOG("pos %d, %d", position.x, position.y);
-
-	collider = App->collision->AddCollider(rect, COLLIDER_DEATH);
-}
-
-Roller::~Roller()
-{
-
-}
-
 
 bool Roller::UpdateLogic(iPoint pos)
 {
@@ -75,7 +35,7 @@ bool Roller::UpdateLogic(iPoint pos)
 		for (uint i = 0; i < path->Count(); ++i)
 		{
 			iPoint pos = App->map->MapToWorld(path->At(i)->x, path->At(i)->y);
-			App->render->Blit(App->scene->debug_tex, pos.x, pos.y);
+			App->render->Blit(App->debug->debug_tex, pos.x, pos.y);
 		}
 
 	if (path->Count() > 1 && a != p) {

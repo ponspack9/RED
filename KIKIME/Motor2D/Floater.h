@@ -1,19 +1,15 @@
 #pragma once
-#include "Entity.h"
-#include "p2DynArray.h"
+#include "Enemy.h"
 
-class Floater : public Entity 
+class Floater : public Enemy 
 {
-private:
-
-	p2DynArray<iPoint>* path;
 
 public:
 
 	Floater() {}
-	Floater(iPoint pos, Entity* e,entityType type);
+	Floater(iPoint pos, Enemy* e) : Enemy(pos, e) {}
 
-	~Floater();
+	~Floater() {}
 
 	bool UpdateLogic(iPoint pos);
 };

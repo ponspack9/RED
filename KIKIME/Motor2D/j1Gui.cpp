@@ -34,7 +34,7 @@ bool j1Gui::Start()
 	atlas = App->tex->Load(atlas_file_name.GetString());
 
 	SDL_RenderGetViewport(App->render->renderer, &App->render->viewport);
-
+  
 	//HARDCODED
 	//CreateElement(IMAGE, iPoint(App->render->viewport.w / 2, App->render->viewport.h / 11 + 25));
 

@@ -9,6 +9,7 @@
 #include "Brofiler/Brofiler.h"
 #include "j1Debug.h"
 #include "j1Pathfinding.h"
+#include "j1Particles.h"
 #include <cmath>
 
 j1Map::j1Map() : j1Module(), map_loaded(false)
@@ -18,11 +19,6 @@ j1Map::j1Map() : j1Module(), map_loaded(false)
 
 j1Map::~j1Map()
 {}
-
-//ImageLayer::~ImageLayer()
-//{
-//	App->tex->UnLoad(texture);
-//}
 
 bool j1Map::CreateWalkabilityMap(pugi::xml_node& node, int & width, int & height, uchar ** buffer) const
 {
@@ -71,6 +67,7 @@ bool j1Map::LoadProperties(pugi::xml_node& node, Properties& properties)
 
 	return ret;
 }
+
 SDL_Rect TileSet::GetTileRect(int id) const
 {
 	int relative_id = id - firstgid;
@@ -216,15 +213,15 @@ bool j1Map::Load(const char* file_name)
 			}
 		}
 
-		//BEGIN TRIP POLYLINE
+		//BEGIN DEALING WITH MAP OBJECTS
 
 		pugi::xml_node objectgroup = map_doc.child("map").child("objectgroup");
-		//LOG("OBJECTGROUP NAME: %s", objectgroup.attribute("name").as_string());
 
 		for (objectgroup; objectgroup; objectgroup = objectgroup.next_sibling("objectgroup"))
 		{
 			p2SString group_name ( objectgroup.attribute("name").as_string());
 			//LOG("OBJECTGROUP NAME: %s", objectgroup.attribute("name").as_string());
+
 			pugi::xml_node object = objectgroup.child("object");
 			pugi::xml_node polyobject = object.child("polygon");
 
@@ -242,20 +239,10 @@ bool j1Map::Load(const char* file_name)
 							//ITS A QUAD
 							SDL_Rect r = { object.attribute("x").as_int() , object.attribute("y").as_int() ,
 										   object.attribute("width").as_int() ,object.attribute("height").as_int() };
-							if (group_name == "Colliders") {
-								App->collision->AddCollider(r, COLLIDER_FLOOR);
-							}
-							else if (group_name == "Colliders_death")
+							
+							if (group_name == "Colliders_death")
 							{
 								App->collision->AddCollider(r, COLLIDER_DEATH);
-							}
-							else if (group_name == "Colliders_wall")
-							{
-								App->collision->AddCollider(r, COLLIDER_WALL);
-							}
-							else if (group_name == "Colliders_floor")
-							{
-								App->collision->AddCollider(r, COLLIDER_FLOOR);
 							}
 							else if (group_name == "Collider_start") {
 								start_collider = App->collision->AddCollider(r, COLLIDER_START);
@@ -266,6 +253,9 @@ bool j1Map::Load(const char* file_name)
 							else if (group_name == "Enemy_spawns") {
 								App->collision->AddCollider(r, COLLIDER_SPAWN);
 							}
+							else if (group_name == "Coin_spawns") {
+								App->collision->AddCollider(r, COLLIDER_SPAWN_COIN);
+							}
 							continue;
 						}
 						//ellipse
@@ -274,7 +264,6 @@ bool j1Map::Load(const char* file_name)
 				}
 				//It's a Polyline
 
-				
 				//Deal with the string to find each point
 				//const char* c = polyobject.attribute("points").as_string();
 
@@ -300,7 +289,7 @@ bool j1Map::Load(const char* file_name)
 		while(item != NULL)
 		{
 			TileSet* s = item->data;
-			LOG("Tileset ----");
+			LOG("------------- Tileset -------------");
 			LOG("name: %s firstgid: %d", s->name.GetString(), s->firstgid);
 			LOG("tile width: %d tile height: %d", s->tile_width, s->tile_height);
 			LOG("spacing: %d margin: %d", s->spacing, s->margin);
@@ -313,7 +302,7 @@ bool j1Map::Load(const char* file_name)
 		while(item_layer != NULL)
 		{
 			MapLayer* l = item_layer->data;
-			LOG("Layer ----");
+			LOG("------------- Layer -------------");
 			LOG("name: %s", l->name.GetString());
 			LOG("tile width: %d tile height: %d", l->width, l->height);
 			item_layer = item_layer->next;
@@ -337,6 +326,7 @@ int Properties::Get(const char* value, int default_value) const
 
 	return default_value;
 }
+
 bool j1Map::LoadMap()
 {
 	BROFILER_CATEGORY("Map->LoadMap", Profiler::Color::LightCyan)
@@ -555,7 +545,6 @@ bool j1Map::LoadImageLayer(pugi::xml_node & node, ImageLayer * set)
 
 }
 
-
 TileSet* j1Map::GetTilesetFromTileId(int id) const
 {
 	//BROFILER_CATEGORY("Map->GetTilesetFromTileId", Profiler::Color::LightCyan)
@@ -575,7 +564,6 @@ TileSet* j1Map::GetTilesetFromTileId(int id) const
 bool j1Map::CleanUp()
 {
 	BROFILER_CATEGORY("Map->CleanUp", Profiler::Color::LightCyan)
-	LOG("Unloading map");
 
 	// Remove all tilesets /////////////////
 	p2List_item<TileSet*>* tileset;
@@ -637,8 +625,8 @@ iPoint j1Map::MapToWorld(int x, int y) const
 	}
 	else if (data.type == MAPTYPE_ISOMETRIC)
 	{
-		ret.x = (int)(x - y) * (data.tile_width * 0.5f);
-		ret.y = (int)(x + y) * (data.tile_height * 0.5f);
+		ret.x = (int)(x - y) * (data.tile_width /2);
+		ret.y = (int)(x + y) * (data.tile_height /2);
 	}
 	else
 	{
@@ -703,7 +691,7 @@ p2SString j1Map::DebugToString() const
 void j1Map::CleanMap()
 {
 	BROFILER_CATEGORY("Map->CleanMap", Profiler::Color::LightCyan)
-	LOG("Unloading map");
+	LOG("CLEANING MAP");
 
 	// Remove all tilesets /////////////////
 	p2List_item<TileSet*>* tileset;
@@ -751,4 +739,11 @@ void j1Map::CleanMap()
 		App->collision->CleanColliders();
 		//App->collision->CleanPolylines();
 	}
+
+	//Removes all particles
+	if (App->particles->active) {
+		App->particles->Reset();
+	}
+	map_doc.reset();
+	map_loaded = false;
 }

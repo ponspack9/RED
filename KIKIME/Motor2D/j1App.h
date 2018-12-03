@@ -20,11 +20,12 @@ class j1Map;
 class j1Debug;
 class j1Collision;
 class j1FadeToBlack;
-class Player;
 class j1PathFinding;
 class j1EntityManager;
 class j1Fonts;
 class j1Gui;
+class j1Particles;
+class Player;
 
 class j1App
 {
@@ -64,16 +65,22 @@ public:
 	//TO BE IMPLEMENTED
 	void GetSaveGames(p2List<p2SString>& list_to_fill) const;
 
+	void GoToMainMenu();
+
+	void GameOver();
+
 	//Load XML, LOGs the result also returning it
 	pugi::xml_parse_result LoadXML(pugi::xml_document & doc, const char* path);
 
 	//Restarts the game from the very first level
 	bool RestartGame();
 
+	void PauseGame();
+
+	void UnPauseGame();
+
 	//Restarts the current level
 	bool RestartLevel();
-
-	bool SoftRestartLevel();
 
 	bool NextLevel();
 
@@ -84,10 +91,10 @@ public:
 	bool LoadGameFile();
 private:
 
-	// Call modules before each loop iteration
+	// framerate management
 	void PrepareUpdate();
 
-	// Call modules before each loop iteration
+	// Saves & loads the game and framerate management
 	void FinishUpdate();
 
 	// Call modules before each loop iteration
@@ -118,11 +125,15 @@ public:
 	j1EntityManager*	entitymanager;
 	j1Fonts*			font;
 	j1Gui*				gui;
+	j1Particles*		particles;
 
 
 	bool				delay_is_active = true;
 	bool				want_to_load;
 	mutable bool		want_to_save;
+
+	bool				pause;
+	bool				game_over;
 
 	float				dt;
 	mutable p2SString	save_path;

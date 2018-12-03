@@ -17,7 +17,7 @@ class j1Module
 {
 public:
 
-	j1Module() : active(false)
+	j1Module() : active(false), to_pause(false)
 	{}
 
 	void Init()
@@ -98,6 +98,8 @@ public:
 
 	p2SString	name;
 	bool		active;
+
+	bool		to_pause;
 
 };
 
