@@ -45,9 +45,6 @@ public:
 	virtual void Draw(SDL_Texture* sprites = nullptr)
 	{
 		App->render->Blit(sprites, position.x, position.y, &rect[state]);
-
-		if(type == BUTTON)
-			LOG("blit pos: %d - %d", position.x, position.y);
 	}
 
 public:
@@ -57,8 +54,7 @@ public:
 	UIType		type;
 	UIState		state;
 	ActionType	action;
-
 	p2SString	string;
-
+	iPoint		initial_pos;
 };
 #endif //__UIELEMENT_H__

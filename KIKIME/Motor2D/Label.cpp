@@ -2,27 +2,31 @@
 
 Label::Label(iPoint pos, UIType type, p2SString string) : UIElement(type)
 {
+	this->initial_pos = pos;
 	this->position = pos;
 	this->type = type;
+	this->state = IDLE;
+
+	this->rect[IDLE].x = position.x;
+	this->rect[IDLE].y = position.y;
 
 	this->string = string;
+
+	text = App->font->Print(string.GetString(), { 255,0,0,255 }, App->font->default);
+	App->font->CalcSize(string.GetString(), rect[IDLE].w, rect[IDLE].h, App->font->default);
 }
 
 bool Label::PreUpdate()
 {
-	int w, h;
-
-	text = App->font->Print(string.GetString(), { 255,0,0,255 }, App->font->default);
-	App->font->CalcSize(string.GetString(), w, h, App->font->default);
-
-	position.x = App->render->viewport.w / 2 - App->render->camera.x - w / 2;
-	position.y = App->render->viewport.h / 13 - App->render->camera.y;
+	position.x = initial_pos.x - App->render->camera.x - rect[IDLE].w / 2;
+	position.y = initial_pos.y - App->render->camera.y;
 
 	return true;
 }
 
 bool Label::PostUpdate()
 {
+
 	return true;
 }
 

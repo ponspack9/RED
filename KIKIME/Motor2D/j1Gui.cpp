@@ -36,7 +36,11 @@ bool j1Gui::Start()
 	SDL_RenderGetViewport(App->render->renderer, &App->render->viewport);
 
 	CreateElement(IMAGE, iPoint(App->render->viewport.w / 2, App->render->viewport.h / 11 + 25));
+
 	CreateElement(BUTTON, iPoint(App->render->viewport.w / 12, App->render->viewport.h / 12), nullptr, SETTINGS);
+	CreateElement(BUTTON, iPoint(8 * App->render->viewport.w / 12, 8 * App->render->viewport.h / 12), nullptr, SETTINGS);
+	CreateElement(BUTTON, iPoint(5 * App->render->viewport.w / 12, 6 * App->render->viewport.h / 12), nullptr, SETTINGS);
+
 	CreateElement(LABEL, iPoint(App->render->viewport.w / 2, App->render->viewport.h / 13), "HELLO WORLD");
 
 	return true;
@@ -132,23 +136,23 @@ void j1Gui::HandleInput(UIElement* element)
 	LOG("button rect: %d - %d - %d - %d", element->position.x, element->position.y, element->rect[element->state].w, element->rect[element->state].h);
 	
 	if (element->state != CLICK_DOWN &&
-		mouse.x >= element->position.x && mouse.x <= element->position.x + element->rect[element->state].w &&
-		mouse.y >= element->position.y && mouse.y <= element->position.y + element->rect[element->state].h &&
+		mouse.x - App->render->camera.x >= element->position.x && mouse.x - App->render->camera.x <= element->position.x + element->rect[element->state].w &&
+		mouse.y - App->render->camera.y >= element->position.y && mouse.y - App->render->camera.y <= element->position.y + element->rect[element->state].h &&
 		App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) != KEY_DOWN)
 	{
 		element->state = HOVER;
 		LOG("hover");
 	}
 	else if((element->state == HOVER || element->state == CLICK_DOWN) &&
-		    mouse.x >= element->position.x && mouse.x <= element->position.x + element->rect[element->state].w &&
-	        mouse.y >= element->position.y && mouse.y <= element->position.y + element->rect[element->state].h && 
+		    mouse.x - App->render->camera.x>= element->position.x && mouse.x - App->render->camera.x <= element->position.x + element->rect[element->state].w &&
+	        mouse.y - App->render->camera.y>= element->position.y && mouse.y - App->render->camera.y <= element->position.y + element->rect[element->state].h && 
 	        (App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KEY_REPEAT || App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KEY_DOWN))
 	{
 		element->state = CLICK_DOWN;
 		LOG("click");
 	}
-	else if (mouse.x >= element->position.x && mouse.x <= element->position.x + element->rect[element->state].w &&
-			 mouse.y >= element->position.y && mouse.y <= element->position.y + element->rect[element->state].h &&
+	else if (mouse.x - App->render->camera.x >= element->position.x && mouse.x  - App->render->camera.x<= element->position.x + element->rect[element->state].w &&
+			 mouse.y - App->render->camera.y >= element->position.y && mouse.y  - App->render->camera.y<= element->position.y + element->rect[element->state].h &&
 			 App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KEY_UP)
 	{
 		element->state = CLICK_UP;

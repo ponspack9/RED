@@ -2,9 +2,10 @@
 
 Button::Button(ActionType action, iPoint pos, SDL_Rect rect, UIType type) : UIElement(type)
 {
+	this->initial_pos = pos;
 	this->position = pos;
 	this->rect[IDLE] = rect;
-	//this->type = type;
+	this->type = type;
 	this->state = IDLE;
 
 	this->rect[HOVER] = SDL_Rect({ 0,111,228,68 });
@@ -16,8 +17,8 @@ Button::Button(ActionType action, iPoint pos, SDL_Rect rect, UIType type) : UIEl
 
 bool Button::PreUpdate()
 {
-	position.x = App->render->viewport.w / 12 - App->render->camera.x;
-	position.y = App->render->viewport.w / 12 - App->render->camera.y;
+	position.x = initial_pos.x - App->render->camera.x;
+	position.y = initial_pos.y - App->render->camera.y;
 
 	LOG("button pos: %d - %d", position.x, position.y);
 
