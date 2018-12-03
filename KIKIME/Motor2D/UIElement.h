@@ -29,6 +29,8 @@ enum ActionType
 	NEXT_LEVEL,
 	PREV_LEVEL,
 	EXIT_GAME,
+	SCORE,
+	GAME_TIMER,
 	NO_ACTION
 };
 

@@ -6,7 +6,7 @@ class Label :public UIElement
 public:
 
 	Label() {}
-	Label(iPoint pos, UIType type, p2SString string);
+	Label(ActionType action, iPoint pos, UIType type, p2SString string);
 
 	bool PreUpdate();
 	bool PostUpdate();

@@ -57,6 +57,7 @@ public:
 	const char* GetArgv(int index) const;
 	const char* GetTitle() const;
 	const char* GetOrganization() const;
+	float GetTimerReadSec();
 
 	void LoadGame();
 	void SaveGame() const;
@@ -98,7 +99,7 @@ private:
 	// Call modules after each loop iteration
 	bool PostUpdate();
 
-	
+	   	
 
 public:
 

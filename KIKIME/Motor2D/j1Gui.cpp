@@ -36,14 +36,14 @@ bool j1Gui::Start()
 	SDL_RenderGetViewport(App->render->renderer, &App->render->viewport);
 
 	//HARDCODED
-	CreateElement(IMAGE, iPoint(App->render->viewport.w / 2, App->render->viewport.h / 11 + 25));
+	//CreateElement(IMAGE, iPoint(App->render->viewport.w / 2, App->render->viewport.h / 11 + 25));
 
-	CreateElement(BUTTON, iPoint(App->render->viewport.w / 12, App->render->viewport.h / 12), nullptr, SETTINGS);
-	CreateElement(BUTTON, iPoint(8 * App->render->viewport.w / 12, 8 * App->render->viewport.h / 12), nullptr, SETTINGS);
-	CreateElement(BUTTON, iPoint(5 * App->render->viewport.w / 12, 6 * App->render->viewport.h / 12), nullptr, SETTINGS);
+	//CreateElement(BUTTON, iPoint(App->render->viewport.w / 12, App->render->viewport.h / 12), nullptr, SETTINGS);
+	//CreateElement(BUTTON, iPoint(8 * App->render->viewport.w / 12, 8 * App->render->viewport.h / 12), nullptr, SETTINGS);
+	//CreateElement(BUTTON, iPoint(5 * App->render->viewport.w / 12, 6 * App->render->viewport.h / 12), nullptr, SETTINGS);
 
-	CreateElement(LABEL, iPoint(9 * App->render->viewport.w / 10, 20), "SCORE : 9999");
-
+	CreateElement(LABEL, iPoint(20, 20), "0", GAME_TIMER);
+	CreateElement(LABEL, iPoint(9 * App->render->viewport.w / 10, 20), "SCORE : 999", SCORE);
 
 	return true;
 }
@@ -110,7 +110,7 @@ UIElement* j1Gui::CreateElement(UIType type, iPoint pos, p2SString string, Actio
 		break;
 	case LABEL:
 
-		elem = new Label(pos, type, string);
+		elem = new Label(action, pos, type, string);
 		break;
 	case BUTTON:
 

@@ -425,6 +425,11 @@ const char* j1App::GetOrganization() const
 	return organization.GetString();
 }
 
+float j1App::GetTimerReadSec()
+{
+	return timer.ReadSec();
+}
+
 void j1App::LoadGame()
 {
 	// we should be checking if that file actually exist
