@@ -2,24 +2,13 @@
 #define __j1GUI_H__
 
 #include "j1Module.h"
+#include "UIElement.h"
+#include "Image.h"
+#include "Button.h"
+#include "Label.h"
 
 #define CURSOR_WIDTH 2
 
-// TODO 1: Create your structure of classes
-
-enum UIType
-{
-	PICTURE,
-	LABEL,
-	MAX
-};
-
-struct UIElements
-{
-	iPoint		pos;
-	SDL_Rect	rect;
-	UIType		type;
-};
 // ---------------------------------------------------
 class j1Gui : public j1Module
 {
@@ -47,17 +36,21 @@ public:
 
 	// TODO 2: Create the factory methods
 	// Gui creation functions
-	UIElements* CreateElement(UIType type, iPoint pos);
+	UIElement* CreateElement(UIType type, iPoint pos, p2SString string = nullptr, ActionType action = NO_ACTION);
+
+	void HandleInput(UIElement* element);
+	void HandleAction(UIElement* element);
 
 	const SDL_Texture* GetAtlas() const;
 
 private:
 
-	p2List<UIElements>  elements;
+	p2List<UIElement*>  elements;
 
 	SDL_Texture*		atlas;
-	SDL_Rect*			image_rect;
 	p2SString			atlas_file_name;
+
+	j1Module*			callback;
 };
 
 #endif // __j1GUI_H__

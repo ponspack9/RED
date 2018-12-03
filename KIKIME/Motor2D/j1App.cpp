@@ -1,8 +1,5 @@
 #include <iostream> 
 
-#include "p2Defs.h"
-#include "p2Log.h"
-
 #include "j1Window.h"
 #include "j1Input.h"
 #include "j1Render.h"
@@ -431,6 +428,11 @@ const char* j1App::GetTitle() const
 const char* j1App::GetOrganization() const
 {
 	return organization.GetString();
+}
+
+float j1App::GetTimerReadSec()
+{
+	return timer.ReadSec();
 }
 
 void j1App::LoadGame()
