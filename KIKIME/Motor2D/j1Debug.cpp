@@ -12,7 +12,6 @@
 #include "Player.h"
 #include "j1Debug.h"
 #include "j1EntityManager.h"
-#include "j1Particles.h"
 
 
 
@@ -127,21 +126,18 @@ bool j1Debug::Update(float dt)
 
 	if (App->input->GetKey(SDL_SCANCODE_G) == KEY_DOWN)
 	{
-		//App->particles->AddParticle(App->particles->green_diamond, x - App->render->camera.x, y - App->render->camera.y, COLLIDER_DEATH);
 		Entity* e = App->entitymanager->CreateEntity(COIN, { x,y }, GREEN_DIAMOND);
 		e->collider = App->collision->AddCollider(e->rect, COLLIDER_COIN);
 
 	}
 	if (App->input->GetKey(SDL_SCANCODE_B) == KEY_DOWN)
 	{
-		//App->particles->AddParticle(App->particles->green_diamond, x - App->render->camera.x, y - App->render->camera.y, COLLIDER_DEATH);
 		Entity* e = App->entitymanager->CreateEntity(COIN, { x,y }, BLUE_DIAMOND);
 		e->collider = App->collision->AddCollider(e->rect, COLLIDER_COIN);
 
 	}
 	if (App->input->GetKey(SDL_SCANCODE_H) == KEY_DOWN)
 	{
-		//App->particles->AddParticle(App->particles->green_diamond, x - App->render->camera.x, y - App->render->camera.y, COLLIDER_DEATH);
 		Entity* e = App->entitymanager->CreateEntity(HEART, { x,y });
 		e->collider = App->collision->AddCollider(e->rect, COLLIDER_COIN);
 

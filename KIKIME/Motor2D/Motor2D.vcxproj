@@ -86,7 +86,6 @@
     <ClCompile Include="j1Fonts.cpp" />
     <ClCompile Include="j1Gui.cpp" />
     <ClCompile Include="Label.cpp" />
-    <ClCompile Include="j1Particles.cpp" />
     <ClCompile Include="Roller.cpp" />
     <ClCompile Include="j1Collision.cpp" />
     <ClCompile Include="j1Debug.cpp" />
@@ -120,7 +119,6 @@
     <ClInclude Include="j1Fonts.h" />
     <ClInclude Include="j1Gui.h" />
     <ClInclude Include="Label.h" />
-    <ClInclude Include="j1Particles.h" />
     <ClInclude Include="Roller.h" />
     <ClInclude Include="j1Collision.h" />
     <ClInclude Include="j1Debug.h" />

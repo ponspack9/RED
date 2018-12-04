@@ -16,9 +16,6 @@
     <ClCompile Include="j1Pathfinding.cpp">
       <Filter>MODULES</Filter>
     </ClCompile>
-    <ClCompile Include="j1Particles.cpp">
-      <Filter>MODULES</Filter>
-    </ClCompile>
     <ClCompile Include="j1Map.cpp">
       <Filter>MODULES</Filter>
     </ClCompile>
@@ -98,9 +95,6 @@
       <Filter>MODULES</Filter>
     </ClInclude>
     <ClInclude Include="j1Pathfinding.h">
-      <Filter>MODULES</Filter>
-    </ClInclude>
-    <ClInclude Include="j1Particles.h">
       <Filter>MODULES</Filter>
     </ClInclude>
     <ClInclude Include="j1Map.h">

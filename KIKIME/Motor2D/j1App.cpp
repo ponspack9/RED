@@ -17,7 +17,6 @@
 #include "j1PathFinding.h"
 #include "j1Fonts.h"
 #include "j1Gui.h"
-#include "j1Particles.h"
 
 #include "Brofiler/Brofiler.h"
 
@@ -45,7 +44,6 @@ j1App::j1App(int argc, char* args[]) : argc(argc), args(args)
 	entitymanager	= new j1EntityManager();
 	font			= new j1Fonts();
 	gui				= new j1Gui();
-	particles		= new j1Particles();
 
 	// Ordered for awake / Start / Update
 	// Reverse order of CleanUp
@@ -63,7 +61,6 @@ j1App::j1App(int argc, char* args[]) : argc(argc), args(args)
 	AddModule(pathfinding);
 	AddModule(font);
 	AddModule(gui);
-	//AddModule(particles);
 
 	AddModule(render);
 
