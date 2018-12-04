@@ -49,6 +49,8 @@ public:
 		App->render->Blit(sprites, position.x, position.y, &rect[state]);
 	}
 
+	virtual void HandleAction() {}
+
 public:
 
 	SDL_Rect	rect[IDLE + 1];

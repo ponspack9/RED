@@ -39,7 +39,6 @@ public:
 	UIElement* CreateElement(UIType type, iPoint pos, p2SString string = nullptr, ActionType action = NO_ACTION);
 
 	void HandleInput(UIElement* element);
-	void HandleAction(UIElement* element);
 
 	const SDL_Texture* GetAtlas() const;
 

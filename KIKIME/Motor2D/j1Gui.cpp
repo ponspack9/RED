@@ -39,8 +39,8 @@ bool j1Gui::Start()
 	//CreateElement(IMAGE, iPoint(App->render->viewport.w / 2, App->render->viewport.h / 11 + 25));
 
 	CreateElement(BUTTON, iPoint(App->render->viewport.w / 12, App->render->viewport.h / 12), nullptr, SETTINGS);
-	CreateElement(BUTTON, iPoint(8 * App->render->viewport.w / 12, 8 * App->render->viewport.h / 12), nullptr, SETTINGS);
-	CreateElement(BUTTON, iPoint(5 * App->render->viewport.w / 12, 6 * App->render->viewport.h / 12), nullptr, SETTINGS);
+	//CreateElement(BUTTON, iPoint(8 * App->render->viewport.w / 12, 8 * App->render->viewport.h / 12), nullptr, SETTINGS);
+	//CreateElement(BUTTON, iPoint(5 * App->render->viewport.w / 12, 6 * App->render->viewport.h / 12), nullptr, SETTINGS);
 
 	CreateElement(LABEL, iPoint(20, 20), "0", GAME_TIMER);
 	CreateElement(LABEL, iPoint(9 * App->render->viewport.w / 10, 20), "SCORE : 999", SCORE);
@@ -57,8 +57,8 @@ bool j1Gui::PreUpdate()
 	{
 		item->data->PreUpdate();
 
-		if (item->data->type == BUTTON)
-			HandleInput(item->data);
+		//if (item->data->type == BUTTON)
+		HandleInput(item->data);
 
 		item = item->next;
 	}
@@ -128,34 +128,32 @@ UIElement* j1Gui::CreateElement(UIType type, iPoint pos, p2SString string, Actio
 
 void j1Gui::HandleInput(UIElement* element)
 {
-	if (element->state == CLICK_UP)
-		HandleAction(element);
+	//if(element->type == LABEL)
+		
+
+	//if (element->state == CLICK_UP)
+	//	HandleAction(element);
 
 	iPoint mouse;
 	App->input->GetMousePosition(mouse.x, mouse.y);
 
-	LOG("mouse pos : %d - %d", mouse.x, mouse.y);
-	LOG("button rect: %d - %d - %d - %d", element->position.x, element->position.y, element->rect[element->state].w, element->rect[element->state].h);
+	bool is_inside = (mouse.x - App->render->camera.x >= element->position.x && mouse.x - App->render->camera.x <= element->position.x + element->rect[element->state].w &&
+				  mouse.y - App->render->camera.y >= element->position.y && mouse.y - App->render->camera.y <= element->position.y + element->rect[element->state].h);
+
+	//LOG("mouse pos : %d - %d", mouse.x, mouse.y);
+	//LOG("button rect: %d - %d - %d - %d", element->position.x, element->position.y, element->rect[element->state].w, element->rect[element->state].h);
 	
-	if (element->state != CLICK_DOWN &&
-		mouse.x - App->render->camera.x >= element->position.x && mouse.x - App->render->camera.x <= element->position.x + element->rect[element->state].w &&
-		mouse.y - App->render->camera.y >= element->position.y && mouse.y - App->render->camera.y <= element->position.y + element->rect[element->state].h &&
-		App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) != KEY_DOWN)
+	if (element->state != CLICK_DOWN &&	is_inside && App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) != KEY_DOWN)
 	{
 		element->state = HOVER;
 		LOG("hover");
 	}
-	else if((element->state == HOVER || element->state == CLICK_DOWN) &&
-		    mouse.x - App->render->camera.x>= element->position.x && mouse.x - App->render->camera.x <= element->position.x + element->rect[element->state].w &&
-	        mouse.y - App->render->camera.y>= element->position.y && mouse.y - App->render->camera.y <= element->position.y + element->rect[element->state].h && 
-	        (App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KEY_REPEAT || App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KEY_DOWN))
+	else if((element->state == HOVER || element->state == CLICK_DOWN) && is_inside && (App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KEY_REPEAT || App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KEY_DOWN))
 	{
 		element->state = CLICK_DOWN;
 		LOG("click");
 	}
-	else if (mouse.x - App->render->camera.x >= element->position.x && mouse.x  - App->render->camera.x<= element->position.x + element->rect[element->state].w &&
-			 mouse.y - App->render->camera.y >= element->position.y && mouse.y  - App->render->camera.y<= element->position.y + element->rect[element->state].h &&
-			 App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KEY_UP)
+	else if (is_inside && App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KEY_UP)
 	{
 		element->state = CLICK_UP;
 		LOG("click up");
@@ -165,11 +163,8 @@ void j1Gui::HandleInput(UIElement* element)
 		element->state = IDLE;
 		LOG("idle");
 	}
-}
 
-void j1Gui::HandleAction(UIElement* element)
-{
-	LOG("DOING ACTION");
+	element->HandleAction();
 }
 
 // const getter for atlas

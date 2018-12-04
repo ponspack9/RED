@@ -13,6 +13,10 @@ public:
 
 	void Draw(SDL_Texture* sprites);
 
+	void ChangeText(const char* string);
+
+	void HandleAction();
+
 public:
 
 	SDL_Texture* text;

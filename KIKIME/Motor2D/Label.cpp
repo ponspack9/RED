@@ -45,6 +45,30 @@ bool Label::PostUpdate()
 
 void Label::Draw(SDL_Texture* sprites)
 {
-	sprites = text;
+	text = App->font->Print(string.GetString(), { 255,255,255,255 }, App->font->default);
+    App->font->CalcSize(string.GetString(), rect[state].w, rect[state].h, App->font->default);
+
+    sprites = text;
 	App->render->Blit(sprites, position.x, position.y);
+}
+
+void Label::ChangeText(const char * string)
+{
+	this->string = string;	
+}
+
+void Label::HandleAction() 
+{
+	switch (state)
+	{
+	case HOVER:
+		ChangeText("HOVER");
+		break;
+	case IDLE:
+		ChangeText("IDLE");
+		break;
+	case CLICK_DOWN:
+		ChangeText("CLICKASU BRO");
+		break;
+	}
 }
