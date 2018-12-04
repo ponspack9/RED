@@ -138,7 +138,7 @@ bool j1Debug::Update(float dt)
 	}
 	if (App->input->GetKey(SDL_SCANCODE_H) == KEY_DOWN)
 	{
-		Entity* e = App->entitymanager->CreateEntity(HEART, { x,y });
+		Entity* e = App->entitymanager->CreateEntity(COIN, { x,y },HEART);
 		e->collider = App->collision->AddCollider(e->rect, COLLIDER_COIN);
 
 	}

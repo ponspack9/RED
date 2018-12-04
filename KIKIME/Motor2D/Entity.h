@@ -22,7 +22,6 @@ enum entityType
 	STATIC,
 	PLAYER,
 	COIN,
-	HEART,
 
 	NO_TYPE
 };
@@ -55,9 +54,6 @@ public:
 		case COIN:
 			name.create("coin");
 			break;
-		case HEART:
-			name.create("heart");
-			break;
 		case NO_TYPE:
 			LOG("ERROR creating enemy, no type parsed");
 			break;
@@ -73,8 +69,8 @@ public:
 		idle = e->idle;
 		current_animation = &idle;
 		def_anim_speed = e->def_anim_speed;
-
-		LOG("Entity created type %s at [%d, %d]", name.GetString(), position.x, position.y);
+		
+		LOG("Entity %s created at [%d, %d]", name.GetString(), position.x, position.y);
 	}
 
 	~Entity(){}

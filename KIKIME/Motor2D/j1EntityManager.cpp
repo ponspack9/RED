@@ -248,11 +248,12 @@ bool j1EntityManager::Awake(pugi::xml_node & config)
 	green_diamond.idle.speed = (node_speed <= 0) ? green_diamond.def_anim_speed : node_speed;
 	green_diamond.idle.loop = true;
 	//Defining the entity
-	green_diamond.type = COIN;
-	green_diamond.coin_type = GREEN_DIAMOND;
-	green_diamond.alive = true;
-	green_diamond.rect = { 0,0,r.w,r.h };
-	green_diamond.speed = { 0,0 };
+	green_diamond.type		= entityType::COIN;
+	green_diamond.coin_type = coinType::GREEN_DIAMOND;
+	green_diamond.points	= 100;
+	green_diamond.alive		= true;
+	green_diamond.rect		= { 0,0,r.w,r.h };
+	green_diamond.speed		= { 0,0 };
 	green_diamond.current_animation = &green_diamond.idle;
 	
 		
@@ -270,11 +271,12 @@ bool j1EntityManager::Awake(pugi::xml_node & config)
 	blue_diamond.idle.speed = (node_speed <= 0) ? blue_diamond.def_anim_speed : node_speed;
 	blue_diamond.idle.loop = true;
 	//Defining the entity
-	blue_diamond.type = COIN;
-	blue_diamond.coin_type = BLUE_DIAMOND;
-	blue_diamond.alive = true;
-	blue_diamond.rect = { 0,0,r.w,r.h };
-	blue_diamond.speed = { 0,0 };
+	blue_diamond.type		= entityType::COIN;
+	blue_diamond.coin_type	= coinType::BLUE_DIAMOND;
+	blue_diamond.points		= 1000;
+	blue_diamond.alive		= true;
+	blue_diamond.rect		= { 0,0,r.w,r.h };
+	blue_diamond.speed		= { 0,0 };
 	blue_diamond.current_animation = &blue_diamond.idle;
 
 	// Heart life
@@ -291,10 +293,11 @@ bool j1EntityManager::Awake(pugi::xml_node & config)
 	heart.idle.speed = (node_speed <= 0) ? heart.def_anim_speed : node_speed;
 	heart.idle.loop = true;
 	//Defining the entity
-	heart.type = HEART;
-	heart.alive = true;
-	heart.rect = { 0,0,r.w,r.h };;
-	heart.speed = { 0,0 };
+	heart.type		= entityType::COIN;
+	heart.coin_type = coinType::HEART;
+	heart.alive		= true;
+	heart.rect		= { 0,0,r.w,r.h };;
+	heart.speed		= { 0,0 };
 	heart.current_animation = &heart.idle;
 
 	return true;
@@ -308,10 +311,6 @@ bool j1EntityManager::Start()
 	enemyTex = App->tex->Load(enemyPath.GetString());
 	otherTex = App->tex->Load(otherPath.GetString());
 
-	//green_diamond.collider = App->collision->AddCollider(green_diamond.rect, COLLIDER_COIN, this);
-	//blue_diamond.collider = App->collision->AddCollider(blue_diamond.rect, COLLIDER_COIN, this);
-	//heart.collider = App->collision->AddCollider(heart.rect, COLLIDER_COIN, this);
-
 	Entity* e = nullptr;
 	//Creating all entities
 	for (int i = 0; App->collision->colliders[i] != NULL; i++)
@@ -322,15 +321,15 @@ bool j1EntityManager::Start()
 		{
 			if (App->collision->colliders[i]->rect.w > App->collision->colliders[i]->rect.h)
 			{
-				e = CreateEntity(COIN, pos,GREEN_DIAMOND);
+				e = CreateEntity(COIN, pos, GREEN_DIAMOND);
 
 			}
 			else if (App->collision->colliders[i]->rect.w < App->collision->colliders[i]->rect.h)
 			{
-				e = CreateEntity(COIN, pos,BLUE_DIAMOND);
+				e = CreateEntity(COIN, pos, BLUE_DIAMOND);
 			}
 			else {
-				e = CreateEntity(HEART, pos);
+				e = CreateEntity(COIN, pos, HEART);
 			}
 			e->collider = App->collision->AddCollider(e->rect, COLLIDER_COIN);
 
@@ -449,7 +448,7 @@ bool j1EntityManager::CleanUp()
 	p2List_item<Entity*>* item;
 	for (item = entities.start; item != nullptr; item = item->next)
 	{
-		if (item->data->collider != nullptr)
+		if (item->data->collider)
 		{
 			item->data->collider->to_delete = true;
 		}
@@ -495,7 +494,7 @@ void j1EntityManager::Draw() {
 	p2List_item<Entity*>* item;
 	for (item = entities.start; item != nullptr; item = item->next)
 	{
-		if (item->data->type == entityType::COIN || item->data->type == entityType::HEART)
+		if (item->data->type == entityType::COIN)
 		{
 			item->data->Draw(otherTex);
 		}
@@ -509,7 +508,7 @@ void j1EntityManager::Draw() {
 
 Entity * j1EntityManager::CreateEntity(entityType type, iPoint pos, coinType coin_type)
 {
-	static_assert(entityType::NO_TYPE == 6, "NO TYPE TO CREATE, CODE NEEDS UPDATE");
+	static_assert(entityType::NO_TYPE == 5, "NO TYPE TO CREATE, CODE NEEDS UPDATE");
 
 	Entity* entity = nullptr;
 	switch (type)
@@ -534,13 +533,13 @@ Entity * j1EntityManager::CreateEntity(entityType type, iPoint pos, coinType coi
 			case BLUE_DIAMOND:
 				entity = new Coin(pos, &blue_diamond);
 				break;
+			case HEART:
+				entity = new Coin(pos, &heart);
+				break;
 			default:
 				LOG("NO COIN TYPE DEFINED, COULD NOT CREATE COIN");
 				break;
 		}
-		break;
-	case entityType::HEART:
-		entity = new Coin(pos, &heart);
 		break;
 	}
 	entities.add(entity);
@@ -553,7 +552,34 @@ void j1EntityManager::OnCollision(Collider * c1, Collider * c2)
 	if (c1->type == COLLIDER_PLAYER && c2->type == COLLIDER_DEATH) {
 		player_ref->alive = false;
 	}
+	if (c1->type == COLLIDER_PLAYER && c2->type == COLLIDER_COIN) {
+		Coin* e = FindCoinByCollider(c2);
+		switch (e->coin_type)
+		{
+		case GREEN_DIAMOND:
+			LOG("COLLIDED WITH GREEN DIAMOND");
+			break;
+		case BLUE_DIAMOND:
+			LOG("COLLIDED WITH BLUE DIAMOND");
+			break;
+		case HEART:
+			LOG("COLLIDED WITH HEART");
+			break;
+		default:
+			LOG("NO COIN TYPE DEFINED, COULD NOT CREATE COIN");
+			break;
+		}
+	}
 
+}
+Coin* j1EntityManager::FindCoinByCollider(Collider * c)
+{
+	for (int i = 0; i < entities.count(); ++i) {
+		if (entities.At(i)->data->collider == c) {
+			return (Coin*)entities.At(i)->data;
+		}
+	}
+	return nullptr;
 }
 
 bool j1EntityManager::Save(pugi::xml_node & node)
