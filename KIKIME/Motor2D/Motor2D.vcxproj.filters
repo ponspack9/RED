@@ -82,7 +82,6 @@
     <ClCompile Include="Floater.cpp">
       <Filter>ENTITIES</Filter>
     </ClCompile>
-    <ClCompile Include="UIElement.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="j1Window.h">

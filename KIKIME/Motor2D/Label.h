@@ -1,4 +1,3 @@
-#pragma once
 #include "UIElement.h"
 
 class Label :public UIElement

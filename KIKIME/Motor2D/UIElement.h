@@ -26,9 +26,8 @@ enum ActionType
 {
 	MAIN_MENU,
 	SETTINGS,
-	NEXT_LEVEL,
-	PREV_LEVEL,
 	EXIT_GAME,
+	PLAY_PAUSE,
 	SCORE,
 	GAME_TIMER,
 	NO_ACTION
@@ -60,5 +59,7 @@ public:
 	ActionType	action;
 	p2SString	string;
 	iPoint		initial_pos;
+
+	j1Module*	callback;
 };
 #endif //__UIELEMENT_H__

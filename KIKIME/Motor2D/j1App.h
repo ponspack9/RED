@@ -141,6 +141,8 @@ public:
 	p2SString			init_state_path;
 	uint				framerate_cap;
 
+	bool is_paused;
+
 private:
 
 	p2List<j1Module*>	modules;
@@ -161,12 +163,9 @@ private:
 	uint64				frame_count = 0;
 	uint32				frames_on_last_update = 0;
 	uint32				aux_frames_counter = 0; //to control the amount of frames in the last second
-	uint32				last_sec_fcount = 0;
-	
-
-
+	uint32				last_sec_fcount = 0;	
 };
 
 extern j1App* App;
 
-#endif
+#endif // __j1APP_H__

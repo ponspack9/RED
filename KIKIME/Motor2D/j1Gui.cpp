@@ -1,6 +1,5 @@
 #include "p2Defs.h"
 #include "p2Log.h"
-#include "j1App.h"
 #include "j1Render.h"
 #include "j1Textures.h"
 #include "j1Fonts.h"
@@ -22,7 +21,7 @@ bool j1Gui::Awake(pugi::xml_node& conf)
 {
 	LOG("Loading GUI atlas");
 	bool ret = true;
-
+	
 	atlas_file_name = conf.child("atlas").attribute("file").as_string("");
 
 	return ret;
@@ -38,8 +37,8 @@ bool j1Gui::Start()
 	//HARDCODED
 	//CreateElement(IMAGE, iPoint(App->render->viewport.w / 2, App->render->viewport.h / 11 + 25));
 
-	CreateElement(BUTTON, iPoint(App->render->viewport.w / 12, App->render->viewport.h / 12), nullptr, SETTINGS);
-	//CreateElement(BUTTON, iPoint(8 * App->render->viewport.w / 12, 8 * App->render->viewport.h / 12), nullptr, SETTINGS);
+	CreateElement(BUTTON, iPoint(App->render->viewport.w / 12, App->render->viewport.h / 12), nullptr, MAIN_MENU, (j1Module*)App);
+	CreateElement(BUTTON, iPoint(8 * App->render->viewport.w / 12, 8 * App->render->viewport.h / 12), nullptr, PLAY_PAUSE, (j1Module*)App);
 	//CreateElement(BUTTON, iPoint(5 * App->render->viewport.w / 12, 6 * App->render->viewport.h / 12), nullptr, SETTINGS);
 
 	CreateElement(LABEL, iPoint(20, 20), "0", GAME_TIMER);
@@ -57,7 +56,6 @@ bool j1Gui::PreUpdate()
 	{
 		item->data->PreUpdate();
 
-		//if (item->data->type == BUTTON)
 		HandleInput(item->data);
 
 		item = item->next;
@@ -98,7 +96,7 @@ bool j1Gui::CleanUp()
 	return true;
 }
 
-UIElement* j1Gui::CreateElement(UIType type, iPoint pos, p2SString string, ActionType action)
+UIElement* j1Gui::CreateElement(UIType type, iPoint pos, p2SString string, ActionType action, j1Module* callback)
 {
 	UIElement* elem = nullptr;
 
@@ -114,7 +112,7 @@ UIElement* j1Gui::CreateElement(UIType type, iPoint pos, p2SString string, Actio
 		break;
 	case BUTTON:
 
-		elem = new Button(action, pos, SDL_Rect({641,166,228,68}), type);
+		elem = new Button(action, pos, SDL_Rect({ 641,166,228,68 }), type, callback);
 		break;
 	default:
 
@@ -128,43 +126,54 @@ UIElement* j1Gui::CreateElement(UIType type, iPoint pos, p2SString string, Actio
 
 void j1Gui::HandleInput(UIElement* element)
 {
-	//if(element->type == LABEL)
-		
-
-	//if (element->state == CLICK_UP)
-	//	HandleAction(element);
-
 	iPoint mouse;
 	App->input->GetMousePosition(mouse.x, mouse.y);
 
 	bool is_inside = (mouse.x - App->render->camera.x >= element->position.x && mouse.x - App->render->camera.x <= element->position.x + element->rect[element->state].w &&
-				  mouse.y - App->render->camera.y >= element->position.y && mouse.y - App->render->camera.y <= element->position.y + element->rect[element->state].h);
+					  mouse.y - App->render->camera.y >= element->position.y && mouse.y - App->render->camera.y <= element->position.y + element->rect[element->state].h);
 
-	//LOG("mouse pos : %d - %d", mouse.x, mouse.y);
-	//LOG("button rect: %d - %d - %d - %d", element->position.x, element->position.y, element->rect[element->state].w, element->rect[element->state].h);
+	bool is_changing = false;
+	UIState prev_state = element->state;
 	
 	if (element->state != CLICK_DOWN &&	is_inside && App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) != KEY_DOWN)
 	{
 		element->state = HOVER;
-		LOG("hover");
+		LOG("hover");		
+		is_changing = (prev_state != element->state);
 	}
 	else if((element->state == HOVER || element->state == CLICK_DOWN) && is_inside && (App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KEY_REPEAT || App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KEY_DOWN))
 	{
 		element->state = CLICK_DOWN;
 		LOG("click");
+		is_changing = (prev_state != element->state);
 	}
 	else if (is_inside && App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KEY_UP)
 	{
 		element->state = CLICK_UP;
 		LOG("click up");
+		is_changing = (prev_state != element->state);
 	}
 	else
 	{
 		element->state = IDLE;
 		LOG("idle");
+		is_changing = (prev_state != element->state);
 	}
 
-	element->HandleAction();
+	switch (element->type)
+	{
+	case BUTTON:
+		if(element->state == CLICK_UP)
+			element->HandleAction();
+		break;
+	case LABEL:
+		if (is_changing)
+			element->HandleAction();
+		break;
+	case IMAGE:
+		break;
+	}
+
 }
 
 // const getter for atlas

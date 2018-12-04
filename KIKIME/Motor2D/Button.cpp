@@ -1,6 +1,6 @@
 #include "Button.h"
 
-Button::Button(ActionType action, iPoint pos, SDL_Rect rect, UIType type) : UIElement(type)
+Button::Button(ActionType action, iPoint pos, SDL_Rect rect, UIType type, j1Module* callback) : UIElement(type)
 {
 	this->initial_pos = pos;
 	this->position = pos;
@@ -13,6 +13,7 @@ Button::Button(ActionType action, iPoint pos, SDL_Rect rect, UIType type) : UIEl
 	this->rect[CLICK_UP] = this->rect[HOVER];
 
 	this->action = action;
+	this->callback = callback;
 }
 
 bool Button::PreUpdate()
@@ -28,4 +29,22 @@ bool Button::PreUpdate()
 bool Button::PostUpdate()
 {
 	return true;
+}
+
+void Button::HandleAction()
+{
+	switch (action)
+	{
+	case MAIN_MENU:
+		this->callback->GoToMainMenu();
+		break;
+	case SETTINGS:
+		break;
+	case PLAY_PAUSE:
+		if (App->is_paused)
+			this->callback->UnPauseGame();
+		else if (!App->is_paused)
+			this->callback->PauseGame();
+		break;
+	}
 }
