@@ -60,6 +60,8 @@ public:
 	
 	void OnCollision(Collider * c1, Collider * c2);
 
+	Entity * FindEntityByCollider(Collider * c);
+
 	Coin* FindCoinByCollider(Collider* c);
 
 

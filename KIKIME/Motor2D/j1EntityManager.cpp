@@ -122,6 +122,7 @@ bool j1EntityManager::Awake(pugi::xml_node & config)
 
 	playerinfo.speed.x = player_node.child("speed").attribute("scrollspeed").as_int();
 	playerinfo.speed.y = player_node.child("speed").attribute("jumpspeed").	 as_int();
+	playerinfo.smash_speed = player_node.child("speed").attribute("smashspeed").as_int();
 
 	playerinfo.gravity = player_node.child("gravity").attribute("value").as_float();
 	playerinfo.god_mode = player_node.child("godmode").attribute("value").as_bool();
@@ -479,6 +480,7 @@ void j1EntityManager::UpdateAll(float dt,bool run)
 	p2List_item<Entity*>* item;
 	for (item = entities.start; item != nullptr; item = item->next)
 	{
+			if (!item->data->alive) continue;
 			item->data->Update(dt);
 	}
 
@@ -486,6 +488,7 @@ void j1EntityManager::UpdateAll(float dt,bool run)
 	{
 		for (item = entities.start; item != nullptr; item = item->next)
 		{
+			if (!item->data->alive) continue;
 			item->data->UpdateLogic(player_ref->position);
 		}
 	}
@@ -494,6 +497,7 @@ void j1EntityManager::Draw() {
 	p2List_item<Entity*>* item;
 	for (item = entities.start; item != nullptr; item = item->next)
 	{
+		if (!item->data->alive) continue;
 		if (item->data->type == entityType::COIN)
 		{
 			item->data->Draw(otherTex);
@@ -550,28 +554,52 @@ Entity * j1EntityManager::CreateEntity(entityType type, iPoint pos, coinType coi
 void j1EntityManager::OnCollision(Collider * c1, Collider * c2)
 {
 	if (c1->type == COLLIDER_PLAYER && c2->type == COLLIDER_DEATH) {
-		player_ref->alive = false;
+		if (player_ref->smashing) {
+			Entity* e = FindEntityByCollider(c2);
+			if (e) {
+				e->alive = false;
+				e->collider->to_delete = true;
+			}
+			else {
+				player_ref->alive = false;
+			}
+		}
+		else {
+			player_ref->alive = false;
+		}
 	}
-	if (c1->type == COLLIDER_PLAYER && c2->type == COLLIDER_COIN) {
+	else if (c1->type == COLLIDER_PLAYER && c2->type == COLLIDER_COIN) {
 		Coin* e = FindCoinByCollider(c2);
-		switch (e->coin_type)
-		{
-		case GREEN_DIAMOND:
-			LOG("COLLIDED WITH GREEN DIAMOND");
-			break;
-		case BLUE_DIAMOND:
-			LOG("COLLIDED WITH BLUE DIAMOND");
-			break;
-		case HEART:
-			LOG("COLLIDED WITH HEART");
-			break;
-		default:
-			LOG("NO COIN TYPE DEFINED, COULD NOT CREATE COIN");
-			break;
+		if (e) {
+			switch (e->coin_type)
+			{
+			case GREEN_DIAMOND:
+				LOG("COLLIDED WITH GREEN DIAMOND");
+				break;
+			case BLUE_DIAMOND:
+				LOG("COLLIDED WITH BLUE DIAMOND");
+				break;
+			case HEART:
+				LOG("COLLIDED WITH HEART");
+				break;
+			default:
+				LOG("NO COIN TYPE DEFINED, COULD NOT CREATE COIN");
+				break;
+			}
 		}
 	}
 
 }
+
+Entity* j1EntityManager::FindEntityByCollider(Collider * c)
+{
+	for (int i = 0; i < entities.count(); ++i) {
+		if (entities.At(i)->data->collider == c) {
+			return entities.At(i)->data;
+		}
+	}
+	return nullptr;
+} 
 Coin* j1EntityManager::FindCoinByCollider(Collider * c)
 {
 	for (int i = 0; i < entities.count(); ++i) {

@@ -22,7 +22,7 @@ bool Label::PreUpdate()
 	if (action == GAME_TIMER)
 	{
 		const char game_time = App->GetTimerReadSec();
-		text = App->font->Print(&game_time, { 255,255,255,255 }, App->font->default);
+		//text = App->font->Print(&game_time, { 255,255,255,255 }, App->font->default);
 		App->font->CalcSize(&game_time, rect[IDLE].w, rect[IDLE].h, App->font->default);
 	}
 	if (action == SCORE)
@@ -45,7 +45,7 @@ bool Label::PostUpdate()
 
 void Label::Draw(SDL_Texture* sprites)
 {
-	text = App->font->Print(string.GetString(), { 255,255,255,255 }, App->font->default);
+	//text = App->font->Print(string.GetString(), { 255,255,255,255 }, App->font->default);
     App->font->CalcSize(string.GetString(), rect[state].w, rect[state].h, App->font->default);
 
     sprites = text;

@@ -71,7 +71,7 @@
     <player>
       <lifes lifes="3"></lifes>
       <rect width="64" height="64"/>
-      <speed scrollspeed="200" jumpspeed="500"/>
+      <speed scrollspeed="200" jumpspeed="500" smashspeed="900"/>
       <gravity value="1150"/>
       <godmode value="false" speed ="500"/>
       <playeranimations defaultAnimationSpeed="10">

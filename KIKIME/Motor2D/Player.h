@@ -20,35 +20,35 @@ public:
 	
 	void Move(float dt);
 	void MoveFree(float dt);
-	bool Jump();
+	void Jump();
+	void Smash();
 	void PlayerAnimations(float dt);
 	
 
 public:
 
-	bool want_right;
-	bool want_left;
-	bool want_up;
-	bool want_down;
+	bool		want_right;
+	bool		want_left;
+	bool		want_up;
+	bool		want_down;
 
-	bool jumping;
-	bool double_jumping;
+	bool		jumping;
+	bool		double_jumping;
+	bool		smashing;
+	bool		god_mode;
+	bool		level_finished;
 
-	int jump_speed;
-	int lifes;
+	int			jump_speed;
+	int			smash_speed;
+	int			lifes;
 
-	///////////////// PLAYER ///////////////////
+	float		gravity;
+	float		god_speed;
 
-	Animation		walk;
-	Animation		jump;
-	Animation		doublejump;
-	Animation		fall;
-	Animation		death;
-	Animation		god;
-
-	float			gravity;
-	float			god_speed;
-
-	bool			god_mode;
-	bool			level_finished;
+	Animation	walk;
+	Animation	jump;
+	Animation	doublejump;
+	Animation	fall;
+	Animation	death;
+	Animation	god;
 };
