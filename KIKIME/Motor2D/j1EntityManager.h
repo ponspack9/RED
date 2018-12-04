@@ -10,6 +10,7 @@
 #include "Floater.h"
 #include "Roller.h"
 #include "Player.h"
+#include "Coin.h"
 #include "j1Timer.h"
 
 
@@ -55,7 +56,7 @@ public:
 
 	//Creators
 
-	Entity*	 CreateEntity(entityType type, iPoint pos);
+	Entity*	 CreateEntity(entityType type, iPoint pos, coinType coin_type = coinType::NOTYPE);
 	
 	void OnCollision(Collider * c1, Collider * c2);
 
@@ -65,14 +66,19 @@ public:
 	
 	SDL_Texture*	enemyTex = nullptr;
 	SDL_Texture*	playerTex = nullptr;
+	SDL_Texture*	otherTex = nullptr;
 	p2SString		enemyPath;
 	p2SString		playerPath;
+	p2SString		otherPath;
 	p2List<Entity*> entities;	
 
 	Floater		    floaterinfo;
 	Roller			rollerinfo;
 	Player			playerinfo;
 	Player*			player_ref = nullptr;
+	Coin			green_diamond;
+	Coin			blue_diamond;
+	Coin			heart;
 
 	j1Timer		    timer_death;
 	bool			is_started;

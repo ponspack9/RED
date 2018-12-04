@@ -146,22 +146,22 @@ void j1Gui::HandleInput(UIElement* element)
 	if (element->state != CLICK_DOWN &&	is_inside && App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) != KEY_DOWN)
 	{
 		element->state = HOVER;
-		LOG("hover");
+		//LOG("hover");
 	}
 	else if((element->state == HOVER || element->state == CLICK_DOWN) && is_inside && (App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KEY_REPEAT || App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KEY_DOWN))
 	{
 		element->state = CLICK_DOWN;
-		LOG("click");
+		//LOG("click");
 	}
 	else if (is_inside && App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KEY_UP)
 	{
 		element->state = CLICK_UP;
-		LOG("click up");
+		//LOG("click up");
 	}
 	else
 	{
 		element->state = IDLE;
-		LOG("idle");
+		//LOG("idle");
 	}
 
 	element->HandleAction();

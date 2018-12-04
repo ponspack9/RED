@@ -20,7 +20,7 @@ bool Button::PreUpdate()
 	position.x = initial_pos.x - App->render->camera.x;
 	position.y = initial_pos.y - App->render->camera.y;
 
-	LOG("button pos: %d - %d", position.x, position.y);
+	//LOG("button pos: %d - %d", position.x, position.y);
 
 	return true;
 }

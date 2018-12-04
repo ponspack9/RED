@@ -63,7 +63,7 @@ j1App::j1App(int argc, char* args[]) : argc(argc), args(args)
 	AddModule(pathfinding);
 	AddModule(font);
 	AddModule(gui);
-	AddModule(particles);
+	//AddModule(particles);
 
 	AddModule(render);
 

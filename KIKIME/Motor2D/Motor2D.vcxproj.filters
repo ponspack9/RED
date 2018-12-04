@@ -31,9 +31,6 @@
     <ClCompile Include="j1FadeToBlack.cpp">
       <Filter>MODULES</Filter>
     </ClCompile>
-    <ClCompile Include="j1EntityManager.cpp">
-      <Filter>MODULES</Filter>
-    </ClCompile>
     <ClCompile Include="j1Debug.cpp">
       <Filter>MODULES</Filter>
     </ClCompile>
@@ -82,7 +79,10 @@
     <ClCompile Include="Floater.cpp">
       <Filter>ENTITIES</Filter>
     </ClCompile>
-    <ClCompile Include="UIElement.cpp" />
+    <ClCompile Include="j1EntityManager.cpp">
+      <Filter>ENTITIES</Filter>
+    </ClCompile>
+    <ClCompile Include="Coin.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="j1Window.h">
@@ -113,9 +113,6 @@
       <Filter>MODULES</Filter>
     </ClInclude>
     <ClInclude Include="j1FadeToBlack.h">
-      <Filter>MODULES</Filter>
-    </ClInclude>
-    <ClInclude Include="j1EntityManager.h">
       <Filter>MODULES</Filter>
     </ClInclude>
     <ClInclude Include="j1Debug.h">
@@ -199,6 +196,10 @@
     <ClInclude Include="j1Module.h">
       <Filter>CORE</Filter>
     </ClInclude>
+    <ClInclude Include="j1EntityManager.h">
+      <Filter>ENTITIES</Filter>
+    </ClInclude>
+    <ClInclude Include="Coin.h" />
   </ItemGroup>
   <ItemGroup>
     <Xml Include="..\Game\config.xml" />

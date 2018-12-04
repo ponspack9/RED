@@ -21,6 +21,9 @@ enum entityType
 	ROLLER,
 	STATIC,
 	PLAYER,
+	COIN,
+	HEART,
+
 	NO_TYPE
 };
 
@@ -49,12 +52,22 @@ public:
 		case PLAYER:
 			name.create("player");
 			break;
+		case COIN:
+			name.create("coin");
+			break;
+		case HEART:
+			name.create("heart");
+			break;
 		case NO_TYPE:
 			LOG("ERROR creating enemy, no type parsed");
+			break;
+		default:
+			LOG("ERROR CREATING ENEMY");
 			break;
 		}
 
 		position = pos;
+		speed = e->speed;
 		alive = e->alive;
 
 		idle = e->idle;
@@ -80,6 +93,7 @@ public:
 		} else current_animation->speed = def_anim_speed * App->dt;
 		App->render->Blit(sprites, position.x, position.y, &current_animation->GetCurrentFrame(), 1, 0);
 		if (collider) collider->SetPos(position.x, position.y);
+		else LOG("NO COLLIDER");
 	}
 
 	virtual bool UpdateLogic(iPoint pos) { return true; }

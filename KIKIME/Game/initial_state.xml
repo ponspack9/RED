@@ -20,12 +20,18 @@
 		<enemy type="floater" alive="true" x="2368" y="352" />
 		<enemy type="floater" alive="true" x="1792" y="736" />
 		<enemy type="floater" alive="true" x="2944" y="416" />
+		<enemy type="coin" alive="true" x="54" y="782" />
+		<enemy type="coin" alive="true" x="512" y="768" />
+		<enemy type="coin" alive="true" x="1120" y="768" />
+		<enemy type="coin" alive="true" x="1409" y="1024" />
+		<enemy type="heart" alive="true" x="1454" y="1198" />
+		<enemy type="coin" alive="true" x="2402" y="544" />
+		<enemy type="heart" alive="true" x="2834" y="736" />
 	</entitymanager>
 	<fade />
 	<pathfinding />
 	<fonts />
 	<gui />
-	<particles />
 	<renderer>
 		<camera x="0" y="0" />
 	</renderer>

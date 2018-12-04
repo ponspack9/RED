@@ -80,6 +80,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Button.cpp" />
+    <ClCompile Include="Coin.cpp" />
     <ClCompile Include="j1EntityManager.cpp" />
     <ClCompile Include="Floater.cpp" />
     <ClCompile Include="j1Fonts.cpp" />
@@ -106,11 +107,11 @@
     <ClCompile Include="j1Window.cpp" />
     <ClCompile Include="PugiXml\src\pugixml.cpp" />
     <ClCompile Include="Image.cpp" />
-    <ClCompile Include="UIElement.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Animation.h" />
     <ClInclude Include="Button.h" />
+    <ClInclude Include="Coin.h" />
     <ClInclude Include="Image.h" />
     <ClInclude Include="Enemy.h" />
     <ClInclude Include="j1EntityManager.h" />
