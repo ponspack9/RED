@@ -1,11 +1,11 @@
 #ifndef __j1GUI_H__
 #define __j1GUI_H__
 
-#include "j1Module.h"
 #include "UIElement.h"
 #include "Image.h"
 #include "Button.h"
 #include "Label.h"
+#include "j1App.h"
 
 #define CURSOR_WIDTH 2
 
@@ -36,7 +36,7 @@ public:
 
 	// TODO 2: Create the factory methods
 	// Gui creation functions
-	UIElement* CreateElement(UIType type, iPoint pos, p2SString string = nullptr, ActionType action = NO_ACTION);
+	UIElement* CreateElement(UIType type, iPoint pos, p2SString string = nullptr, ActionType action = NO_ACTION, j1Module* callback = nullptr);
 
 	void HandleInput(UIElement* element);
 
@@ -48,8 +48,6 @@ private:
 
 	SDL_Texture*		atlas;
 	p2SString			atlas_file_name;
-
-	j1Module*			callback;
 };
 
 #endif // __j1GUI_H__

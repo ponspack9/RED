@@ -77,7 +77,7 @@
       <Filter>ENTITIES</Filter>
     </ClCompile>
     <ClCompile Include="j1EntityManager.cpp">
-      <Filter>ENTITIES</Filter>
+      <Filter>ENTITIES</FNTilter>
     </ClCompile>
     <ClCompile Include="Coin.cpp" />
   </ItemGroup>

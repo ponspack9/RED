@@ -1,4 +1,5 @@
 #include "Label.h"
+#include "j1Textures.h"
 
 Label::Label(ActionType action, iPoint pos, UIType type, p2SString string) : UIElement(type)
 {
@@ -21,9 +22,10 @@ bool Label::PreUpdate()
 {
 	if (action == GAME_TIMER)
 	{
-		const char game_time = App->GetTimerReadSec();
-		//text = App->font->Print(&game_time, { 255,255,255,255 }, App->font->default);
-		App->font->CalcSize(&game_time, rect[IDLE].w, rect[IDLE].h, App->font->default);
+		// Use change text function
+		/*const char game_time = App->GetTimerReadSec();
+		text = App->font->Print(&game_time, { 255,255,255,255 }, App->font->default);
+		App->font->CalcSize(&game_time, rect[IDLE].w, rect[IDLE].h, App->font->default);*/
 	}
 	if (action == SCORE)
 	{
@@ -45,15 +47,15 @@ bool Label::PostUpdate()
 
 void Label::Draw(SDL_Texture* sprites)
 {
-	//text = App->font->Print(string.GetString(), { 255,255,255,255 }, App->font->default);
-    App->font->CalcSize(string.GetString(), rect[state].w, rect[state].h, App->font->default);
-
-    sprites = text;
+  sprites = text;
 	App->render->Blit(sprites, position.x, position.y);
 }
 
 void Label::ChangeText(const char * string)
 {
+	App->tex->UnLoad(text);
+	text = App->font->Print(string, { 255,255,255,255 }, App->font->default);
+  App->font->CalcSize(string.GetString(), rect[state].w, rect[state].h, App->font->default);
 	this->string = string;	
 }
 

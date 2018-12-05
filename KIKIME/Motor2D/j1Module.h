@@ -94,6 +94,11 @@ public:
 		return true;
 	}
 
+	virtual void GoToMainMenu() {}
+	virtual void PauseGame() {}
+	virtual void UnPauseGame() {}
+
+
 public:
 
 	p2SString	name;
