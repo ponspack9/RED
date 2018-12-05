@@ -20,6 +20,7 @@ j1Collision::j1Collision()
 
 
 	name.create("collisions");
+	active = 0;
 }
 
 // Destructor
@@ -29,12 +30,15 @@ bool j1Collision::PreUpdate()
 {
 	BROFILER_CATEGORY("Collision->PreUpdate", Profiler::Color::Green)
 	// Remove all colliders scheduled for deletion
-	for (uint i = 0; i < MAX_COLLIDERS; ++i)
+	for (uint i = 0; i < active; ++i)
 	{
 		if (colliders[i] != nullptr && colliders[i]->to_delete == true)
 		{
 			delete colliders[i];
-			colliders[i] = nullptr;
+			colliders[i] = colliders[active - 1];
+			colliders[active - 1] = nullptr;
+			active -= 1;
+
 		}
 	}
 	
@@ -42,21 +46,21 @@ bool j1Collision::PreUpdate()
 	Collider* c1;
 	Collider* c2;
 
-	for (uint i = 0; i < MAX_COLLIDERS; ++i)
+	for (uint i = 0; i < active; ++i)
 	{
 	
 		if (colliders[i] == nullptr /*|| colliders[i]->type != COLLIDER_NONE*/)
-			continue;
+			break;
 
 		c1 = colliders[i];
 
 		// avoid checking collisions already checked
 		//RECT COLLISIONS
-		for (uint k = i + 1; k < MAX_COLLIDERS; ++k)
+		for (uint k = i + 1; k < active; ++k)
 		{
 			// skip empty colliders
 			if (colliders[k] == nullptr)
-				continue;
+				break;
 
 			c2 = colliders[k];
 			if (c1->CheckCollision(c2->rect))
@@ -96,7 +100,7 @@ bool j1Collision::Update(float dt)
 void j1Collision::Draw()
 {
 	Uint8 alpha = 80;
-	for (uint i = 0; i < MAX_COLLIDERS; ++i)
+	for (uint i = 0; i < active; ++i)
 	{
 		if (colliders[i] == nullptr)
 			break;
@@ -146,6 +150,7 @@ void j1Collision::CleanColliders()
 		if (colliders[i] != nullptr) {
 			colliders[i] = nullptr;
 		}
+	active = 0;
 }
 
 Collider* j1Collision::AddCollider(SDL_Rect rect, COLLIDER_TYPE type, j1Module* callback)
@@ -157,6 +162,7 @@ Collider* j1Collision::AddCollider(SDL_Rect rect, COLLIDER_TYPE type, j1Module* 
 		if (colliders[i] == nullptr)
 		{
 			ret = colliders[i] = new Collider(rect, type, callback);
+			active += 1;
 			break;
 		}
 	}

@@ -95,6 +95,7 @@ public:
 public:
 
 	Collider * colliders[MAX_COLLIDERS];
+	int active;
 
 private:
 
