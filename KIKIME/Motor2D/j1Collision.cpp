@@ -16,6 +16,8 @@ j1Collision::j1Collision()
 	matrix[COLLIDER_PLAYER][COLLIDER_SPAWN]	 = false;
 	matrix[COLLIDER_PLAYER][COLLIDER_DEATH]  = true;
 	matrix[COLLIDER_PLAYER][COLLIDER_END]    = true;
+	matrix[COLLIDER_PLAYER][COLLIDER_COIN]	 = true;
+
 
 	name.create("collisions");
 }

@@ -80,12 +80,12 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Button.cpp" />
+    <ClCompile Include="Coin.cpp" />
     <ClCompile Include="j1EntityManager.cpp" />
     <ClCompile Include="Floater.cpp" />
     <ClCompile Include="j1Fonts.cpp" />
     <ClCompile Include="j1Gui.cpp" />
     <ClCompile Include="Label.cpp" />
-    <ClCompile Include="j1Particles.cpp" />
     <ClCompile Include="Roller.cpp" />
     <ClCompile Include="j1Collision.cpp" />
     <ClCompile Include="j1Debug.cpp" />
@@ -110,6 +110,7 @@
   <ItemGroup>
     <ClInclude Include="Animation.h" />
     <ClInclude Include="Button.h" />
+    <ClInclude Include="Coin.h" />
     <ClInclude Include="Image.h" />
     <ClInclude Include="Enemy.h" />
     <ClInclude Include="j1EntityManager.h" />
@@ -118,7 +119,6 @@
     <ClInclude Include="j1Fonts.h" />
     <ClInclude Include="j1Gui.h" />
     <ClInclude Include="Label.h" />
-    <ClInclude Include="j1Particles.h" />
     <ClInclude Include="Roller.h" />
     <ClInclude Include="j1Collision.h" />
     <ClInclude Include="j1Debug.h" />

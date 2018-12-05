@@ -24,7 +24,6 @@ class j1PathFinding;
 class j1EntityManager;
 class j1Fonts;
 class j1Gui;
-class j1Particles;
 class Player;
 
 class j1App
@@ -125,7 +124,6 @@ public:
 	j1EntityManager*	entitymanager;
 	j1Fonts*			font;
 	j1Gui*				gui;
-	j1Particles*		particles;
 
 
 	bool				delay_is_active = true;

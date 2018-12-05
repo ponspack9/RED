@@ -138,28 +138,24 @@ void j1Gui::HandleInput(UIElement* element)
 	if (element->state != CLICK_DOWN &&	is_inside && App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) != KEY_DOWN)
 	{
 		element->state = HOVER;
-		LOG("hover");		
-		is_changing = (prev_state != element->state);
+		//LOG("hover");
 	}
 	else if((element->state == HOVER || element->state == CLICK_DOWN) && is_inside && (App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KEY_REPEAT || App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KEY_DOWN))
 	{
 		element->state = CLICK_DOWN;
-		LOG("click");
-		is_changing = (prev_state != element->state);
+		//LOG("click");
 	}
 	else if (is_inside && App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KEY_UP)
 	{
 		element->state = CLICK_UP;
-		LOG("click up");
-		is_changing = (prev_state != element->state);
+		//LOG("click up");
 	}
 	else
 	{
 		element->state = IDLE;
-		LOG("idle");
-		is_changing = (prev_state != element->state);
+		//LOG("idle");
 	}
-
+  is_changing = (prev_state != element->state);
 	switch (element->type)
 	{
 	case BUTTON:

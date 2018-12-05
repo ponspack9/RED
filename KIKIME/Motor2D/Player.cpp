@@ -18,6 +18,7 @@ Player::Player(iPoint pos, Player * e) : Entity(pos, e)
 	speed.x = e->speed.x;
 	speed.y = 0;
 	jump_speed = e->speed.y;
+	smash_speed = e->smash_speed;
 	
 	god_speed = e->god_speed;
 	gravity = e->gravity;
@@ -42,6 +43,7 @@ Player::Player(iPoint pos, Player * e) : Entity(pos, e)
 	want_down		= false;
 	jumping			= false;
 	double_jumping	= false;
+	smashing		= false;
 	level_finished	= false;
 }
 
@@ -56,7 +58,7 @@ bool Player::PreUpdate()
 	if (alive) {
 		
 		//Jump
-		if ((App->input->GetKey(SDL_SCANCODE_W) == KEY_DOWN) || (App->input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN))
+		if ((App->input->GetKey(SDL_SCANCODE_W) == KEY_DOWN) || (App->input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN) && !god_mode)
 		{
 			Jump();
 		}
@@ -64,7 +66,12 @@ bool Player::PreUpdate()
 		{
 			want_up = true;
 		}
-		//Smash //want_down only in god mode
+		//Smash 
+		if ((App->input->GetKey(SDL_SCANCODE_S) == KEY_DOWN) && !god_mode)
+		{
+			Smash();
+		}
+		//want_down only in god mode
 		if (App->input->GetKey(SDL_SCANCODE_S) == KEY_REPEAT)
 		{
 			want_down = true;
@@ -125,7 +132,7 @@ bool Player::PostUpdate()
 	return true;
 }
 
-bool Player::Jump()
+void Player::Jump()
 {
 	if (!jumping) {
 		speed.y = -jump_speed;
@@ -136,7 +143,14 @@ bool Player::Jump()
 		double_jumping = true;
 	}
 
-	return true;
+}
+
+void Player::Smash()
+{
+	if (!smashing) {
+		speed.y = smash_speed;
+		smashing = true;
+	}
 }
 
 void Player::Move(float dt)
@@ -209,8 +223,10 @@ void Player::Move(float dt)
 		}
 		else {
 			//position.y = pos.y - position.y + collider->rect.h -5;
-			jumping = false;
-			double_jumping = false;
+			jumping			= false;
+			double_jumping	= false;
+			smashing		= false;
+			speed.y = 0;
 		}
 	}
 
