@@ -77,9 +77,8 @@
       <Filter>ENTITIES</Filter>
     </ClCompile>
     <ClCompile Include="j1EntityManager.cpp">
-      <Filter>ENTITIES</FNTilter>
+      <Filter>ENTITIES</Filter>
     </ClCompile>
-    <ClCompile Include="Coin.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="j1Window.h">
@@ -157,9 +156,6 @@
     <ClInclude Include="UIElement.h">
       <Filter>GUI</Filter>
     </ClInclude>
-    <ClInclude Include="Animation.h">
-      <Filter>MODULES</Filter>
-    </ClInclude>
     <ClInclude Include="p2Defs.h">
       <Filter>Programming 2</Filter>
     </ClInclude>
@@ -193,7 +189,9 @@
     <ClInclude Include="j1EntityManager.h">
       <Filter>ENTITIES</Filter>
     </ClInclude>
-    <ClInclude Include="Coin.h" />
+    <ClInclude Include="Animation.h">
+      <Filter>Programming 2</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Xml Include="..\Game\config.xml" />
