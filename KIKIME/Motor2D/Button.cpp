@@ -36,15 +36,15 @@ void Button::HandleAction()
 	switch (action)
 	{
 	case MAIN_MENU:
-		this->callback->GoToMainMenu();
+		App->GoToMainMenu();
 		break;
 	case SETTINGS:
 		break;
 	case PLAY_PAUSE:
-		if (App->is_paused)
-			this->callback->UnPauseGame();
-		else if (!App->is_paused)
-			this->callback->PauseGame();
+		if (App->pause)
+			App->UnPauseGame();
+		else if (!App->pause)
+			App->PauseGame();
 		break;
 	}
 }
