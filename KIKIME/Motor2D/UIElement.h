@@ -5,6 +5,7 @@
 #include "j1App.h"
 #include "j1Render.h"
 #include "j1Fonts.h"
+#include "j1EntityManager.h"
 
 enum UIType 
 { 
@@ -29,7 +30,9 @@ enum ActionType
 	EXIT_GAME,
 	PLAY_PAUSE,
 	SCORE,
+	LIFE_SYSTEM,
 	GAME_TIMER,
+	INFO,
 	NO_ACTION
 };
 
@@ -49,6 +52,16 @@ public:
 	}
 
 	virtual void HandleAction() {}
+
+	void CutString(char str[], int digits)
+	{	
+		int i = 0;
+
+		while (i <= digits)
+		{
+			str[i] = str[i];
+		}
+	}
 
 public:
 

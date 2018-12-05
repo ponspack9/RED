@@ -1,5 +1,4 @@
 #include "Label.h"
-#include "j1Textures.h"
 
 Label::Label(ActionType action, iPoint pos, UIType type, p2SString string) : UIElement(type)
 {
@@ -23,14 +22,16 @@ bool Label::PreUpdate()
 	if (action == GAME_TIMER)
 	{
 		// Use change text function
-		/*const char game_time = App->GetTimerReadSec();
-		text = App->font->Print(&game_time, { 255,255,255,255 }, App->font->default);
-		App->font->CalcSize(&game_time, rect[IDLE].w, rect[IDLE].h, App->font->default);*/
+		char game_time[50];
+		sprintf(game_time, "%.3f", App->GetTimerReadSec());
+
+		ChangeText(game_time);
 	}
 	if (action == SCORE)
 	{
 		//-------------------------//
 	}
+	float val = 1.1;
 
 	position.x = initial_pos.x - App->render->camera.x;
 	position.y = initial_pos.y - App->render->camera.y;
@@ -40,8 +41,6 @@ bool Label::PreUpdate()
 
 bool Label::PostUpdate()
 {
-	
-
 	return true;
 }
 
@@ -54,6 +53,7 @@ void Label::Draw(SDL_Texture* sprites)
 void Label::ChangeText(const char * string)
 {
 	App->tex->UnLoad(text);
+
 	text = App->font->Print(string, { 255,255,255,255 }, App->font->default);
 	App->font->CalcSize(string, rect[state].w, rect[state].h, App->font->default);
 
@@ -62,16 +62,19 @@ void Label::ChangeText(const char * string)
 
 void Label::HandleAction() 
 {
-	switch (state)
+	if (action != INFO)
 	{
-	case HOVER:
-		ChangeText("HOVER");
-		break;
-	case IDLE:
-		ChangeText("IDLE");
-		break;
-	case CLICK_DOWN:
-		ChangeText("CLICKASU BRO");
-		break;
+		switch (state)
+		{
+		case HOVER:
+			ChangeText("HOVER");
+			break;
+		case IDLE:
+			ChangeText("IDLE");
+			break;
+		case CLICK_DOWN:
+			ChangeText("CLICKASU BRO");
+			break;
+		}
 	}
 }
