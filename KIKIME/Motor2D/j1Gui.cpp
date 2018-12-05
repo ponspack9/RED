@@ -37,12 +37,15 @@ bool j1Gui::Start()
 	//HARDCODED
 	//CreateElement(IMAGE, iPoint(App->render->viewport.w / 2, App->render->viewport.h / 11 + 25));
 
-	CreateElement(BUTTON, iPoint(App->render->viewport.w / 12, App->render->viewport.h / 12), nullptr, MAIN_MENU, (j1Module*)App);
-	CreateElement(BUTTON, iPoint(8 * App->render->viewport.w / 12, 8 * App->render->viewport.h / 12), nullptr, PLAY_PAUSE, (j1Module*)App);
+	CreateElement(BUTTON, iPoint(App->render->viewport.w / 12, App->render->viewport.h / 12), SDL_Rect({ 641,166,228,68 }), nullptr, MAIN_MENU, (j1Module*)App);
+	CreateElement(BUTTON, iPoint(8 * App->render->viewport.w / 12, 8 * App->render->viewport.h / 12), SDL_Rect({ 641,166,228,68 }), nullptr, PLAY_PAUSE, (j1Module*)App);
 	//CreateElement(BUTTON, iPoint(5 * App->render->viewport.w / 12, 6 * App->render->viewport.h / 12), nullptr, SETTINGS);
 
-	CreateElement(LABEL, iPoint(20, 20), "0", GAME_TIMER);
-	CreateElement(LABEL, iPoint(9 * App->render->viewport.w / 10, 20), "SCORE : 999", SCORE);
+	CreateElement(IMAGE, iPoint(10,10), SDL_Rect({ 997,706,18,18 }), nullptr, NO_ACTION, (j1Module*)App);
+	CreateElement(IMAGE, iPoint(10,40), SDL_Rect({ 1001,928,18,18 }), nullptr, NO_ACTION, (j1Module*)App);
+
+	CreateElement(LABEL, iPoint(20, 20), { 0,0,0,0 }, "0", GAME_TIMER);
+	CreateElement(LABEL, iPoint(9 * App->render->viewport.w / 10, 20), { 0,0,0,0 }, "SCORE : 999", SCORE);
 
 	return true;
 }
@@ -96,7 +99,7 @@ bool j1Gui::CleanUp()
 	return true;
 }
 
-UIElement* j1Gui::CreateElement(UIType type, iPoint pos, p2SString string, ActionType action, j1Module* callback)
+UIElement* j1Gui::CreateElement(UIType type, iPoint pos, SDL_Rect rect, p2SString string, ActionType action, j1Module* callback)
 {
 	UIElement* elem = nullptr;
 
@@ -104,7 +107,7 @@ UIElement* j1Gui::CreateElement(UIType type, iPoint pos, p2SString string, Actio
 	{
 	case IMAGE:
 
-		elem = new Image(pos, SDL_Rect({ 485,829,328,103 }), type);
+		elem = new Image(pos, rect, type);
 		break;
 	case LABEL:
 
@@ -112,7 +115,9 @@ UIElement* j1Gui::CreateElement(UIType type, iPoint pos, p2SString string, Actio
 		break;
 	case BUTTON:
 
-		elem = new Button(action, pos, SDL_Rect({ 641,166,228,68 }), type, callback);
+		//elem = new Button(action, pos, SDL_Rect({ 641,166,228,68 }), type, callback);
+		elem = new Button(action, pos, rect, type, callback);
+
 		break;
 	default:
 
