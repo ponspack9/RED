@@ -17,6 +17,7 @@ j1Collision::j1Collision()
 	matrix[COLLIDER_PLAYER][COLLIDER_DEATH]  = true;
 	matrix[COLLIDER_PLAYER][COLLIDER_END]    = true;
 	matrix[COLLIDER_PLAYER][COLLIDER_COIN]	 = true;
+	//matrix[COLLIDER_DEBUG][COLLIDER_D]
 
 
 	name.create("collisions");
@@ -35,10 +36,7 @@ bool j1Collision::PreUpdate()
 		if (colliders[i] != nullptr && colliders[i]->to_delete == true)
 		{
 			delete colliders[i];
-			colliders[i] = colliders[active - 1];
-			colliders[active - 1] = nullptr;
-			active -= 1;
-
+			colliders[i] = nullptr;
 		}
 	}
 	
@@ -50,7 +48,7 @@ bool j1Collision::PreUpdate()
 	{
 	
 		if (colliders[i] == nullptr /*|| colliders[i]->type != COLLIDER_NONE*/)
-			break;
+			continue;
 
 		c1 = colliders[i];
 
@@ -60,7 +58,7 @@ bool j1Collision::PreUpdate()
 		{
 			// skip empty colliders
 			if (colliders[k] == nullptr)
-				break;
+				continue;
 
 			c2 = colliders[k];
 			if (c1->CheckCollision(c2->rect))
@@ -103,7 +101,7 @@ void j1Collision::Draw()
 	for (uint i = 0; i < active; ++i)
 	{
 		if (colliders[i] == nullptr)
-			break;
+			continue;
 
 			switch (colliders[i]->type)
 			{
@@ -148,6 +146,7 @@ void j1Collision::CleanColliders()
 {
 	for (uint i = 0; i < MAX_COLLIDERS; ++i)
 		if (colliders[i] != nullptr) {
+			delete colliders[i];
 			colliders[i] = nullptr;
 		}
 	active = 0;
@@ -162,7 +161,7 @@ Collider* j1Collision::AddCollider(SDL_Rect rect, COLLIDER_TYPE type, j1Module* 
 		if (colliders[i] == nullptr)
 		{
 			ret = colliders[i] = new Collider(rect, type, callback);
-			active += 1;
+			if (i >= active) active += 1;
 			break;
 		}
 	}

@@ -41,10 +41,7 @@ void Button::HandleAction()
 	case SETTINGS:
 		break;
 	case PLAY_PAUSE:
-		if (App->pause)
-			App->UnPauseGame();
-		else if (!App->pause)
-			App->PauseGame();
+		App->TogglePause();
 		break;
 	}
 }

@@ -62,8 +62,7 @@ bool j1Debug::Update(float dt)
 	BROFILER_CATEGORY("Debug->Update", Profiler::Color::HotPink);
 	if (App->input->GetKey(SDL_SCANCODE_P) == KEY_DOWN)
 	{
-		if (!App->pause) App->PauseGame();
-		else App->UnPauseGame();
+		App->TogglePause();
 	}
 
 	if (App->input->GetKey(SDL_SCANCODE_F1) == KEY_DOWN)
