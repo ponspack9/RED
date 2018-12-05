@@ -55,7 +55,7 @@ void Label::ChangeText(const char * string)
 {
 	App->tex->UnLoad(text);
 	text = App->font->Print(string, { 255,255,255,255 }, App->font->default);
-  App->font->CalcSize(string.GetString(), rect[state].w, rect[state].h, App->font->default);
+	App->font->CalcSize(string, rect[state].w, rect[state].h, App->font->default);
 	this->string = string;	
 }
 
