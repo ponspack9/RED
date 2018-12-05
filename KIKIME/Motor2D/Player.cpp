@@ -85,11 +85,13 @@ bool Player::PreUpdate()
 		if (App->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT)
 		{
 			want_left = true;
+			moving_left = true;
 		}
 		//Right
 		if (App->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT)
 		{
 			want_right = true;
+			moving_right = true;
 		}
 		
 	}
@@ -148,12 +150,16 @@ void Player::Draw(SDL_Texture * sprites)
 		current_animation->speed = 0;
 	}
 	else current_animation->speed = def_anim_speed * App->dt;
-	if (collider) collider->SetPos(position.x, position.y);
+
+	if (collider) 
+		collider->SetPos(position.x, position.y);
 
 	if (double_jumping && !going_down && alive)
 		App->render->Blit(sprites, position.x, position.y, &current_animation->GetCurrentFrame(), 1, 0, SDL_FLIP_VERTICAL);
-	else if(moving_right)
+
+	else if(moving_left)
 		App->render->Blit(sprites, position.x, position.y, &current_animation->GetCurrentFrame(), 1, 0, SDL_FLIP_HORIZONTAL);
+
 	else
 		App->render->Blit(sprites, position.x, position.y, &current_animation->GetCurrentFrame(), 1, 0);
 }
@@ -162,28 +168,27 @@ void Player::ResetPlayer()
 {
 	collider->SetPos(position.x, position.y);
 
-	alive = true;
-	want_right = false;
-	want_left = false;
-	want_up = false;
-	want_down = false;
-	jumping = false;
-	double_jumping = false;
-	smashing = false;
-	level_finished = false;
-	going_down = false;
-	moving_left = false;
-	moving_right = false;
+	alive			= true;
+	want_right		= false;
+	want_left		= false;
+	want_up			= false;
+	want_down		= false;
+	jumping			= false;
+	double_jumping  = false;
+	smashing		= false;
+	level_finished  = false;
+	going_down		= false;
+	moving_left		= false;
+	moving_right	= false;
 }
 
 
 bool Player::PostUpdate()
 {
 	BROFILER_CATEGORY("Player->PostUpdate", Profiler::Color::BlueViolet);
-
 	moving_left = false;
 	moving_right = false;
-	
+
 	return true;
 }
 
@@ -229,7 +234,6 @@ void Player::Move(float dt)
 			//going_right = true;
 		}
 		want_right = false;
-		moving_right = true;
 	}
 	else if (want_left)
 	{
@@ -246,7 +250,6 @@ void Player::Move(float dt)
 			//going_left = true;
 		}
 		want_left = false;
-		moving_left = true;
 	}
 
 	//if (want_up)
