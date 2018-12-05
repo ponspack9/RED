@@ -123,6 +123,8 @@ bool j1EntityManager::Awake(pugi::xml_node & config)
 	playerinfo.speed.x = player_node.child("speed").attribute("scrollspeed").as_int();
 	playerinfo.speed.y = player_node.child("speed").attribute("jumpspeed").	 as_int();
 	playerinfo.smash_speed = player_node.child("speed").attribute("smashspeed").as_int();
+	playerinfo.max_speed = player_node.child("speed").attribute("maxspeed").as_float();
+
 
 	playerinfo.gravity = player_node.child("gravity").attribute("value").as_float();
 	playerinfo.god_mode = player_node.child("godmode").attribute("value").as_bool();
@@ -199,6 +201,19 @@ bool j1EntityManager::Awake(pugi::xml_node & config)
 	node_speed = n.attribute("speed").as_float();
 	playerinfo.fall.speed = (node_speed <= 0) ? playerinfo.def_anim_speed : node_speed;
 
+	//SMASH
+	n = player_node.child("playeranimations").child("smash");
+	for (n; n; n = n.next_sibling("smash"))
+	{
+		r.x = n.attribute("x").as_int();
+		r.y = n.attribute("y").as_int();
+		r.w = n.attribute("width").as_int();
+		r.h = n.attribute("height").as_int();
+		playerinfo.smash.PushBack(r);
+	}
+	node_speed = n.attribute("speed").as_float();
+	playerinfo.smash.speed = (node_speed <= 0) ? playerinfo.def_anim_speed : node_speed;
+
 	//DEAD
 	n = player_node.child("playeranimations").child("death");
 	for (n; n; n = n.next_sibling("death"))
@@ -230,7 +245,6 @@ bool j1EntityManager::Awake(pugi::xml_node & config)
 	//LOG("%d  %d", player_rect.h, player_rect.w);
 	LOG("%d  %d", playerinfo.speed.x, playerinfo.speed.y);
 	playerinfo.god_speed = player_node.child("godmode").attribute("speed").as_float();
-	//playerinfo.max_speed_y = playerinfo.speed.y;
 
 	// READING COINS
 
@@ -383,6 +397,8 @@ bool j1EntityManager::PreUpdate()
 		{
 			timer_death.Start();
 			is_started = true;
+
+			player_ref->current_animation = &player_ref->death;
 		}
 
 	return true;
@@ -419,7 +435,6 @@ bool j1EntityManager::PostUpdate()
 			if (player_ref->lifes > 0) {
 				player_ref->lifes -= 1;
 				App->RestartLevel();
-				player_ref->collider->SetPos(player_ref->position.x, player_ref->position.y);
 				LOG("LIFES REMAINING: %d", player_ref->lifes);
 			}
 			else {
@@ -427,7 +442,8 @@ bool j1EntityManager::PostUpdate()
 				player_ref->lifes = playerinfo.lifes;
 				
 			}
-			player_ref->alive = true;
+
+			player_ref->ResetPlayer();
 			is_started = false;
 			//timer_death.Start();
 		
@@ -493,7 +509,9 @@ void j1EntityManager::UpdateAll(float dt,bool run)
 		}
 	}
 }
+
 void j1EntityManager::Draw() {
+
 	p2List_item<Entity*>* item;
 	for (item = entities.start; item != nullptr; item = item->next)
 	{
@@ -622,6 +640,8 @@ bool j1EntityManager::Save(pugi::xml_node & node)
 
 			pl.append_attribute("x") = item->data->position.x;
 			pl.append_attribute("y") = item->data->position.y;
+
+			pl.append_attribute("speed_Y") = item->data->speed.y;
 		}
 		else
 		{
@@ -654,6 +674,7 @@ bool j1EntityManager::Load(pugi::xml_node & node)
 			item->data->position.x = node.child("player").attribute("x").as_int();
 			item->data->position.y = node.child("player").attribute("y").as_int();
 
+			item->data->speed.y = node.child("player").attribute("speed_Y").as_int();
 		}
 		else
 		{

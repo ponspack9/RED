@@ -23,7 +23,10 @@ public:
 	void Jump();
 	void Smash();
 	void PlayerAnimations(float dt);
-	
+
+	void Draw(SDL_Texture *sprites);	
+
+	void ResetPlayer();
 
 public:
 
@@ -31,11 +34,14 @@ public:
 	bool		want_left;
 	bool		want_up;
 	bool		want_down;
+	bool		going_down;
 
 	bool		jumping;
 	bool		double_jumping;
 	bool		smashing;
 	bool		god_mode;
+	bool		moving_left;
+	bool		moving_right;
 	bool		level_finished;
 
 	int			jump_speed;
@@ -44,6 +50,8 @@ public:
 
 	float		gravity;
 	float		god_speed;
+	float		max_speed;
+
 
 	Animation	walk;
 	Animation	jump;
@@ -51,4 +59,5 @@ public:
 	Animation	fall;
 	Animation	death;
 	Animation	god;
+	Animation   smash;
 };

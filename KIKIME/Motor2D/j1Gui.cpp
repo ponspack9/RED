@@ -155,7 +155,9 @@ void j1Gui::HandleInput(UIElement* element)
 		element->state = IDLE;
 		//LOG("idle");
 	}
-  is_changing = (prev_state != element->state);
+
+    is_changing = (prev_state != element->state);
+
 	switch (element->type)
 	{
 	case BUTTON:

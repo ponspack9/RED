@@ -31,6 +31,8 @@ Player::Player(iPoint pos, Player * e) : Entity(pos, e)
 	jump = e->jump;
 	doublejump = e->doublejump;
 	god = e->god;
+	smash = e->smash;
+
 	def_anim_speed = e->def_anim_speed;
 
 	current_animation = &idle;
@@ -45,6 +47,9 @@ Player::Player(iPoint pos, Player * e) : Entity(pos, e)
 	double_jumping	= false;
 	smashing		= false;
 	level_finished	= false;
+	going_down		= false;
+	moving_left		= false;
+	moving_right	= false;
 }
 
 Player::~Player()
@@ -108,26 +113,76 @@ bool Player::Update(float dt)
 
 void Player::PlayerAnimations(float dt)
 {
-	if (!alive) {
-		current_animation = &death;
-	}
-	else {
-		if (!god_mode) {
+	if (alive) {
+	//	current_animation = &death;
+		if (!god_mode) 
+		{
 			current_animation = &idle;
+			if (moving_left || moving_right)
+				current_animation = &walk;
+
+			if (jumping)
+				current_animation = &jump;
+
+			if (double_jumping)
+				current_animation = &doublejump;
+
+			if (going_down)
+				current_animation = &fall;
+
+			if (smashing)
+				current_animation = &smash;
 		}
-		else {
+		else
+		{
 			current_animation = &god;
 		}
-
 	}
 
 	current_animation->speed = def_anim_speed * dt;
+}
+
+void Player::Draw(SDL_Texture * sprites)
+{
+	if (App->pause) {
+		current_animation->speed = 0;
+	}
+	else current_animation->speed = def_anim_speed * App->dt;
+	if (collider) collider->SetPos(position.x, position.y);
+
+	if (double_jumping && !going_down && alive)
+		App->render->Blit(sprites, position.x, position.y, &current_animation->GetCurrentFrame(), 1, 0, SDL_FLIP_VERTICAL);
+	else if(moving_right)
+		App->render->Blit(sprites, position.x, position.y, &current_animation->GetCurrentFrame(), 1, 0, SDL_FLIP_HORIZONTAL);
+	else
+		App->render->Blit(sprites, position.x, position.y, &current_animation->GetCurrentFrame(), 1, 0);
+}
+
+void Player::ResetPlayer()
+{
+	collider->SetPos(position.x, position.y);
+
+	alive = true;
+	want_right = false;
+	want_left = false;
+	want_up = false;
+	want_down = false;
+	jumping = false;
+	double_jumping = false;
+	smashing = false;
+	level_finished = false;
+	going_down = false;
+	moving_left = false;
+	moving_right = false;
 }
 
 
 bool Player::PostUpdate()
 {
 	BROFILER_CATEGORY("Player->PostUpdate", Profiler::Color::BlueViolet);
+
+	moving_left = false;
+	moving_right = false;
 	
 	return true;
 }
@@ -137,10 +192,12 @@ void Player::Jump()
 	if (!jumping) {
 		speed.y = -jump_speed;
 		jumping = true;
+		going_down = false;
 	}
 	else if (!double_jumping) {
 		speed.y = -jump_speed;
 		double_jumping = true;
+		going_down = false;
 	}
 
 }
@@ -155,6 +212,8 @@ void Player::Smash()
 
 void Player::Move(float dt)
 {
+	float max_speed = 400.0f;
+
 	if (want_right)
 	{
 		iPoint pos = App->render->ScreenToWorld(position.x + collider->rect.w + App->render->camera.x + (int)(speed.x * dt), position.y + App->render->camera.y);
@@ -170,6 +229,7 @@ void Player::Move(float dt)
 			//going_right = true;
 		}
 		want_right = false;
+		moving_right = true;
 	}
 	else if (want_left)
 	{
@@ -186,6 +246,7 @@ void Player::Move(float dt)
 			//going_left = true;
 		}
 		want_left = false;
+		moving_left = true;
 	}
 
 	//if (want_up)
@@ -207,7 +268,7 @@ void Player::Move(float dt)
 		want_up = false;
 	}
 	//Always move down if gravity is true, and player can, obviously
-	else //if (gravity_enabled)
+	else if (speed.y > 0)
 	{
 		iPoint pos = App->render->ScreenToWorld(position.x + App->render->camera.x, position.y + App->render->camera.y + collider->rect.h + (int)(speed.y * dt));
 		pos = App->map->WorldToMap(pos.x, pos.y);
@@ -219,18 +280,18 @@ void Player::Move(float dt)
 		if (App->pathfinding->IsWalkable(pos) && App->pathfinding->IsWalkable(pos2) && App->pathfinding->IsWalkable(pos3)) {
 			position.y += (int)(speed.y * dt);
 			//Animation
-			//going_down = true;
+			going_down = true;
 		}
 		else {
 			//position.y = pos.y - position.y + collider->rect.h -5;
 			jumping			= false;
 			double_jumping	= false;
 			smashing		= false;
-			speed.y = 0;
+			going_down		= false;
+			speed.y			= max_speed;
 		}
 	}
 
-	float max_speed = 400.0f;
 	if (speed.y < max_speed) {
 		speed.y += (int)(gravity * dt);
 		if (speed.y > max_speed) speed.y = max_speed;
