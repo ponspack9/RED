@@ -1,6 +1,6 @@
 MIT License
 
-Copyright (c) [2018] [Òscar Pons Gallart and Oriol Sabaté Solé]
+Copyright (c) [2018] [Ã’scar Pons Gallart and Oriol SabatÃ© SolÃ©]
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
@@ -34,13 +34,13 @@ enemies among other things.
 
 ##Controls
 
-W , Space --> JUMP and DOUBLEJUMP(only while falling) / MOVING UP (GODMODE)
+W , Space --> JUMP and DOUBLEJUMP / MOVING UP (GODMODE)
 
 A ----------> MOVING LEFT
 
 D ----------> MOVING RIGHT
 
-S ----------> MOVING DOWN (GODMODE)
+S ----------> SMASH ENEMIES / MOVING DOWN (GODMODE)
 
 ##Debug Keys
 
@@ -65,12 +65,7 @@ F11 --------> CAMERA FOLLOWS PLAYER/DRAG AND RELEASE MOUSE TO FREELY MOVE THE CA
 
 <====================================================================>
 
-We have made the whole assignment together, we work better together than each one at his home;
-doing this we have noticed an improvement of the quality of our work.
-
-We have had a lot of problems with "dt", specially at player's jump; the enemies move properly with "dt" implemented.
-
-by Òscar Pons Gallart & Oriol Sabaté Solé
+by Ã’scar Pons Gallart & Oriol SabatÃ© SolÃ©
 
 
 
