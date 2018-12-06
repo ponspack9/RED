@@ -321,11 +321,19 @@ bool j1EntityManager::Awake(pugi::xml_node & config)
 bool j1EntityManager::Start()
 {
 	BROFILER_CATEGORY("Entities->Start", Profiler::Color::BlueViolet);
+
 	//Loading textures
 	playerTex = App->tex->Load(playerPath.GetString());
 	enemyTex = App->tex->Load(enemyPath.GetString());
 	otherTex = App->tex->Load(otherPath.GetString());
 
+	CreateEntities();
+
+	return true;
+}
+
+void j1EntityManager::CreateEntities()
+{
 	Entity* e = nullptr;
 	//Creating all entities
 	for (int i = 0; App->collision->colliders[i] != NULL; i++)
@@ -368,24 +376,8 @@ bool j1EntityManager::Start()
 			player_ref->collider = App->collision->AddCollider(player_ref->rect, COLLIDER_PLAYER, this);
 		}
 	}
-	SaveInitialState();
-	return true;
 }
 
-void j1EntityManager::SaveInitialState()
-{
-	p2SString temp = App->save_path;
-	App->save_path = App->init_state_path;
-	App->SaveGameFile();
-	App->save_path = temp;
-}
-void j1EntityManager::LoadInitialState()
-{
-	p2SString temp = App->load_path;
-	App->load_path = App->init_state_path;
-	App->LoadGameFile();
-	App->load_path = temp;
-}
 
 bool j1EntityManager::PreUpdate()
 {
@@ -462,6 +454,18 @@ bool j1EntityManager::PostUpdate()
 bool j1EntityManager::CleanUp()
 {
 	BROFILER_CATEGORY("Entities->CleanUp", Profiler::Color::BlueViolet)
+	CleanEntities();
+
+	App->tex->UnLoad(playerTex);
+	App->tex->UnLoad(enemyTex);
+	App->tex->UnLoad(otherTex);
+
+	
+	return true;
+}
+
+void j1EntityManager::CleanEntities()
+{
 	p2List_item<Entity*>* item;
 	for (item = entities.start; item != nullptr; item = item->next)
 	{
@@ -470,25 +474,15 @@ bool j1EntityManager::CleanUp()
 			item->data->collider->to_delete = true;
 		}
 	}
-	App->tex->UnLoad(playerTex);
-	App->tex->UnLoad(enemyTex);
-	App->tex->UnLoad(otherTex);
-
 	entities.clear();
-	
-	return true;
 }
 
 
 bool j1EntityManager::Restart()
 {
-	bool ret = true;
-
-	ret = CleanUp();
-	ret = Start();
-	
-
-	return ret;
+	CleanEntities();
+	CreateEntities();
+	return true;
 }
 
 void j1EntityManager::UpdateAll(float dt,bool run)
@@ -690,3 +684,29 @@ bool j1EntityManager::Load(pugi::xml_node & node)
 	}
 	return true;
 }
+
+
+
+//DRAFT
+
+/*void j1EntityManager::CheckColliders()
+{
+	p2List_item<Entity*>* item = entities.start;
+	for (item; item != nullptr; item = item->next)
+	{
+		if (!item->data->alive) 
+			continue;
+		if (item->data->collider == nullptr) {
+			entityType type = item->data->type;
+			if (type == FLOATER || type == ROLLER || type == STATIC) {
+				item->data->collider = App->collision->AddCollider(item->data->rect, COLLIDER_DEATH);
+			}
+			else if (type == COIN) {
+				item->data->collider = App->collision->AddCollider(item->data->rect, COLLIDER_COIN);
+			}
+			else if (type == PLAYER) {
+				item->data->collider = App->collision->AddCollider(item->data->rect, COLLIDER_PLAYER);
+			}
+		}
+	}
+}*/

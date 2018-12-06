@@ -477,6 +477,13 @@ bool j1App::RestartGame()
 	return true;
 }
 
+void j1App::TogglePause() {
+	if (!pause) {
+		PauseGame();
+	}
+	else UnPauseGame();
+}
+
 void j1App::PauseGame()
 {
 	if (!pause) {
@@ -501,9 +508,10 @@ void j1App::UnPauseGame()
 }
 bool j1App::RestartLevel()
 {
-	BROFILER_CATEGORY("App->SoftRestartLevel", Profiler::Color::Red)
+	BROFILER_CATEGORY("App->RestartLevel", Profiler::Color::Red);
+
 	render->ResetCamera();
-	entitymanager->LoadInitialState();
+	entitymanager->Restart();
 	
 	return true;
 }

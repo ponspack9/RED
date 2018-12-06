@@ -74,9 +74,8 @@ public:
 	//Restarts the game from the very first level
 	bool RestartGame();
 
-	void PauseGame();
+	void TogglePause();
 
-	void UnPauseGame();
 
 	//Restarts the current level
 	bool RestartLevel();
@@ -90,6 +89,9 @@ public:
 	bool LoadGameFile();
 private:
 
+	void PauseGame();
+
+	void UnPauseGame();
 	// framerate management
 	void PrepareUpdate();
 

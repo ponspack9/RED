@@ -32,26 +32,23 @@ public:
 	j1EntityManager();
 	~j1EntityManager(); //virtual
 
-	//Controllers
 	bool Awake(pugi::xml_node& config);
 	bool Start();
-	void SaveInitialState();
-	void LoadInitialState();
 	bool PreUpdate();
 	bool Update(float dt);
 	bool PostUpdate();
 	bool CleanUp();
+
+	//Controllers
+	void CreateEntities();
+	void CleanEntities();
+	bool Restart();
+
 	bool Save(pugi::xml_node &node);
 	bool Load(pugi::xml_node &node);
 
-	//void SaveInitial();
-	bool Restart();
-
 	void UpdateAll(float dt, bool run);
 
-	//Extracted draw function to implement pause
-	// TO DO swap player to first position in list to optimize
-	// Also would effect updateAll
 	void Draw();
 
 	//Creators
