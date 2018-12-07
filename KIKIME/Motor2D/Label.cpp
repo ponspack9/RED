@@ -1,7 +1,7 @@
 #include "Label.h"
 #include "j1Textures.h"
 
-Label::Label(ActionType action, iPoint pos, UIType type, p2SString string) : UIElement(type)
+Label::Label(ActionType action, iPoint pos, UIType type, p2SString string, UIElement* parent, bool visible) : UIElement(type, parent,visible)
 {
 	this->initial_pos = pos;
 	this->position = pos;
@@ -32,18 +32,9 @@ bool Label::PreUpdate()
 		//-------------------------//
 	}
 
-	position.x = initial_pos.x - App->render->camera.x;
-	position.y = initial_pos.y - App->render->camera.y;
-
 	return true;
 }
 
-bool Label::PostUpdate()
-{
-	
-
-	return true;
-}
 
 void Label::Draw(SDL_Texture* sprites)
 {

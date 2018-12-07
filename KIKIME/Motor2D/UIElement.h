@@ -38,14 +38,25 @@ class UIElement
 public:
 
 	UIElement() {}
-	UIElement(UIType type) { this->type = type; }
+	UIElement(UIType type, UIElement* parent, bool visible) { 
+		this->type = type; 
+		this->parent = parent;
+		this->visible = visible;
+	}
 
 	virtual bool PreUpdate() { return true; }
-	virtual bool PostUpdate() { return true; }
+	virtual bool PostUpdate() { 
+		if (parent != nullptr){
+			visible &= parent->visible;
+			position.x = parent->position.x + initial_pos.x;
+			position.y = parent->position.y + initial_pos.y;
+		}
+		return true; 
+	}
 
 	virtual void Draw(SDL_Texture* sprites = nullptr)
 	{
-		App->render->Blit(sprites, position.x, position.y, &rect[state]);
+		App->render->Blit(sprites, position.x, position.y, &rect[state], 0);
 	}
 
 	virtual void HandleAction() {}
@@ -53,13 +64,20 @@ public:
 public:
 
 	SDL_Rect	rect[IDLE + 1];
+
 	iPoint		position;
+	iPoint		initial_pos;
+
 	UIType		type;
 	UIState		state;
 	ActionType	action;
+
 	p2SString	string;
-	iPoint		initial_pos;
+
+	UIElement*	parent;
 
 	j1Module*	callback;
+
+	bool		visible;
 };
 #endif //__UIELEMENT_H__

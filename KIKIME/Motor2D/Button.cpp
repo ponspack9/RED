@@ -1,6 +1,6 @@
 #include "Button.h"
 
-Button::Button(ActionType action, iPoint pos, SDL_Rect rect, UIType type, j1Module* callback) : UIElement(type)
+Button::Button(ActionType action, iPoint pos, SDL_Rect rect, UIType type, j1Module* callback, UIElement* parent, bool visible) : UIElement(type, parent, visible)
 {
 	this->initial_pos = pos;
 	this->position = pos;
@@ -14,21 +14,6 @@ Button::Button(ActionType action, iPoint pos, SDL_Rect rect, UIType type, j1Modu
 
 	this->action = action;
 	this->callback = callback;
-}
-
-bool Button::PreUpdate()
-{
-	position.x = initial_pos.x - App->render->camera.x;
-	position.y = initial_pos.y - App->render->camera.y;
-
-	//LOG("button pos: %d - %d", position.x, position.y);
-
-	return true;
-}
-
-bool Button::PostUpdate()
-{
-	return true;
 }
 
 void Button::HandleAction()
