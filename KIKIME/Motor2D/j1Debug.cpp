@@ -12,6 +12,7 @@
 #include "Player.h"
 #include "j1Debug.h"
 #include "j1EntityManager.h"
+#include "j1Gui.h"
 
 
 
@@ -52,7 +53,10 @@ bool j1Debug::PostUpdate()
 	bool ret = true;
 
 	if (App->input->GetKey(SDL_SCANCODE_ESCAPE) == KEY_DOWN)
-		ret = false;
+	{
+		App->TogglePause();
+		App->gui->in_game_pause->visible = !App->gui->in_game_pause->visible;
+	}
 
 	return ret;
 }

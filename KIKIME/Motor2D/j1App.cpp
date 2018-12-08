@@ -29,7 +29,7 @@ j1App::j1App(int argc, char* args[]) : argc(argc), args(args)
 
 	want_to_save = want_to_load = false;
 	game_over = false;
-	is_paused = false;
+	to_exit = false;
 
 	input			= new j1Input();
 	win				= new j1Window();
@@ -187,7 +187,7 @@ bool j1App::Update()
 
 		FinishUpdate();
 
-	return ret;
+	return ret && !to_exit;
 }
 
 pugi::xml_parse_result j1App::LoadXML(pugi::xml_document& doc, const char* path)
@@ -467,6 +467,11 @@ void j1App::GameOver() {
 	App->fade->FadeToBlack(App->scene, App->scene);
 
 	LOG("GAME OVER");
+}
+
+void j1App::Exit()
+{
+	to_exit = true;
 }
 
 bool j1App::RestartGame()
