@@ -25,7 +25,7 @@ void Button::HandleAction()
 		break;
 	case SETTINGS:
 		break;
-	case PLAY_PAUSE:
+	case PAUSE:
 		App->TogglePause();
 		break;
 	case EXIT_GAME:

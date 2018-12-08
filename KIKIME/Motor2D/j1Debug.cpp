@@ -52,7 +52,7 @@ bool j1Debug::PostUpdate()
 	BROFILER_CATEGORY("Debug->PostUpdate", Profiler::Color::HotPink)
 	bool ret = true;
 
-	if (App->map->current_map != App->map->maps_path.end && App->map->current_map != App->map->maps_path.end->prev)
+	if (App->map->current_map != App->map->maps_path.end || App->map->current_map != App->map->maps_path.end->prev)
 	{
 		if (App->input->GetKey(SDL_SCANCODE_ESCAPE) == KEY_DOWN)
 			App->TogglePause();

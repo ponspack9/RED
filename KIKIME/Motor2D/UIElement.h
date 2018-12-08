@@ -25,10 +25,11 @@ enum UIState
 
 enum ActionType
 {
+	START,
 	MAIN_MENU,
 	SETTINGS,
 	EXIT_GAME,
-	PLAY_PAUSE,
+	PAUSE,
 	SCORE,
 	LIFE_SYSTEM,
 	GAME_TIMER,

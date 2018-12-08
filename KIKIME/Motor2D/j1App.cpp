@@ -460,9 +460,9 @@ void j1App::GoToMainMenu() {
 	App->map->current_map = App->map->maps_path.end;
 	LOG("CURRENTMAP FROM TRANSITION: %s", App->map->current_map->data.GetString());
 	App->fade->FadeToBlack(App->scene, App->scene);
-	//gui->main_menu_ui->visible = true;
+	gui->main_menu_ui->visible = true;
 	//gui->in_game_ui->visible = false;
-	//gui->in_game_pause->visible = false;
+	gui->in_game_pause->visible = !gui->in_game_pause->visible;
 }
 
 void j1App::GameOver() {
@@ -484,7 +484,7 @@ bool j1App::RestartGame()
 {
 	App->map->current_map = App->map->maps_path.start;
 	App->fade->FadeToBlack(App->scene, App->scene);
-	gui->in_game_ui->visible = true;
+	//gui->in_game_ui->visible = !gui->in_game_ui->visible;
 
 	return true;
 }
