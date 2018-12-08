@@ -69,7 +69,7 @@
     <enemypath path="textures/enemies/spritesheet32.png"/>
     <playerpath path="textures/player/sprites.png"/>
     <player>
-      <lifes lifes="5"/>
+      <lifes lifes="2"/>
       <rect width="64" height="64"/>
       <speed scrollspeed="200" jumpspeed="500" smashspeed="900" maxspeed="400"/>
       <gravity value="1150"/>

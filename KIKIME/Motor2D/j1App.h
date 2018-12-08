@@ -142,7 +142,6 @@ public:
 	mutable p2SString	save_path;
 	p2SString			load_path;
 	p2SString			init_state_path;
-	uint				framerate_cap;
 
 private:
 
@@ -161,6 +160,7 @@ private:
 
 	j1PerfTimer			perf_timer;
 
+	uint				framerate_cap;
 	uint64				frame_count = 0;
 	uint32				frames_on_last_update = 0;
 	uint32				aux_frames_counter = 0; //to control the amount of frames in the last second

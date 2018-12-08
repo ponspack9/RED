@@ -52,12 +52,12 @@ bool j1Debug::PostUpdate()
 	BROFILER_CATEGORY("Debug->PostUpdate", Profiler::Color::HotPink)
 	bool ret = true;
 
-	if (App->input->GetKey(SDL_SCANCODE_ESCAPE) == KEY_DOWN)
+	if (App->map->current_map != App->map->maps_path.end && App->map->current_map != App->map->maps_path.end->prev)
 	{
-		App->TogglePause();
-		App->gui->in_game_pause->visible = !App->gui->in_game_pause->visible;
-	}
+		if (App->input->GetKey(SDL_SCANCODE_ESCAPE) == KEY_DOWN)
+			App->TogglePause();
 
+	}
 	return ret;
 }
 
