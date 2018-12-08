@@ -57,17 +57,16 @@ bool j1Gui::Start()
 	Button* b1 = (Button*)CreateElement(BUTTON, iPoint(0, 20), SDL_Rect({ 641,166,228,68 }), nullptr, PLAY_PAUSE, nullptr,  in_game_pause);
 	Button* b2 = (Button*)CreateElement(BUTTON, iPoint(40, 90), SDL_Rect({ 641,166,228,68 }), nullptr, SETTINGS,nullptr,  in_game_pause);
 	Button* b3 = (Button*)CreateElement(BUTTON, iPoint(40, 160), SDL_Rect({ 641,166,228,68 }), nullptr, EXIT_GAME, nullptr, in_game_pause);
-	b1->CenterX(); b1->CenterY(-70);
-	b2->CenterX(); b2->CenterY(0);
-	//b3->CenterX(); b3->CenterY(70);
+	b1->Center(0,-70);
+	b2->Center();
 	b3->Center(0, 70);
 
 	Label* l1 = (Label*)CreateElement(LABEL, iPoint(0, 0), { 0,0,0,0 }, "RESUME GAME", NO_ACTION, nullptr, b1);
 	Label* l2 = (Label*)CreateElement(LABEL, iPoint(0, 0), { 0,0,0,0 }, "SETTINGS", NO_ACTION, nullptr, b2);
 	Label* l3 = (Label*)CreateElement(LABEL, iPoint(0, 0), { 0,0,0,0 }, "EXIT GAME", NO_ACTION,nullptr,b3);
-	l1->CenterX();	l1->CenterY();
-	l2->CenterX();	l2->CenterY();
-	l3->CenterX();	l3->CenterY();
+	l1->Center();
+	l2->Center();
+	l3->Center();
 
 
 	return true;
@@ -179,16 +178,19 @@ void j1Gui::HandleInput(UIElement* element)
 	else if((element->state == HOVER || element->state == CLICK_DOWN) && is_inside && (App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KEY_REPEAT || App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KEY_DOWN))
 	{
 		element->state = CLICK_DOWN;
+		moving_element = true;
 		//LOG("click");
 	}
 	else if (is_inside && App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KEY_UP)
 	{
 		element->state = CLICK_UP;
+		moving_element = false;
 		//LOG("click up");
 	}
 	else
 	{
 		element->state = IDLE;
+		moving_element = false;
 		//LOG("idle");
 	}
 
@@ -207,12 +209,17 @@ void j1Gui::HandleInput(UIElement* element)
 	case IMAGE:
 		break;
 	}
-	//Not a nice mouse movement but working for debug for now
-	//LOG("ELEMENT [%d,%d] MOUSE [%d,%d]", element->position.x, element->position.y, mouse.x, mouse.y);
-	/*if (element->state == CLICK_DOWN) {
-		element->position.x = (mouse.x -  100);
-		element->position.y = (mouse.y -  100);
-	}*/
+
+	if (moving_element) {
+		iPoint final_motion;
+		App->input->GetMouseMotion(final_motion.x, final_motion.y);
+		last_motion -= final_motion;
+
+		if (!last_motion.IsZero()) {
+			element->position += final_motion;
+		}
+		last_motion = { final_motion.x, final_motion.y };
+	}
 
 }
 

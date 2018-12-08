@@ -50,6 +50,9 @@ private:
 
 	SDL_Texture*		atlas;
 	p2SString			atlas_file_name;
+
+	bool				moving_element;
+	iPoint				last_motion;
 };
 
 #endif // __j1GUI_H__
