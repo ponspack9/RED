@@ -1,4 +1,6 @@
 #include "UIElement.h"
+#include "j1Textures.h"
+#include <string>
 
 class Label :public UIElement
 {

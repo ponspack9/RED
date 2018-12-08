@@ -6,6 +6,7 @@
 #include "Button.h"
 #include "Label.h"
 #include "j1App.h"
+#include "j1EntityManager.h"
 
 #define CURSOR_WIDTH 2
 
