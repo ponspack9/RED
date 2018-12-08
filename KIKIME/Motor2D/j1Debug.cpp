@@ -12,6 +12,7 @@
 #include "Player.h"
 #include "j1Debug.h"
 #include "j1EntityManager.h"
+#include "j1Gui.h"
 
 
 
@@ -52,7 +53,10 @@ bool j1Debug::PostUpdate()
 	bool ret = true;
 
 	if (App->input->GetKey(SDL_SCANCODE_ESCAPE) == KEY_DOWN)
-		ret = false;
+	{
+		App->TogglePause();
+		App->gui->in_game_pause->visible = !App->gui->in_game_pause->visible;
+	}
 
 	return ret;
 }
@@ -62,8 +66,7 @@ bool j1Debug::Update(float dt)
 	BROFILER_CATEGORY("Debug->Update", Profiler::Color::HotPink);
 	if (App->input->GetKey(SDL_SCANCODE_P) == KEY_DOWN)
 	{
-		if (!App->pause) App->PauseGame();
-		else App->UnPauseGame();
+		App->TogglePause();
 	}
 
 	if (App->input->GetKey(SDL_SCANCODE_F1) == KEY_DOWN)

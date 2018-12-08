@@ -35,13 +35,14 @@ public:
 	// Called before quitting
 	bool CleanUp();
 
-	// TODO 2: Create the factory methods
 	// Gui creation functions
-	UIElement* CreateElement(UIType type, iPoint pos, SDL_Rect rect, p2SString string = nullptr, ActionType action = NO_ACTION, j1Module* callback = nullptr);
+	UIElement* CreateElement(UIType type, iPoint pos, SDL_Rect rect, p2SString string = nullptr, ActionType action = NO_ACTION, j1Module* callback = nullptr, UIElement* parent = nullptr, bool visible = true);
 
 	void HandleInput(UIElement* element);
 
 	const SDL_Texture* GetAtlas() const;
+
+	Image* in_game_pause;
 
 private:
 

@@ -1,6 +1,7 @@
 #include "Image.h"
 
-Image::Image(iPoint pos, SDL_Rect rect, UIType type, ActionType action) : UIElement(type)
+Image::Image(iPoint pos, SDL_Rect rect, UIType type, UIElement* parent, bool visible) : UIElement(type, parent, visible)
+
 {
 	this->initial_pos = pos;
 	this->rect[IDLE] = rect;
@@ -15,13 +16,7 @@ Image::Image(iPoint pos, SDL_Rect rect, UIType type, ActionType action) : UIElem
 	this->action = action;
 }
 
-bool Image::PreUpdate()
-{
-	position.x = initial_pos.x - App->render->camera.x;
-	position.y = initial_pos.y - App->render->camera.y;
 
-	return true;
-}
 
 bool Image::PostUpdate()
 {
@@ -53,3 +48,4 @@ void Image::Draw(SDL_Texture * sprites)
 		break;
 	}
 }
+

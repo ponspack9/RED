@@ -24,6 +24,8 @@ enum COLLIDER_TYPE
 	COLLIDER_SPAWN_COIN,
 	COLLIDER_COIN,
 
+	COLLIDER_DEBUG,
+
 	COLLIDER_MAX
 };
 struct Collider
@@ -44,10 +46,6 @@ struct Collider
 		type(c->type),
 		callback(c->callback)
 	{}
-
-	~Collider() {
-		//RELEASE(callback);
-	}
 
 	void SetPos(int x, int y)
 	{

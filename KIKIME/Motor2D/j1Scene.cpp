@@ -52,7 +52,7 @@ bool j1Scene::Start()
 	}
 	else {
 		App->entitymanager->Restart();
-		LOG("ENTITY RESTAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAART");
+		LOG("ENTITY RESTART");
 	}
 	//LOG("CURRENTMAP FROM SCENE: %s", App->map->current_map->data.GetString());
 	// Game Over transition to main menu

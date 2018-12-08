@@ -68,15 +68,16 @@ public:
 
 	void GameOver();
 
+	void Exit();
+
 	//Load XML, LOGs the result also returning it
 	pugi::xml_parse_result LoadXML(pugi::xml_document & doc, const char* path);
 
 	//Restarts the game from the very first level
 	bool RestartGame();
 
-	void PauseGame();
+	void TogglePause();
 
-	void UnPauseGame();
 
 	//Restarts the current level
 	bool RestartLevel();
@@ -90,6 +91,9 @@ public:
 	bool LoadGameFile();
 private:
 
+	void PauseGame();
+
+	void UnPauseGame();
 	// framerate management
 	void PrepareUpdate();
 
@@ -132,14 +136,13 @@ public:
 
 	bool				pause;
 	bool				game_over;
+	bool				to_exit;
 
 	float				dt;
 	mutable p2SString	save_path;
 	p2SString			load_path;
 	p2SString			init_state_path;
 	uint				framerate_cap;
-
-	bool is_paused;
 
 private:
 

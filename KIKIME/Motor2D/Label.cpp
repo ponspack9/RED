@@ -1,6 +1,6 @@
 #include "Label.h"
 
-Label::Label(ActionType action, iPoint pos, UIType type, p2SString string) : UIElement(type)
+Label::Label(ActionType action, iPoint pos, UIType type, p2SString string, UIElement* parent, bool visible) : UIElement(type, parent,visible)
 {
 	this->initial_pos = pos;
 	this->position = pos;
@@ -38,9 +38,6 @@ bool Label::PreUpdate()
 		return true;
 	}
 
-	position.x = initial_pos.x - App->render->camera.x;
-	position.y = initial_pos.y - App->render->camera.y;
-
 	return true;
 }
 
@@ -49,11 +46,11 @@ bool Label::PostUpdate()
 	return true;
 }
 
-void Label::Draw(SDL_Texture* sprites)
-{
-	sprites = text;
-	App->render->Blit(sprites, position.x, position.y);
-}
+//void Label::Draw(SDL_Texture* sprites)
+//{
+//	sprites = text;
+//	App->render->Blit(text, position.x, position.y);
+//}
 
 void Label::ChangeText(const char * string)
 {
@@ -70,16 +67,15 @@ void Label::HandleAction()
 	if (action != INFO)
 	{
 		switch (state)
-		{
-		case HOVER:
-			ChangeText("HOVER");
-			break;
-		case IDLE:
-			ChangeText("IDLE");
-			break;
-		case CLICK_DOWN:
-			ChangeText("CLICKASU BRO");
-			break;
-		}
+		{		
+  	case HOVER:
+	  	//ChangeText("HOVER");
+		  break;
+	  case IDLE:
+		  //ChangeText("IDLE");
+		  break;
+	  case CLICK_DOWN:
+		  //ChangeText("CLICKASU BRO");
+		  break;
 	}
 }
