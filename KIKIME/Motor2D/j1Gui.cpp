@@ -55,6 +55,8 @@ bool j1Gui::Start()
 	CreateElement(LABEL, iPoint(900, 15), { 0,0,0,0 }, "SCORE : 9999", SCORE);
 	CreateElement(LABEL, iPoint(900, 40), { 0,0,0,0 }, "", GAME_TIMER);
 
+	CreateElement(LABEL, iPoint(App->entitymanager->player_ref->position.x + App->entitymanager->player_ref->rect.w / 2, App->entitymanager->player_ref->position.y - 50), { 0,0,0,0 }, "--Kikime--", PLAYER_NAME);
+
 	return true;
 }
 

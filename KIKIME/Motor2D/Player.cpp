@@ -194,7 +194,7 @@ bool Player::PostUpdate()
 
 void Player::Jump()
 {
-	if (!jumping) {
+	if (!jumping && !going_down) {
 		speed.y = -jump_speed;
 		jumping = true;
 		going_down = false;
@@ -204,7 +204,6 @@ void Player::Jump()
 		double_jumping = true;
 		going_down = false;
 	}
-
 }
 
 void Player::Smash()

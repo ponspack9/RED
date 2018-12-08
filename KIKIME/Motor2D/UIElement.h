@@ -32,6 +32,7 @@ enum ActionType
 	SCORE,
 	LIFE_SYSTEM,
 	GAME_TIMER,
+	PLAYER_NAME,
 	INFO,
 	NO_ACTION
 };
@@ -52,16 +53,6 @@ public:
 	}
 
 	virtual void HandleAction() {}
-
-	void CutString(char str[], int digits)
-	{	
-		int i = 0;
-
-		while (i <= digits)
-		{
-			str[i] = str[i];
-		}
-	}
 
 public:
 

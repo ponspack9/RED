@@ -21,7 +21,6 @@ bool Label::PreUpdate()
 {
 	if (action == GAME_TIMER)
 	{
-		// Use change text function
 		char game_time[50];
 		sprintf(game_time, "%.3f", App->GetTimerReadSec());
 
@@ -31,7 +30,13 @@ bool Label::PreUpdate()
 	{
 		//-------------------------//
 	}
-	float val = 1.1;
+	if (action == PLAYER_NAME)
+	{
+		position.x = App->entitymanager->player_ref->position.x + App->entitymanager->player_ref->rect.w / 2 - rect[IDLE].w / 2;
+		position.y = App->entitymanager->player_ref->position.y - 20;
+
+		return true;
+	}
 
 	position.x = initial_pos.x - App->render->camera.x;
 	position.y = initial_pos.y - App->render->camera.y;
