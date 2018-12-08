@@ -31,5 +31,7 @@ void Button::HandleAction()
 	case EXIT_GAME:
 		App->Exit();
 		break;
+	case START:
+		App->RestartGame();
 	}
 }
