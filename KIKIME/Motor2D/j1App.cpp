@@ -461,10 +461,8 @@ void j1App::GoToMainMenu() {
 	App->fade->FadeToBlack(App->scene, App->scene);
 }
 void j1App::GameOver() {
-	//Main menu will be the last map
 	game_over = true;
-	App->map->current_map = App->map->maps_path.end->prev;
-	App->fade->FadeToBlack(App->scene, App->scene);
+	App->gui->game_over->visible = true;
 
 	LOG("GAME OVER");
 }

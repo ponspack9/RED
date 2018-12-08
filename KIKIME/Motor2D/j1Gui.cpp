@@ -29,8 +29,43 @@ bool j1Gui::Awake(pugi::xml_node& conf)
 	yellow_file_name = conf.child("yellow").attribute("file").as_string();
 	grey_file_name = conf.child("grey").attribute("file").as_string();
 
+	//Creating game over image
+	pugi::xml_node n = conf.child("atlas").child("gameOver");
+	for (SDL_Rect &r : game_over_image.rect)
+	{
+		r.x = n.attribute("x").as_int();
+		r.y = n.attribute("y").as_int();
+		r.w = n.attribute("width").as_int();
+		r.h = n.attribute("height").as_int();
+		if (n.next_sibling("gameOver"))
+			n = n.next_sibling("gameOver");
+	}
+
+	//Creating last death image
+	n = conf.child("atlas").child("lastDeath");
+	for (SDL_Rect &r : last_death_image.rect)
+	{
+		r.x = n.attribute("x").as_int();
+		r.y = n.attribute("y").as_int();
+		r.w = n.attribute("width").as_int();
+		r.h = n.attribute("height").as_int();
+		if (n.next_sibling("lastDeath"))
+			n = n.next_sibling("lastDeath");
+	}
+
+	/*last_death_image.action = NO_ACTION;
+	last_death_image.callback = nullptr;
+	last_death_image.initial_pos = { 0,0 };
+	last_death_image.position = { 0,0 };
+	last_death_image.parent = nullptr;
+	last_death_image.state = IDLE;
+	last_death_image.type = IMAGE;
+	last_death_image.string = nullptr;
+	last_death_image.visible = true;*/
+
+
 	//Creating a blue button
-	pugi::xml_node n = conf.child("blue").child("button");
+	n = conf.child("blue").child("button");
 	for (SDL_Rect &r : blue_button.rect)
 	{
 		r.x = n.attribute("x").as_int();
@@ -150,8 +185,12 @@ bool j1Gui::Start()
 	CreateElement(IMAGE, iPoint(10,10), SDL_Rect({ 997,706,18,18 }), nullptr, NO_ACTION, (j1Module*)App);
 	CreateElement(IMAGE, iPoint(10,40), SDL_Rect({ 1001,928,18,18 }), nullptr, NO_ACTION, (j1Module*)App);
 	
-	in_game_pause = (Image*)CreateElement(IMAGE, iPoint(App->render->viewport.w/2 - 214, App->render->viewport.h/2 - 226),SDL_Rect({ 28,542,428,452 }), nullptr, NO_ACTION, nullptr,nullptr,false);
-	//Button* b1 = (Button*)CreateElement(BUTTON, iPoint(0, 20), SDL_Rect({ 641,166,228,68 }), nullptr, PLAY_PAUSE, nullptr,  in_game_pause);
+	in_game_pause = (Image*)CreateElement(IMAGE, iPoint(App->render->viewport.w/2 - 220, App->render->viewport.h/2 - 166),SDL_Rect({ 0,448,440,272 }), nullptr, NO_ACTION, nullptr,nullptr,false);
+	
+	//Not hardcoded
+	game_over = (Image*)CreateElement(IMAGE, iPoint(App->render->viewport.w / 2 - game_over_image.rect[IDLE].w / 2, App->render->viewport.h / 2 - game_over_image.rect[IDLE].h / 2), game_over_image.rect[IDLE], nullptr, NO_ACTION, nullptr, nullptr, false);
+	last_death = (Image*)CreateElement(IMAGE, iPoint(-20, -20), last_death_image.rect[IDLE], nullptr, LAST_DEATH, nullptr, nullptr, true);
+
 	Button* b1 = (Button*)CreateButton({ 0,0 }, blue_button, PLAY_PAUSE, nullptr, in_game_pause);
 	Button* b2 = (Button*)CreateButton({ 0,0 }, green_button, SETTINGS, nullptr, in_game_pause);
 	Button* b3 = (Button*)CreateButton({ 0,0 }, red_button, EXIT_GAME, nullptr, in_game_pause);
@@ -193,7 +232,7 @@ bool j1Gui::PreUpdate()
 bool j1Gui::PostUpdate()
 {
 	p2List_item<UIElement*>* item = elements.start;
-	SDL_Texture* sprites;
+	SDL_Texture* sprites = atlas;
 	while (item != NULL)
 	{
 		item->data->PostUpdate();

@@ -42,6 +42,8 @@ enum ActionType
 	GAME_TIMER,
 	PLAYER_NAME,
 	INFO,
+	LAST_DEATH,
+
 	NO_ACTION
 };
 

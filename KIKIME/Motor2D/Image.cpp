@@ -18,7 +18,7 @@ Image::Image(ActionType action,iPoint pos, SDL_Rect rect, UIType type, UIElement
 
 void Image::Draw(SDL_Texture * sprites)
 {
-	sprites = App->entitymanager->otherTex;
+	//sprites = App->entitymanager->otherTex;
 	int phi;
 	int temp;
 	switch (this->action)
@@ -39,6 +39,9 @@ void Image::Draw(SDL_Texture * sprites)
 			position.x += phi;
 		}
 		position.x = temp;
+		break;
+	case LAST_DEATH:
+		App->render->Blit(sprites, position.x, position.y, &rect[state], 1);
 		break;
 	default:
 		App->render->Blit(sprites, position.x, position.y, &rect[state], 0);

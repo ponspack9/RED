@@ -35,8 +35,6 @@ bool j1Debug::Awake(pugi::xml_node & config)
 	debug_path.create(config.child("debugtexture").child_value());
 	not.create(config.child("nottexture").child_value());
 	
-	
-
 	zero.SetToZero();
 
 	return true;
@@ -121,12 +119,14 @@ bool j1Debug::Update(float dt)
 	{
 		free_camera = !free_camera;
 	}
+
 	int x;
 	int y;
 	App->input->GetMousePosition(x, y);
 	x -= App->render->camera.x;
 	y -= App->render->camera.y;
 
+	//Spawining Entities
 	if (App->input->GetKey(SDL_SCANCODE_G) == KEY_DOWN)
 	{
 		Entity* e = App->entitymanager->CreateEntity(COIN, { x,y }, GREEN_DIAMOND);
@@ -144,6 +144,15 @@ bool j1Debug::Update(float dt)
 		Entity* e = App->entitymanager->CreateEntity(COIN, { x,y },HEART);
 		e->collider = App->collision->AddCollider(e->rect, COLLIDER_COIN);
 
+	}
+	if (App->input->GetKey(SDL_SCANCODE_E) == KEY_DOWN) {
+		Entity* e = App->entitymanager->CreateEntity(FLOATER, { x,y });
+		e->collider = App->collision->AddCollider(e->rect, COLLIDER_DEATH);
+	}
+
+	if (App->input->GetKey(SDL_SCANCODE_R) == KEY_DOWN) {
+		Entity* e = App->entitymanager->CreateEntity(ROLLER, { x,y });
+		e->collider = App->collision->AddCollider(e->rect, COLLIDER_DEATH);
 	}
 
 	// Camera drag through mouse click

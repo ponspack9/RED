@@ -42,7 +42,9 @@ public:
 
 	const SDL_Texture* GetAtlas() const;
 
-	Image* in_game_pause;
+	Image*				in_game_pause;
+	Image*				game_over;
+	Image*				last_death;
 
 private:
 
@@ -70,6 +72,10 @@ private:
 	Button				green_button;
 	Button				yellow_button;
 	Button				grey_button;
+
+	Image				game_over_image;
+	Image				last_death_image;
+
 };
 
 #endif // __j1GUI_H__

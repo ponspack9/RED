@@ -15,6 +15,7 @@
 #include "j1Pathfinding.h"
 #include "Entity.h"
 #include "j1Debug.h"
+#include "j1Gui.h"
 
 j1Scene::j1Scene() : j1Module() 
 {
@@ -54,13 +55,7 @@ bool j1Scene::Start()
 		App->entitymanager->Restart(App->entitymanager->playerinfo.lifes);
 		LOG("ENTITY RESTART");
 	}
-	//LOG("CURRENTMAP FROM SCENE: %s", App->map->current_map->data.GetString());
-	// Game Over transition to main menu
-	if (strcmp(App->map->current_map->data.GetString(), App->map->maps_path.end->prev->data.GetString()) == 0 && !game_over_transition) {
-		LOG("GAMEOVER MAP LOADED");
-		game_over_timer.Start();
-		game_over_transition = true;
-	}
+	
 
 	return ret;
 }
@@ -68,28 +63,6 @@ bool j1Scene::Start()
 // Called each loop iteration
 bool j1Scene::PreUpdate()
 {
-	//// debug pathfing ------------------
-	//static iPoint origin;
-	//static bool origin_selected = false;
-
-	//int x, y;
-	//App->input->GetMousePosition(x, y);
-	//iPoint p = App->render->ScreenToWorld(x, y);
-	//p = App->map->WorldToMap(p.x, p.y);
-
-	//if (App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KEY_DOWN)
-	//{
-	//	if (origin_selected == true)
-	//	{
-	//		App->pathfinding->CreatePath(origin, p);
-	//		origin_selected = false;
-	//	}
-	//	else
-	//	{
-	//		origin = p;
-	//		origin_selected = true;
-	//	}
-	//}
 	return true;
 }
 
@@ -103,52 +76,22 @@ bool j1Scene::Update(float dt)
 	p = App->map->WorldToMap(p.x, p.y);
 	p = App->map->MapToWorld(p.x, p.y);
 
-	if (App->input->GetKey(SDL_SCANCODE_UP) == KEY_REPEAT)
-		App->render->MoveCamera(0, 1);
-
-	if (App->input->GetKey(SDL_SCANCODE_DOWN) == KEY_REPEAT)
-		App->render->MoveCamera(0, -1);
-
-	if (App->input->GetKey(SDL_SCANCODE_LEFT) == KEY_REPEAT)
-		App->render->MoveCamera(1, 0);
-
-	if (App->input->GetKey(SDL_SCANCODE_RIGHT) == KEY_REPEAT)
-		App->render->MoveCamera(-1, 0);
-
-	if (App->input->GetKey(SDL_SCANCODE_E) == KEY_DOWN)
-		App->entitymanager->CreateEntity(FLOATER, p);
-
-	if (App->input->GetKey(SDL_SCANCODE_R) == KEY_DOWN)
-		App->entitymanager->CreateEntity(ROLLER, p);
-
 	App->map->Draw();
-	// Shows up player in main menu
-	//if (!game_over_transition && App->fade->current_step == App->fade->fade_step::none)
-	//No showing entities till playing (player pops up an instant before)
-	if (strcmp(App->map->current_map->data.GetString(), App->map->maps_path.end->prev->data.GetString()) != 0 &&
-		strcmp(App->map->current_map->data.GetString(), App->map->maps_path.end->data.GetString()) != 0 /*&&
-		App->fade->current_step == App->fade->fade_step::none*/)
-	App->entitymanager->Draw();
+	if (strcmp(App->map->current_map->data.GetString(), App->map->maps_path.end->data.GetString()) != 0)
+		App->entitymanager->Draw();
 
-	if (game_over_timer.ReadSec() > 2.5f && game_over_transition && App->fade->current_step == App->fade->fade_step::none) {
+	// Game Over transition to main menu
+	if (App->game_over && !game_over_transition) {
+		game_over_timer.Start();
+		game_over_transition = true;
+	}
+
+	if (game_over_timer.ReadSec() > 2.1f && game_over_transition) {
 		LOG("TRANSITIONING TO MAIN MENU");
 		App->GoToMainMenu();
+		App->gui->game_over->visible = false;
 		game_over_transition = false;
-	}
-	// Debug pathfinding ------------------------------
-	//int x, y;
-	//App->input->GetMousePosition(x, y);
-
-	//App->render->Blit(debug_tex, p.x, p.y);
-	//
-	//const p2DynArray<iPoint>* path = App->pathfinding->GetLastPath();
-	//
-	//for (uint i = 0; i < path->Count(); ++i)
-	//{
-	//	iPoint pos = App->map->MapToWorld(path->At(i)->x, path->At(i)->y);
-	//	App->render->Blit(debug_tex, pos.x, pos.y);
-	//}
-	
+	}	
 
 	return true;
 }

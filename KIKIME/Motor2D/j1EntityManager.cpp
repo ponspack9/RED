@@ -6,6 +6,7 @@
 #include "Floater.h"
 #include "Roller.h"
 #include "Player.h"
+#include "j1Gui.h"
 #include "j1EntityManager.h"
 
 j1EntityManager::j1EntityManager()
@@ -390,7 +391,7 @@ bool j1EntityManager::PreUpdate()
 		{
 			timer_death.Start();
 			is_started = true;
-
+			App->gui->last_death->position = player_ref->position;
 			player_ref->current_animation = &player_ref->death;
 		}
 

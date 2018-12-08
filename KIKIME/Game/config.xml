@@ -53,7 +53,11 @@
     </fx>
   </audio>
   <gui>
-    <atlas file="gui/atlas.png"/>
+    <atlas file="gui/atlas.png">
+      <gameOver height="272" width="440" y="448" x="0"></gameOver>
+      <lastDeath height="56" width="48" y="390" x="0"></lastDeath>
+      
+    </atlas>
     <blue file="gui/blueSheet.png">
       <SubTexture height="36" width="38" y="36" x="380" name="blue_boxCheckmark.png"/>
       <SubTexture height="36" width="38" y="0" x="380" name="blue_boxCross.png"/>
@@ -215,7 +219,6 @@
     <folder>maps</folder>
     <level>MapLvl1.tmx</level>
     <level>MapLvl2.tmx</level>
-    <level>GameOver.tmx</level>
     <level>MainMenu.tmx</level>
   </map>
 
@@ -224,7 +227,7 @@
     <enemypath path="textures/enemies/spritesheet32.png"/>
     <playerpath path="textures/player/sprites.png"/>
     <player>
-      <lifes lifes="5"/>
+      <lifes lifes="3"/>
       <rect width="64" height="64"/>
       <speed scrollspeed="200" jumpspeed="500" smashspeed="900" maxspeed="400"/>
       <gravity value="1150"/>
