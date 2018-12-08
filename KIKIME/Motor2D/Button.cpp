@@ -1,5 +1,20 @@
 #include "Button.h"
 
+Button::Button(iPoint pos,const Button & b,ActionType action, UIElement* parent) : UIElement(b.type, parent, b.visible)
+{
+	this->initial_pos = pos;
+	this->position = pos;
+	this->state = IDLE;
+	this->action = action;
+	this->callback = b.callback;
+	this->rect[IDLE]		= b.rect[IDLE];
+	this->rect[HOVER]		= b.rect[HOVER];
+	this->rect[CLICK_DOWN]	= b.rect[CLICK_DOWN];
+	this->rect[CLICK_UP]	= b.rect[CLICK_UP];
+	this->color = b.color;
+}
+
+
 Button::Button(ActionType action, iPoint pos, SDL_Rect rect, UIType type, j1Module* callback, UIElement* parent, bool visible) : UIElement(type, parent, visible)
 {
 	this->initial_pos = pos;

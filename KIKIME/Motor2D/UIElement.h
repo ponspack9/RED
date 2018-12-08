@@ -7,6 +7,14 @@
 #include "j1Fonts.h"
 #include "j1EntityManager.h"
 
+
+enum UIColor {
+	BLUE,
+	RED,
+	YELLOW,
+	GREY,
+	GREEN
+};
 enum UIType 
 { 
 	BUTTON,

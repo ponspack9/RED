@@ -19,10 +19,102 @@ j1Gui::~j1Gui()
 // Called before render is available
 bool j1Gui::Awake(pugi::xml_node& conf)
 {
-	LOG("Loading GUI atlas");
+	LOG("Loading GUI");
 	bool ret = true;
-	
+
 	atlas_file_name = conf.child("atlas").attribute("file").as_string("");
+	blue_file_name = conf.child("blue").attribute("file").as_string("");
+	red_file_name = conf.child("red").attribute("file").as_string();
+	green_file_name = conf.child("green").attribute("file").as_string();
+	yellow_file_name = conf.child("yellow").attribute("file").as_string();
+	grey_file_name = conf.child("grey").attribute("file").as_string();
+
+	//Creating a blue button
+	pugi::xml_node n = conf.child("blue").child("button");
+	for (SDL_Rect &r : blue_button.rect)
+	{
+		r.x = n.attribute("x").as_int();
+		r.y = n.attribute("y").as_int();
+		r.w = n.attribute("width").as_int();
+		r.h = n.attribute("height").as_int();
+		n = n.next_sibling("button");
+	}
+	blue_button.type	 = UIType::BUTTON;
+	blue_button.action	 = NO_ACTION;
+	blue_button.parent	 = nullptr;
+	blue_button.callback = nullptr;
+	blue_button.visible	 = true;
+	blue_button.color	 = BLUE;
+
+
+	// Creating a red button
+	n = conf.child("red").child("button");
+	for (SDL_Rect &r : red_button.rect)
+	{
+		r.x = n.attribute("x").as_int();
+		r.y = n.attribute("y").as_int();
+		r.w = n.attribute("width").as_int();
+		r.h = n.attribute("height").as_int();
+		n = n.next_sibling("button");
+	}
+	red_button.type		= UIType::BUTTON;
+	red_button.action	= NO_ACTION;
+	red_button.parent	= nullptr;
+	red_button.callback = nullptr;
+	red_button.visible	= true;
+	red_button.color	= RED;
+
+	// Creating a green button
+	n = conf.child("green").child("button");
+	for (SDL_Rect &r : green_button.rect)
+	{
+		r.x = n.attribute("x").as_int();
+		r.y = n.attribute("y").as_int();
+		r.w = n.attribute("width").as_int();
+		r.h = n.attribute("height").as_int();
+		n = n.next_sibling("button");
+	}
+	green_button.type = UIType::BUTTON;
+	green_button.action = NO_ACTION;
+	green_button.parent = nullptr;
+	green_button.callback = nullptr;
+	green_button.visible = true;
+	green_button.color = GREEN;
+
+	// Creating a yellow button
+	n = conf.child("yellow").child("button");
+	for (SDL_Rect &r : yellow_button.rect)
+	{
+		r.x = n.attribute("x").as_int();
+		r.y = n.attribute("y").as_int();
+		r.w = n.attribute("width").as_int();
+		r.h = n.attribute("height").as_int();
+		n = n.next_sibling("button");
+	}
+	yellow_button.type = UIType::BUTTON;
+	yellow_button.action = NO_ACTION;
+	yellow_button.parent = nullptr;
+	yellow_button.callback = nullptr;
+	yellow_button.visible = true;
+	yellow_button.color = YELLOW;
+
+	// Creating a grey button
+	n = conf.child("grey").child("button");
+	for (SDL_Rect &r : grey_button.rect)
+	{
+		r.x = n.attribute("x").as_int();
+		r.y = n.attribute("y").as_int();
+		r.w = n.attribute("width").as_int();
+		r.h = n.attribute("height").as_int();
+		n = n.next_sibling("button");
+	}
+	grey_button.type = UIType::BUTTON;
+	grey_button.action = NO_ACTION;
+	grey_button.parent = nullptr;
+	grey_button.callback = nullptr;
+	grey_button.visible = true;
+	grey_button.color = GREY;
+
 
 	return ret;
 }
@@ -31,6 +123,11 @@ bool j1Gui::Awake(pugi::xml_node& conf)
 bool j1Gui::Start()
 {
 	atlas = App->tex->Load(atlas_file_name.GetString());
+	blue = App->tex->Load(blue_file_name.GetString());
+	red = App->tex->Load(red_file_name.GetString());
+	green = App->tex->Load(green_file_name.GetString());
+	yellow = App->tex->Load(yellow_file_name.GetString());
+	grey = App->tex->Load(grey_file_name.GetString());
 
 	SDL_RenderGetViewport(App->render->renderer, &App->render->viewport);
   
@@ -53,10 +150,11 @@ bool j1Gui::Start()
 	CreateElement(IMAGE, iPoint(10,10), SDL_Rect({ 997,706,18,18 }), nullptr, NO_ACTION, (j1Module*)App);
 	CreateElement(IMAGE, iPoint(10,40), SDL_Rect({ 1001,928,18,18 }), nullptr, NO_ACTION, (j1Module*)App);
 	
-	in_game_pause = (Image*)CreateElement(IMAGE, iPoint(App->render->viewport.w/2 - 214, App->render->viewport.h/2 - 226),SDL_Rect({ 28,542,428,452 }), nullptr, NO_ACTION, (j1Module*)App,nullptr,false);
-	Button* b1 = (Button*)CreateElement(BUTTON, iPoint(0, 20), SDL_Rect({ 641,166,228,68 }), nullptr, PLAY_PAUSE, nullptr,  in_game_pause);
-	Button* b2 = (Button*)CreateElement(BUTTON, iPoint(40, 90), SDL_Rect({ 641,166,228,68 }), nullptr, SETTINGS,nullptr,  in_game_pause);
-	Button* b3 = (Button*)CreateElement(BUTTON, iPoint(40, 160), SDL_Rect({ 641,166,228,68 }), nullptr, EXIT_GAME, nullptr, in_game_pause);
+	in_game_pause = (Image*)CreateElement(IMAGE, iPoint(App->render->viewport.w/2 - 214, App->render->viewport.h/2 - 226),SDL_Rect({ 28,542,428,452 }), nullptr, NO_ACTION, nullptr,nullptr,false);
+	//Button* b1 = (Button*)CreateElement(BUTTON, iPoint(0, 20), SDL_Rect({ 641,166,228,68 }), nullptr, PLAY_PAUSE, nullptr,  in_game_pause);
+	Button* b1 = (Button*)CreateButton({ 0,0 }, blue_button, PLAY_PAUSE, nullptr, in_game_pause);
+	Button* b2 = (Button*)CreateButton({ 0,0 }, green_button, SETTINGS, nullptr, in_game_pause);
+	Button* b3 = (Button*)CreateButton({ 0,0 }, red_button, EXIT_GAME, nullptr, in_game_pause);
 	b1->Center(0,-70);
 	b2->Center();
 	b3->Center(0, 70);
@@ -67,7 +165,6 @@ bool j1Gui::Start()
 	l1->Center();
 	l2->Center();
 	l3->Center();
-
 
 	return true;
 }
@@ -96,13 +193,38 @@ bool j1Gui::PreUpdate()
 bool j1Gui::PostUpdate()
 {
 	p2List_item<UIElement*>* item = elements.start;
-
+	SDL_Texture* sprites;
 	while (item != NULL)
 	{
 		item->data->PostUpdate();
 		if (item->data->visible) {
 
-				item->data->Draw(atlas);
+			if (item->data->type == BUTTON) {
+				Button* b = (Button*)item->data;
+				switch (b->color)
+				{
+				case BLUE:
+					sprites = blue;
+					break;
+				case RED:
+					sprites = red;
+					break;
+				case YELLOW:
+					sprites = yellow;
+					break;
+				case GREY:
+					sprites = grey;
+					break;
+				case GREEN:
+					sprites = green;
+					break;
+				default:
+					sprites = atlas;
+					break;
+				}
+			}
+
+			item->data->Draw(sprites);
 		}
 		item = item->next;
 	}
@@ -125,7 +247,15 @@ bool j1Gui::CleanUp()
 	
 	return true;
 }
+//Button* b3 = (Button*)CreateElement(BUTTON, iPoint(40, 160), SDL_Rect({ 641,166,228,68 }), nullptr, EXIT_GAME, nullptr, in_game_pause);
+	
+UIElement* j1Gui::CreateButton(iPoint pos,const Button &b, ActionType action, j1Module* callback, UIElement* parent)
+{
+	Button* elem = new Button(pos, b,action,parent);
+	elements.add(elem);
 
+	return elem;
+}
 UIElement* j1Gui::CreateElement(UIType type, iPoint pos, SDL_Rect rect, p2SString string, ActionType action, j1Module* callback, UIElement* parent, bool visible)
 {
 	UIElement* elem = nullptr;
@@ -161,9 +291,6 @@ void j1Gui::HandleInput(UIElement* element)
 	iPoint mouse;
 	App->input->GetMousePosition(mouse.x, mouse.y);
 
-	/*bool is_inside = (mouse.x - App->render->camera.x >= element->position.x && mouse.x - App->render->camera.x <= element->position.x + element->rect[element->state].w &&
-					  mouse.y - App->render->camera.y >= element->position.y && mouse.y - App->render->camera.y <= element->position.y + element->rect[element->state].h);
-	*/
 	bool is_inside = (mouse.x >= element->position.x && mouse.x <= element->position.x + element->rect[element->state].w &&
 					  mouse.y >= element->position.y && mouse.y <= element->position.y + element->rect[element->state].h);
 
