@@ -26,7 +26,12 @@ void Button::HandleAction()
 	case SETTINGS:
 		break;
 	case PLAY_PAUSE:
+		// Need to have only one parent above him to work properly
 		App->TogglePause();
+		parent->visible = false;
+		break;
+	case EXIT_GAME:
+		App->Exit();
 		break;
 	}
 }

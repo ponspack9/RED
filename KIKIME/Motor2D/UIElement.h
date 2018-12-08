@@ -47,7 +47,7 @@ public:
 	virtual bool PreUpdate() { return true; }
 	virtual bool PostUpdate() { 
 		if (parent != nullptr){
-			visible &= parent->visible;
+			visible = parent->visible;
 			position.x = parent->position.x + initial_pos.x;
 			position.y = parent->position.y + initial_pos.y;
 		}
@@ -57,6 +57,24 @@ public:
 	virtual void Draw(SDL_Texture* sprites = nullptr)
 	{
 		App->render->Blit(sprites, position.x, position.y, &rect[state], 0);
+	}
+
+	int CenterX(int offset = 0) {
+		if (parent != nullptr)
+			initial_pos.x = ((parent->rect[IDLE].w /2) - rect[IDLE].w/2) + offset;
+		return initial_pos.x;
+	}
+	int CenterY(int offset = 0) {
+		if (parent != nullptr)
+			initial_pos.y = ((parent->rect[IDLE].h / 2) - rect[IDLE].h / 2) + offset;
+		return initial_pos.y;
+	}
+
+	void Center(int offsetX = 0, int offsetY = 0) {
+		if (parent != nullptr) {
+			initial_pos.x = ((parent->rect[IDLE].w / 2) - rect[IDLE].w / 2) + offsetX;
+			initial_pos.y = ((parent->rect[IDLE].h / 2) - rect[IDLE].h / 2) + offsetY;
+		}
 	}
 
 	virtual void HandleAction() {}

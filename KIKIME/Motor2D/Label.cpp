@@ -36,11 +36,11 @@ bool Label::PreUpdate()
 }
 
 
-void Label::Draw(SDL_Texture* sprites)
-{
-	sprites = text;
-	App->render->Blit(sprites, position.x, position.y);
-}
+//void Label::Draw(SDL_Texture* sprites)
+//{
+//	sprites = text;
+//	App->render->Blit(text, position.x, position.y);
+//}
 
 void Label::ChangeText(const char * string)
 {
@@ -56,13 +56,13 @@ void Label::HandleAction()
 	switch (state)
 	{
 	case HOVER:
-		ChangeText("HOVER");
+		//ChangeText("HOVER");
 		break;
 	case IDLE:
-		ChangeText("IDLE");
+		//ChangeText("IDLE");
 		break;
 	case CLICK_DOWN:
-		ChangeText("CLICKASU BRO");
+		//ChangeText("CLICKASU BRO");
 		break;
 	}
 }

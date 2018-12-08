@@ -41,6 +41,8 @@ public:
 
 	const SDL_Texture* GetAtlas() const;
 
+	Image* in_game_pause;
+
 private:
 
 	p2List<UIElement*>  elements;

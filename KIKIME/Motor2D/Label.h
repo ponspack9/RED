@@ -9,7 +9,7 @@ public:
 
 	bool PreUpdate();
 
-	void Draw(SDL_Texture* sprites);
+	//void Draw(SDL_Texture* sprites);
 
 	void ChangeText(const char* string);
 

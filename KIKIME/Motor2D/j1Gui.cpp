@@ -46,11 +46,21 @@ bool j1Gui::Start()
 	//CreateElement(LABEL, iPoint(20, 20), { 0,0,0,0 }, "0", GAME_TIMER);
 	//CreateElement(LABEL, iPoint(9 * App->render->viewport.w / 10, 20), { 0,0,0,0 }, "SCORE : 999", SCORE);
 
-	Image* window = (Image*)CreateElement(IMAGE, iPoint(App->render->viewport.w/2 - 214, App->render->viewport.h/2 - 226),SDL_Rect({ 28,542,428,452 }), nullptr, NO_ACTION, (j1Module*)App);
-	CreateElement(BUTTON, iPoint(500, 20), SDL_Rect({ 641,166,228,68 }), nullptr, PLAY_PAUSE, nullptr, window);
-	CreateElement(BUTTON, iPoint(500, 50), SDL_Rect({ 641,166,228,68 }), nullptr, PLAY_PAUSE,nullptr, window,false);
-	CreateElement(BUTTON, iPoint(500, 90), SDL_Rect({ 641,166,228,68 }), nullptr, PLAY_PAUSE, nullptr, window);
+	in_game_pause = (Image*)CreateElement(IMAGE, iPoint(App->render->viewport.w/2 - 214, App->render->viewport.h/2 - 226),SDL_Rect({ 28,542,428,452 }), nullptr, NO_ACTION, (j1Module*)App,nullptr,false);
+	Button* b1 = (Button*)CreateElement(BUTTON, iPoint(0, 20), SDL_Rect({ 641,166,228,68 }), nullptr, PLAY_PAUSE, nullptr,  in_game_pause);
+	Button* b2 = (Button*)CreateElement(BUTTON, iPoint(40, 90), SDL_Rect({ 641,166,228,68 }), nullptr, SETTINGS,nullptr,  in_game_pause);
+	Button* b3 = (Button*)CreateElement(BUTTON, iPoint(40, 160), SDL_Rect({ 641,166,228,68 }), nullptr, EXIT_GAME, nullptr, in_game_pause);
+	b1->CenterX(); b1->CenterY(-70);
+	b2->CenterX(); b2->CenterY(0);
+	//b3->CenterX(); b3->CenterY(70);
+	b3->Center(0, 70);
 
+	Label* l1 = (Label*)CreateElement(LABEL, iPoint(0, 0), { 0,0,0,0 }, "RESUME GAME", NO_ACTION, nullptr, b1);
+	Label* l2 = (Label*)CreateElement(LABEL, iPoint(0, 0), { 0,0,0,0 }, "SETTINGS", NO_ACTION, nullptr, b2);
+	Label* l3 = (Label*)CreateElement(LABEL, iPoint(0, 0), { 0,0,0,0 }, "EXIT GAME", NO_ACTION,nullptr,b3);
+	l1->CenterX();	l1->CenterY();
+	l2->CenterX();	l2->CenterY();
+	l3->CenterX();	l3->CenterY();
 
 	return true;
 }
@@ -82,10 +92,17 @@ bool j1Gui::PostUpdate()
 
 	while (item != NULL)
 	{
+		item->data->PostUpdate();
 		if (item->data->visible) {
 
-			item->data->PostUpdate();
-			item->data->Draw(atlas);
+			if (item->data->type == UIType::LABEL) {
+				Label* l = ((Label*)item->data);
+				l->Draw(l->text);
+			}
+			else {
+				item->data->Draw(atlas);
+			}
+
 		}
 		item = item->next;
 	}
@@ -140,6 +157,7 @@ UIElement* j1Gui::CreateElement(UIType type, iPoint pos, SDL_Rect rect, p2SStrin
 
 void j1Gui::HandleInput(UIElement* element)
 {
+	bool ret = true;
 	iPoint mouse;
 	App->input->GetMousePosition(mouse.x, mouse.y);
 
@@ -190,10 +208,10 @@ void j1Gui::HandleInput(UIElement* element)
 	}
 	//Not a nice mouse movement but working for debug for now
 	//LOG("ELEMENT [%d,%d] MOUSE [%d,%d]", element->position.x, element->position.y, mouse.x, mouse.y);
-	if (element->state == CLICK_DOWN) {
+	/*if (element->state == CLICK_DOWN) {
 		element->position.x = (mouse.x -  100);
 		element->position.y = (mouse.y -  100);
-	}
+	}*/
 
 }
 
