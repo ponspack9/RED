@@ -32,8 +32,8 @@ bool Label::PreUpdate()
 	}
 	if (action == PLAYER_NAME)
 	{
-		position.x = App->entitymanager->player_ref->position.x + App->entitymanager->player_ref->rect.w / 2 - rect[IDLE].w / 2;
-		position.y = App->entitymanager->player_ref->position.y - 20;
+		position.x = App->render->camera.x + App->entitymanager->player_ref->position.x + App->entitymanager->player_ref->rect.w / 2 - rect[IDLE].w / 2;
+		position.y = App->render->camera.y + App->entitymanager->player_ref->position.y - 20;
 
 		return true;
 	}
@@ -41,16 +41,12 @@ bool Label::PreUpdate()
 	return true;
 }
 
-bool Label::PostUpdate()
-{
-	return true;
-}
 
-//void Label::Draw(SDL_Texture* sprites)
-//{
-//	sprites = text;
-//	App->render->Blit(text, position.x, position.y);
-//}
+void Label::Draw(SDL_Texture* sprites)
+{
+	sprites = text;
+	App->render->Blit(text, position.x, position.y,NULL,0);
+}
 
 void Label::ChangeText(const char * string)
 {
@@ -67,15 +63,16 @@ void Label::HandleAction()
 	if (action != INFO)
 	{
 		switch (state)
-		{		
-  	case HOVER:
-	  	//ChangeText("HOVER");
-		  break;
-	  case IDLE:
-		  //ChangeText("IDLE");
-		  break;
-	  case CLICK_DOWN:
-		  //ChangeText("CLICKASU BRO");
-		  break;
+		{
+		case HOVER:
+			//ChangeText("HOVER");
+			break;
+		case IDLE:
+			//ChangeText("IDLE");
+			break;
+		case CLICK_DOWN:
+			//ChangeText("CLICKASU BRO");
+			break;
+		}
 	}
 }

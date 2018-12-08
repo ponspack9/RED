@@ -327,12 +327,12 @@ bool j1EntityManager::Start()
 	enemyTex = App->tex->Load(enemyPath.GetString());
 	otherTex = App->tex->Load(otherPath.GetString());
 
-	CreateEntities();
+	CreateEntities(playerinfo.lifes);
 
 	return true;
 }
 
-void j1EntityManager::CreateEntities()
+void j1EntityManager::CreateEntities(int player_lifes)
 {
 	Entity* e = nullptr;
 	//Creating all entities
@@ -374,6 +374,7 @@ void j1EntityManager::CreateEntities()
 		{
 			player_ref = (Player*)CreateEntity(PLAYER, pos);
 			player_ref->collider = App->collision->AddCollider(player_ref->rect, COLLIDER_PLAYER, this);
+			player_ref->lifes = player_lifes;
 		}
 	}
 }
@@ -426,7 +427,7 @@ bool j1EntityManager::PostUpdate()
 			LOG("DEAD BY POST UPDATE");
 			if (player_ref->lifes > 0) {
 				player_ref->lifes -= 1;
-				App->RestartLevel();
+				App->RestartLevel(player_ref->lifes);
 				LOG("LIFES REMAINING: %d", player_ref->lifes);
 			}
 			else {
@@ -478,10 +479,10 @@ void j1EntityManager::CleanEntities()
 }
 
 
-bool j1EntityManager::Restart()
+bool j1EntityManager::Restart(int player_lifes)
 {
 	CleanEntities();
-	CreateEntities();
+	CreateEntities(player_lifes);
 	return true;
 }
 

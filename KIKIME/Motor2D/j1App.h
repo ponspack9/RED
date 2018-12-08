@@ -80,7 +80,7 @@ public:
 
 
 	//Restarts the current level
-	bool RestartLevel();
+	bool RestartLevel(int player_lifes = 0);
 
 	bool NextLevel();
 

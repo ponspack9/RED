@@ -51,7 +51,7 @@ bool j1Scene::Start()
 		first_load = false;
 	}
 	else {
-		App->entitymanager->Restart();
+		App->entitymanager->Restart(App->entitymanager->playerinfo.lifes);
 		LOG("ENTITY RESTART");
 	}
 	//LOG("CURRENTMAP FROM SCENE: %s", App->map->current_map->data.GetString());

@@ -511,12 +511,12 @@ void j1App::UnPauseGame()
 	}
 	else LOG("Game is not paused");
 }
-bool j1App::RestartLevel()
+bool j1App::RestartLevel(int player_lifes)
 {
 	BROFILER_CATEGORY("App->RestartLevel", Profiler::Color::Red);
 
 	render->ResetCamera();
-	entitymanager->Restart();
+	entitymanager->Restart(player_lifes);
 	
 	return true;
 }

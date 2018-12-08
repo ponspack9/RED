@@ -40,9 +40,9 @@ public:
 	bool CleanUp();
 
 	//Controllers
-	void CreateEntities();
+	void CreateEntities(int player_lifes);
 	void CleanEntities();
-	bool Restart();
+	bool Restart(int player_lifes);
 
 	bool Save(pugi::xml_node &node);
 	bool Load(pugi::xml_node &node);

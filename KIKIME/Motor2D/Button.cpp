@@ -28,7 +28,7 @@ void Button::HandleAction()
 	case PLAY_PAUSE:
 		// Need to have only one parent above him to work properly
 		App->TogglePause();
-		parent->visible = false;
+		if (parent) parent->visible = false;
 		break;
 	case EXIT_GAME:
 		App->Exit();

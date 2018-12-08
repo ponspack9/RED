@@ -35,37 +35,24 @@ bool j1Gui::Start()
 	SDL_RenderGetViewport(App->render->renderer, &App->render->viewport);
   
 	//HARDCODED
-	//CreateElement(IMAGE, iPoint(App->render->viewport.w / 2, App->render->viewport.h / 11 + 25));
 
-	//CreateElement(BUTTON, iPoint(10, 600), SDL_Rect({ 641,166,228,68 }), nullptr, MAIN_MENU, (j1Module*)App);
-	//CreateElement(LABEL, iPoint(90, 625), { 0,0,0,0 }, "MAIN MENU", INFO);
+	CreateElement(IMAGE, iPoint(10,10), App->entitymanager->heart.idle.GetCurrentFrame(), nullptr, LIFE_SYSTEM);
 
-	//CreateElement(BUTTON, iPoint(780, 600), SDL_Rect({ 641,166,228,68 }), nullptr, PLAY_PAUSE, (j1Module*)App);
-	//CreateElement(LABEL, iPoint(855, 625), { 0,0,0,0 }, "PAUSE & PLAY", INFO);
-
-	//CreateElement(IMAGE, iPoint(10,10), App->entitymanager->heart.idle.GetCurrentFrame(), nullptr, LIFE_SYSTEM);
-
-	//CreateElement(IMAGE, iPoint(700, 10), App->entitymanager->green_diamond.idle.GetCurrentFrame(), nullptr, INFO);
-	//CreateElement(LABEL, iPoint(745, 15), { 0,0,0,0 }, "X 50", INFO);
+	CreateElement(IMAGE, iPoint(700, 10), App->entitymanager->green_diamond.idle.GetCurrentFrame(), nullptr, INFO);
+	CreateElement(LABEL, iPoint(745, 15), { 0,0,0,0 }, "X 50", INFO);
 	
-	//CreateElement(IMAGE, iPoint(800, 10), App->entitymanager->blue_diamond.idle.GetCurrentFrame(), nullptr, INFO);
-	//CreateElement(LABEL, iPoint(845, 15), { 0,0,0,0 }, "X 100", INFO);
+	CreateElement(IMAGE, iPoint(800, 10), App->entitymanager->blue_diamond.idle.GetCurrentFrame(), nullptr, INFO);
+	CreateElement(LABEL, iPoint(845, 15), { 0,0,0,0 }, "X 100", INFO);
 
 
-	//CreateElement(LABEL, iPoint(900, 15), { 0,0,0,0 }, "SCORE : 9999", SCORE);
-	//CreateElement(LABEL, iPoint(900, 40), { 0,0,0,0 }, "", GAME_TIMER);
+	CreateElement(LABEL, iPoint(900, 15), { 0,0,0,0 }, "SCORE : 9999", SCORE);
+	CreateElement(LABEL, iPoint(900, 40), { 0,0,0,0 }, "", GAME_TIMER);
 
-	//CreateElement(LABEL, iPoint(App->entitymanager->player_ref->position.x + App->entitymanager->player_ref->rect.w / 2, App->entitymanager->player_ref->position.y - 50), { 0,0,0,0 }, "--Kikime--", PLAYER_NAME);
-
-	//CreateElement(BUTTON, iPoint(App->render->viewport.w / 12, App->render->viewport.h / 12), SDL_Rect({ 641,166,228,68 }), nullptr, MAIN_MENU, (j1Module*)App);
-	////CreateElement(BUTTON, iPoint(5 * App->render->viewport.w / 12, 6 * App->render->viewport.h / 12), nullptr, SETTINGS);
-	// 
-	//CreateElement(IMAGE, iPoint(10,10), SDL_Rect({ 997,706,18,18 }), nullptr, NO_ACTION, (j1Module*)App);
-	//CreateElement(IMAGE, iPoint(10,40), SDL_Rect({ 1001,928,18,18 }), nullptr, NO_ACTION, (j1Module*)App);
-	//
-	//CreateElement(LABEL, iPoint(20, 20), { 0,0,0,0 }, "0", GAME_TIMER);
-	//CreateElement(LABEL, iPoint(9 * App->render->viewport.w / 10, 20), { 0,0,0,0 }, "SCORE : 999", SCORE);
-
+	CreateElement(LABEL, iPoint(App->entitymanager->player_ref->position.x + App->entitymanager->player_ref->rect.w / 2, App->entitymanager->player_ref->position.y - 50), { 0,0,0,0 }, "--Kikime--", PLAYER_NAME);
+	 
+	CreateElement(IMAGE, iPoint(10,10), SDL_Rect({ 997,706,18,18 }), nullptr, NO_ACTION, (j1Module*)App);
+	CreateElement(IMAGE, iPoint(10,40), SDL_Rect({ 1001,928,18,18 }), nullptr, NO_ACTION, (j1Module*)App);
+	
 	in_game_pause = (Image*)CreateElement(IMAGE, iPoint(App->render->viewport.w/2 - 214, App->render->viewport.h/2 - 226),SDL_Rect({ 28,542,428,452 }), nullptr, NO_ACTION, (j1Module*)App,nullptr,false);
 	Button* b1 = (Button*)CreateElement(BUTTON, iPoint(0, 20), SDL_Rect({ 641,166,228,68 }), nullptr, PLAY_PAUSE, nullptr,  in_game_pause);
 	Button* b2 = (Button*)CreateElement(BUTTON, iPoint(40, 90), SDL_Rect({ 641,166,228,68 }), nullptr, SETTINGS,nullptr,  in_game_pause);
@@ -116,14 +103,7 @@ bool j1Gui::PostUpdate()
 		item->data->PostUpdate();
 		if (item->data->visible) {
 
-			if (item->data->type == UIType::LABEL) {
-				Label* l = ((Label*)item->data);
-				l->Draw(l->text);
-			}
-			else {
 				item->data->Draw(atlas);
-			}
-
 		}
 		item = item->next;
 	}
@@ -155,7 +135,7 @@ UIElement* j1Gui::CreateElement(UIType type, iPoint pos, SDL_Rect rect, p2SStrin
 	{
   case IMAGE:
       
-		elem = new Image(pos, rect, type, parent,visible);
+		elem = new Image(action,pos, rect, type, parent,visible);
 		break;
 	case LABEL:
 
