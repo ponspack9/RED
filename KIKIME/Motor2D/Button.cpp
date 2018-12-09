@@ -40,13 +40,13 @@ void Button::HandleAction()
 		break;
 	case SETTINGS:
 		break;
-	case PLAY_PAUSE:
-		// Need to have only one parent above him to work properly
+	case PAUSE:
 		App->TogglePause();
-		if (parent) parent->visible = false;
 		break;
 	case EXIT_GAME:
 		App->Exit();
 		break;
+	case START:
+		App->RestartGame();
 	}
 }

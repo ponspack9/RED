@@ -167,24 +167,55 @@ bool j1Gui::Start()
 	SDL_RenderGetViewport(App->render->renderer, &App->render->viewport);
   
 	//HARDCODED
+	main_menu_ui = (Image*)CreateElement(IMAGE, iPoint(App->render->viewport.w / 2 - 214, App->render->viewport.h / 2 - 226), SDL_Rect({ 28,542,428,452 }), nullptr, NO_ACTION, (j1Module*)App, nullptr, false);
+	Button* m1 = (Button*)CreateElement(BUTTON, iPoint(0, 20), SDL_Rect({ 641,166,228,68 }), nullptr, START, nullptr, main_menu_ui);
+	Button* m2 = (Button*)CreateElement(BUTTON, iPoint(40, 90), SDL_Rect({ 641,166,228,68 }), nullptr, SETTINGS, nullptr, main_menu_ui);
+	Button* m3 = (Button*)CreateElement(BUTTON, iPoint(40, 160), SDL_Rect({ 641,166,228,68 }), nullptr, EXIT_GAME, nullptr, main_menu_ui);
 
-	CreateElement(IMAGE, iPoint(10,10), App->entitymanager->heart.idle.GetCurrentFrame(), nullptr, LIFE_SYSTEM);
+	m1->Center(0, -70);
+	m2->Center();
+	m3->Center(0, 70);
 
-	CreateElement(IMAGE, iPoint(700, 10), App->entitymanager->green_diamond.idle.GetCurrentFrame(), nullptr, INFO);
-	CreateElement(LABEL, iPoint(745, 15), { 0,0,0,0 }, "X 50", INFO);
+	Label* title = (Label*)CreateElement(LABEL, iPoint(0, 50), { 0,0,0,0 }, "PAUSE MENU", NO_ACTION, nullptr, main_menu_ui);
+	title->CenterX();
+
+	Label* lm1 = (Label*)CreateElement(LABEL, iPoint(0, 0), { 0,0,0,0 }, "PLAY GAME", NO_ACTION, nullptr, m1);
+	Label* lm2 = (Label*)CreateElement(LABEL, iPoint(0, 0), { 0,0,0,0 }, "SETTINGS", NO_ACTION, nullptr, m2);
+	Label* lm3 = (Label*)CreateElement(LABEL, iPoint(0, 0), { 0,0,0,0 }, "EXIT GAME", NO_ACTION, nullptr, m3);
+
+	lm1->Center();
+	lm2->Center();
+	lm3->Center();
+
+	in_game_ui = (Image*)CreateElement(IMAGE, iPoint(0, 0), SDL_Rect({ 28,542,428,452 }), nullptr, NO_ACTION, (j1Module*)App, nullptr, true);
+	Image* lives = (Image*)CreateElement(IMAGE, iPoint(10, 10), App->entitymanager->heart.idle.GetCurrentFrame(), nullptr, LIFE_SYSTEM, nullptr, in_game_ui);
+
+	Image* green = (Image*)CreateElement(IMAGE, iPoint(700, 10), App->entitymanager->green_diamond.idle.GetCurrentFrame(), nullptr, INFO,nullptr, in_game_ui);
+	Label* gl = (Label*)CreateElement(LABEL, iPoint(0, 0), { 0,0,0,0 }, "X 50", INFO, nullptr, green);
+	gl->Center(45, 5);
 	
-	CreateElement(IMAGE, iPoint(800, 10), App->entitymanager->blue_diamond.idle.GetCurrentFrame(), nullptr, INFO);
-	CreateElement(LABEL, iPoint(845, 15), { 0,0,0,0 }, "X 100", INFO);
-
-
-	CreateElement(LABEL, iPoint(900, 15), { 0,0,0,0 }, "SCORE : 9999", SCORE);
-	CreateElement(LABEL, iPoint(900, 40), { 0,0,0,0 }, "", GAME_TIMER);
-
-	CreateElement(LABEL, iPoint(App->entitymanager->player_ref->position.x + App->entitymanager->player_ref->rect.w / 2, App->entitymanager->player_ref->position.y - 50), { 0,0,0,0 }, "--Kikime--", PLAYER_NAME);
-	 
-	CreateElement(IMAGE, iPoint(10,10), SDL_Rect({ 997,706,18,18 }), nullptr, NO_ACTION, (j1Module*)App);
-	CreateElement(IMAGE, iPoint(10,40), SDL_Rect({ 1001,928,18,18 }), nullptr, NO_ACTION, (j1Module*)App);
+	Image* blue = (Image*)CreateElement(IMAGE, iPoint(800, 10), App->entitymanager->blue_diamond.idle.GetCurrentFrame(), nullptr, INFO, nullptr, in_game_ui);
+	Label* bl = (Label*)CreateElement(LABEL, iPoint(845, 15), { 0,0,0,0 }, "X 100", INFO, nullptr, blue);
+	bl->Center(45, 5);
 	
+	Label* score = (Label*)CreateElement(LABEL, iPoint(900, 15), { 0,0,0,0 }, "SCORE :", INFO, nullptr, in_game_ui);
+	Label* ls = (Label*)CreateElement(LABEL, iPoint(0, 0), { 0,0,0,0 }, "", SCORE, nullptr, score);
+	ls->Center(45, 0);
+
+	Label* timer = (Label*)CreateElement(LABEL, iPoint(900, 40), { 0,0,0,0 }, "TIME :", INFO, nullptr, in_game_ui);
+	Label* tm = (Label*)CreateElement(LABEL, iPoint(0, 0), { 0,0,0,0 }, "", GAME_TIMER, nullptr, timer);
+	tm->Center(25, 0);
+
+	Label* pl_name = (Label*)CreateElement(LABEL, iPoint(App->entitymanager->player_ref->position.x + App->entitymanager->player_ref->rect.w / 2, App->entitymanager->player_ref->position.y - 50), { 0,0,0,0 }, "--Kikime--", PLAYER_NAME, nullptr, in_game_ui);
+	
+
+	in_game_pause = (Image*)CreateElement(IMAGE, iPoint(App->render->viewport.w/2 - 214, App->render->viewport.h/2 - 226),SDL_Rect({ 28,542,428,452 }), nullptr, NO_ACTION, (j1Module*)App,nullptr,false);
+	Button* b1 = (Button*)CreateElement(BUTTON, iPoint(0, 20), SDL_Rect({ 641,166,228,68 }), nullptr, PAUSE, nullptr,  in_game_pause);
+	Button* b2 = (Button*)CreateElement(BUTTON, iPoint(40, 90), SDL_Rect({ 641,166,228,68 }), nullptr, SETTINGS,nullptr,  in_game_pause);
+	Button* b3 = (Button*)CreateElement(BUTTON, iPoint(40, 160), SDL_Rect({ 641,166,228,68 }), nullptr, EXIT_GAME, nullptr, in_game_pause);
+	Button* b4 = (Button*)CreateElement(BUTTON, iPoint(40, 230), SDL_Rect({ 641,166,228,68 }), nullptr, MAIN_MENU, nullptr, in_game_pause);
+
+
 	in_game_pause = (Image*)CreateElement(IMAGE, iPoint(App->render->viewport.w/2 - 220, App->render->viewport.h/2 - 166),SDL_Rect({ 0,448,440,272 }), nullptr, NO_ACTION, nullptr,nullptr,false);
 	
 	//Not hardcoded
@@ -194,16 +225,24 @@ bool j1Gui::Start()
 	Button* b1 = (Button*)CreateButton({ 0,0 }, blue_button, PLAY_PAUSE, nullptr, in_game_pause);
 	Button* b2 = (Button*)CreateButton({ 0,0 }, green_button, SETTINGS, nullptr, in_game_pause);
 	Button* b3 = (Button*)CreateButton({ 0,0 }, red_button, EXIT_GAME, nullptr, in_game_pause);
+
 	b1->Center(0,-70);
-	b2->Center();
-	b3->Center(0, 70);
+	b4->Center();
+	b2->Center(0, 70);
+	b3->Center(0, 140);
+
+	Label* title_pause = (Label*)CreateElement(LABEL, iPoint(0, 50), { 0,0,0,0 }, "PAUSE MENU", NO_ACTION, nullptr, in_game_pause);
+	title_pause->CenterX();
 
 	Label* l1 = (Label*)CreateElement(LABEL, iPoint(0, 0), { 0,0,0,0 }, "RESUME GAME", NO_ACTION, nullptr, b1);
 	Label* l2 = (Label*)CreateElement(LABEL, iPoint(0, 0), { 0,0,0,0 }, "SETTINGS", NO_ACTION, nullptr, b2);
 	Label* l3 = (Label*)CreateElement(LABEL, iPoint(0, 0), { 0,0,0,0 }, "EXIT GAME", NO_ACTION,nullptr,b3);
+	Label* l4 = (Label*)CreateElement(LABEL, iPoint(0, 0), { 0,0,0,0 }, "MAIN MENU", NO_ACTION, nullptr, b4);
+
 	l1->Center();
 	l2->Center();
 	l3->Center();
+	l4->Center();
 
 	return true;
 }
@@ -339,6 +378,7 @@ void j1Gui::HandleInput(UIElement* element)
 	if (element->state != CLICK_DOWN &&	is_inside && App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) != KEY_DOWN)
 	{
 		element->state = HOVER;
+		moving_element = false;
 		//LOG("hover");
 	}
 	else if((element->state == HOVER || element->state == CLICK_DOWN) && is_inside && (App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KEY_REPEAT || App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KEY_DOWN))

@@ -33,10 +33,11 @@ enum UIState
 
 enum ActionType
 {
+	START,
 	MAIN_MENU,
 	SETTINGS,
 	EXIT_GAME,
-	PLAY_PAUSE,
+	PAUSE,
 	SCORE,
 	LIFE_SYSTEM,
 	GAME_TIMER,
@@ -60,10 +61,14 @@ public:
 
 	virtual bool PreUpdate() { return true; }
 	virtual bool PostUpdate() { 
-		if (parent != nullptr){
+		if (parent != nullptr)
+		{
 			visible = parent->visible;
-			position.x = parent->position.x + initial_pos.x;
-			position.y = parent->position.y + initial_pos.y;
+			if (action != PLAYER_NAME)
+			{
+				position.x = parent->position.x + initial_pos.x;
+				position.y = parent->position.y + initial_pos.y;
+			}
 		}
 		return true; 
 	}

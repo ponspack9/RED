@@ -21,6 +21,7 @@ public:
 
 		coin_type	= e->coin_type;
 		points		= e->points;
+		picked		= false;
 
 		switch (coin_type)
 		{
@@ -45,5 +46,7 @@ public:
 
 	coinType coin_type;
 	int points;
+	bool picked;
+
 };
 

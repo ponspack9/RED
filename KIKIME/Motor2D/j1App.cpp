@@ -455,15 +455,22 @@ void j1App::GetSaveGames(p2List<p2SString>& list_to_fill) const
 	// need to add functionality to file_system module for this to work
 
 }
+
 void j1App::GoToMainMenu() {
 	App->map->current_map = App->map->maps_path.end;
 	LOG("CURRENTMAP FROM TRANSITION: %s", App->map->current_map->data.GetString());
 	App->fade->FadeToBlack(App->scene, App->scene);
+	gui->main_menu_ui->visible = true;
+	gui->in_game_ui->visible = false;
+	gui->in_game_pause->visible = false;
 }
+
 void j1App::GameOver() {
 	game_over = true;
+	App->map->current_map = App->map->maps_path.end->prev;
+	App->fade->FadeToBlack(App->scene, App->scene);
+	gui->in_game_ui->visible = false;
 	App->gui->game_over->visible = true;
-
 	LOG("GAME OVER");
 }
 
@@ -474,8 +481,14 @@ void j1App::Exit()
 
 bool j1App::RestartGame()
 {
+	if (pause)
+	{
+		UnPauseGame();
+	}
 	App->map->current_map = App->map->maps_path.start;
 	App->fade->FadeToBlack(App->scene, App->scene);
+	gui->in_game_ui->visible = true;
+	gui->main_menu_ui->visible = false;
 
 	return true;
 }
@@ -485,6 +498,9 @@ void j1App::TogglePause() {
 		PauseGame();
 	}
 	else UnPauseGame();
+
+	App->gui->in_game_pause->visible = !App->gui->in_game_pause->visible;
+	App->gui->in_game_ui->visible = !App->gui->in_game_ui->visible;
 }
 
 void j1App::PauseGame()

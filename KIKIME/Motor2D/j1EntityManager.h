@@ -80,6 +80,7 @@ public:
 	Coin			green_diamond;
 	Coin			blue_diamond;
 	Coin			heart;
+	p2List<Coin*>   coins;
 
 	j1Timer		    timer_death;
 	bool			is_started;

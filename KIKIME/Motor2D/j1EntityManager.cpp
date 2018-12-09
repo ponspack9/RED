@@ -266,7 +266,7 @@ bool j1EntityManager::Awake(pugi::xml_node & config)
 	//Defining the entity
 	green_diamond.type		= entityType::COIN;
 	green_diamond.coin_type = coinType::GREEN_DIAMOND;
-	green_diamond.points	= 100;
+	green_diamond.points	= 50;
 	green_diamond.alive		= true;
 	green_diamond.rect		= { 0,0,r.w,r.h };
 	green_diamond.speed		= { 0,0 };
@@ -289,7 +289,7 @@ bool j1EntityManager::Awake(pugi::xml_node & config)
 	//Defining the entity
 	blue_diamond.type		= entityType::COIN;
 	blue_diamond.coin_type	= coinType::BLUE_DIAMOND;
-	blue_diamond.points		= 1000;
+	blue_diamond.points		= 100;
 	blue_diamond.alive		= true;
 	blue_diamond.rect		= { 0,0,r.w,r.h };
 	blue_diamond.speed		= { 0,0 };
@@ -482,8 +482,16 @@ void j1EntityManager::CleanEntities()
 			item->data->collider->to_delete = true;
 		}
 	}
+	p2List_item<Coin*>* item2;
+	for (item2 = coins.start; item2 != nullptr; item2 = item2->next)
+	{
+		if (item2->data->collider)
+		{
+			item2->data->collider->to_delete = true;
+		}
+	}
 	entities.clear();
-
+	coins.clear();
 	LOG("ENTITIES CLEANED, COUNT: %d", entities.count());
 }
 
@@ -566,6 +574,7 @@ Entity * j1EntityManager::CreateEntity(entityType type, iPoint pos, coinType coi
 				LOG("NO COIN TYPE DEFINED, COULD NOT CREATE COIN");
 				break;
 		}
+		coins.add((Coin*)entity);
 		break;
 	}
 	entities.add(entity);
