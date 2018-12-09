@@ -446,6 +446,7 @@ bool j1EntityManager::PostUpdate()
 			}
 			player_ref->ResetPlayer();
 			is_started = false;
+			score = 0;
 			//timer_death.Start();
 		
 		return true;
@@ -652,6 +653,21 @@ bool j1EntityManager::Save(pugi::xml_node & node)
 			pl.append_attribute("y") = item->data->position.y;
 
 			pl.append_attribute("speed_Y") = item->data->speed.y;
+
+			Player* p = (Player*)item->data;
+			pl.append_attribute("lives") = p->lifes;
+		}
+		else if (item->data->type == COIN)
+		{
+			pugi::xml_node c_node = node.append_child("coins");
+			Coin* c = (Coin*)item->data;
+
+			c_node.append_attribute("x") = c->position.x;
+			c_node.append_attribute("y") = c->position.y;
+
+			c_node.append_attribute("coin_type") = c->coin_type;
+
+			c_node.append_attribute("picked") = c->picked;
 		}
 		else
 		{
@@ -676,6 +692,7 @@ bool j1EntityManager::Load(pugi::xml_node & node)
 	p2List_item<Entity*>* item;
 
 	pugi::xml_node Enode = node.child("enemy");
+	pugi::xml_node Cnode = node.child("coins");
 
 	for (item = entities.start; item != nullptr; item = item->next)
 	{
@@ -685,6 +702,31 @@ bool j1EntityManager::Load(pugi::xml_node & node)
 			item->data->position.y = node.child("player").attribute("y").as_int();
 
 			item->data->speed.y = node.child("player").attribute("speed_Y").as_int();
+
+			Player* p = (Player*)item->data;
+			p->lifes = node.child("player").attribute("lives").as_int();
+
+			item->data = p;
+		}
+		else if(item->data->type == COIN)
+		{
+			item->data->position.x = Cnode.attribute("x").as_int();
+			item->data->position.y = Cnode.attribute("y").as_int();
+
+			Coin* c = (Coin*)item->data;
+			bool rebuild = (c->picked);
+
+			c->coin_type = (coinType)Cnode.attribute("coin_type").as_uint();
+			c->picked = Cnode.attribute("picked").as_bool();
+
+			if (c->picked == true)
+				c->collider->to_delete = true;
+
+			if (rebuild && !c->picked)
+				c->collider = App->collision->AddCollider(c->rect, COLLIDER_COIN, this);
+
+			item->data = c;
+			Cnode = Cnode.next_sibling("coins");
 		}
 		else
 		{

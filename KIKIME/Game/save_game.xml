@@ -11,7 +11,7 @@
 	<debug />
 	<collisions />
 	<entitymanager>
-		<player x="97" y="615" speed_Y="400" />
+		<player x="148" y="716" speed_Y="400" lives="1" />
 		<enemy type="floater" alive="true" x="832" y="384" />
 		<enemy type="floater" alive="true" x="1344" y="416" />
 		<enemy type="roller" alive="true" x="2752" y="608" />
@@ -20,19 +20,19 @@
 		<enemy type="floater" alive="true" x="2368" y="352" />
 		<enemy type="floater" alive="true" x="1792" y="736" />
 		<enemy type="floater" alive="true" x="2944" y="416" />
-		<enemy type="coin" alive="true" x="54" y="782" />
-		<enemy type="coin" alive="true" x="512" y="768" />
-		<enemy type="coin" alive="true" x="1120" y="768" />
-		<enemy type="coin" alive="true" x="1409" y="1024" />
-		<enemy type="coin" alive="true" x="1454" y="1198" />
-		<enemy type="coin" alive="true" x="2402" y="544" />
-		<enemy type="coin" alive="true" x="2834" y="736" />
+		<coins x="54" y="782" coin_type="0" picked="false" />
+		<coins x="512" y="768" coin_type="0" picked="false" />
+		<coins x="1120" y="768" coin_type="1" picked="false" />
+		<coins x="1409" y="1024" coin_type="0" picked="false" />
+		<coins x="1454" y="1198" coin_type="2" picked="false" />
+		<coins x="2402" y="544" coin_type="0" picked="false" />
+		<coins x="2834" y="736" coin_type="2" picked="false" />
 	</entitymanager>
 	<fade />
 	<pathfinding />
 	<fonts />
 	<gui />
 	<renderer>
-		<camera x="0" y="-255" />
+		<camera x="0" y="-356" />
 	</renderer>
 </save>

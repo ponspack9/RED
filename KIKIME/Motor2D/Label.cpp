@@ -28,7 +28,6 @@ bool Label::PreUpdate()
 	}
 	if (action == SCORE)
 	{
-
 		char curr_score[50];
 		sprintf(curr_score, "%d", App->entitymanager->score);
 		
