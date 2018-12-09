@@ -223,7 +223,7 @@ bool j1Gui::Start()
 	
 	//Not hardcoded
 	game_over = (Image*)CreateElement(IMAGE, iPoint(App->render->viewport.w / 2 - game_over_image.rect[IDLE].w / 2, App->render->viewport.h / 2 - game_over_image.rect[IDLE].h / 2), game_over_image.rect[IDLE], nullptr, NO_ACTION, nullptr, nullptr, false);
-	last_death = (Image*)CreateElement(IMAGE, iPoint(-20, -20), last_death_image.rect[IDLE], nullptr, LAST_DEATH, nullptr, nullptr, false);
+	last_death = (Image*)CreateElement(IMAGE, iPoint(-20, -20), last_death_image.rect[IDLE], nullptr, LAST_DEATH, nullptr, nullptr, true);
 
 	Button* b1 = (Button*)CreateButton({ 0,0 }, blue_button, PAUSE, nullptr, in_game_pause);
 	Button* b2 = (Button*)CreateButton({ 0,0 }, green_button, SETTINGS, nullptr, in_game_pause);

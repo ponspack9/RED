@@ -215,7 +215,10 @@ bool j1Map::Load(const char* file_name)
 		//BEGIN DEALING WITH MAP OBJECTS
 
 		pugi::xml_node objectgroup = map_doc.child("map").child("objectgroup");
-
+		int death_colliders = 0;
+		int coin_colliders = 0;
+		int enemies_colliders = 0;
+		Collider* c = nullptr;
 		for (objectgroup; objectgroup; objectgroup = objectgroup.next_sibling("objectgroup"))
 		{
 			p2SString group_name ( objectgroup.attribute("name").as_string());
@@ -241,7 +244,9 @@ bool j1Map::Load(const char* file_name)
 							
 							if (group_name == "Colliders_death")
 							{
-								App->collision->AddCollider(r, COLLIDER_DEATH);
+								c = App->collision->AddCollider(r, COLLIDER_DEATH);
+								c->to_delete = false;
+								death_colliders++;
 							}
 							else if (group_name == "Collider_start") {
 								start_collider = App->collision->AddCollider(r, COLLIDER_START);
@@ -250,10 +255,14 @@ bool j1Map::Load(const char* file_name)
 								end_collider = App->collision->AddCollider(r, COLLIDER_END);
 							}
 							else if (group_name == "Enemy_spawns") {
-								App->collision->AddCollider(r, COLLIDER_SPAWN);
+								c = App->collision->AddCollider(r, COLLIDER_SPAWN);
+								c->to_delete = false;
+								enemies_colliders++;
 							}
 							else if (group_name == "Coin_spawns") {
-								App->collision->AddCollider(r, COLLIDER_SPAWN_COIN);
+								c = App->collision->AddCollider(r, COLLIDER_SPAWN_COIN);
+								c->to_delete = false;
+								coin_colliders++;
 							}
 							continue;
 						}
@@ -271,6 +280,11 @@ bool j1Map::Load(const char* file_name)
 				// END DEALING OBJECT NODE
 			}
 		}
+
+	LOG("COLLIDERS");
+	LOG("DEATH: %d", death_colliders);
+	LOG("COIN: %d", coin_colliders);
+	LOG("ENEMY: %d", enemies_colliders);
 	}
 	 map_loaded = ret;
 
@@ -734,10 +748,9 @@ void j1Map::CleanMap()
 	imagelayer->~p2List_item();
 
 	//Removes all colliders
-	if (App->collision->active) {
-		App->collision->CleanColliders();
+	App->collision->CleanColliders();
 		//App->collision->CleanPolylines();
-	}
+	
 
 	map_doc.reset();
 	map_loaded = false;
