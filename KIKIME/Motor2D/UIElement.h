@@ -34,6 +34,7 @@ enum UIState
 enum ActionType
 {
 	START,
+	CONTINUE,
 	MAIN_MENU,
 	SETTINGS,
 	EXIT_GAME,

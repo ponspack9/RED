@@ -53,17 +53,6 @@ bool j1Gui::Awake(pugi::xml_node& conf)
 			n = n.next_sibling("lastDeath");
 	}
 
-	/*last_death_image.action = NO_ACTION;
-	last_death_image.callback = nullptr;
-	last_death_image.initial_pos = { 0,0 };
-	last_death_image.position = { 0,0 };
-	last_death_image.parent = nullptr;
-	last_death_image.state = IDLE;
-	last_death_image.type = IMAGE;
-	last_death_image.string = nullptr;
-	last_death_image.visible = true;*/
-
-
 	//Creating a blue button
 	n = conf.child("blue").child("button");
 	for (SDL_Rect &r : blue_button.rect)
@@ -168,25 +157,35 @@ bool j1Gui::Start()
   
 	//HARDCODED
 	/////////////MAIN MENU //////////////////
-	main_menu_ui = (Image*)CreateElement(IMAGE, iPoint(App->render->viewport.w / 2 - 214, App->render->viewport.h / 2 - 226), SDL_Rect({ 28,542,428,452 }), nullptr, NO_ACTION, (j1Module*)App, nullptr, false);
-	Button* m1 = (Button*)CreateElement(BUTTON, iPoint(0, 20), SDL_Rect({ 641,166,228,68 }), nullptr, START, nullptr, main_menu_ui);
-	Button* m2 = (Button*)CreateElement(BUTTON, iPoint(40, 90), SDL_Rect({ 641,166,228,68 }), nullptr, SETTINGS, nullptr, main_menu_ui);
-	Button* m3 = (Button*)CreateElement(BUTTON, iPoint(40, 160), SDL_Rect({ 641,166,228,68 }), nullptr, EXIT_GAME, nullptr, main_menu_ui);
+	//Button* m1 = (Button*)CreateElement(BUTTON, iPoint(0, 20), SDL_Rect({ 641,166,228,68 }), nullptr, START, nullptr, main_menu_ui);
+	//Button* m2 = (Button*)CreateElement(BUTTON, iPoint(40, 90), SDL_Rect({ 641,166,228,68 }), nullptr, SETTINGS, nullptr, main_menu_ui);
+	//Button* m3 = (Button*)CreateElement(BUTTON, iPoint(40, 160), SDL_Rect({ 641,166,228,68 }), nullptr, EXIT_GAME, nullptr, main_menu_ui);
+	
+	//Label* title = (Label*)CreateElement(LABEL, iPoint(0, 50), { 0,0,0,0 }, "PAUSE MENU", NO_ACTION, nullptr, main_menu_ui);
+	//title->CenterX();
 
-	m1->Center(0, -70);
-	m2->Center();
-	m3->Center(0, 70);
 
-	Label* title = (Label*)CreateElement(LABEL, iPoint(0, 50), { 0,0,0,0 }, "PAUSE MENU", NO_ACTION, nullptr, main_menu_ui);
-	title->CenterX();
+	main_menu_ui = (Image*)CreateElement(IMAGE, iPoint(App->render->viewport.w / 2 - 250, App->render->viewport.h / 2 - 400), SDL_Rect({ 1000,1000,500,800 }), nullptr, NO_ACTION, (j1Module*)App, nullptr, false);
+	Button* m1 = (Button*)CreateButton({ 0,0 }, blue_button, START, nullptr, main_menu_ui);
+	Button* m2 = (Button*)CreateButton({ 0,0 }, yellow_button, CONTINUE, nullptr, main_menu_ui);
+	Button* m3 = (Button*)CreateButton({ 0,0 }, green_button, SETTINGS, nullptr, main_menu_ui);
+	Button* m4 = (Button*)CreateButton({ 0,0 }, red_button, EXIT_GAME, nullptr, main_menu_ui);
+
+	m1->Center(0, -140);
+	m2->Center(0,-70);
+	m3->Center();
+	m4->Center(0, 70);
 
 	Label* lm1 = (Label*)CreateElement(LABEL, iPoint(0, 0), { 0,0,0,0 }, "PLAY GAME", NO_ACTION, nullptr, m1);
-	Label* lm2 = (Label*)CreateElement(LABEL, iPoint(0, 0), { 0,0,0,0 }, "SETTINGS", NO_ACTION, nullptr, m2);
-	Label* lm3 = (Label*)CreateElement(LABEL, iPoint(0, 0), { 0,0,0,0 }, "EXIT GAME", NO_ACTION, nullptr, m3);
+	Label* lm2 = (Label*)CreateElement(LABEL, iPoint(0, 0), { 0,0,0,0 }, "CONTINUE", NO_ACTION, nullptr, m2);
+	Label* lm3 = (Label*)CreateElement(LABEL, iPoint(0, 0), { 0,0,0,0 }, "SETTINGS", NO_ACTION, nullptr, m3);
+	Label* lm4 = (Label*)CreateElement(LABEL, iPoint(0, 0), { 0,0,0,0 }, "EXIT GAME", NO_ACTION, nullptr, m4);
 
 	lm1->Center();
 	lm2->Center();
 	lm3->Center();
+	lm4->Center();
+
 	/////////////MAIN MENU FINISH //////////////////
 
 
@@ -236,8 +235,8 @@ bool j1Gui::Start()
 	b2->Center(0, 70);
 	b3->Center(0, 140);
 
-	Label* title_pause = (Label*)CreateElement(LABEL, iPoint(0, 0), { 0,0,0,0 }, "PAUSE MENU", NO_ACTION, nullptr, in_game_pause);
-	title_pause->CenterX();
+	//Label* title_pause = (Label*)CreateElement(LABEL, iPoint(0, 0), { 0,0,0,0 }, "PAUSE MENU", NO_ACTION, nullptr, in_game_pause);
+	//title_pause->CenterX();
 
 	Label* l1 = (Label*)CreateElement(LABEL, iPoint(0, 0), { 0,0,0,0 }, "RESUME GAME", NO_ACTION, nullptr, b1);
 	Label* l2 = (Label*)CreateElement(LABEL, iPoint(0, 0), { 0,0,0,0 }, "SETTINGS", NO_ACTION, nullptr, b2);
