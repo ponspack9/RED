@@ -330,6 +330,7 @@ bool j1EntityManager::Start()
 
 	CreateEntities(playerinfo.lifes);
 
+
 	return true;
 }
 
@@ -337,6 +338,7 @@ void j1EntityManager::CreateEntities(int player_lifes)
 {
 	LOG("CREATING ENTITIES, COUNT: %d", entities.count());
 	Entity* e = nullptr;
+	int score = 0;
 	//Creating all entities
 	for (int i = 0; i<App->collision->active; i++)
 	{
@@ -482,16 +484,7 @@ void j1EntityManager::CleanEntities()
 			item->data->collider->to_delete = true;
 		}
 	}
-	p2List_item<Coin*>* item2;
-	for (item2 = coins.start; item2 != nullptr; item2 = item2->next)
-	{
-		if (item2->data->collider)
-		{
-			item2->data->collider->to_delete = true;
-		}
-	}
 	entities.clear();
-	coins.clear();
 	LOG("ENTITIES CLEANED, COUNT: %d", entities.count());
 }
 
@@ -574,7 +567,6 @@ Entity * j1EntityManager::CreateEntity(entityType type, iPoint pos, coinType coi
 				LOG("NO COIN TYPE DEFINED, COULD NOT CREATE COIN");
 				break;
 		}
-		coins.add((Coin*)entity);
 		break;
 	}
 	entities.add(entity);
@@ -605,18 +597,23 @@ void j1EntityManager::OnCollision(Collider * c1, Collider * c2)
 			switch (e->coin_type)
 			{
 			case GREEN_DIAMOND:
-				LOG("COLLIDED WITH GREEN DIAMOND");
+				//LOG("COLLIDED WITH GREEN DIAMOND");
+				score += e->points;
 				break;
 			case BLUE_DIAMOND:
-				LOG("COLLIDED WITH BLUE DIAMOND");
+				//LOG("COLLIDED WITH BLUE DIAMOND");
+				score += e->points;
 				break;
 			case HEART:
-				LOG("COLLIDED WITH HEART");
+				//LOG("COLLIDED WITH HEART");
+				player_ref->lifes++;
 				break;
 			default:
 				LOG("NO COIN TYPE DEFINED, COULD NOT CREATE COIN");
 				break;
 			}
+			e->picked = true;
+			e->collider->to_delete = true;
 		}
 	}
 

@@ -28,22 +28,11 @@ bool Label::PreUpdate()
 	}
 	if (action == SCORE)
 	{
-		int curr_score = 0;
-		p2List_item<Coin*>* item = App->entitymanager->coins.start;
-		
-		while (item != nullptr)
-		{
-			if (item->data->coin_type == GREEN_DIAMOND && item->data->picked)
-				curr_score += item->data->points;
-			if (item->data->coin_type == BLUE_DIAMOND && item->data->picked)
-				curr_score += item->data->points;
 
-			item = item->next;
-		}
-		char score[50];
-		sprintf(score, "%d", curr_score);
+		char curr_score[50];
+		sprintf(curr_score, "%d", App->entitymanager->score);
 		
-		ChangeText(score);
+		ChangeText(curr_score);
 	}
 	if (action == PLAYER_NAME)
 	{

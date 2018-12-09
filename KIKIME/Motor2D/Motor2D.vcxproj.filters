@@ -192,6 +192,9 @@
     <ClInclude Include="Animation.h">
       <Filter>Programming 2</Filter>
     </ClInclude>
+    <ClInclude Include="Coin.h">
+      <Filter>ENTITIES</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Xml Include="..\Game\config.xml" />

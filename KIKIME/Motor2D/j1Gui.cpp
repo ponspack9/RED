@@ -191,7 +191,7 @@ bool j1Gui::Start()
 
 
 	//////IN GAME UI //////////////
-	in_game_ui = (Image*)CreateElement(IMAGE, iPoint(0, 0), SDL_Rect({ 28,542,428,452 }), nullptr, NO_ACTION, (j1Module*)App, nullptr, true);
+	in_game_ui = (Image*)CreateElement(IMAGE, iPoint(0, 0), SDL_Rect({ 1000,1000,428,452 }), nullptr, NO_ACTION, (j1Module*)App, nullptr, true);
 	Image* lives = (Image*)CreateElement(IMAGE, iPoint(10, 10), App->entitymanager->heart.idle.GetCurrentFrame(), nullptr, LIFE_SYSTEM, nullptr, in_game_ui);
 
 	Image* green = (Image*)CreateElement(IMAGE, iPoint(700, 10), App->entitymanager->green_diamond.idle.GetCurrentFrame(), nullptr, INFO,nullptr, in_game_ui);

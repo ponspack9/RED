@@ -38,9 +38,21 @@ public:
 			break;
 		}
 	}
-
-
 	~Coin() {}
+
+	void Draw(SDL_Texture *sprites)
+	{
+		if (App->pause) {
+			current_animation->speed = 0;
+		}
+		else current_animation->speed = def_anim_speed * App->dt;
+
+		if (!picked)
+		{
+			App->render->Blit(sprites, position.x, position.y, &current_animation->GetCurrentFrame(), 1, 0);
+			if (collider != nullptr) collider->SetPos(position.x, position.y);
+		}
+	}
 
 public:
 
