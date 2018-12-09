@@ -45,7 +45,6 @@ bool j1Scene::Start()
 
 	// App->audio->PlayMusic(PATH(App->audio->folder_music.GetString(), App->audio->tracks_path.start->data.GetString()));
 	App->map->Load(App->map->current_map->data.GetString());
-
 	App->render->ResetCamera();
 
 	if (first_load) {
@@ -53,6 +52,7 @@ bool j1Scene::Start()
 	}
 	else {
 		App->entitymanager->Restart(App->entitymanager->playerinfo.lifes);
+		App->gui->last_death->position = { -100,-100 };
 		LOG("ENTITY RESTART");
 	}
 	
@@ -78,7 +78,12 @@ bool j1Scene::Update(float dt)
 
 	App->map->Draw();
 	App->entitymanager->Draw();
-	//if (strcmp(App->map->current_map->data.GetString(), App->map->maps_path.end->data.GetString()) != 0)
+	if (strcmp(App->map->current_map->data.GetString(), App->map->maps_path.start->data.GetString()) == 0) {
+		App->gui->main_menu_ui->visible = true;
+	}
+	else {
+		App->gui->main_menu_ui->visible = false;
+	}
 
 	// Game Over transition to main menu
 	if (App->game_over && !game_over_transition) {

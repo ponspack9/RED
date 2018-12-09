@@ -457,17 +457,18 @@ void j1App::GetSaveGames(p2List<p2SString>& list_to_fill) const
 }
 
 void j1App::GoToMainMenu() {
-	App->map->current_map = App->map->maps_path.end;
+	App->map->current_map = App->map->maps_path.start;
 	LOG("CURRENTMAP FROM TRANSITION: %s", App->map->current_map->data.GetString());
 	App->fade->FadeToBlack(App->scene, App->scene);
 	gui->main_menu_ui->visible = true;
 	gui->in_game_ui->visible = false;
 	gui->in_game_pause->visible = false;
+	App->UnPauseGame();
 }
 
 void j1App::GameOver() {
 	game_over = true;
-	App->map->current_map = App->map->maps_path.end->prev;
+	App->map->current_map = App->map->maps_path.start;
 	App->fade->FadeToBlack(App->scene, App->scene);
 	gui->in_game_ui->visible = false;
 	App->gui->game_over->visible = true;
@@ -485,7 +486,7 @@ bool j1App::RestartGame()
 	{
 		UnPauseGame();
 	}
-	App->map->current_map = App->map->maps_path.start;
+	App->map->current_map = App->map->maps_path.start->next;
 	App->fade->FadeToBlack(App->scene, App->scene);
 	gui->in_game_ui->visible = true;
 	gui->main_menu_ui->visible = false;
@@ -544,7 +545,7 @@ bool j1App::NextLevel() {
 	}
 	else
 	{
-		App->map->current_map = App->map->maps_path.start;
+		App->map->current_map = App->map->maps_path.start->next;
 	}
 
 	LOG("Next level: %s", App->map->current_map->data.GetString());

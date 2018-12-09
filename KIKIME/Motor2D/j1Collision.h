@@ -24,8 +24,6 @@ enum COLLIDER_TYPE
 	COLLIDER_SPAWN_COIN,
 	COLLIDER_COIN,
 
-	COLLIDER_DEBUG,
-
 	COLLIDER_MAX
 };
 struct Collider
@@ -39,7 +37,8 @@ struct Collider
 	Collider(SDL_Rect rectangle, COLLIDER_TYPE type, j1Module* callback = nullptr) :
 		rect(rectangle),
 		type(type),
-		callback(callback)
+		callback(callback),
+		to_delete(false)
 	{}
 	Collider(Collider* c) :
 		rect(c->rect),

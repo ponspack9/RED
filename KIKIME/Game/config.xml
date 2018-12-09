@@ -217,9 +217,9 @@
 
   <map>
     <folder>maps</folder>
+    <level>MainMenu.tmx</level>
     <level>MapLvl1.tmx</level>
     <level>MapLvl2.tmx</level>
-    <level>MainMenu.tmx</level>
   </map>
 
   <entitymanager>
