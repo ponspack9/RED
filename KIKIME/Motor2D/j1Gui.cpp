@@ -167,6 +167,7 @@ bool j1Gui::Start()
 	SDL_RenderGetViewport(App->render->renderer, &App->render->viewport);
   
 	//HARDCODED
+	/////////////MAIN MENU //////////////////
 	main_menu_ui = (Image*)CreateElement(IMAGE, iPoint(App->render->viewport.w / 2 - 214, App->render->viewport.h / 2 - 226), SDL_Rect({ 28,542,428,452 }), nullptr, NO_ACTION, (j1Module*)App, nullptr, false);
 	Button* m1 = (Button*)CreateElement(BUTTON, iPoint(0, 20), SDL_Rect({ 641,166,228,68 }), nullptr, START, nullptr, main_menu_ui);
 	Button* m2 = (Button*)CreateElement(BUTTON, iPoint(40, 90), SDL_Rect({ 641,166,228,68 }), nullptr, SETTINGS, nullptr, main_menu_ui);
@@ -186,7 +187,10 @@ bool j1Gui::Start()
 	lm1->Center();
 	lm2->Center();
 	lm3->Center();
+	/////////////MAIN MENU FINISH //////////////////
 
+
+	//////IN GAME UI //////////////
 	in_game_ui = (Image*)CreateElement(IMAGE, iPoint(0, 0), SDL_Rect({ 28,542,428,452 }), nullptr, NO_ACTION, (j1Module*)App, nullptr, true);
 	Image* lives = (Image*)CreateElement(IMAGE, iPoint(10, 10), App->entitymanager->heart.idle.GetCurrentFrame(), nullptr, LIFE_SYSTEM, nullptr, in_game_ui);
 
@@ -207,31 +211,32 @@ bool j1Gui::Start()
 	tm->Center(25, 0);
 
 	Label* pl_name = (Label*)CreateElement(LABEL, iPoint(App->entitymanager->player_ref->position.x + App->entitymanager->player_ref->rect.w / 2, App->entitymanager->player_ref->position.y - 50), { 0,0,0,0 }, "--Kikime--", PLAYER_NAME, nullptr, in_game_ui);
-	
+	//////////IN GAME UI FINISH///////////////
 
-	in_game_pause = (Image*)CreateElement(IMAGE, iPoint(App->render->viewport.w/2 - 214, App->render->viewport.h/2 - 226),SDL_Rect({ 28,542,428,452 }), nullptr, NO_ACTION, (j1Module*)App,nullptr,false);
-	Button* b1 = (Button*)CreateElement(BUTTON, iPoint(0, 20), SDL_Rect({ 641,166,228,68 }), nullptr, PAUSE, nullptr,  in_game_pause);
-	Button* b2 = (Button*)CreateElement(BUTTON, iPoint(40, 90), SDL_Rect({ 641,166,228,68 }), nullptr, SETTINGS,nullptr,  in_game_pause);
-	Button* b3 = (Button*)CreateElement(BUTTON, iPoint(40, 160), SDL_Rect({ 641,166,228,68 }), nullptr, EXIT_GAME, nullptr, in_game_pause);
-	Button* b4 = (Button*)CreateElement(BUTTON, iPoint(40, 230), SDL_Rect({ 641,166,228,68 }), nullptr, MAIN_MENU, nullptr, in_game_pause);
+	//in_game_pause = (Image*)CreateElement(IMAGE, iPoint(App->render->viewport.w/2 - 214, App->render->viewport.h/2 - 226),SDL_Rect({ 28,542,428,452 }), nullptr, NO_ACTION, (j1Module*)App,nullptr,false);
+	//Button* p1 = (Button*)CreateElement(BUTTON, iPoint(0, 20), SDL_Rect({ 641,166,228,68 }), nullptr, PAUSE, nullptr,  in_game_pause);
+	//Button* p2 = (Button*)CreateElement(BUTTON, iPoint(40, 90), SDL_Rect({ 641,166,228,68 }), nullptr, SETTINGS,nullptr,  in_game_pause);
+	//Button* p3 = (Button*)CreateElement(BUTTON, iPoint(40, 160), SDL_Rect({ 641,166,228,68 }), nullptr, EXIT_GAME, nullptr, in_game_pause);
 
-
+	///////////////PAUSE MENU////////////////
 	in_game_pause = (Image*)CreateElement(IMAGE, iPoint(App->render->viewport.w/2 - 220, App->render->viewport.h/2 - 166),SDL_Rect({ 0,448,440,272 }), nullptr, NO_ACTION, nullptr,nullptr,false);
 	
 	//Not hardcoded
 	game_over = (Image*)CreateElement(IMAGE, iPoint(App->render->viewport.w / 2 - game_over_image.rect[IDLE].w / 2, App->render->viewport.h / 2 - game_over_image.rect[IDLE].h / 2), game_over_image.rect[IDLE], nullptr, NO_ACTION, nullptr, nullptr, false);
-	last_death = (Image*)CreateElement(IMAGE, iPoint(-20, -20), last_death_image.rect[IDLE], nullptr, LAST_DEATH, nullptr, nullptr, true);
+	last_death = (Image*)CreateElement(IMAGE, iPoint(-20, -20), last_death_image.rect[IDLE], nullptr, LAST_DEATH, nullptr, nullptr, false);
 
-	Button* b1 = (Button*)CreateButton({ 0,0 }, blue_button, PLAY_PAUSE, nullptr, in_game_pause);
+	Button* b1 = (Button*)CreateButton({ 0,0 }, blue_button, PAUSE, nullptr, in_game_pause);
 	Button* b2 = (Button*)CreateButton({ 0,0 }, green_button, SETTINGS, nullptr, in_game_pause);
 	Button* b3 = (Button*)CreateButton({ 0,0 }, red_button, EXIT_GAME, nullptr, in_game_pause);
+	Button* b4 = (Button*)CreateButton({ 0,0 }, red_button, MAIN_MENU, nullptr, in_game_pause);
+
 
 	b1->Center(0,-70);
 	b4->Center();
 	b2->Center(0, 70);
 	b3->Center(0, 140);
 
-	Label* title_pause = (Label*)CreateElement(LABEL, iPoint(0, 50), { 0,0,0,0 }, "PAUSE MENU", NO_ACTION, nullptr, in_game_pause);
+	Label* title_pause = (Label*)CreateElement(LABEL, iPoint(0, 0), { 0,0,0,0 }, "PAUSE MENU", NO_ACTION, nullptr, in_game_pause);
 	title_pause->CenterX();
 
 	Label* l1 = (Label*)CreateElement(LABEL, iPoint(0, 0), { 0,0,0,0 }, "RESUME GAME", NO_ACTION, nullptr, b1);
@@ -243,6 +248,8 @@ bool j1Gui::Start()
 	l2->Center();
 	l3->Center();
 	l4->Center();
+	///////////////PAUSE MENU FINISH////////////////
+
 
 	return true;
 }
