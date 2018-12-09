@@ -466,12 +466,11 @@ void j1App::GoToMainMenu() {
 }
 
 void j1App::GameOver() {
-	//Main menu will be the last map
 	game_over = true;
 	App->map->current_map = App->map->maps_path.end->prev;
 	App->fade->FadeToBlack(App->scene, App->scene);
 	gui->in_game_ui->visible = false;
-
+	App->gui->game_over->visible = true;
 	LOG("GAME OVER");
 }
 
@@ -532,6 +531,7 @@ bool j1App::RestartLevel(int player_lifes)
 
 	render->ResetCamera();
 	entitymanager->Restart(player_lifes);
+	game_over = false;
 	
 	return true;
 }

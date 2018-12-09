@@ -6,6 +6,7 @@
 #include "Floater.h"
 #include "Roller.h"
 #include "Player.h"
+#include "j1Gui.h"
 #include "j1EntityManager.h"
 
 j1EntityManager::j1EntityManager()
@@ -334,10 +335,13 @@ bool j1EntityManager::Start()
 
 void j1EntityManager::CreateEntities(int player_lifes)
 {
+	LOG("CREATING ENTITIES, COUNT: %d", entities.count());
 	Entity* e = nullptr;
 	//Creating all entities
-	for (int i = 0; App->collision->colliders[i] != NULL; i++)
+	for (int i = 0; i<App->collision->active; i++)
 	{
+		if (App->collision->colliders[i] == nullptr) continue;
+
 		iPoint pos = { App->collision->colliders[i]->rect.x , App->collision->colliders[i]->rect.y };
 
 		if (App->collision->colliders[i]->type == COLLIDER_SPAWN_COIN)
@@ -377,6 +381,8 @@ void j1EntityManager::CreateEntities(int player_lifes)
 			player_ref->lifes = player_lifes;
 		}
 	}
+	LOG("CREATED ENTITIES, COUNT: %d ACTIVE: %d", entities.count(),App->collision->active);
+
 }
 
 
@@ -386,11 +392,12 @@ bool j1EntityManager::PreUpdate()
 
 		if (player_ref->alive)
 			player_ref->PreUpdate();
-		else if (is_started == false)
+		else if (!is_started && !App->game_over)
 		{
+			LOG("IS STARTED == FALSE");
 			timer_death.Start();
 			is_started = true;
-
+			App->gui->last_death->position = player_ref->position;
 			player_ref->current_animation = &player_ref->death;
 		}
 
@@ -435,7 +442,6 @@ bool j1EntityManager::PostUpdate()
 				player_ref->lifes = playerinfo.lifes;
 				
 			}
-
 			player_ref->ResetPlayer();
 			is_started = false;
 			//timer_death.Start();
@@ -467,6 +473,7 @@ bool j1EntityManager::CleanUp()
 
 void j1EntityManager::CleanEntities()
 {
+	LOG("CLEANING ENTITIES");
 	p2List_item<Entity*>* item;
 	for (item = entities.start; item != nullptr; item = item->next)
 	{
@@ -485,6 +492,7 @@ void j1EntityManager::CleanEntities()
 	}
 	entities.clear();
 	coins.clear();
+	LOG("ENTITIES CLEANED, COUNT: %d", entities.count());
 }
 
 

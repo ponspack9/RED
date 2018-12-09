@@ -88,8 +88,8 @@ public:
 			current_animation->speed = 0;
 		} else current_animation->speed = def_anim_speed * App->dt;
 		App->render->Blit(sprites, position.x, position.y, &current_animation->GetCurrentFrame(), 1, 0);
-		if (collider) collider->SetPos(position.x, position.y);
-		else LOG("NO COLLIDER");
+		if (collider != nullptr) collider->SetPos(position.x, position.y);
+		//else LOG("NO COLLIDER");
 	}
 
 	virtual bool UpdateLogic(iPoint pos) { return true; }

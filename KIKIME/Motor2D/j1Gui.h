@@ -8,9 +8,7 @@
 #include "j1App.h"
 #include "j1EntityManager.h"
 
-#define CURSOR_WIDTH 2
 
-// ---------------------------------------------------
 class j1Gui : public j1Module
 {
 public:
@@ -35,6 +33,8 @@ public:
 	// Called before quitting
 	bool CleanUp();
 
+	UIElement * CreateButton(iPoint pos, const Button & b, ActionType action, j1Module * callback, UIElement * parent);
+
 	// Gui creation functions
 	UIElement* CreateElement(UIType type, iPoint pos, SDL_Rect rect, p2SString string = nullptr, ActionType action = NO_ACTION, j1Module* callback = nullptr, UIElement* parent = nullptr, bool visible = true);
 
@@ -42,19 +42,44 @@ public:
 
 	const SDL_Texture* GetAtlas() const;
 
-	Image* in_game_pause;
-	Image* in_game_ui;
-	Image* main_menu_ui;
+
+	Image*     in_game_ui;
+	Image*     main_menu_ui;
+	Image*		 in_game_pause;
+	Image*		 game_over;
+	Image*		 last_death;
+
 
 private:
 
 	p2List<UIElement*>  elements;
 
 	SDL_Texture*		atlas;
+	SDL_Texture*		blue;
+	SDL_Texture*		red;
+	SDL_Texture*		green;
+	SDL_Texture*		yellow;
+	SDL_Texture*		grey;
+
 	p2SString			atlas_file_name;
+	p2SString			blue_file_name;
+	p2SString			red_file_name;
+	p2SString			green_file_name;
+	p2SString			yellow_file_name;
+	p2SString			grey_file_name;
 
 	bool				moving_element;
 	iPoint				last_motion;
+
+	Button				blue_button;
+	Button				red_button;
+	Button				green_button;
+	Button				yellow_button;
+	Button				grey_button;
+
+	Image				game_over_image;
+	Image				last_death_image;
+
 };
 
 #endif // __j1GUI_H__

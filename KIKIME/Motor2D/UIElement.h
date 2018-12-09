@@ -7,6 +7,14 @@
 #include "j1Fonts.h"
 #include "j1EntityManager.h"
 
+
+enum UIColor {
+	BLUE,
+	RED,
+	YELLOW,
+	GREY,
+	GREEN
+};
 enum UIType 
 { 
 	BUTTON,
@@ -35,6 +43,8 @@ enum ActionType
 	GAME_TIMER,
 	PLAYER_NAME,
 	INFO,
+	LAST_DEATH,
+
 	NO_ACTION
 };
 
