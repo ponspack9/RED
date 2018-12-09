@@ -515,6 +515,7 @@ bool j1App::RestartLevel(int player_lifes)
 
 	render->ResetCamera();
 	entitymanager->Restart(player_lifes);
+	game_over = false;
 	
 	return true;
 }

@@ -77,8 +77,8 @@ bool j1Scene::Update(float dt)
 	p = App->map->MapToWorld(p.x, p.y);
 
 	App->map->Draw();
-	if (strcmp(App->map->current_map->data.GetString(), App->map->maps_path.end->data.GetString()) != 0)
-		App->entitymanager->Draw();
+	App->entitymanager->Draw();
+	//if (strcmp(App->map->current_map->data.GetString(), App->map->maps_path.end->data.GetString()) != 0)
 
 	// Game Over transition to main menu
 	if (App->game_over && !game_over_transition) {
