@@ -338,7 +338,8 @@ void j1EntityManager::CreateEntities(int player_lifes)
 {
 	LOG("CREATING ENTITIES, COUNT: %d", entities.count());
 	Entity* e = nullptr;
-	int score = 0;
+	green_counter = blue_counter = score = 0;
+
 	//Creating all entities
 	for (int i = 0; i<App->collision->active; i++)
 	{
@@ -446,7 +447,8 @@ bool j1EntityManager::PostUpdate()
 			}
 			player_ref->ResetPlayer();
 			is_started = false;
-			score = 0;
+			green_counter = blue_counter = score = 0;
+
 			//timer_death.Start();
 		
 		return true;
@@ -598,15 +600,14 @@ void j1EntityManager::OnCollision(Collider * c1, Collider * c2)
 			switch (e->coin_type)
 			{
 			case GREEN_DIAMOND:
-				//LOG("COLLIDED WITH GREEN DIAMOND");
 				score += e->points;
+				green_counter++;
 				break;
 			case BLUE_DIAMOND:
-				//LOG("COLLIDED WITH BLUE DIAMOND");
 				score += e->points;
+				blue_counter++;
 				break;
 			case HEART:
-				//LOG("COLLIDED WITH HEART");
 				player_ref->lifes++;
 				break;
 			default:
@@ -643,8 +644,14 @@ bool j1EntityManager::Save(pugi::xml_node & node)
 {
 	p2List_item<Entity*>* item;
 
+	node.append_attribute("bluespicked") = blue_counter;
+	node.append_attribute("greenspicked") = green_counter;
+	node.append_attribute("score") = score;
+
 	for (item = entities.start; item != nullptr; item = item->next)
 	{
+
+
 		if (item->data->type == PLAYER)
 		{
 			pugi::xml_node pl = node.append_child(item->data->name.GetString());
@@ -693,6 +700,10 @@ bool j1EntityManager::Load(pugi::xml_node & node)
 
 	pugi::xml_node Enode = node.child("enemy");
 	pugi::xml_node Cnode = node.child("coins");
+
+	blue_counter = node.attribute("bluespicked").as_int();
+	green_counter = node.attribute("greenspicked").as_int();
+	score = node.attribute("score").as_int();
 
 	for (item = entities.start; item != nullptr; item = item->next)
 	{

@@ -84,5 +84,7 @@ public:
 	j1Timer		    timer_death;
 	bool			is_started;
 	int				score;
+	int				blue_counter;
+	int				green_counter;
 };
 

@@ -1,6 +1,6 @@
 <!-- Config file for the game -->
 <config>
-  <app framerate_cap ="60">
+  <app framerate_cap ="30">
     <title>KIKIME</title>
     <organization>ORISO</organization>
   </app>
@@ -56,7 +56,7 @@
     <atlas file="gui/atlas.png">
       <gameOver height="272" width="440" y="448" x="0"></gameOver>
       <lastDeath height="56" width="48" y="390" x="0"></lastDeath>
-      
+      <window x="769" y="0" width="306" height="348"/>
     </atlas>
     <blue file="gui/blueSheet.png">
       <SubTexture height="36" width="38" y="36" x="380" name="blue_boxCheckmark.png"/>
@@ -211,8 +211,7 @@
       <SubTexture height="31" width="39" y="143" x="378" name="yellow_sliderRight.png"/>
       <SubTexture height="42" width="28" y="72" x="416" name="yellow_sliderUp.png"/>
       <SubTexture height="17" width="17" y="237" x="18" name="yellow_tick.png"/>
-    </yellow>
-    
+    </yellow>    
   </gui>
 
   <map>

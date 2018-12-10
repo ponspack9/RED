@@ -139,7 +139,16 @@ bool j1Gui::Awake(pugi::xml_node& conf)
 	grey_button.visible = true;
 	grey_button.color = GREY;
 
-
+	n = conf.child("atlas").child("window");
+	for (SDL_Rect &r : white_window.rect)
+	{
+		r.x = n.attribute("x").as_int();
+		r.y = n.attribute("y").as_int();
+		r.w = n.attribute("width").as_int();
+		r.h = n.attribute("height").as_int();
+		if (n.next_sibling("window"))
+			n = n.next_sibling("window");
+	}
 
 
 	return ret;
@@ -231,30 +240,29 @@ bool j1Gui::Start()
 
 	Image* lives = (Image*)CreateElement(IMAGE, iPoint(10, 10), App->entitymanager->heart.idle.GetCurrentFrame(), nullptr, LIFE_SYSTEM, nullptr, in_game_ui);
 
-	//Image* igreen = (Image*)CreateElement(IMAGE, iPoint(600, 10), App->entitymanager->green_diamond.idle.GetCurrentFrame(), nullptr, INFO, nullptr, in_game_ui);
-	//Label* igl = (Label*)CreateElement(LABEL, iPoint(0, 0), { 0,0,0,0 }, "X", INFO, nullptr, igreen);
-	//Label* igl_count = (Label*)CreateElement(LABEL, iPoint(0, 0), { 0,0,0,0 }, "", COUNTER, nullptr, igl);
-	//igl->Center(30, 5);
-	//igl_count->Center(20, 0);
-	//
-	//Image* iblue = (Image*)CreateElement(IMAGE, iPoint(700, 10), App->entitymanager->blue_diamond.idle.GetCurrentFrame(), nullptr, INFO, nullptr, in_game_ui);
-	//Label* ibl = (Label*)CreateElement(LABEL, iPoint(0, 0), { 0,0,0,0 }, "X", INFO, nullptr, iblue);
-	//Label* ibl_count = (Label*)CreateElement(LABEL, iPoint(845, 15), { 0,0,0,0 }, "", COUNTER, nullptr, ibl);
-	//ibl->Center(30, 5);
-	//ibl_count->Center(20, 0);
+	Image* igreen = (Image*)CreateElement(IMAGE, iPoint(600, 10), App->entitymanager->green_diamond.idle.GetCurrentFrame(), nullptr, INFO, nullptr, in_game_ui);
+	Label* igl = (Label*)CreateElement(LABEL, iPoint(0, 0), { 0,0,0,0 }, "X", INFO, nullptr, igreen);
+	Label* igl_count = (Label*)CreateElement(LABEL, iPoint(0, 0), { 0,0,0,0 }, "", GREEN_COUNTER, nullptr, igl);
+	igl->Center(30, 5);
+	igl_count->Center(20, 0);
+	
+	Image* iblue = (Image*)CreateElement(IMAGE, iPoint(700, 10), App->entitymanager->blue_diamond.idle.GetCurrentFrame(), nullptr, INFO, nullptr, in_game_ui);
+	Label* ibl = (Label*)CreateElement(LABEL, iPoint(0, 0), { 0,0,0,0 }, "X", INFO, nullptr, iblue);
+	Label* ibl_count = (Label*)CreateElement(LABEL, iPoint(845, 15), { 0,0,0,0 }, "", BLUE_COUNTER, nullptr, ibl);
+	ibl->Center(30, 5);
+	ibl_count->Center(20, 0);
 
 	
 	Label* score = (Label*)CreateElement(LABEL, iPoint(900, 15), { 0,0,0,0 }, "SCORE :", INFO, nullptr, in_game_ui);
 	Label* ls = (Label*)CreateElement(LABEL, iPoint(0, 0), { 0,0,0,0 }, "", SCORE, nullptr, score);
 	ls->Center(45, 0);
 
-	Label* timer = (Label*)CreateElement(LABEL, iPoint(900, 40), { 0,0,0,0 }, "TIME :", INFO, nullptr, in_game_ui);
-	Label* tmi = (Label*)CreateElement(LABEL, iPoint(0, 0), { 0,0,0,0 }, "", GAME_TIMER_MINS, nullptr, timer);
-	Label* timersec = (Label*)CreateElement(LABEL, iPoint(900, 40), { 0,0,0,0 }, ":", INFO, nullptr, timer);
-	Label* tse = (Label*)CreateElement(LABEL, iPoint(0, 0), { 0,0,0,0 }, "", GAME_TIMER_SECS, nullptr, timer);
-	tmi->Center(25, 0);
-	timersec->Center(37.5, 0);
-	tse->Center(45, 0);
+	Label* tmi = (Label*)CreateElement(LABEL, iPoint(0, 15), { 0,0,0,0 }, "", GAME_TIMER_MINS, nullptr, in_game_ui);
+	Label* timersec = (Label*)CreateElement(LABEL, iPoint(0, 0), { 0,0,0,0 }, ":", INFO, nullptr, tmi);
+	Label* tse = (Label*)CreateElement(LABEL, iPoint(0, 0), { 0,0,0,0 }, "", GAME_TIMER_SECS, nullptr, tmi);
+	tmi->CenterX(250);
+	timersec->Center(40, 0);
+	tse->Center(75, 0);
 
 	Label* pl_name = (Label*)CreateElement(LABEL, iPoint(App->entitymanager->player_ref->position.x + App->entitymanager->player_ref->rect.w / 2, App->entitymanager->player_ref->position.y - 50), { 0,0,0,0 }, "--Kikime--", PLAYER_NAME, nullptr, in_game_ui);
 	//////////IN GAME UI FINISH///////////////
@@ -264,21 +272,19 @@ bool j1Gui::Start()
 	last_death = (Image*)CreateElement(IMAGE, iPoint(-20, -20), last_death_image.rect[IDLE], nullptr, LAST_DEATH, nullptr, nullptr, true);
 
 	///////////////PAUSE MENU////////////////
-	in_game_pause = (Image*)CreateElement(IMAGE, iPoint(App->render->viewport.w/2 - 220, App->render->viewport.h/2 - 166),SDL_Rect({ 0,448,440,272 }), nullptr, NO_ACTION, nullptr,nullptr,false);
-	
+	in_game_pause = (Image*)CreateElement(IMAGE, iPoint(App->render->viewport.w / 2 - 220, App->render->viewport.h / 2 - 166), white_window.rect[IDLE], nullptr, NO_ACTION, nullptr, nullptr, false);	
 
 	Button* b1 = (Button*)CreateButton({ 0,0 }, blue_button, PAUSE, nullptr, in_game_pause);
 	Button* b2 = (Button*)CreateButton({ 0,0 }, green_button, SETTINGS, nullptr, in_game_pause);
 	Button* b3 = (Button*)CreateButton({ 0,0 }, red_button, EXIT_GAME, nullptr, in_game_pause);
 	Button* b4 = (Button*)CreateButton({ 0,0 }, red_button, MAIN_MENU, nullptr, in_game_pause);
+	
+	b1->Center(0,-100);
+	b4->Center(0, -30);
+	b2->Center(0, 40);
+	b3->Center(0, 110);
 
-
-	b1->Center(0,-70);
-	b4->Center();
-	b2->Center(0, 70);
-	b3->Center(0, 140);
-
-	Label* title_pause = (Label*)CreateElement(LABEL, iPoint(0, 0), { 0,0,0,0 }, "PAUSE MENU", NO_ACTION, nullptr, in_game_pause);
+	Label* title_pause = (Label*)CreateElement(LABEL, iPoint(0, 15), { 0,0,0,0 }, "PAUSE MENU", NO_ACTION, nullptr, in_game_pause);
 	title_pause->CenterX();
 
 	Label* l1 = (Label*)CreateElement(LABEL, iPoint(0, 0), { 0,0,0,0 }, "RESUME GAME", NO_ACTION, nullptr, b1);

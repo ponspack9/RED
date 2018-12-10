@@ -45,15 +45,16 @@ public:
 
 	Image*			in_game_ui;
 	Image*			main_menu_ui;
-	Image*			settings_ui;
 	Image*			in_game_pause;
-	Image*			game_over;
-	Image*			last_death;
 
 	Image*			main_menu_window;
 	Image*			in_game_window;
 	Image*			credits_window;
 	Image*			settings_window;
+
+	Image*			game_over;
+	Image*			last_death;
+	Image			white_window;
 
 private:
 
