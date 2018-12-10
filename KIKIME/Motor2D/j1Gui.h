@@ -43,11 +43,15 @@ public:
 	const SDL_Texture* GetAtlas() const;
 
 
-	Image*     in_game_ui;
-	Image*     main_menu_ui;
-	Image*		 in_game_pause;
-	Image*		 game_over;
-	Image*		 last_death;
+	Image*			in_game_ui;
+	Image*			main_menu_ui;
+	Image*			in_game_pause;
+	Image*			game_over;
+	Image*			last_death;
+
+	Image*			main_menu_window;
+	Image*			in_game_window;
+	Image*			credits_window;
 
 
 private:

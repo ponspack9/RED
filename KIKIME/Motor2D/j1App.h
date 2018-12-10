@@ -84,6 +84,8 @@ public:
 
 	bool NextLevel();
 
+	void ShowCredits();
+
 	//Saving iteration ONLY SAVING ACTIVE MODULES
 	bool SaveGameFile();
 

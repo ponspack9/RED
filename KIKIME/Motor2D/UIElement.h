@@ -38,6 +38,8 @@ enum ActionType
 	MAIN_MENU,
 	SETTINGS,
 	EXIT_GAME,
+	CREDITS,
+	WEBSITE,
 	PAUSE,
 	SCORE,
 	LIFE_SYSTEM,
@@ -64,7 +66,6 @@ public:
 	virtual bool PostUpdate() { 
 		if (parent != nullptr)
 		{
-			visible = parent->visible;
 			if (action != PLAYER_NAME)
 			{
 				position.x = parent->position.x + initial_pos.x;
@@ -97,6 +98,22 @@ public:
 		}
 	}
 
+	void SetInvisible() {
+		p2List_item<UIElement*>* item = sons.start;
+		visible = false;
+		for (item; item != nullptr; item = item->next) {
+			item->data->SetInvisible();
+		}
+	}
+
+	void SetVisible() {
+		p2List_item<UIElement*>* item = sons.start;
+		visible = true;
+		for (item; item != nullptr; item = item->next) {
+			item->data->SetVisible();
+		}
+	}
+
 	virtual void HandleAction() {}
 
 public:
@@ -117,5 +134,7 @@ public:
 	j1Module*	callback;
 
 	bool		visible;
+
+	p2List<UIElement*>	sons;
 };
 #endif //__UIELEMENT_H__

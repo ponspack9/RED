@@ -457,21 +457,22 @@ void j1App::GetSaveGames(p2List<p2SString>& list_to_fill) const
 }
 
 void j1App::GoToMainMenu() {
-	App->map->current_map = App->map->maps_path.start;
+	map->current_map = App->map->maps_path.start;
 	LOG("CURRENTMAP FROM TRANSITION: %s", App->map->current_map->data.GetString());
-	App->fade->FadeToBlack(App->scene, App->scene);
-	gui->main_menu_ui->visible = true;
-	gui->in_game_ui->visible = false;
-	gui->in_game_pause->visible = false;
-	App->UnPauseGame();
+	fade->FadeToBlack(App->scene, App->scene);
+	gui->main_menu_window->SetVisible();
+	gui->credits_window->SetInvisible();
+	gui->in_game_pause->SetInvisible();
+	gui->in_game_ui->SetInvisible();
+	UnPauseGame();
 }
 
 void j1App::GameOver() {
 	game_over = true;
-	App->map->current_map = App->map->maps_path.start;
-	App->fade->FadeToBlack(App->scene, App->scene);
-	gui->in_game_ui->visible = false;
-	App->gui->game_over->visible = true;
+	map->current_map = App->map->maps_path.start;
+	fade->FadeToBlack(App->scene, App->scene);
+	gui->in_game_ui->SetInvisible();
+	gui->game_over->SetVisible();
 	LOG("GAME OVER");
 }
 
@@ -486,10 +487,8 @@ bool j1App::RestartGame()
 	{
 		UnPauseGame();
 	}
-	App->map->current_map = App->map->maps_path.start->next;
-	App->fade->FadeToBlack(App->scene, App->scene);
-	gui->in_game_ui->visible = true;
-	gui->main_menu_ui->visible = false;
+	map->current_map = App->map->maps_path.start->next;
+	fade->FadeToBlack(App->scene, App->scene);
 
 	return true;
 }
@@ -500,8 +499,12 @@ void j1App::TogglePause() {
 	}
 	else UnPauseGame();
 
-	App->gui->in_game_pause->visible = !App->gui->in_game_pause->visible;
-	App->gui->in_game_ui->visible = !App->gui->in_game_ui->visible;
+	if (!gui->in_game_pause->visible && strcmp(App->map->current_map->data.GetString(), App->map->maps_path.start->data.GetString()) != 0) {
+		gui->in_game_pause->SetVisible();
+	}
+	else {
+		gui->in_game_pause->SetInvisible();
+	}
 }
 
 void j1App::PauseGame()
@@ -551,6 +554,18 @@ bool j1App::NextLevel() {
 	LOG("Next level: %s", App->map->current_map->data.GetString());
 	App->fade->FadeToBlack(App->scene, App->scene);
 	return true;
+}
+
+void j1App::ShowCredits() {
+	if (!App->gui->credits_window->visible) {
+		App->gui->main_menu_ui->SetInvisible();
+		App->gui->credits_window->SetVisible();
+	}
+	else {
+		App->gui->credits_window->SetInvisible();
+		App->gui->main_menu_ui->SetVisible();
+		
+	}
 }
 
 

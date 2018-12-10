@@ -52,8 +52,17 @@ bool j1Scene::Start()
 	}
 	else {
 		App->entitymanager->Restart(App->entitymanager->playerinfo.lifes);
-		App->gui->last_death->position = { -100,-100 };
 		LOG("ENTITY RESTART");
+		App->gui->last_death->position = { -100,-100 };
+
+		if (strcmp(App->map->current_map->data.GetString(), App->map->maps_path.start->data.GetString()) == 0) {
+			App->gui->main_menu_window->SetVisible();
+			App->gui->credits_window->SetInvisible();
+		}
+		else {
+			App->gui->main_menu_window->SetInvisible();
+			App->gui->in_game_window->SetVisible();
+		}
 	}
 	
 
@@ -78,12 +87,6 @@ bool j1Scene::Update(float dt)
 
 	App->map->Draw();
 	App->entitymanager->Draw();
-	if (strcmp(App->map->current_map->data.GetString(), App->map->maps_path.start->data.GetString()) == 0) {
-		App->gui->main_menu_ui->visible = true;
-	}
-	else {
-		App->gui->main_menu_ui->visible = false;
-	}
 
 	// Game Over transition to main menu
 	if (App->game_over && !game_over_transition) {

@@ -49,6 +49,12 @@ void Button::HandleAction()
 	case EXIT_GAME:
 		App->Exit();
 		break;
+	case CREDITS:
+		App->ShowCredits();
+		break;
+	case WEBSITE:
+		ShellExecuteA(NULL, "open", "www.google.com", NULL, NULL, SW_SHOWNORMAL);
+		break;
 	case START:
 		App->RestartGame();
 	}
