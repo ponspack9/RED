@@ -19,19 +19,40 @@ Label::Label(ActionType action, iPoint pos, UIType type, p2SString string, UIEle
 
 bool Label::PreUpdate()
 {
-	if (action == GAME_TIMER)
+	if (action == GAME_TIMER_SECS)
 	{
-		char game_time[50];
-		sprintf(game_time, "%.3f", App->GetTimerReadSec());
+		char game_time_secs[50];
+		if (App->GetTimerReadSec() >= 1)
+		{
+			App->in_game_timer.sec++;
+			App->game_timer.Start();
+		}
+		sprintf_s(game_time_secs, "%d", App->in_game_timer.sec);
 
-		ChangeText(game_time);
+		ChangeText(game_time_secs);
+	}
+	if (action == GAME_TIMER_MINS)
+	{
+		char game_time_mins[50];
+		if (App->in_game_timer.sec == 60)
+		{
+			App->in_game_timer.min++;
+			App->in_game_timer.sec = 0;
+		}
+		sprintf_s(game_time_mins, "%d", App->in_game_timer.min);
+
+		ChangeText(game_time_mins);
 	}
 	if (action == SCORE)
 	{
 		char curr_score[50];
-		sprintf(curr_score, "%d", App->entitymanager->score);
+		sprintf_s(curr_score, "%d", App->entitymanager->score);
 		
 		ChangeText(curr_score);
+	}
+	if (action == COUNTER)
+	{
+		
 	}
 	if (action == PLAYER_NAME)
 	{

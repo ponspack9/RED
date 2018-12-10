@@ -150,6 +150,8 @@ bool j1App::Start()
 	perf_timer.Start();
 	timer.Start();
 	aux_timer.Start();
+	in_game_timer.sec = 0;
+	in_game_timer.min = 0;
 	pause = false;
 	bool ret = true;
 	p2List_item<j1Module*>* item = modules.start;
@@ -430,7 +432,7 @@ const char* j1App::GetOrganization() const
 
 float j1App::GetTimerReadSec()
 {
-	return timer.ReadSec();
+	return game_timer.ReadSec();
 }
 
 void j1App::LoadGame()
@@ -489,6 +491,9 @@ bool j1App::RestartGame()
 	}
 	map->current_map = App->map->maps_path.start->next;
 	fade->FadeToBlack(App->scene, App->scene);
+	in_game_timer.sec = 0;
+	in_game_timer.min = 0;
+	game_timer.Start();
 
 	return true;
 }
@@ -557,7 +562,8 @@ bool j1App::NextLevel() {
 }
 
 void j1App::ShowCredits() {
-	if (!App->gui->credits_window->visible) {
+	if (!App->gui->credits_window->visible) 
+	{
 		App->gui->main_menu_ui->SetInvisible();
 		App->gui->credits_window->SetVisible();
 	}
@@ -565,6 +571,20 @@ void j1App::ShowCredits() {
 		App->gui->credits_window->SetInvisible();
 		App->gui->main_menu_ui->SetVisible();
 		
+	}
+}
+
+void j1App::ShowSettings()
+{
+	if (!App->gui->settings_window->visible)
+	{
+		App->gui->main_menu_ui->SetInvisible();
+		App->gui->settings_window->SetVisible();
+	}
+	else
+	{
+		App->gui->settings_window->SetInvisible();
+		App->gui->main_menu_ui->SetVisible();
 	}
 }
 

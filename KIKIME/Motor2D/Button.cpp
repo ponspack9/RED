@@ -39,6 +39,7 @@ void Button::HandleAction()
 		App->GoToMainMenu();
 		break;
 	case SETTINGS:
+		App->ShowSettings();
 		break;
 	case PAUSE:
 		App->TogglePause();

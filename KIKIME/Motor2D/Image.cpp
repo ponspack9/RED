@@ -18,7 +18,6 @@ Image::Image(ActionType action,iPoint pos, SDL_Rect rect, UIType type, UIElement
 
 void Image::Draw(SDL_Texture * sprites)
 {
-	//sprites = App->entitymanager->otherTex;
 	int phi;
 	int temp;
 	switch (this->action)

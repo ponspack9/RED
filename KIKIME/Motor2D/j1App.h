@@ -86,6 +86,8 @@ public:
 
 	void ShowCredits();
 
+	void ShowSettings();
+
 	//Saving iteration ONLY SAVING ACTIVE MODULES
 	bool SaveGameFile();
 
@@ -144,6 +146,15 @@ public:
 	mutable p2SString	save_path;
 	p2SString			load_path;
 	p2SString			init_state_path;
+
+	struct gameTime
+	{
+		int sec, min;
+
+	}in_game_timer;
+
+	j1Timer				game_timer;
+
 
 private:
 
