@@ -200,6 +200,7 @@ bool j1Gui::Awake(pugi::xml_node& conf)
 		r.y = n.attribute("y").as_int();
 		r.w = n.attribute("width").as_int();
 		r.h = n.attribute("height").as_int();
+		blue_diamond.idle.PushBack(r);
 		if (n.next_sibling("blue_diamond"))
 			n = n.next_sibling("blue_diamond");
 
@@ -213,6 +214,7 @@ bool j1Gui::Awake(pugi::xml_node& conf)
 		r.y = n.attribute("y").as_int();
 		r.w = n.attribute("width").as_int();
 		r.h = n.attribute("height").as_int();
+		green_diamond.idle.PushBack(r);
 		if (n.next_sibling("green_diamond"))
 			n = n.next_sibling("green_diamond");
 	}
@@ -225,6 +227,7 @@ bool j1Gui::Awake(pugi::xml_node& conf)
 		r.y = n.attribute("y").as_int();
 		r.w = n.attribute("width").as_int();
 		r.h = n.attribute("height").as_int();
+		heart.idle.PushBack(r);
 		if (n.next_sibling("heart"))
 			n = n.next_sibling("heart");
 	}
@@ -337,7 +340,7 @@ bool j1Gui::Start()
 	//Settings window
 	settings_window = (Image*)CreateElement(IMAGE, { App->render->viewport.w / 2 - 250, App->render->viewport.h / 2 - 400 }, SDL_Rect({ 1000,1000,500,800 }), nullptr,nullptr, NO_ACTION, (j1Module*)App, main_menu_window, false);
 	Button* settings_to_main = (Button*)CreateButton({ 0,0 }, red_button, SETTINGS, nullptr, settings_window);
-	Label* lsettings_to_main = (Label*)CreateElement(LABEL, iPoint(0, 0), { 0,0,0,0 }, nullptr, "MAIN MENU", NO_ACTION, nullptr, settings_to_main);
+	Label* lsettings_to_main = (Label*)CreateElement(LABEL, iPoint(0, 0), { 0,0,0,0 }, nullptr, "RETURN", NO_ACTION, nullptr, settings_to_main);
 	settings_to_main->Center(0, 70);
 	lsettings_to_main->Center();
 	
@@ -365,17 +368,17 @@ bool j1Gui::Start()
 	//slider_button->CenterX();
 
 
-	Image* greend = (Image*)CreateElement(IMAGE, iPoint(0, 0), green_diamond.rect[IDLE], &green_diamond, nullptr, INFO, nullptr, settings_window);
-	Label* gl = (Label*)CreateElement(LABEL, iPoint(0, 0), { 0,0,0,0 },nullptr, "X 50", INFO, nullptr, greend);
-	
-	greend->Center(-60, -20);
-	gl->Center(45, 5);
-	
-	Image* blued = (Image*)CreateElement(IMAGE, iPoint(0, 0), blue_diamond.rect[IDLE],&blue_diamond, nullptr, INFO, nullptr, settings_window);
-	Label* bl = (Label*)CreateElement(LABEL, iPoint(0, 0), { 0,0,0,0 },nullptr, "X 100", INFO, nullptr, blued);
-	
-	blued->Center(20, -20);
-	bl->Center(45, 5);
+	//Image* greend = (Image*)CreateElement(IMAGE, iPoint(0, 0), green_diamond.idle.GetCurrentFrame(), &green_diamond, nullptr, INFO, nullptr, settings_window);
+	//Label* gl = (Label*)CreateElement(LABEL, iPoint(0, 0), { 0,0,0,0 },nullptr, "X 50", INFO, nullptr, greend);
+	//
+	//greend->Center(-60, -20);
+	//gl->Center(45, 5);
+	//
+	//Image* blued = (Image*)CreateElement(IMAGE, iPoint(0, 0), blue_diamond.idle.GetCurrentFrame(), &blue_diamond, nullptr, INFO, nullptr, settings_window);
+	//Label* bl = (Label*)CreateElement(LABEL, iPoint(0, 0), { 0,0,0,0 },nullptr, "X 100", INFO, nullptr, blued);
+	//
+	//blued->Center(20, -20);
+	//bl->Center(45, 5);
 
 	/////////////MAIN MENU FINISH //////////////////
 
@@ -390,28 +393,31 @@ bool j1Gui::Start()
 
 	heart_ref = (Image*)CreateElement(IMAGE, iPoint(10, 10), heart.rect[IDLE], &heart, nullptr, LIFE_SYSTEM, nullptr, in_game_ui);
 
-	green_ref = (Image*)CreateElement(IMAGE, iPoint(600, 10), green_diamond.rect[IDLE], &green_diamond, nullptr, DYNAMIC_INFO, nullptr, in_game_ui);
+	green_ref = (Image*)CreateElement(IMAGE, iPoint(0, 15), green_diamond.idle.GetCurrentFrame(), &green_diamond, nullptr, DYNAMIC_INFO, nullptr, in_game_ui);
 	Label* igl = (Label*)CreateElement(LABEL, iPoint(0, 0), { 0,0,0,0 },nullptr, "X", INFO, nullptr, green_ref);
 	Label* igl_count = (Label*)CreateElement(LABEL, iPoint(0, 0), { 0,0,0,0 },nullptr, "", GREEN_COUNTER, nullptr, igl);
+	green_ref->CenterX(700);
 	igl->Center(30, 5);
 	igl_count->Center(20, 0);
 	
-	blue_ref = (Image*)CreateElement(IMAGE, iPoint(700, 10), blue_diamond.rect[IDLE], &blue_diamond, nullptr, DYNAMIC_INFO, nullptr, in_game_ui);
+	blue_ref = (Image*)CreateElement(IMAGE, iPoint(0,15), blue_diamond.idle.GetCurrentFrame(), &blue_diamond, nullptr, DYNAMIC_INFO, nullptr, in_game_ui);
 	Label* ibl = (Label*)CreateElement(LABEL, iPoint(0, 0), { 0,0,0,0 },nullptr, "X", INFO, nullptr, blue_ref);
-	Label* ibl_count = (Label*)CreateElement(LABEL, iPoint(845, 15), { 0,0,0,0 },nullptr, "", BLUE_COUNTER, nullptr, ibl);
+	Label* ibl_count = (Label*)CreateElement(LABEL, iPoint(0, 0), { 0,0,0,0 },nullptr, "", BLUE_COUNTER, nullptr, ibl);
+	blue_ref->CenterX(800);
 	ibl->Center(30, 5);
 	ibl_count->Center(20, 0);
 	
-	Label* score = (Label*)CreateElement(LABEL, iPoint(900, 15), { 0,0,0,0 },nullptr, "SCORE :", INFO, nullptr, in_game_ui);
+	Label* score = (Label*)CreateElement(LABEL, iPoint(0, 20), { 0,0,0,0 }, nullptr, "SCORE :", INFO, nullptr, in_game_ui);
 	Label* ls = (Label*)CreateElement(LABEL, iPoint(0, 0), { 0,0,0,0 },nullptr, "", SCORE, nullptr, score);
+	score->CenterX(950);
 	ls->Center(45, 0);
 
-	Label* tmi = (Label*)CreateElement(LABEL, iPoint(0, 15), { 0,0,0,0 },nullptr, "", GAME_TIMER_MINS, nullptr, in_game_ui);
-	Label* timersec = (Label*)CreateElement(LABEL, iPoint(0, 0), { 0,0,0,0 },nullptr, ":", INFO, nullptr, tmi);
-	Label* tse = (Label*)CreateElement(LABEL, iPoint(0, 0), { 0,0,0,0 },nullptr, "", GAME_TIMER_SECS, nullptr, tmi);
-	tmi->CenterX(250);
-	timersec->Center(40, 0);
-	tse->Center(75, 0);
+	Label* timersec = (Label*)CreateElement(LABEL, iPoint(0, 15), { 0,0,0,0 },nullptr, ":", INFO, nullptr, in_game_ui);
+	Label* tmi = (Label*)CreateElement(LABEL, iPoint(0, 0), { 0,0,0,0 },nullptr, "", GAME_TIMER_MINS, nullptr, timersec);
+	Label* tse = (Label*)CreateElement(LABEL, iPoint(0, 0), { 0,0,0,0 },nullptr, "", GAME_TIMER_SECS, nullptr, timersec);
+	timersec->CenterX(400);
+	tmi->Center(-30, 0);
+	tse->Center(25, 0);
 
 	Label* pl_name = (Label*)CreateElement(LABEL, iPoint(App->entitymanager->player_ref->position.x + App->entitymanager->player_ref->rect.w / 2, App->entitymanager->player_ref->position.y - 50), { 0,0,0,0 },nullptr, "--Kikime--", PLAYER_NAME, nullptr, in_game_ui);
 	//////////IN GAME UI FINISH///////////////
