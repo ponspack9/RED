@@ -92,11 +92,15 @@ public:
 
 	void ChangeFXVolume(int value);
 
+	void ShowSettingsInGame();
+
+
 	//Saving iteration ONLY SAVING ACTIVE MODULES
 	bool SaveGameFile();
 
 	//Loading iteration ONLY LOADING ACTIVE MODULES
 	bool LoadGameFile();
+  
 private:
 
 	void PauseGame();

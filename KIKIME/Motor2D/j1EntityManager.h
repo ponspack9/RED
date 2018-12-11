@@ -61,7 +61,9 @@ public:
 
 	Coin* FindCoinByCollider(Collider* c);
 
+	void ChangeUIAnimation(Coin* c);
 
+	float GetAnimTimer();
 
 public:
 	
@@ -84,6 +86,8 @@ public:
 	j1Timer		    timer_death;
 	bool			is_started;
 	int				score;
+	int				score_powUp;
+	int				aux_score;
 	int				blue_counter;
 	int				green_counter;
 };

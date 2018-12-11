@@ -1,6 +1,6 @@
 <!-- Config file for the game -->
 <config>
-  <app framerate_cap ="30">
+  <app framerate_cap ="60">
     <title>KIKIME</title>
     <organization>ORISO</organization>
   </app>
@@ -57,7 +57,23 @@
       <gameOver height="272" width="440" y="448" x="0"></gameOver>
       <lastDeath height="56" width="48" y="390" x="0"></lastDeath>
       <window x="769" y="0" width="306" height="348"/>
+      <green_diamond x="591" y="211" width="36" height="28"></green_diamond>
+      <blue_diamond x="463" y="211" width="36" height="28"></blue_diamond>
+      <yellow_diamond x="526" y="210" width="36" height="28"></yellow_diamond>
+      <red_diamond x="654" y="210" width="36" height="28"></red_diamond>
+      <heart x="722" y="275" width="28" height="28"></heart>      
     </atlas>
+    <UIanimations animSpeed ="0.5">
+      <blue_shine x="526" y="211" width="36" height="28" />
+      <blue_shine x="463" y="211" width="36" height="28" />
+      <blue_shine x="654" y="211" width="36" height="28" />
+      <green_shine x="526" y="211" width="36" height="28" />
+      <green_shine x="591" y="211" width="36" height="28" />
+      <green_shine x="654" y="211" width="36" height="28" />
+      <heart_blink x="722" y="147" width="28" height="28" />
+      <heart_blink x="722" y="211" width="28" height="28" />
+      <heart_blink x="722" y="275" width="28" height="28" />
+    </UIanimations>
     <blue file="gui/blueSheet.png">
       <SubTexture height="36" width="38" y="36" x="380" name="blue_boxCheckmark.png"/>
       <SubTexture height="36" width="38" y="0" x="380" name="blue_boxCross.png"/>

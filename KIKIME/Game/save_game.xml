@@ -7,25 +7,25 @@
 	<map />
 	<scene>
 		<current current_map="MapLvl1.tmx" />
-		<timer seconds="2" minutes="2" />
+		<timer seconds="5" minutes="0" />
 	</scene>
 	<debug />
 	<collisions />
-	<entitymanager bluespicked="1" greenspicked="3" score="250">
-		<player x="1585" y="1005" speed_Y="400" lives="1" />
-		<enemy type="floater" alive="false" />
-		<enemy type="floater" alive="false" />
+	<entitymanager bluespicked="0" greenspicked="0" score="0">
+		<player x="97" y="715" speed_Y="400" lives="2" />
+		<enemy type="floater" alive="true" x="832" y="384" />
+		<enemy type="floater" alive="true" x="1344" y="416" />
 		<enemy type="roller" alive="true" x="2752" y="608" />
-		<enemy type="roller" alive="true" x="1488" y="674" />
-		<enemy type="floater" alive="false" />
+		<enemy type="roller" alive="true" x="1410" y="674" />
+		<enemy type="floater" alive="true" x="576" y="352" />
 		<enemy type="floater" alive="true" x="2368" y="352" />
-		<enemy type="floater" alive="true" x="1801" y="763" />
+		<enemy type="floater" alive="true" x="1792" y="736" />
 		<enemy type="floater" alive="true" x="2944" y="416" />
-		<coins x="54" y="782" coin_type="0" picked="true" />
-		<coins x="512" y="768" coin_type="0" picked="true" />
-		<coins x="1120" y="768" coin_type="1" picked="true" />
-		<coins x="1409" y="1024" coin_type="0" picked="true" />
-		<coins x="1454" y="1198" coin_type="2" picked="true" />
+		<coins x="54" y="782" coin_type="0" picked="false" />
+		<coins x="512" y="768" coin_type="0" picked="false" />
+		<coins x="1120" y="768" coin_type="1" picked="false" />
+		<coins x="1409" y="1024" coin_type="0" picked="false" />
+		<coins x="1454" y="1198" coin_type="2" picked="false" />
 		<coins x="2402" y="544" coin_type="0" picked="false" />
 		<coins x="2834" y="736" coin_type="2" picked="false" />
 	</entitymanager>
@@ -34,6 +34,6 @@
 	<fonts />
 	<gui />
 	<renderer>
-		<camera x="-1244" y="-560" />
+		<camera x="0" y="-355" />
 	</renderer>
 </save>
