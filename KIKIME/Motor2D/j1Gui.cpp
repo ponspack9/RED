@@ -200,8 +200,6 @@ bool j1Gui::Awake(pugi::xml_node& conf)
 		r.y = n.attribute("y").as_int();
 		r.w = n.attribute("width").as_int();
 		r.h = n.attribute("height").as_int();
-		blue_diamond.idle.PushBack(r);
-
 		if (n.next_sibling("blue_diamond"))
 			n = n.next_sibling("blue_diamond");
 
@@ -215,8 +213,6 @@ bool j1Gui::Awake(pugi::xml_node& conf)
 		r.y = n.attribute("y").as_int();
 		r.w = n.attribute("width").as_int();
 		r.h = n.attribute("height").as_int();
-		green_diamond.idle.PushBack(r);
-
 		if (n.next_sibling("green_diamond"))
 			n = n.next_sibling("green_diamond");
 	}
@@ -229,8 +225,6 @@ bool j1Gui::Awake(pugi::xml_node& conf)
 		r.y = n.attribute("y").as_int();
 		r.w = n.attribute("width").as_int();
 		r.h = n.attribute("height").as_int();
-		heart.idle.PushBack(r);
-
 		if (n.next_sibling("heart"))
 			n = n.next_sibling("heart");
 	}
@@ -313,7 +307,6 @@ bool j1Gui::Start()
 	settings_button->Center();
 	exit_button->Center(0, 70);
 
-
 	Label* lstart_button	= (Label*)CreateElement(LABEL, iPoint(0, 0), { 0,0,0,0 },nullptr, "PLAY GAME", NO_ACTION, nullptr, start_button);
 	Label* lcontinue_button = (Label*)CreateElement(LABEL, iPoint(0, 0), { 0,0,0,0 },nullptr, "CONTINUE", NO_ACTION, nullptr, continue_button);
 	Label* lsettings_button = (Label*)CreateElement(LABEL, iPoint(0, 0), { 0,0,0,0 },nullptr, "SETTINGS", NO_ACTION, nullptr, settings_button);
@@ -326,7 +319,7 @@ bool j1Gui::Start()
 
 	//Credits window
 
-	credits_window = (Image*)CreateElement(IMAGE, iPoint(App->render->viewport.w / 2 - 250, App->render->viewport.h / 2 - 400), SDL_Rect({ 1000,1000,500,800 }), nullptr, nullptr, NO_ACTION, (j1Module*)App, nullptr, false);
+	credits_window = (Image*)CreateElement(IMAGE, iPoint(App->render->viewport.w / 2 - 250, App->render->viewport.h / 2 - 400), SDL_Rect({ 1000,1000,500,800 }), nullptr, nullptr, NO_ACTION, (j1Module*)App, main_menu_window, false);
 
 	Button* credits_button = (Button*)CreateButton({ 50,50 }, red_button, CREDITS, nullptr, main_menu_window);
 
@@ -334,7 +327,7 @@ bool j1Gui::Start()
 
 	Label* lcredits_button = (Label*)CreateElement(LABEL, iPoint(0, 0), { 0,0,0,0 },nullptr, "CREDITS", NO_ACTION, nullptr, credits_button);
 	Label* lwebsite_button	= (Label*)CreateElement(LABEL, iPoint(0, 0), { 0,0,0,0 },nullptr, "Go to website", NO_ACTION, nullptr, website_button);
-	Label* lcredits = (Label*)CreateElement(LABEL, iPoint(0, 0), { 0,0,0,0 },nullptr, "Game developed by Oscar Pons and Oriol Sabaté", NO_ACTION, nullptr, credits_window);
+	Label* lcredits = (Label*)CreateElement(LABEL, iPoint(0, 0), { 0,0,0,0 },nullptr, "Game developed by Oscar Pons and Oriol Sabate", NO_ACTION, nullptr, credits_window);
 
 	website_button->Center(0, 70);
 	lcredits_button->Center();
@@ -342,15 +335,15 @@ bool j1Gui::Start()
 	lcredits->Center();
 
 	//Settings window
-	settings_window = (Image*)CreateElement(IMAGE, { App->render->viewport.w / 2 - 250, App->render->viewport.h / 2 - 400 }, SDL_Rect({ 1000,1000,500,800 }), nullptr, NO_ACTION, (j1Module*)App, main_menu_window, false);
+	settings_window = (Image*)CreateElement(IMAGE, { App->render->viewport.w / 2 - 250, App->render->viewport.h / 2 - 400 }, SDL_Rect({ 1000,1000,500,800 }), nullptr,nullptr, NO_ACTION, (j1Module*)App, main_menu_window, false);
 	Button* settings_to_main = (Button*)CreateButton({ 0,0 }, red_button, SETTINGS, nullptr, settings_window);
-	Label* lsettings_to_main = (Label*)CreateElement(LABEL, iPoint(0, 0), { 0,0,0,0 }, "MAIN MENU", NO_ACTION, nullptr, settings_to_main);
+	Label* lsettings_to_main = (Label*)CreateElement(LABEL, iPoint(0, 0), { 0,0,0,0 }, nullptr, "MAIN MENU", NO_ACTION, nullptr, settings_to_main);
 	settings_to_main->Center(0, 70);
 	lsettings_to_main->Center();
 	
 	//Music Volume
 	Button* volume_button = (Button*)CreateButton({ 0,-150 }, green_button, NO_ACTION, nullptr, settings_to_main);
-	Label* lvolume_button = (Label*)CreateElement(LABEL, iPoint(0, 0), { 0,0,0,0 }, "MUSIC VOLUME", NO_ACTION, nullptr, volume_button);
+	Label* lvolume_button = (Label*)CreateElement(LABEL, iPoint(0, 0), { 0,0,0,0 }, nullptr, "MUSIC VOLUME", NO_ACTION, nullptr, volume_button);
 	volume_button->CenterX();
 	lvolume_button->Center();
 
@@ -361,7 +354,7 @@ bool j1Gui::Start()
 
 	//FX Volume
 	Button* fx_volume_button = (Button*)CreateButton({ 0,-300 }, green_button, NO_ACTION, nullptr, settings_to_main);
-	Label* fx_lvolume_button = (Label*)CreateElement(LABEL, iPoint(0, 0), { 0,0,0,0 }, "FX VOLUME", NO_ACTION, nullptr, fx_volume_button);
+	Label* fx_lvolume_button = (Label*)CreateElement(LABEL, iPoint(0, 0), { 0,0,0,0 }, nullptr, "FX VOLUME", NO_ACTION, nullptr, fx_volume_button);
 	fx_volume_button->CenterX();
 	fx_lvolume_button->Center();
 
@@ -372,13 +365,13 @@ bool j1Gui::Start()
 	//slider_button->CenterX();
 
 
-	Image* greend = (Image*)CreateElement(IMAGE, iPoint(0, 0), green_diamond.idle.GetCurrentFrame(), &green_diamond, nullptr, INFO, nullptr, settings_window);
+	Image* greend = (Image*)CreateElement(IMAGE, iPoint(0, 0), green_diamond.rect[IDLE], &green_diamond, nullptr, INFO, nullptr, settings_window);
 	Label* gl = (Label*)CreateElement(LABEL, iPoint(0, 0), { 0,0,0,0 },nullptr, "X 50", INFO, nullptr, greend);
 	
 	greend->Center(-60, -20);
 	gl->Center(45, 5);
 	
-	Image* blued = (Image*)CreateElement(IMAGE, iPoint(0, 0), blue_diamond.idle.GetCurrentFrame(),&blue_diamond, nullptr, INFO, nullptr, settings_window);
+	Image* blued = (Image*)CreateElement(IMAGE, iPoint(0, 0), blue_diamond.rect[IDLE],&blue_diamond, nullptr, INFO, nullptr, settings_window);
 	Label* bl = (Label*)CreateElement(LABEL, iPoint(0, 0), { 0,0,0,0 },nullptr, "X 100", INFO, nullptr, blued);
 	
 	blued->Center(20, -20);
@@ -395,15 +388,15 @@ bool j1Gui::Start()
 	in_game_window = (Image*)CreateElement(IMAGE, iPoint(0, 0), SDL_Rect({ 1000,1000,App->render->viewport.w,App->render->viewport.h }),nullptr, nullptr, NO_ACTION, (j1Module*)App, nullptr, true);
 	in_game_ui = (Image*)CreateElement(IMAGE, iPoint(0, 0), SDL_Rect({ 1000,1000,428,452 }),nullptr, nullptr, NO_ACTION, (j1Module*)App, in_game_window, true);
 
-	heart_ref = (Image*)CreateElement(IMAGE, iPoint(10, 10), heart.idle.GetCurrentFrame(), &heart, nullptr, LIFE_SYSTEM, nullptr, in_game_ui);
+	heart_ref = (Image*)CreateElement(IMAGE, iPoint(10, 10), heart.rect[IDLE], &heart, nullptr, LIFE_SYSTEM, nullptr, in_game_ui);
 
-	green_ref = (Image*)CreateElement(IMAGE, iPoint(600, 10), green_diamond.idle.GetCurrentFrame(), &green_diamond, nullptr, DYNAMIC_INFO, nullptr, in_game_ui);
+	green_ref = (Image*)CreateElement(IMAGE, iPoint(600, 10), green_diamond.rect[IDLE], &green_diamond, nullptr, DYNAMIC_INFO, nullptr, in_game_ui);
 	Label* igl = (Label*)CreateElement(LABEL, iPoint(0, 0), { 0,0,0,0 },nullptr, "X", INFO, nullptr, green_ref);
 	Label* igl_count = (Label*)CreateElement(LABEL, iPoint(0, 0), { 0,0,0,0 },nullptr, "", GREEN_COUNTER, nullptr, igl);
 	igl->Center(30, 5);
 	igl_count->Center(20, 0);
 	
-	blue_ref = (Image*)CreateElement(IMAGE, iPoint(700, 10), blue_diamond.idle.GetCurrentFrame(), &blue_diamond, nullptr, DYNAMIC_INFO, nullptr, in_game_ui);
+	blue_ref = (Image*)CreateElement(IMAGE, iPoint(700, 10), blue_diamond.rect[IDLE], &blue_diamond, nullptr, DYNAMIC_INFO, nullptr, in_game_ui);
 	Label* ibl = (Label*)CreateElement(LABEL, iPoint(0, 0), { 0,0,0,0 },nullptr, "X", INFO, nullptr, blue_ref);
 	Label* ibl_count = (Label*)CreateElement(LABEL, iPoint(845, 15), { 0,0,0,0 },nullptr, "", BLUE_COUNTER, nullptr, ibl);
 	ibl->Center(30, 5);
