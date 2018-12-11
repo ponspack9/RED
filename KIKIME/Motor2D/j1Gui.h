@@ -73,8 +73,6 @@ private:
 	p2SString			yellow_file_name;
 	p2SString			grey_file_name;
 
-	bool				moving_element;
-	iPoint				last_motion;
 
 	Button				blue_button;
 	Button				red_button;
@@ -86,7 +84,10 @@ private:
 	Image				game_over_image;
 	Image				last_death_image;
 
+	bool				moving_element;
+	iPoint				last_element_motion;
 	int					moving_speed;
+	iPoint				camera_motion;
 
 };
 

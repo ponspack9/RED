@@ -10,6 +10,7 @@
 j1Gui::j1Gui() : j1Module()
 {
 	name.create("gui");
+	last_element_motion = { 0,0 };
 }
 
 // Destructor
@@ -473,6 +474,7 @@ void j1Gui::HandleInput(UIElement* element)
 	else if((element->state == HOVER || element->state == CLICK_DOWN) && is_inside && (App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KEY_REPEAT || App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KEY_DOWN))
 	{
 		element->state = CLICK_DOWN;
+		App->input->GetMousePosition(camera_motion.x, camera_motion.y);
 		moving_element = true;
 		//LOG("click");
 	}
@@ -507,26 +509,34 @@ void j1Gui::HandleInput(UIElement* element)
 
 	if (moving_element && element->movable) {
 		iPoint final_motion;
+		
 		App->input->GetMouseMotion(final_motion.x, final_motion.y);
-		last_motion -= final_motion;
+		LOG("final_motio: %d,%d", final_motion.x, final_motion.y);
+		LOG("last_motion: %d,%d", last_element_motion.x, last_element_motion.y);
+
+		last_element_motion -= final_motion;
+		LOG("minus_motio: %d,%d", last_element_motion.x, last_element_motion.y);
+
 		int x = element->initial_pos.x;
 
 		/*if (element->action == CHANGE_VOLUME) {
 			element->initial_pos.x += 20;
 		}*/
-		if (!last_motion.IsZero()) {
-			final_motion *= moving_speed * App->dt;
+		if (!last_element_motion.IsZero())
+		{
+			final_motion *= (moving_speed * App->dt);
 			if (element->action == CHANGE_VOLUME && x + final_motion.x > 0 && x + final_motion.x < 128) {
-				element->initial_pos.x = element->initial_pos.x + final_motion.x;
+				element->initial_pos.x = x + final_motion.x;
 			}
-			//else element->initial_pos = element->initial_pos + final_motion;
+			else element->initial_pos = element->initial_pos + final_motion;
 		}
-		last_motion = { final_motion.x, final_motion.y };
+		App->input->GetMouseMotion(last_element_motion.x, last_element_motion.y);
+		//last_element_motion = { final_motion.x, final_motion.y };
 	}
-	if (element->action == CHANGE_VOLUME) {
+	/*if (element->action == CHANGE_VOLUME) {
 		LOG("INITIAL_POS MOVING: %d,%d", element->initial_pos.x, element->initial_pos.y);
 		LOG("POS  PARENT MOVING: %d,%d", element->parent->position.x, element->parent->position.y);
-	}
+	}*/
 }
 
 // const getter for atlas
