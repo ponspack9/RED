@@ -139,6 +139,7 @@ bool j1Gui::Awake(pugi::xml_node& conf)
 	grey_button.visible = true;
 	grey_button.color = GREY;
 
+	//pause window menu
 	n = conf.child("atlas").child("window");
 	for (SDL_Rect &r : white_window.rect)
 	{
@@ -150,6 +151,72 @@ bool j1Gui::Awake(pugi::xml_node& conf)
 			n = n.next_sibling("window");
 	}
 
+	// Blue diamond
+	n = conf.child("atlas").child("blue_diamond");
+	for (SDL_Rect &r : blue_diamond.rect)
+	{
+		r.x = n.attribute("x").as_int();
+		r.y = n.attribute("y").as_int();
+		r.w = n.attribute("width").as_int();
+		r.h = n.attribute("height").as_int();
+		if (n.next_sibling("blue_diamond"))
+			n = n.next_sibling("blue_diamond");
+		blue_diamond.idle.PushBack(r);
+
+	}
+
+	// Green diamond
+	n = conf.child("atlas").child("green_diamond");
+	for (SDL_Rect &r : blue_diamond.rect)
+	{
+		r.x = n.attribute("x").as_int();
+		r.y = n.attribute("y").as_int();
+		r.w = n.attribute("width").as_int();
+		r.h = n.attribute("height").as_int();
+		if (n.next_sibling("green_diamond"))
+			n = n.next_sibling("green_diamond");
+		green_diamond.idle.PushBack(r);
+	}
+
+	// Heart
+	n = conf.child("atlas").child("heart");
+	for (SDL_Rect &r : heart.rect)
+	{
+		r.x = n.attribute("x").as_int();
+		r.y = n.attribute("y").as_int();
+		r.w = n.attribute("width").as_int();
+		r.h = n.attribute("height").as_int();
+		if (n.next_sibling("heart"))
+			n = n.next_sibling("heart");
+		heart.idle.PushBack(r);
+
+	}
+
+	//READING ANIMATIONS
+	//BLUE SHINE
+	SDL_Rect r;
+	n = conf.child("UIanimations").child("blue_shine");
+	for (n; n; n = n.next_sibling("blue_shine"))
+	{
+		r.x = n.attribute("x").as_int();
+		r.y = n.attribute("y").as_int();
+		r.w = n.attribute("width").as_int();
+		r.h = n.attribute("height").as_int();
+		blue_diamond.blue_shine.PushBack(r);
+	}
+
+	//GREEN SHINE
+	n = conf.child("UIanimations").child("green_shine");
+	for (n; n; n = n.next_sibling("green_shine"))
+	{
+		r.x = n.attribute("x").as_int();
+		r.y = n.attribute("y").as_int();
+		r.w = n.attribute("width").as_int();
+		r.h = n.attribute("height").as_int();
+		green_diamond.green_shine.PushBack(r);
+	}
+
+	blue_diamond.blue_shine.speed = green_diamond.green_shine.speed = conf.child("UIanimations").attribute("animSpeed").as_float();
 
 	return ret;
 }
@@ -219,17 +286,17 @@ bool j1Gui::Start()
 	settings_to_main->Center(0, 40);
 	lsettings_to_main->Center();
 
-	//Image* greend = (Image*)CreateElement(IMAGE, iPoint(0, 0), App->entitymanager->green_diamond.idle.GetCurrentFrame(), nullptr, INFO, nullptr, settings_window);
-	//Label* gl = (Label*)CreateElement(LABEL, iPoint(0, 0), { 0,0,0,0 }, "X 50", INFO, nullptr, greend);
-	//
-	//greend->Center(-60, -20);
-	//gl->Center(45, 5);
-	//
-	//Image* blued = (Image*)CreateElement(IMAGE, iPoint(0, 0), App->entitymanager->blue_diamond.idle.GetCurrentFrame(), nullptr, INFO, nullptr, settings_window);
-	//Label* bl = (Label*)CreateElement(LABEL, iPoint(0, 0), { 0,0,0,0 }, "X 100", INFO, nullptr, blued);
-	//
-	//blued->Center(20, -20);
-	//bl->Center(45, 5);
+	Image* greend = (Image*)CreateElement(IMAGE, iPoint(0, 0), green_diamond.idle.GetCurrentFrame(), nullptr, INFO, nullptr, settings_window);
+	Label* gl = (Label*)CreateElement(LABEL, iPoint(0, 0), { 0,0,0,0 }, "X 50", INFO, nullptr, greend);
+	
+	greend->Center(-60, -20);
+	gl->Center(45, 5);
+	
+	Image* blued = (Image*)CreateElement(IMAGE, iPoint(0, 0), blue_diamond.idle.GetCurrentFrame(), nullptr, INFO, nullptr, settings_window);
+	Label* bl = (Label*)CreateElement(LABEL, iPoint(0, 0), { 0,0,0,0 }, "X 100", INFO, nullptr, blued);
+	
+	blued->Center(20, -20);
+	bl->Center(45, 5);
 
 	/////////////MAIN MENU FINISH //////////////////
 
@@ -238,15 +305,15 @@ bool j1Gui::Start()
 	in_game_window = (Image*)CreateElement(IMAGE, iPoint(0, 0), SDL_Rect({ 1000,1000,App->render->viewport.w,App->render->viewport.h }), nullptr, NO_ACTION, (j1Module*)App, nullptr, true);
 	in_game_ui = (Image*)CreateElement(IMAGE, iPoint(0, 0), SDL_Rect({ 1000,1000,428,452 }), nullptr, NO_ACTION, (j1Module*)App, in_game_window, true);
 
-	Image* lives = (Image*)CreateElement(IMAGE, iPoint(10, 10), App->entitymanager->heart.idle.GetCurrentFrame(), nullptr, LIFE_SYSTEM, nullptr, in_game_ui);
+	Image* lives = (Image*)CreateElement(IMAGE, iPoint(10, 10), heart.idle.GetCurrentFrame(), nullptr, LIFE_SYSTEM, nullptr, in_game_ui);
 
-	Image* igreen = (Image*)CreateElement(IMAGE, iPoint(600, 10), App->entitymanager->green_diamond.idle.GetCurrentFrame(), nullptr, INFO, nullptr, in_game_ui);
+	Image* igreen = (Image*)CreateElement(IMAGE, iPoint(600, 10), green_diamond.idle.GetCurrentFrame(), nullptr, DYNAMIC_INFO, nullptr, in_game_ui);
 	Label* igl = (Label*)CreateElement(LABEL, iPoint(0, 0), { 0,0,0,0 }, "X", INFO, nullptr, igreen);
 	Label* igl_count = (Label*)CreateElement(LABEL, iPoint(0, 0), { 0,0,0,0 }, "", GREEN_COUNTER, nullptr, igl);
 	igl->Center(30, 5);
 	igl_count->Center(20, 0);
 	
-	Image* iblue = (Image*)CreateElement(IMAGE, iPoint(700, 10), App->entitymanager->blue_diamond.idle.GetCurrentFrame(), nullptr, INFO, nullptr, in_game_ui);
+	Image* iblue = (Image*)CreateElement(IMAGE, iPoint(700, 10), blue_diamond.idle.GetCurrentFrame(), nullptr, DYNAMIC_INFO, nullptr, in_game_ui);
 	Label* ibl = (Label*)CreateElement(LABEL, iPoint(0, 0), { 0,0,0,0 }, "X", INFO, nullptr, iblue);
 	Label* ibl_count = (Label*)CreateElement(LABEL, iPoint(845, 15), { 0,0,0,0 }, "", BLUE_COUNTER, nullptr, ibl);
 	ibl->Center(30, 5);
@@ -306,6 +373,7 @@ bool j1Gui::Start()
 	in_game_window->SetInvisible();
 	credits_window->SetInvisible();
 	settings_window->SetInvisible();
+	in_game_ui->SetInvisible();
  
 	return true;
 }
@@ -398,7 +466,7 @@ UIElement* j1Gui::CreateButton(iPoint pos,const Button &b, ActionType action, j1
 	return elem;
 }
 
-UIElement* j1Gui::CreateElement(UIType type, iPoint pos, SDL_Rect rect, p2SString string, ActionType action, j1Module* callback, UIElement* parent, bool visible)
+UIElement* j1Gui::CreateElement(UIType type, iPoint pos, SDL_Rect rect, Image* img, p2SString string, ActionType action, j1Module* callback, UIElement* parent, bool visible)
 {
 	UIElement* elem = nullptr;
 
@@ -406,7 +474,7 @@ UIElement* j1Gui::CreateElement(UIType type, iPoint pos, SDL_Rect rect, p2SStrin
 	{
   case IMAGE:
       
-		elem = new Image(action,pos, rect, type, parent,visible);
+		elem = new Image(action,pos, rect, img, type, parent,visible);
 		break;
 	case LABEL:
 

@@ -33,11 +33,11 @@ public:
 	// Called before quitting
 	bool CleanUp();
 
-	UIElement * CreateButton(iPoint pos, const Button & b, ActionType action, j1Module * callback, UIElement * parent);
 
 	// Gui creation functions
-	UIElement* CreateElement(UIType type, iPoint pos, SDL_Rect rect, p2SString string = nullptr, ActionType action = NO_ACTION, j1Module* callback = nullptr, UIElement* parent = nullptr, bool visible = true);
-
+	UIElement* CreateElement(UIType type, iPoint pos, SDL_Rect rect, Image* img = nullptr, p2SString string = nullptr, ActionType action = NO_ACTION, j1Module* callback = nullptr, UIElement* parent = nullptr, bool visible = true);
+	UIElement * CreateButton(iPoint pos, const Button & b, ActionType action, j1Module * callback, UIElement * parent);
+	
 	void HandleInput(UIElement* element);
 
 	const SDL_Texture* GetAtlas() const;
@@ -55,6 +55,10 @@ public:
 	Image*			game_over;
 	Image*			last_death;
 	Image			white_window;
+
+	Image			blue_diamond;
+	Image			green_diamond;
+	Image			heart;
 
 private:
 

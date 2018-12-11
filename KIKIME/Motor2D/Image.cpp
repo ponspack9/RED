@@ -1,6 +1,6 @@
 #include "Image.h"
 
-Image::Image(ActionType action,iPoint pos, SDL_Rect rect, UIType type, UIElement* parent, bool visible) : UIElement(type, parent, visible)
+Image::Image(ActionType action,iPoint pos, SDL_Rect rect, Image img,UIType type, UIElement* parent, bool visible) : UIElement(type, parent, visible)
 
 {
 	this->initial_pos = pos;
@@ -14,6 +14,10 @@ Image::Image(ActionType action,iPoint pos, SDL_Rect rect, UIType type, UIElement
 
 	this->state = IDLE;
 	this->action = action;
+
+	this->idle = img.idle;
+	this->blue_shine = img.blue_shine;
+	this->green_shine = img.green_shine;
 }
 
 void Image::Draw(SDL_Texture * sprites)
@@ -40,7 +44,20 @@ void Image::Draw(SDL_Texture * sprites)
 		position.x = temp;
 		break;
 	case LAST_DEATH:
+
 		App->render->Blit(sprites, position.x, position.y, &rect[state], 1);
+		break;
+	case DYNAMIC_INFO:
+
+		if (&current_animation->GetCurrentFrame() == NULL)
+		{
+			current_animation = &idle;
+			App->render->Blit(sprites, position.x, position.y, &current_animation->GetCurrentFrame(), 0);
+		}
+		else
+		{
+			App->render->Blit(sprites, position.x, position.y, &current_animation->GetCurrentFrame(), 0);
+		}
 		break;
 	default:
 		App->render->Blit(sprites, position.x, position.y, &rect[state], 0);
