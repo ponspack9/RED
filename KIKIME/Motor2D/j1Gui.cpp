@@ -197,6 +197,10 @@ bool j1Gui::Start()
 	Button* settings_button = (Button*)CreateButton({ 0,0 }, green_button, SETTINGS, nullptr, main_menu_ui);
 	Button* exit_button		= (Button*)CreateButton({ 0,0 }, red_button, EXIT_GAME, nullptr, main_menu_ui);
 	
+	start_button	 ->movable = true;
+	continue_button	 ->movable = true;
+	settings_button	 ->movable = true;
+	exit_button    	 ->movable = true;
 
 	start_button->Center(0, -140);
 	continue_button->Center(0,-70);
@@ -233,14 +237,13 @@ bool j1Gui::Start()
 
 	//Settings window
 	settings_window = (Image*)CreateElement(IMAGE, { App->render->viewport.w / 2 - 250, App->render->viewport.h / 2 - 400 }, SDL_Rect({ 1000,1000,500,800 }), nullptr, NO_ACTION, (j1Module*)App, main_menu_window, false);
-	settings_window->movable = false;
 	Button* settings_to_main = (Button*)CreateButton({ 0,0 }, green_button, SETTINGS, nullptr, settings_window);
 	Label* lsettings_to_main = (Label*)CreateElement(LABEL, iPoint(0, 0), { 0,0,0,0 }, "MAIN MENU", NO_ACTION, nullptr, settings_to_main);
-	settings_to_main->movable = false;
 	settings_to_main->Center(0, 40);
 	lsettings_to_main->Center();
 
 	Button* slider_button = (Button*)CreateButton({ 0,-50 }, slider_pointer_button, CHANGE_VOLUME, nullptr, settings_to_main);
+	slider_button->movable = true;
 
 	//Image* greend = (Image*)CreateElement(IMAGE, iPoint(0, 0), App->entitymanager->green_diamond.idle.GetCurrentFrame(), nullptr, INFO, nullptr, settings_window);
 	//Label* gl = (Label*)CreateElement(LABEL, iPoint(0, 0), { 0,0,0,0 }, "X 50", INFO, nullptr, greend);
@@ -255,6 +258,10 @@ bool j1Gui::Start()
 	//bl->Center(45, 5);
 
 	/////////////MAIN MENU FINISH //////////////////
+
+	/*
+	To input text check the keyobard state then make a bool matrix or something similar then update if changed the specific key true
+	*/
 
 	//////IN GAME UI //////////////
 
@@ -337,21 +344,24 @@ bool j1Gui::Start()
 // Update all guis
 bool j1Gui::PreUpdate()
 {
-	p2List_item<UIElement*>* item = elements.start;
+	bool has_changed = false;
+	p2List_item<UIElement*>* item = elements.end;
 
 	while (item != nullptr)
 	{
 		if (item->data->visible) {
 
 			item->data->PreUpdate();
-			HandleInput(item->data);
+			has_changed = HandleInput(item->data);
+			if (has_changed) break;
 		}
 
-		item = item->next;
+		item = item->prev;
 	}
 
 	return true;
 }
+
 
 // Called after all Updates
 bool j1Gui::PostUpdate()
@@ -391,6 +401,7 @@ bool j1Gui::PostUpdate()
 			}
 
 			item->data->Draw(sprites);
+			//if (App->debug->show_colliders) item->data->DrawRect();
 		}
 		item = item->next;
 	}
@@ -453,7 +464,7 @@ UIElement* j1Gui::CreateElement(UIType type, iPoint pos, SDL_Rect rect, p2SStrin
 	return elem;
 }
 
-void j1Gui::HandleInput(UIElement* element)
+bool j1Gui::HandleInput(UIElement* element)
 {
 	bool ret = true;
 	iPoint mouse;
@@ -468,31 +479,33 @@ void j1Gui::HandleInput(UIElement* element)
 	if (element->state != CLICK_DOWN &&	is_inside && App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) != KEY_DOWN)
 	{
 		element->state = HOVER;
-		moving_element = false;
 		//LOG("hover");
 	}
 	else if((element->state == HOVER || element->state == CLICK_DOWN) && is_inside && (App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KEY_REPEAT || App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KEY_DOWN))
 	{
 		element->state = CLICK_DOWN;
-		App->input->GetMousePosition(camera_motion.x, camera_motion.y);
-		moving_element = true;
+		App->input->GetMousePosition(mouseClick.x, mouseClick.y);
+		//App->input->GetMousePosition(startDraging.x, startDraging.y);
+		startDraging = element->initial_pos;
+		element->is_moving = true;
 		//LOG("click");
 	}
 	else if (is_inside && App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KEY_UP)
 	{
 		element->state = CLICK_UP;
-		moving_element = false;
+		element->is_moving = false;
 		//LOG("click up");
 	}
 	else
 	{
 		element->state = IDLE;
-		moving_element = false;
 		//LOG("idle");
 	}
 
     is_changing = (prev_state != element->state);
-
+	if (App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KEY_UP) {
+		element->is_moving = false;
+	}
 	switch (element->type)
 	{
 	case BUTTON:
@@ -507,36 +520,18 @@ void j1Gui::HandleInput(UIElement* element)
 		break;
 	}
 
-	if (moving_element && element->movable) {
-		iPoint final_motion;
-		
-		App->input->GetMouseMotion(final_motion.x, final_motion.y);
-		LOG("final_motio: %d,%d", final_motion.x, final_motion.y);
-		LOG("last_motion: %d,%d", last_element_motion.x, last_element_motion.y);
+	if (element->is_moving && element->movable) {
 
-		last_element_motion -= final_motion;
-		LOG("minus_motio: %d,%d", last_element_motion.x, last_element_motion.y);
-
-		int x = element->initial_pos.x;
-
-		/*if (element->action == CHANGE_VOLUME) {
-			element->initial_pos.x += 20;
-		}*/
-		if (!last_element_motion.IsZero())
-		{
-			final_motion *= (moving_speed * App->dt);
-			if (element->action == CHANGE_VOLUME && x + final_motion.x > 0 && x + final_motion.x < 128) {
-				element->initial_pos.x = x + final_motion.x;
-			}
-			else element->initial_pos = element->initial_pos + final_motion;
+		if (element->action == CHANGE_VOLUME && element->initial_pos.x >= -1 && element->initial_pos.x <= 129) {
+			element->initial_pos.x = mouse.x - mouseClick.x + startDraging.x;
+			if (element->initial_pos.x <= -1) element->initial_pos.x = 0;
+			else if (element->initial_pos.x >= 129) element->initial_pos.x = 128;
 		}
-		App->input->GetMouseMotion(last_element_motion.x, last_element_motion.y);
-		//last_element_motion = { final_motion.x, final_motion.y };
+		else element->initial_pos = mouse - mouseClick + startDraging;
+
 	}
-	/*if (element->action == CHANGE_VOLUME) {
-		LOG("INITIAL_POS MOVING: %d,%d", element->initial_pos.x, element->initial_pos.y);
-		LOG("POS  PARENT MOVING: %d,%d", element->parent->position.x, element->parent->position.y);
-	}*/
+
+	return is_changing;
 }
 
 // const getter for atlas

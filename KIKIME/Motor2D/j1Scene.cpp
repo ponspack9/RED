@@ -31,9 +31,9 @@ j1Scene::~j1Scene()
 bool j1Scene::Awake(pugi::xml_node& config)
 { 
 	
-	current_track = App->audio->tracks_path.start;
 	LOG("Loading Scene");
 
+	current_track = App->audio->tracks_path.start;
 	return true;
 }
 

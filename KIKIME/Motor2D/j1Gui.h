@@ -38,7 +38,7 @@ public:
 	// Gui creation functions
 	UIElement* CreateElement(UIType type, iPoint pos, SDL_Rect rect, p2SString string = nullptr, ActionType action = NO_ACTION, j1Module* callback = nullptr, UIElement* parent = nullptr, bool visible = true);
 
-	void HandleInput(UIElement* element);
+	bool HandleInput(UIElement* element);
 
 	const SDL_Texture* GetAtlas() const;
 
@@ -84,10 +84,11 @@ private:
 	Image				game_over_image;
 	Image				last_death_image;
 
-	bool				moving_element;
+	//bool				moving_element;
 	iPoint				last_element_motion;
 	int					moving_speed;
-	iPoint				camera_motion;
+	iPoint				mouseClick;
+	iPoint				startDraging;
 
 };
 

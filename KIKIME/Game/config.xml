@@ -16,7 +16,7 @@
   </renderer>
 
   <window>
-    <resolution width="1024" height="720" scale="1"/>
+    <resolution width="1280" height="720" scale="1"/>
     <fullscreen value="false"/>
     <borderless value="false"/>
     <resizable value="true"/>
@@ -52,7 +52,7 @@
       <!--Does not exist, just for testing-->
     </fx>
   </audio>
-  <gui moving_elements_speed="100">
+  <gui moving_elements_speed="50">
     <atlas file="gui/atlas.png">
       <gameOver height="272" width="440" y="448" x="0"></gameOver>
       <lastDeath height="56" width="48" y="390" x="0"></lastDeath>

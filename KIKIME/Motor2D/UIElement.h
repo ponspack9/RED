@@ -64,18 +64,14 @@ public:
 		this->type = type; 
 		this->parent = parent;
 		this->visible = visible;
-		movable = true;
+		movable = false;
+		is_moving = false;
 	}
 
 	virtual bool PreUpdate() { return true; }
-	virtual bool PostUpdate() { 
-		if (action == CHANGE_VOLUME)
-		{
-			LOG("INITIAL_POS POSTUPDATE: %d,%d", initial_pos.x, initial_pos.y);
-			LOG("POSITION    POSTUPDATE: %d,%d", position.x, position.y);
-			LOG("PARENT      POSTUPDATE: %d,%d", parent->position.x, parent->position.y);
-		}
 
+	virtual bool PostUpdate() {
+		
 		if (parent != nullptr)
 		{
 			if (action != PLAYER_NAME)
@@ -128,6 +124,15 @@ public:
 
 	virtual void HandleAction() {}
 
+	void DrawRect() {
+		SDL_SetRenderDrawColor(App->render->renderer, 255, 0, 0, SDL_ALPHA_OPAQUE);
+		//SDL_RenderDrawLine(App->render->renderer, camera_motion.x, camera_motion.y, final.x, final.y);
+		SDL_Rect temp = rect[state];
+		temp.x = position.x;
+		temp.y = position.y;
+		SDL_RenderDrawRect(App->render->renderer, &temp);
+	}
+
 public:
 
 	SDL_Rect	rect[IDLE + 1];
@@ -147,6 +152,7 @@ public:
 
 	bool		visible;
 	bool		movable;
+	bool		is_moving;
 
 	p2List<UIElement*>	sons;
 };
