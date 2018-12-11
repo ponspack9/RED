@@ -88,6 +88,8 @@ public:
 
 	void ShowSettings();
 
+	void ShowSettingsInGame();
+
 	//Saving iteration ONLY SAVING ACTIVE MODULES
 	bool SaveGameFile();
 

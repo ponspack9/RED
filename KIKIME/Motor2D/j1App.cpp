@@ -462,11 +462,11 @@ void j1App::GoToMainMenu() {
 	map->current_map = App->map->maps_path.start;
 	LOG("CURRENTMAP FROM TRANSITION: %s", App->map->current_map->data.GetString());
 	fade->FadeToBlack(App->scene, App->scene);
-	gui->main_menu_window->SetVisible();
-	gui->settings_window->SetInvisible();
-	gui->credits_window->SetInvisible();
-	gui->in_game_pause->SetInvisible();
 	gui->in_game_ui->SetInvisible();
+	gui->credits_window->SetInvisible();
+	gui->settings_window->SetInvisible();
+	gui->in_game_pause->SetInvisible();
+	//gui->main_menu_window->SetVisible();
 	UnPauseGame();
 }
 
@@ -567,27 +567,52 @@ void j1App::ShowCredits() {
 	if (!App->gui->credits_window->visible) 
 	{
 		App->gui->main_menu_ui->SetInvisible();
+		App->gui->settings_window->SetInvisible();
 		App->gui->credits_window->SetVisible();
+
 	}
-	else {
+	else
+	{
 		App->gui->credits_window->SetInvisible();
 		App->gui->main_menu_ui->SetVisible();
-		
 	}
 }
 
 void j1App::ShowSettings()
 {
-	if (!App->gui->settings_window->visible)
+	if (!App->gui->settings_window->visible && App->gui->main_menu_ui->visible)
 	{
 		App->gui->main_menu_ui->SetInvisible();
 		App->gui->settings_window->SetVisible();
 	}
-	else
+	else if(!App->gui->settings_window->visible && App->gui->in_game_ui->visible)
+	{
+		App->gui->in_game_pause->SetInvisible();
+		App->gui->settings_window->SetVisible();
+	}
+	else if (App->gui->settings_window->visible && App->gui->in_game_ui->visible)
+	{
+		App->gui->settings_window->SetInvisible();
+		App->gui->in_game_pause->SetVisible();
+	}
+	else if (App->gui->settings_window->visible && !App->gui->in_game_ui->visible)
 	{
 		App->gui->settings_window->SetInvisible();
 		App->gui->main_menu_ui->SetVisible();
 	}
 }
 
+void j1App::ShowSettingsInGame()
+{
+	if (!App->gui->settings_window->visible)
+	{
+		App->gui->in_game_pause->SetInvisible();
+		App->gui->settings_window->SetVisible();
+	}
+	else
+	{
+		App->gui->settings_window->SetInvisible();
+		App->gui->in_game_pause->SetVisible();
+	}
+}
 

@@ -283,7 +283,7 @@ bool j1Gui::Start()
 
 	//Credits window
 
-	credits_window = (Image*)CreateElement(IMAGE, iPoint(App->render->viewport.w / 2 - 250, App->render->viewport.h / 2 - 400), SDL_Rect({ 1000,1000,500,800 }), nullptr, nullptr, NO_ACTION, (j1Module*)App, main_menu_window, false);
+	credits_window = (Image*)CreateElement(IMAGE, iPoint(App->render->viewport.w / 2 - 250, App->render->viewport.h / 2 - 400), SDL_Rect({ 1000,1000,500,800 }), nullptr, nullptr, NO_ACTION, (j1Module*)App, nullptr, false);
 
 	Button* credits_button = (Button*)CreateButton({ 50,50 }, red_button, CREDITS, nullptr, main_menu_window);
 
@@ -299,10 +299,10 @@ bool j1Gui::Start()
 	lcredits->Center();
 
 	//Settings window
-	settings_window = (Image*)CreateElement(IMAGE, { App->render->viewport.w / 2 - 250, App->render->viewport.h / 2 - 400 }, SDL_Rect({ 1000,1000,500,800 }),nullptr, nullptr, NO_ACTION, (j1Module*)App, main_menu_window, false);
+	settings_window = (Image*)CreateElement(IMAGE, { App->render->viewport.w / 2 - 250, App->render->viewport.h / 2 - 400 }, SDL_Rect({ 1000,1000,500,800 }),nullptr, nullptr, NO_ACTION, (j1Module*)App, nullptr, false);
 	
 	Button* settings_to_main = (Button*)CreateButton({ 0,0 }, green_button, SETTINGS, nullptr, settings_window);
-	Label* lsettings_to_main = (Label*)CreateElement(LABEL, iPoint(0, 0), { 0,0,0,0 },nullptr, "MAIN MENU", NO_ACTION, nullptr, settings_to_main);
+	Label* lsettings_to_main = (Label*)CreateElement(LABEL, iPoint(0, 0), { 0,0,0,0 },nullptr, "RETURN", NO_ACTION, nullptr, settings_to_main);
 
 	settings_to_main->Center(0, 40);
 	lsettings_to_main->Center();
@@ -359,7 +359,7 @@ bool j1Gui::Start()
 	last_death = (Image*)CreateElement(IMAGE, iPoint(-20, -20), last_death_image.rect[IDLE],&last_death_image, nullptr, LAST_DEATH, nullptr, nullptr, true);
 
 	///////////////PAUSE MENU////////////////
-	in_game_pause = (Image*)CreateElement(IMAGE, iPoint(App->render->viewport.w / 2 - 220, App->render->viewport.h / 2 - 166), white_window.rect[IDLE], &white_window, nullptr, NO_ACTION, nullptr, nullptr, false);	
+	in_game_pause = (Image*)CreateElement(IMAGE, iPoint(App->render->viewport.w / 2 - 120, App->render->viewport.h / 2 - 166), white_window.rect[IDLE], &white_window, nullptr, NO_ACTION, nullptr, nullptr, false);	
 
 	Button* b1 = (Button*)CreateButton({ 0,0 }, blue_button, PAUSE, nullptr, in_game_pause);
 	Button* b2 = (Button*)CreateButton({ 0,0 }, green_button, SETTINGS, nullptr, in_game_pause);
