@@ -595,4 +595,9 @@ void j1App::ChangeMusicVolume(int value)
 	Mix_VolumeMusic(value);
 }
 
+void j1App::ChangeFXVolume(int value)
+{
+	Mix_Volume(-1,value);
+}
+
 

@@ -126,6 +126,24 @@ bool j1Gui::Awake(pugi::xml_node& conf)
 	slider_pointer_button.visible = true;
 	slider_pointer_button.color = GREEN;
 
+	//Creating slider image
+	n = conf.child("green").child("slider");
+	for (SDL_Rect &r : slider_button.rect)
+	{
+		r.x = n.attribute("x").as_int();
+		r.y = n.attribute("y").as_int();
+		r.w = n.attribute("width").as_int();
+		r.h = n.attribute("height").as_int();
+		if (n.next_sibling("slider"))
+			n = n.next_sibling("slider");
+	}
+	slider_button.type = UIType::BUTTON;
+	slider_button.action = NO_ACTION;
+	slider_button.parent = nullptr;
+	slider_button.callback = nullptr;
+	slider_button.visible = true;
+	slider_button.color = GREEN;
+
 	// Creating a yellow button
 	n = conf.child("yellow").child("button");
 	for (SDL_Rect &r : yellow_button.rect)
@@ -237,13 +255,34 @@ bool j1Gui::Start()
 
 	//Settings window
 	settings_window = (Image*)CreateElement(IMAGE, { App->render->viewport.w / 2 - 250, App->render->viewport.h / 2 - 400 }, SDL_Rect({ 1000,1000,500,800 }), nullptr, NO_ACTION, (j1Module*)App, main_menu_window, false);
-	Button* settings_to_main = (Button*)CreateButton({ 0,0 }, green_button, SETTINGS, nullptr, settings_window);
+	Button* settings_to_main = (Button*)CreateButton({ 0,0 }, red_button, SETTINGS, nullptr, settings_window);
 	Label* lsettings_to_main = (Label*)CreateElement(LABEL, iPoint(0, 0), { 0,0,0,0 }, "MAIN MENU", NO_ACTION, nullptr, settings_to_main);
-	settings_to_main->Center(0, 40);
+	settings_to_main->Center(0, 70);
 	lsettings_to_main->Center();
+	
+	//Music Volume
+	Button* volume_button = (Button*)CreateButton({ 0,-150 }, green_button, NO_ACTION, nullptr, settings_to_main);
+	Label* lvolume_button = (Label*)CreateElement(LABEL, iPoint(0, 0), { 0,0,0,0 }, "MUSIC VOLUME", NO_ACTION, nullptr, volume_button);
+	volume_button->CenterX();
+	lvolume_button->Center();
 
-	Button* slider_button = (Button*)CreateButton({ 0,-50 }, slider_pointer_button, CHANGE_VOLUME, nullptr, settings_to_main);
-	slider_button->movable = true;
+	Button* volume_slider = (Button*)CreateButton({ 0,volume_button->rect[IDLE].h+20 }, slider_button, NO_ACTION, nullptr, volume_button);
+	Button* volume_slider_button = (Button*)CreateButton({ SDL_MIX_MAXVOLUME,0 }, slider_pointer_button, CHANGE_VOLUME, nullptr, volume_slider);
+	volume_slider->CenterX();
+	volume_slider_button->movable = true;
+
+	//FX Volume
+	Button* fx_volume_button = (Button*)CreateButton({ 0,-300 }, green_button, NO_ACTION, nullptr, settings_to_main);
+	Label* fx_lvolume_button = (Label*)CreateElement(LABEL, iPoint(0, 0), { 0,0,0,0 }, "FX VOLUME", NO_ACTION, nullptr, fx_volume_button);
+	fx_volume_button->CenterX();
+	fx_lvolume_button->Center();
+
+	Button* fx_slider = (Button*)CreateButton({ 0,fx_volume_button->rect[IDLE].h + 20 }, slider_button, NO_ACTION, nullptr, fx_volume_button);
+	Button* fx_slider_button = (Button*)CreateButton({ SDL_MIX_MAXVOLUME,0 }, slider_pointer_button, CHANGE_VOLUME_FX, nullptr, fx_slider);
+	fx_slider->CenterX();
+	fx_slider_button->movable = true;
+	//slider_button->CenterX();
+
 
 	//Image* greend = (Image*)CreateElement(IMAGE, iPoint(0, 0), App->entitymanager->green_diamond.idle.GetCurrentFrame(), nullptr, INFO, nullptr, settings_window);
 	//Label* gl = (Label*)CreateElement(LABEL, iPoint(0, 0), { 0,0,0,0 }, "X 50", INFO, nullptr, greend);
@@ -297,7 +336,6 @@ bool j1Gui::Start()
 	Label* pl_name = (Label*)CreateElement(LABEL, iPoint(App->entitymanager->player_ref->position.x + App->entitymanager->player_ref->rect.w / 2, App->entitymanager->player_ref->position.y - 50), { 0,0,0,0 }, "--Kikime--", PLAYER_NAME, nullptr, in_game_ui);
 	//////////IN GAME UI FINISH///////////////
 
-	//Not hardcoded
 	game_over = (Image*)CreateElement(IMAGE, iPoint(App->render->viewport.w / 2 - game_over_image.rect[IDLE].w / 2, App->render->viewport.h / 2 - game_over_image.rect[IDLE].h / 2), game_over_image.rect[IDLE], nullptr, NO_ACTION, nullptr, nullptr, false);
 	last_death = (Image*)CreateElement(IMAGE, iPoint(-20, -20), last_death_image.rect[IDLE], nullptr, LAST_DEATH, nullptr, nullptr, true);
 
@@ -352,6 +390,7 @@ bool j1Gui::PreUpdate()
 		if (item->data->visible) {
 
 			item->data->PreUpdate();
+			//item->data->is_moving = false;
 			has_changed = HandleInput(item->data);
 			if (has_changed) break;
 		}
@@ -401,7 +440,7 @@ bool j1Gui::PostUpdate()
 			}
 
 			item->data->Draw(sprites);
-			//if (App->debug->show_colliders) item->data->DrawRect();
+			if (App->debug->show_colliders) item->data->DrawRect();
 		}
 		item = item->next;
 	}
@@ -520,18 +559,22 @@ bool j1Gui::HandleInput(UIElement* element)
 		break;
 	}
 
-	if (element->is_moving && element->movable) {
-
-		if (element->action == CHANGE_VOLUME && element->initial_pos.x >= -1 && element->initial_pos.x <= 129) {
+	if (element->is_moving && element->movable) 
+	{
+		if (element->action == CHANGE_VOLUME || element->action == CHANGE_VOLUME_FX) {
+			element->state = HOVER;
 			element->initial_pos.x = mouse.x - mouseClick.x + startDraging.x;
-			if (element->initial_pos.x <= -1) element->initial_pos.x = 0;
-			else if (element->initial_pos.x >= 129) element->initial_pos.x = 128;
+
+			if (element->initial_pos.x <= - 1) element->initial_pos.x = 0;
+			else if (element->initial_pos.x >= SDL_MIX_MAXVOLUME+ 1) element->initial_pos.x = SDL_MIX_MAXVOLUME;
+
+			if (element->action == CHANGE_VOLUME) App->ChangeMusicVolume(element->initial_pos.x);
+			else App->ChangeFXVolume(element->initial_pos.x );
 		}
 		else element->initial_pos = mouse - mouseClick + startDraging;
-
 	}
 
-	return is_changing;
+	return is_changing && element->type != LABEL;
 }
 
 // const getter for atlas

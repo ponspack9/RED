@@ -90,6 +90,8 @@ public:
 
 	void ChangeMusicVolume(int value);
 
+	void ChangeFXVolume(int value);
+
 	//Saving iteration ONLY SAVING ACTIVE MODULES
 	bool SaveGameFile();
 

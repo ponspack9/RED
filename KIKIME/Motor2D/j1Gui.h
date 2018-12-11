@@ -80,6 +80,7 @@ private:
 	Button				yellow_button;
 	Button				grey_button;
 	Button				slider_pointer_button;
+	Button				slider_button;
 
 	Image				game_over_image;
 	Image				last_death_image;
