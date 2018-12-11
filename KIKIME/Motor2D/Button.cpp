@@ -45,7 +45,7 @@ void Button::HandleAction()
 		App->TogglePause();
 		break;
 	case CONTINUE:
-		//App->LoadGame();
+		App->LoadGame();
 		break;
 	case EXIT_GAME:
 		App->Exit();

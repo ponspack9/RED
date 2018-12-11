@@ -19,6 +19,8 @@ j1Gui::~j1Gui()
 // Called before render is available
 bool j1Gui::Awake(pugi::xml_node& conf)
 {
+	BROFILER_CATEGORY("GUI->Awake", Profiler::Color::DarkGoldenRod)
+
 	LOG("Loading GUI");
 	bool ret = true;
 
@@ -241,6 +243,8 @@ bool j1Gui::Awake(pugi::xml_node& conf)
 // Called before the first frame
 bool j1Gui::Start()
 {
+	BROFILER_CATEGORY("GUI->Start",Profiler::Color::Coral)
+
 	atlas = App->tex->Load(atlas_file_name.GetString());
 	blue = App->tex->Load(blue_file_name.GetString());
 	red = App->tex->Load(red_file_name.GetString());
@@ -398,6 +402,8 @@ bool j1Gui::Start()
 // Update all guis
 bool j1Gui::PreUpdate()
 {
+	BROFILER_CATEGORY("GUI->PreUpdate", Profiler::Color::DarkSalmon)
+
 	p2List_item<UIElement*>* item = elements.start;
 
 	while (item != nullptr)
@@ -417,6 +423,8 @@ bool j1Gui::PreUpdate()
 // Called after all Updates
 bool j1Gui::PostUpdate()
 {
+	BROFILER_CATEGORY("GUI->PostUpdate", Profiler::Color::Khaki)
+
 	p2List_item<UIElement*>* item = elements.start;
 	SDL_Texture* sprites = atlas;
 	while (item != NULL)
@@ -459,6 +467,8 @@ bool j1Gui::PostUpdate()
 // Called before quitting
 bool j1Gui::CleanUp()
 {
+	BROFILER_CATEGORY("GUI->CleanUp", Profiler::Color::Magenta)
+
 	LOG("Freeing GUI");
 
 	p2List_item<UIElement*>* item = elements.start;
