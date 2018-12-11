@@ -770,6 +770,10 @@ bool j1EntityManager::Load(pugi::xml_node & node)
 				item->data->position.x = Enode.attribute("x").as_int();
 				item->data->position.y = Enode.attribute("y").as_int();
 			}
+			else
+			{
+				item->data->collider->to_delete = true;
+			}
 			Enode = Enode.next_sibling("enemy");
 		}
 	}
