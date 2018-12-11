@@ -50,7 +50,7 @@ bool j1Debug::PostUpdate()
 	BROFILER_CATEGORY("Debug->PostUpdate", Profiler::Color::HotPink)
 	bool ret = true;
 
-	if (App->map->current_map != App->map->maps_path.end || App->map->current_map != App->map->maps_path.end->prev)
+	if (App->map->current_map != App->map->maps_path.start)
 	{
 		if (App->input->GetKey(SDL_SCANCODE_ESCAPE) == KEY_DOWN)
 			App->TogglePause();
@@ -177,8 +177,12 @@ bool j1Debug::Update(float dt)
 			if (show_colliders)SDL_RenderDrawLine(App->render->renderer, camera_motion.x, camera_motion.y, final.x, final.y);
 
 			App->input->GetMouseMotion(final.x, final.y);
+			LOG("final_motio: %d,%d", final.x, final.y);
+			LOG("last_motion: %d,%d", last_motion.x, last_motion.y);
 
 			last_motion -= final;
+			LOG("minus_motio: %d,%d", last_motion.x, last_motion.y);
+
 			if (last_motion != zero) {
 				App->render->MoveCamera(final.x, final.y);
 			}

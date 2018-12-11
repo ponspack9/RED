@@ -35,13 +35,13 @@ public:
 
 
 	// Gui creation functions
+	UIElement* CreateElement(UIType type, iPoint pos, SDL_Rect rect, p2SString string = nullptr, ActionType action = NO_ACTION, j1Module* callback = nullptr, UIElement* parent = nullptr, bool visible = true);
 	UIElement* CreateElement(UIType type, iPoint pos, SDL_Rect rect, Image* img = nullptr, p2SString string = nullptr, ActionType action = NO_ACTION, j1Module* callback = nullptr, UIElement* parent = nullptr, bool visible = true);
 	UIElement * CreateButton(iPoint pos, const Button & b, ActionType action, j1Module * callback, UIElement * parent);
 	
-	void HandleInput(UIElement* element);
+	bool HandleInput(UIElement* element);
 
 	const SDL_Texture* GetAtlas() const;
-
 
 	Image*			in_game_ui;
 	Image*			main_menu_ui;
@@ -83,17 +83,23 @@ private:
 	p2SString			yellow_file_name;
 	p2SString			grey_file_name;
 
-	bool				moving_element;
-	iPoint				last_motion;
 
 	Button				blue_button;
 	Button				red_button;
 	Button				green_button;
 	Button				yellow_button;
 	Button				grey_button;
+	Button				slider_pointer_button;
+	Button				slider_button;
 
 	Image				game_over_image;
 	Image				last_death_image;
+
+	//bool				moving_element;
+	iPoint				last_element_motion;
+	int					moving_speed;
+	iPoint				mouseClick;
+	iPoint				startDraging;
 
 };
 

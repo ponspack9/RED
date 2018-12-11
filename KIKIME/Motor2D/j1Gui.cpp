@@ -10,6 +10,7 @@
 j1Gui::j1Gui() : j1Module()
 {
 	name.create("gui");
+	last_element_motion = { 0,0 };
 }
 
 // Destructor
@@ -30,6 +31,8 @@ bool j1Gui::Awake(pugi::xml_node& conf)
 	green_file_name = conf.child("green").attribute("file").as_string();
 	yellow_file_name = conf.child("yellow").attribute("file").as_string();
 	grey_file_name = conf.child("grey").attribute("file").as_string();
+
+	moving_speed = conf.attribute("moving_elements_speed").as_int();
 
 	//Creating game over image
 	pugi::xml_node n = conf.child("atlas").child("gameOver");
@@ -106,6 +109,42 @@ bool j1Gui::Awake(pugi::xml_node& conf)
 	green_button.callback = nullptr;
 	green_button.visible = true;
 	green_button.color = GREEN;
+
+	//Creating slider pointer image (Green)
+	n = conf.child("green").child("slider_pointer");
+	for (SDL_Rect &r : slider_pointer_button.rect)
+	{
+		r.x = n.attribute("x").as_int();
+		r.y = n.attribute("y").as_int();
+		r.w = n.attribute("width").as_int();
+		r.h = n.attribute("height").as_int();
+		if (n.next_sibling("slider_pointer"))
+			n = n.next_sibling("slider_pointer");
+	}
+	slider_pointer_button.type = UIType::BUTTON;
+	slider_pointer_button.action = NO_ACTION;
+	slider_pointer_button.parent = nullptr;
+	slider_pointer_button.callback = nullptr;
+	slider_pointer_button.visible = true;
+	slider_pointer_button.color = GREEN;
+
+	//Creating slider image
+	n = conf.child("green").child("slider");
+	for (SDL_Rect &r : slider_button.rect)
+	{
+		r.x = n.attribute("x").as_int();
+		r.y = n.attribute("y").as_int();
+		r.w = n.attribute("width").as_int();
+		r.h = n.attribute("height").as_int();
+		if (n.next_sibling("slider"))
+			n = n.next_sibling("slider");
+	}
+	slider_button.type = UIType::BUTTON;
+	slider_button.action = NO_ACTION;
+	slider_button.parent = nullptr;
+	slider_button.callback = nullptr;
+	slider_button.visible = true;
+	slider_button.color = GREEN;
 
 	// Creating a yellow button
 	n = conf.child("yellow").child("button");
@@ -264,6 +303,10 @@ bool j1Gui::Start()
 	Button* settings_button = (Button*)CreateButton({ 0,0 }, green_button, SETTINGS, nullptr, main_menu_ui);
 	Button* exit_button		= (Button*)CreateButton({ 0,0 }, red_button, EXIT_GAME, nullptr, main_menu_ui);
 	
+	start_button	 ->movable = true;
+	continue_button	 ->movable = true;
+	settings_button	 ->movable = true;
+	exit_button    	 ->movable = true;
 
 	start_button->Center(0, -140);
 	continue_button->Center(0,-70);
@@ -291,7 +334,7 @@ bool j1Gui::Start()
 
 	Label* lcredits_button = (Label*)CreateElement(LABEL, iPoint(0, 0), { 0,0,0,0 },nullptr, "CREDITS", NO_ACTION, nullptr, credits_button);
 	Label* lwebsite_button	= (Label*)CreateElement(LABEL, iPoint(0, 0), { 0,0,0,0 },nullptr, "Go to website", NO_ACTION, nullptr, website_button);
-	Label* lcredits = (Label*)CreateElement(LABEL, iPoint(0, 0), { 0,0,0,0 },nullptr, "Game developed by Oscar Pons and Oriol Sabaté", NO_ACTION, nullptr, credits_window);
+	Label* lcredits = (Label*)CreateElement(LABEL, iPoint(0, 0), { 0,0,0,0 },nullptr, "Game developed by Oscar Pons and Oriol SabatÃ©", NO_ACTION, nullptr, credits_window);
 
 	website_button->Center(0, 70);
 	lcredits_button->Center();
@@ -299,13 +342,35 @@ bool j1Gui::Start()
 	lcredits->Center();
 
 	//Settings window
-	settings_window = (Image*)CreateElement(IMAGE, { App->render->viewport.w / 2 - 250, App->render->viewport.h / 2 - 400 }, SDL_Rect({ 1000,1000,500,800 }),nullptr, nullptr, NO_ACTION, (j1Module*)App, nullptr, false);
-	
-	Button* settings_to_main = (Button*)CreateButton({ 0,0 }, green_button, SETTINGS, nullptr, settings_window);
-	Label* lsettings_to_main = (Label*)CreateElement(LABEL, iPoint(0, 0), { 0,0,0,0 },nullptr, "RETURN", NO_ACTION, nullptr, settings_to_main);
-
-	settings_to_main->Center(0, 40);
+	settings_window = (Image*)CreateElement(IMAGE, { App->render->viewport.w / 2 - 250, App->render->viewport.h / 2 - 400 }, SDL_Rect({ 1000,1000,500,800 }), nullptr, NO_ACTION, (j1Module*)App, main_menu_window, false);
+	Button* settings_to_main = (Button*)CreateButton({ 0,0 }, red_button, SETTINGS, nullptr, settings_window);
+	Label* lsettings_to_main = (Label*)CreateElement(LABEL, iPoint(0, 0), { 0,0,0,0 }, "MAIN MENU", NO_ACTION, nullptr, settings_to_main);
+	settings_to_main->Center(0, 70);
 	lsettings_to_main->Center();
+	
+	//Music Volume
+	Button* volume_button = (Button*)CreateButton({ 0,-150 }, green_button, NO_ACTION, nullptr, settings_to_main);
+	Label* lvolume_button = (Label*)CreateElement(LABEL, iPoint(0, 0), { 0,0,0,0 }, "MUSIC VOLUME", NO_ACTION, nullptr, volume_button);
+	volume_button->CenterX();
+	lvolume_button->Center();
+
+	Button* volume_slider = (Button*)CreateButton({ 0,volume_button->rect[IDLE].h+20 }, slider_button, NO_ACTION, nullptr, volume_button);
+	Button* volume_slider_button = (Button*)CreateButton({ SDL_MIX_MAXVOLUME,0 }, slider_pointer_button, CHANGE_VOLUME, nullptr, volume_slider);
+	volume_slider->CenterX();
+	volume_slider_button->movable = true;
+
+	//FX Volume
+	Button* fx_volume_button = (Button*)CreateButton({ 0,-300 }, green_button, NO_ACTION, nullptr, settings_to_main);
+	Label* fx_lvolume_button = (Label*)CreateElement(LABEL, iPoint(0, 0), { 0,0,0,0 }, "FX VOLUME", NO_ACTION, nullptr, fx_volume_button);
+	fx_volume_button->CenterX();
+	fx_lvolume_button->Center();
+
+	Button* fx_slider = (Button*)CreateButton({ 0,fx_volume_button->rect[IDLE].h + 20 }, slider_button, NO_ACTION, nullptr, fx_volume_button);
+	Button* fx_slider_button = (Button*)CreateButton({ SDL_MIX_MAXVOLUME,0 }, slider_pointer_button, CHANGE_VOLUME_FX, nullptr, fx_slider);
+	fx_slider->CenterX();
+	fx_slider_button->movable = true;
+	//slider_button->CenterX();
+
 
 	Image* greend = (Image*)CreateElement(IMAGE, iPoint(0, 0), green_diamond.idle.GetCurrentFrame(), &green_diamond, nullptr, INFO, nullptr, settings_window);
 	Label* gl = (Label*)CreateElement(LABEL, iPoint(0, 0), { 0,0,0,0 },nullptr, "X 50", INFO, nullptr, greend);
@@ -320,6 +385,10 @@ bool j1Gui::Start()
 	bl->Center(45, 5);
 
 	/////////////MAIN MENU FINISH //////////////////
+
+	/*
+	To input text check the keyobard state then make a bool matrix or something similar then update if changed the specific key true
+	*/
 
 	//////IN GAME UI //////////////
 
@@ -354,9 +423,10 @@ bool j1Gui::Start()
 	Label* pl_name = (Label*)CreateElement(LABEL, iPoint(App->entitymanager->player_ref->position.x + App->entitymanager->player_ref->rect.w / 2, App->entitymanager->player_ref->position.y - 50), { 0,0,0,0 },nullptr, "--Kikime--", PLAYER_NAME, nullptr, in_game_ui);
 	//////////IN GAME UI FINISH///////////////
 
-	//Not hardcoded
+  /// Death related images
 	game_over = (Image*)CreateElement(IMAGE, iPoint(App->render->viewport.w / 2 - game_over_image.rect[IDLE].w / 2, App->render->viewport.h / 2 - game_over_image.rect[IDLE].h / 2), game_over_image.rect[IDLE], &game_over_image, nullptr, NO_ACTION, nullptr, nullptr, false);
 	last_death = (Image*)CreateElement(IMAGE, iPoint(-20, -20), last_death_image.rect[IDLE],&last_death_image, nullptr, LAST_DEATH, nullptr, nullptr, true);
+
 
 	///////////////PAUSE MENU////////////////
 	in_game_pause = (Image*)CreateElement(IMAGE, iPoint(App->render->viewport.w / 2 - 120, App->render->viewport.h / 2 - 166), white_window.rect[IDLE], &white_window, nullptr, NO_ACTION, nullptr, nullptr, false);	
@@ -402,23 +472,26 @@ bool j1Gui::Start()
 // Update all guis
 bool j1Gui::PreUpdate()
 {
-	BROFILER_CATEGORY("GUI->PreUpdate", Profiler::Color::DarkSalmon)
-
-	p2List_item<UIElement*>* item = elements.start;
+  BROFILER_CATEGORY("GUI->PreUpdate", Profiler::Color::DarkSalmon);
+    
+	bool has_changed = false;
+	p2List_item<UIElement*>* item = elements.end;	
 
 	while (item != nullptr)
 	{
 		if (item->data->visible) {
 
 			item->data->PreUpdate();
-			HandleInput(item->data);
+			has_changed = HandleInput(item->data);
+			if (has_changed) break;
 		}
 
-		item = item->next;
+		item = item->prev;
 	}
 
 	return true;
 }
+
 
 // Called after all Updates
 bool j1Gui::PostUpdate()
@@ -429,8 +502,10 @@ bool j1Gui::PostUpdate()
 	SDL_Texture* sprites = atlas;
 	while (item != NULL)
 	{
-		item->data->PostUpdate();
 		if (item->data->visible) {
+			if (item->data->type == BUTTON)
+				int a = 1;
+			item->data->PostUpdate();
 
 			if (item->data->type == BUTTON) {
 				Button* b = (Button*)item->data;
@@ -458,6 +533,7 @@ bool j1Gui::PostUpdate()
 			}
 
 			item->data->Draw(sprites);
+			if (App->debug->show_colliders) item->data->DrawRect();
 		}
 		item = item->next;
 	}
@@ -522,7 +598,7 @@ UIElement* j1Gui::CreateElement(UIType type, iPoint pos, SDL_Rect rect, Image* i
 	return elem;
 }
 
-void j1Gui::HandleInput(UIElement* element)
+bool j1Gui::HandleInput(UIElement* element)
 {
 	bool ret = true;
 	iPoint mouse;
@@ -537,30 +613,33 @@ void j1Gui::HandleInput(UIElement* element)
 	if (element->state != CLICK_DOWN &&	is_inside && App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) != KEY_DOWN)
 	{
 		element->state = HOVER;
-		moving_element = false;
 		//LOG("hover");
 	}
 	else if((element->state == HOVER || element->state == CLICK_DOWN) && is_inside && (App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KEY_REPEAT || App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KEY_DOWN))
 	{
 		element->state = CLICK_DOWN;
-		moving_element = true;
+		App->input->GetMousePosition(mouseClick.x, mouseClick.y);
+		//App->input->GetMousePosition(startDraging.x, startDraging.y);
+		startDraging = element->initial_pos;
+		element->is_moving = true;
 		//LOG("click");
 	}
 	else if (is_inside && App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KEY_UP)
 	{
 		element->state = CLICK_UP;
-		moving_element = false;
+		element->is_moving = false;
 		//LOG("click up");
 	}
 	else
 	{
 		element->state = IDLE;
-		moving_element = false;
 		//LOG("idle");
 	}
 
     is_changing = (prev_state != element->state);
-
+	if (App->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KEY_UP) {
+		element->is_moving = false;
+	}
 	switch (element->type)
 	{
 	case BUTTON:
@@ -575,17 +654,22 @@ void j1Gui::HandleInput(UIElement* element)
 		break;
 	}
 
-	if (moving_element) {
-		iPoint final_motion;
-		App->input->GetMouseMotion(final_motion.x, final_motion.y);
-		last_motion -= final_motion;
+	if (element->is_moving && element->movable) 
+	{
+		if (element->action == CHANGE_VOLUME || element->action == CHANGE_VOLUME_FX) {
+			element->state = HOVER;
+			element->initial_pos.x = mouse.x - mouseClick.x + startDraging.x;
 
-		if (!last_motion.IsZero()) {
-			element->position += final_motion;
+			if (element->initial_pos.x <= - 1) element->initial_pos.x = 0;
+			else if (element->initial_pos.x >= SDL_MIX_MAXVOLUME+ 1) element->initial_pos.x = SDL_MIX_MAXVOLUME;
+
+			if (element->action == CHANGE_VOLUME) App->ChangeMusicVolume(element->initial_pos.x);
+			else App->ChangeFXVolume(element->initial_pos.x );
 		}
-		last_motion = { final_motion.x, final_motion.y };
+		else element->initial_pos = mouse - mouseClick + startDraging;
 	}
 
+	return is_changing && element->type != LABEL;
 }
 
 // const getter for atlas

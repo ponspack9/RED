@@ -66,6 +66,7 @@ bool j1Render::Start()
 	BROFILER_CATEGORY("Render->Start", Profiler::Color::Beige)
 	LOG("render start");
 	// back background
+	//SDL_RenderSetLogicalSize(App->render->renderer, App->win->width, App->win->height);
 	SDL_RenderGetViewport(renderer, &viewport);
 	return true;
 }

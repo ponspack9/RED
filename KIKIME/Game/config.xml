@@ -16,7 +16,7 @@
   </renderer>
 
   <window>
-    <resolution width="1024" height="720" scale="1"/>
+    <resolution width="1280" height="720" scale="1"/>
     <fullscreen value="false"/>
     <borderless value="false"/>
     <resizable value="true"/>
@@ -52,7 +52,7 @@
       <!--Does not exist, just for testing-->
     </fx>
   </audio>
-  <gui>
+  <gui moving_elements_speed="50">
     <atlas file="gui/atlas.png">
       <gameOver height="272" width="440" y="448" x="0"></gameOver>
       <lastDeath height="56" width="48" y="390" x="0"></lastDeath>
@@ -134,7 +134,7 @@
     <green file="gui/greenSheet.png">
       <SubTexture height="36" width="38" y="0" x="380" name="green_boxCheckmark.png"/>
       <SubTexture height="36" width="38" y="36" x="380" name="green_boxCross.png"/>
-      <SubTexture height="36" width="36" y="210" x="386" name="green_boxTick.png"/>
+      <slider_pointer height="36" width="36" y="220" x="386" name="green_boxTick.png"/>
       <dsgdegv height="49" width="190" y="0" x="0" name="green_button00.png"/>
       <button height="45" width="190" y="49" x="0" name="green_button01.png"/>
       <button height="49" width="190" y="94" x="0" name="green_button02.png"/>
@@ -150,14 +150,14 @@
       <SubTexture height="45" width="49" y="194" x="239" name="green_button12.png"/>
       <SubTexture height="49" width="190" y="143" x="0" name="green_button13.png"/>
       <SubTexture height="20" width="21" y="233" x="337" name="green_checkmark.png"/>
-      <SubTexture height="36" width="36" y="174" x="386" name="green_circle.png"/>
+      <slider_pointer height="36" width="36" y="184" x="386" name="green_circle.png"/>
       <SubTexture height="18" width="18" y="237" x="0" name="green_cross.png"/>
       <SubTexture height="100" width="100" y="94" x="190" name="green_panel.png"/>
       <SubTexture height="42" width="28" y="72" x="388" name="green_sliderDown.png"/>
       <SubTexture height="31" width="39" y="143" x="378" name="green_sliderLeft.png"/>
       <SubTexture height="31" width="39" y="143" x="339" name="green_sliderRight.png"/>
       <SubTexture height="42" width="28" y="72" x="416" name="green_sliderUp.png"/>
-      <SubTexture height="17" width="17" y="237" x="18" name="green_tick.png"/>
+      <slider height="36" width="164" y="144" x="339" name="green_tick.png"/>
     </green>
     <grey file="gui/greySheet.png">
       <SubTexture height="10" width="15" y="498" x="78" name="grey_arrowDownGrey.png"/>
