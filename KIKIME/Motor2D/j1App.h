@@ -88,6 +88,8 @@ public:
 
 	void ShowSettings();
 
+	void ChangeMusicVolume(int value);
+
 	//Saving iteration ONLY SAVING ACTIVE MODULES
 	bool SaveGameFile();
 

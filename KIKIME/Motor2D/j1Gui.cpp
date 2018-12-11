@@ -29,6 +29,8 @@ bool j1Gui::Awake(pugi::xml_node& conf)
 	yellow_file_name = conf.child("yellow").attribute("file").as_string();
 	grey_file_name = conf.child("grey").attribute("file").as_string();
 
+	moving_speed = conf.attribute("moving_elements_speed").as_int();
+
 	//Creating game over image
 	pugi::xml_node n = conf.child("atlas").child("gameOver");
 	for (SDL_Rect &r : game_over_image.rect)
@@ -104,6 +106,24 @@ bool j1Gui::Awake(pugi::xml_node& conf)
 	green_button.callback = nullptr;
 	green_button.visible = true;
 	green_button.color = GREEN;
+
+	//Creating slider pointer image (Green)
+	n = conf.child("green").child("slider_pointer");
+	for (SDL_Rect &r : slider_pointer_button.rect)
+	{
+		r.x = n.attribute("x").as_int();
+		r.y = n.attribute("y").as_int();
+		r.w = n.attribute("width").as_int();
+		r.h = n.attribute("height").as_int();
+		if (n.next_sibling("slider_pointer"))
+			n = n.next_sibling("slider_pointer");
+	}
+	slider_pointer_button.type = UIType::BUTTON;
+	slider_pointer_button.action = NO_ACTION;
+	slider_pointer_button.parent = nullptr;
+	slider_pointer_button.callback = nullptr;
+	slider_pointer_button.visible = true;
+	slider_pointer_button.color = GREEN;
 
 	// Creating a yellow button
 	n = conf.child("yellow").child("button");
@@ -212,12 +232,14 @@ bool j1Gui::Start()
 
 	//Settings window
 	settings_window = (Image*)CreateElement(IMAGE, { App->render->viewport.w / 2 - 250, App->render->viewport.h / 2 - 400 }, SDL_Rect({ 1000,1000,500,800 }), nullptr, NO_ACTION, (j1Module*)App, main_menu_window, false);
-	
+	settings_window->movable = false;
 	Button* settings_to_main = (Button*)CreateButton({ 0,0 }, green_button, SETTINGS, nullptr, settings_window);
 	Label* lsettings_to_main = (Label*)CreateElement(LABEL, iPoint(0, 0), { 0,0,0,0 }, "MAIN MENU", NO_ACTION, nullptr, settings_to_main);
-
+	settings_to_main->movable = false;
 	settings_to_main->Center(0, 40);
 	lsettings_to_main->Center();
+
+	Button* slider_button = (Button*)CreateButton({ 0,-50 }, slider_pointer_button, CHANGE_VOLUME, nullptr, settings_to_main);
 
 	//Image* greend = (Image*)CreateElement(IMAGE, iPoint(0, 0), App->entitymanager->green_diamond.idle.GetCurrentFrame(), nullptr, INFO, nullptr, settings_window);
 	//Label* gl = (Label*)CreateElement(LABEL, iPoint(0, 0), { 0,0,0,0 }, "X 50", INFO, nullptr, greend);
@@ -337,8 +359,10 @@ bool j1Gui::PostUpdate()
 	SDL_Texture* sprites = atlas;
 	while (item != NULL)
 	{
-		item->data->PostUpdate();
 		if (item->data->visible) {
+			if (item->data->type == BUTTON)
+				int a = 1;
+			item->data->PostUpdate();
 
 			if (item->data->type == BUTTON) {
 				Button* b = (Button*)item->data;
@@ -481,17 +505,28 @@ void j1Gui::HandleInput(UIElement* element)
 		break;
 	}
 
-	if (moving_element) {
+	if (moving_element && element->movable) {
 		iPoint final_motion;
 		App->input->GetMouseMotion(final_motion.x, final_motion.y);
 		last_motion -= final_motion;
+		int x = element->initial_pos.x;
 
+		/*if (element->action == CHANGE_VOLUME) {
+			element->initial_pos.x += 20;
+		}*/
 		if (!last_motion.IsZero()) {
-			element->position += final_motion;
+			final_motion *= moving_speed * App->dt;
+			if (element->action == CHANGE_VOLUME && x + final_motion.x > 0 && x + final_motion.x < 128) {
+				element->initial_pos.x = element->initial_pos.x + final_motion.x;
+			}
+			//else element->initial_pos = element->initial_pos + final_motion;
 		}
 		last_motion = { final_motion.x, final_motion.y };
 	}
-
+	if (element->action == CHANGE_VOLUME) {
+		LOG("INITIAL_POS MOVING: %d,%d", element->initial_pos.x, element->initial_pos.y);
+		LOG("POS  PARENT MOVING: %d,%d", element->parent->position.x, element->parent->position.y);
+	}
 }
 
 // const getter for atlas

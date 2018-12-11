@@ -37,6 +37,7 @@ enum ActionType
 	CONTINUE,
 	MAIN_MENU,
 	SETTINGS,
+	CHANGE_VOLUME,
 	EXIT_GAME,
 	CREDITS,
 	WEBSITE,
@@ -63,10 +64,18 @@ public:
 		this->type = type; 
 		this->parent = parent;
 		this->visible = visible;
+		movable = true;
 	}
 
 	virtual bool PreUpdate() { return true; }
 	virtual bool PostUpdate() { 
+		if (action == CHANGE_VOLUME)
+		{
+			LOG("INITIAL_POS POSTUPDATE: %d,%d", initial_pos.x, initial_pos.y);
+			LOG("POSITION    POSTUPDATE: %d,%d", position.x, position.y);
+			LOG("PARENT      POSTUPDATE: %d,%d", parent->position.x, parent->position.y);
+		}
+
 		if (parent != nullptr)
 		{
 			if (action != PLAYER_NAME)
@@ -137,6 +146,7 @@ public:
 	j1Module*	callback;
 
 	bool		visible;
+	bool		movable;
 
 	p2List<UIElement*>	sons;
 };

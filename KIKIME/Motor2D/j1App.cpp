@@ -19,6 +19,8 @@
 #include "j1Gui.h"
 
 #include "Brofiler/Brofiler.h"
+#include "SDL_mixer\include\SDL_mixer.h"
+#pragma comment( lib, "SDL_mixer/libx86/SDL2_mixer.lib" )
 
 // Constructor
 j1App::j1App(int argc, char* args[]) : argc(argc), args(args)
@@ -586,6 +588,11 @@ void j1App::ShowSettings()
 		App->gui->settings_window->SetInvisible();
 		App->gui->main_menu_ui->SetVisible();
 	}
+}
+
+void j1App::ChangeMusicVolume(int value)
+{
+	Mix_VolumeMusic(value);
 }
 
 

@@ -50,6 +50,10 @@ void Button::HandleAction()
 	case EXIT_GAME:
 		App->Exit();
 		break;
+	case CHANGE_VOLUME:
+		App->ChangeMusicVolume(initial_pos.x);
+		//initial_pos.x += 20;
+		break;
 	case CREDITS:
 		App->ShowCredits();
 		break;

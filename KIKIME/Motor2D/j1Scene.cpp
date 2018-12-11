@@ -7,12 +7,10 @@
 #include "j1Render.h"
 #include "j1Window.h"
 #include "j1Scene.h"
-#include "j1Collision.h"
 #include "j1Map.h"
 #include "Player.h"
 #include "j1FadeToBlack.h"
 #include "j1EntityManager.h"
-#include "j1Pathfinding.h"
 #include "Entity.h"
 #include "j1Debug.h"
 #include "j1Gui.h"
@@ -22,6 +20,7 @@ j1Scene::j1Scene() : j1Module()
 	name.create("scene");
 	first_load = true;
 	game_over_transition = false;
+
 }
 
 // Destructor
@@ -32,6 +31,7 @@ j1Scene::~j1Scene()
 bool j1Scene::Awake(pugi::xml_node& config)
 { 
 	
+	current_track = App->audio->tracks_path.start;
 	LOG("Loading Scene");
 
 	return true;
@@ -43,7 +43,7 @@ bool j1Scene::Start()
 	bool ret = true;
 	App->game_over = false;
 
-	// App->audio->PlayMusic(PATH(App->audio->folder_music.GetString(), App->audio->tracks_path.start->data.GetString()));
+	App->audio->PlayMusic(PATH(App->audio->folder_music.GetString(), current_track->data.GetString()));
 	App->map->Load(App->map->current_map->data.GetString());
 	App->render->ResetCamera();
 
@@ -58,6 +58,7 @@ bool j1Scene::Start()
 		if (strcmp(App->map->current_map->data.GetString(), App->map->maps_path.start->data.GetString()) == 0) {
 			App->gui->main_menu_window->SetVisible();
 			App->gui->credits_window->SetInvisible();
+			App->gui->settings_window->SetInvisible();
 		}
 		else {
 			App->gui->main_menu_window->SetInvisible();

@@ -44,6 +44,8 @@ private:
 	bool		first_load;
 
 	j1Timer		game_over_timer;
+
+	p2List_item<p2SString>* current_track;
 };
 
 #endif // __j1SCENE_H__
