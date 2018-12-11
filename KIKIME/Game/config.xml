@@ -63,13 +63,16 @@
       <red_diamond x="654" y="210" width="36" height="28"></red_diamond>
       <heart x="722" y="275" width="28" height="28"></heart>      
     </atlas>
-    <UIanimations animSpeed ="10">
-      <blue_shine x="526" y="210" width="36" height="28" />
+    <UIanimations animSpeed ="0.5">
+      <blue_shine x="526" y="211" width="36" height="28" />
       <blue_shine x="463" y="211" width="36" height="28" />
-      <blue_shine x="654" y="210" width="36" height="28" />
-      <green_shine x="526" y="210" width="36" height="28" />
+      <blue_shine x="654" y="211" width="36" height="28" />
+      <green_shine x="526" y="211" width="36" height="28" />
       <green_shine x="591" y="211" width="36" height="28" />
-      <green_shine x="654" y="210" width="36" height="28" /> 
+      <green_shine x="654" y="211" width="36" height="28" />
+      <heart_blink x="722" y="147" width="28" height="28" />
+      <heart_blink x="722" y="211" width="28" height="28" />
+      <heart_blink x="722" y="275" width="28" height="28" />
     </UIanimations>
     <blue file="gui/blueSheet.png">
       <SubTexture height="36" width="38" y="36" x="380" name="blue_boxCheckmark.png"/>

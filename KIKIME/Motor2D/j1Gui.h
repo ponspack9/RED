@@ -60,6 +60,11 @@ public:
 	Image			green_diamond;
 	Image			heart;
 
+	Image*			green_ref;
+	Image*			blue_ref;
+	Image*			heart_ref;
+
+	j1Timer			anim_timer;
 private:
 
 	p2List<UIElement*>  elements;

@@ -338,8 +338,8 @@ void j1EntityManager::CreateEntities(int player_lifes)
 {
 	LOG("CREATING ENTITIES, COUNT: %d", entities.count());
 	Entity* e = nullptr;
-	green_counter = blue_counter = score = 0;
-
+	green_counter = blue_counter = score = aux_score = 0;
+	score_powUp = 100;
 	//Creating all entities
 	for (int i = 0; i<App->collision->active; i++)
 	{
@@ -601,14 +601,19 @@ void j1EntityManager::OnCollision(Collider * c1, Collider * c2)
 			{
 			case GREEN_DIAMOND:
 				score += e->points;
+				aux_score += e->points;
 				green_counter++;
+				ChangeUIAnimation(e);
 				break;
 			case BLUE_DIAMOND:
 				score += e->points;
+				aux_score += e->points;
 				blue_counter++;
+				ChangeUIAnimation(e);
 				break;
 			case HEART:
 				player_ref->lifes++;
+				ChangeUIAnimation(e);
 				break;
 			default:
 				LOG("NO COIN TYPE DEFINED, COULD NOT CREATE COIN");
@@ -638,6 +643,23 @@ Coin* j1EntityManager::FindCoinByCollider(Collider * c)
 		}
 	}
 	return nullptr;
+}
+
+void j1EntityManager::ChangeUIAnimation(Coin* c)
+{
+	if (c->coin_type == GREEN_DIAMOND)
+		App->gui->green_ref->current_animation = &App->gui->green_ref->green_shine;
+	if (c->coin_type == BLUE_DIAMOND)
+		App->gui->blue_ref->current_animation = &App->gui->blue_ref->blue_shine;
+	if (c->coin_type == HEART)
+		App->gui->heart_ref->current_animation = &App->gui->heart_ref->heart_blink;
+
+	App->gui->anim_timer.Start();
+}
+
+float j1EntityManager::GetAnimTimer()
+{
+	return App->gui->anim_timer.ReadSec();
 }
 
 bool j1EntityManager::Save(pugi::xml_node & node)
