@@ -23,7 +23,8 @@ Image::Image(ActionType action,iPoint pos, SDL_Rect rect, Image* img,UIType type
 		this->heart_blink = img->heart_blink;
 		this->current_animation = &idle;
 	}
-	
+
+	last_iteration = false;
 }
 
 void Image::Draw(SDL_Texture * sprites)
@@ -42,8 +43,8 @@ void Image::Draw(SDL_Texture * sprites)
 		phi = 40;
 		temp = position.x;
 
-		if (App->entitymanager->GetAnimTimer() >= 1.5f)
-			current_animation = &idle;
+		//if (App->entitymanager->GetAnimTimer() >= 1.5f)
+		//	current_animation = &idle;
 
 		if (App->entitymanager->aux_score >= App->entitymanager->score_powUp)
 		{
@@ -54,8 +55,17 @@ void Image::Draw(SDL_Texture * sprites)
 
 		for (int i = 0; i < App->entitymanager->player_ref->lifes; i++)
 		{
-			App->render->Blit(sprites, position.x, position.y, &current_animation->GetCurrentFrame(),0);
+			if (last_iteration && App->entitymanager->GetAnimTimer() < 1.5f)
+				current_animation = &heart_blink;
+			else
+				current_animation = &idle;
+				last_iteration = false;
+
+			App->render->Blit(sprites, position.x, position.y, &current_animation->GetCurrentFrame(), 0);
 			position.x += phi;
+
+			if (i == App->entitymanager->player_ref->lifes - 1)
+				last_iteration = true;
 		}
 
 		position.x = temp;

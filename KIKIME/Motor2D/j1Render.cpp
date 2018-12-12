@@ -82,8 +82,7 @@ bool j1Render::PreUpdate()
 }
 
 bool j1Render::Update(float dt)
-{
-	
+{	
 	return true;
 }
 
@@ -107,7 +106,6 @@ bool j1Render::CleanUp()
 
 bool j1Render::Load(pugi::xml_node& node)
 {
-
 	LOG("Loading RENDER");
 
 	camera.x = node.child("camera").attribute("x").as_int();
@@ -117,7 +115,6 @@ bool j1Render::Load(pugi::xml_node& node)
 }
 bool j1Render::Save(pugi::xml_node& node)
 {
-
 	LOG("Saving RENDER");
 	pugi::xml_node cam = node.append_child("camera");
 
@@ -173,17 +170,17 @@ void j1Render::FollowPlayer()
 	{
 		camera.x = 0;
 	}
-	if (camera.x - camera.w < -App->map->data.width * App->map->data.tile_width) //right limit
+	if (camera.x - viewport.w < -App->map->data.width * App->map->data.tile_width) //right limit
 	{
-		camera.x = -App->map->data.width * App->map->data.tile_width + camera.w;
+		camera.x = -App->map->data.width * App->map->data.tile_width + viewport.w;
 	}
 	if (camera.y > 0) //top limit
 	{
 		camera.y = 0;
 	}
-	if (camera.y - camera.h < -App->map->data.height * App->map->data.tile_height) //down limit
+	if (camera.y - viewport.h < -App->map->data.height * App->map->data.tile_height) //down limit
 	{
-		camera.y = -App->map->data.height * App->map->data.tile_height + camera.h;
+		camera.y = -App->map->data.height * App->map->data.tile_height + viewport.h;
 	}
 }
 
