@@ -34,7 +34,7 @@ void Image::Draw(SDL_Texture * sprites)
 	{
 	case INFO:
 
-		App->render->Blit(sprites, position.x, position.y, &rect[state],0);
+		App->render->Blit(sprites, position.x, position.y, &current_animation->GetCurrentFrame() ,0);
 		break;
 
 	case LIFE_SYSTEM:

@@ -200,6 +200,7 @@ bool j1Gui::Awake(pugi::xml_node& conf)
 		r.y = n.attribute("y").as_int();
 		r.w = n.attribute("width").as_int();
 		r.h = n.attribute("height").as_int();
+		blue_diamond.idle.PushBack(r);
 		if (n.next_sibling("blue_diamond"))
 			n = n.next_sibling("blue_diamond");
 
@@ -213,6 +214,7 @@ bool j1Gui::Awake(pugi::xml_node& conf)
 		r.y = n.attribute("y").as_int();
 		r.w = n.attribute("width").as_int();
 		r.h = n.attribute("height").as_int();
+		green_diamond.idle.PushBack(r);
 		if (n.next_sibling("green_diamond"))
 			n = n.next_sibling("green_diamond");
 	}
@@ -225,6 +227,7 @@ bool j1Gui::Awake(pugi::xml_node& conf)
 		r.y = n.attribute("y").as_int();
 		r.w = n.attribute("width").as_int();
 		r.h = n.attribute("height").as_int();
+		heart.idle.PushBack(r);
 		if (n.next_sibling("heart"))
 			n = n.next_sibling("heart");
 	}
@@ -343,9 +346,9 @@ bool j1Gui::Start()
 	windows.add(settings_window);
 
 	Button* settings_to_main = (Button*)CreateButton({ 0,0 }, red_button, SETTINGS, nullptr, settings_window);
-	settings_to_main->Center(0, 70);
-
-	Label* lsettings_to_main = (Label*)CreateElement(LABEL, iPoint(0, 0), { 0,0,0,0 }, nullptr, "MAIN MENU", NO_ACTION, nullptr, settings_to_main);
+  settings_to_main->Center(0, 70);
+  
+	Label* lsettings_to_main = (Label*)CreateElement(LABEL, iPoint(0, 0), { 0,0,0,0 }, nullptr, "RETURN", NO_ACTION, nullptr, settings_to_main);
 	lsettings_to_main->Center();
 	
 	// MUSIC
@@ -421,9 +424,16 @@ bool j1Gui::Start()
 	Label* time_seconds = (Label*)CreateElement(LABEL, iPoint(0, 0),  { 0,0,0,0 }, nullptr, "",  GAME_TIMER_SECS, nullptr, time_minutes);
 	Label* timersec		= (Label*)CreateElement(LABEL, iPoint(0, 0),  { 0,0,0,0 }, nullptr, ":", INFO,			  nullptr, time_minutes);
 
-	time_minutes		->CenterX(250);
+	time_minutes		->CenterX(400);
 	timersec->Center(40, 0);
 	time_seconds		->Center(75, 0);
+
+	/*Label* timersec = (Label*)CreateElement(LABEL, iPoint(0, 15), { 0,0,0,0 },nullptr, ":", INFO, nullptr, in_game_ui);
+	Label* tmi = (Label*)CreateElement(LABEL, iPoint(0, 0), { 0,0,0,0 },nullptr, "", GAME_TIMER_MINS, nullptr, timersec);
+	Label* tse = (Label*)CreateElement(LABEL, iPoint(0, 0), { 0,0,0,0 },nullptr, "", GAME_TIMER_SECS, nullptr, timersec);
+	timersec->CenterX(400);
+	tmi->Center(-30, 0);
+	tse->Center(25, 0);*/
 
 	////////////////////////////////////// END IN GAME UI //////////////////////////////////////
 

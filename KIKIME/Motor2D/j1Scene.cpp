@@ -20,7 +20,6 @@ j1Scene::j1Scene() : j1Module()
 	name.create("scene");
 	first_load = true;
 	game_over_transition = false;
-
 }
 
 // Destructor
@@ -29,10 +28,8 @@ j1Scene::~j1Scene()
 
 // Called before render is available
 bool j1Scene::Awake(pugi::xml_node& config)
-{ 
-	
+{ 	
 	LOG("Loading Scene");
-
 	current_track = App->audio->tracks_path.start;
 	return true;
 }
@@ -69,8 +66,6 @@ bool j1Scene::Start()
 			App->gui->in_game_window->SetVisible();*/
 		}
 	}
-	
-
 	return ret;
 }
 
@@ -105,7 +100,6 @@ bool j1Scene::Update(float dt)
 		App->gui->game_over->visible = false;
 		game_over_transition = false;
 	}	
-
 	return true;
 }
 
@@ -119,7 +113,6 @@ bool j1Scene::PostUpdate()
 bool j1Scene::CleanUp()
 {
 	LOG("Freeing scene");
-	//App->map->CleanUp();
 	App->map->CleanMap();
 
 	return true;
@@ -136,7 +129,6 @@ bool j1Scene::Save(pugi::xml_node & node)
 	pugi::xml_node time_node = node.append_child("timer");
 	time_node.append_attribute("seconds") = App->in_game_timer.sec;
 	time_node.append_attribute("minutes") = App->in_game_timer.min;
-
 	
 	LOG("current map %s - %s", App->map->current_map->data.GetString(), node.child("current").attribute("current_map").as_string());
 	return true;
@@ -150,7 +142,6 @@ bool j1Scene::Load(pugi::xml_node & node)
 
 	App->in_game_timer.sec = node.child("timer").attribute("seconds").as_int();
 	App->in_game_timer.min = node.child("timer").attribute("minutes").as_int();
-
 
 	App->game_timer.Start();
 	LOG("Current map: %s", App->map->current_map->data.GetString());
