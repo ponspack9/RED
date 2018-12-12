@@ -299,16 +299,17 @@ bool j1Gui::Start()
 
 	main_menu_ui = (Image*)CreateElement(IMAGE, iPoint(App->render->viewport.w / 2 - 250, App->render->viewport.h / 2 - 400), SDL_Rect({ 1000,1000,500,800 }), nullptr, nullptr, NO_ACTION, (j1Module*)App, main_menu_window, true);
 
-	Button* start_button	= (Button*)CreateButton({ 0,0 },	blue_button,	START,		nullptr, main_menu_ui);
-	Button* continue_button = (Button*)CreateButton({ 0,0 },	yellow_button,	CONTINUE,	nullptr, main_menu_ui);
-	Button* settings_button = (Button*)CreateButton({ 0,0 },	green_button,	SETTINGS,	nullptr, main_menu_ui);
-	Button* exit_button		= (Button*)CreateButton({ 0,0 },	red_button,		EXIT_GAME,	nullptr, main_menu_ui);
-	Button* credits_button	= (Button*)CreateButton({ 50,50 },	red_button,		CREDITS,	nullptr, main_menu_ui);
+	Button* start_button	= (Button*)CreateButton({ 0,0 },					 blue_button,	START,		nullptr, main_menu_ui);
+	Button* continue_button = (Button*)CreateButton({ 0,0 },					 yellow_button,	CONTINUE,	nullptr, main_menu_ui);
+	Button* settings_button = (Button*)CreateButton({ 0,0 },					 green_button,	SETTINGS,	nullptr, main_menu_ui);
+	Button* exit_button		= (Button*)CreateButton({ 0,0 },					 red_button,	EXIT_GAME,	nullptr, main_menu_ui);
+	Button* credits_button = (Button*)CreateButton(-main_menu_ui->position + 50, red_button,	CREDITS,	nullptr, main_menu_ui);
 	
 	start_button	 ->movable = true;	start_button	->Center(0, -140);
 	continue_button	 ->movable = true;	continue_button	->Center(0,-70);
 	settings_button	 ->movable = true;	settings_button	->Center();
 	exit_button    	 ->movable = true;	exit_button		->Center(0, 70);
+	credits_button	 ->movable = true;  
 
 
 	Label* lstart_button	= (Label*)CreateElement(LABEL, iPoint(0, 0), { 0,0,0,0 }, nullptr, "PLAY GAME", NO_ACTION, nullptr, start_button);
@@ -327,14 +328,15 @@ bool j1Gui::Start()
 
 	credits_ui = (Image*)CreateElement(IMAGE, iPoint(App->render->viewport.w / 2 - 250, App->render->viewport.h / 2 - 400), SDL_Rect({ 1000,1000,500,800 }), nullptr, nullptr, NO_ACTION, (j1Module*)App, main_menu_window, false);
 	
-	Button* credits_to_menu = (Button*)CreateButton({ 50,50 }, red_button,	 CREDITS, nullptr, credits_ui);
-	Button* website_button	= (Button*)CreateButton({ 50,50 }, green_button, WEBSITE, nullptr, credits_ui);
+	Button* credits_to_menu = (Button*)CreateButton(-main_menu_ui->position + 50, red_button,   CREDITS, nullptr, credits_ui);
+	Button* website_button	= (Button*)CreateButton({ 50,50 },					  green_button, WEBSITE, nullptr, credits_ui);
 
 	Label* lwebsite_button	= (Label*)CreateElement(LABEL, iPoint(0, 0), { 0,0,0,0 }, nullptr, "Go to website",									NO_ACTION, nullptr, website_button);
-	Label* lcredits_to_menu = (Label*)CreateElement(LABEL, iPoint(0, 0), { 0,0,0,0 }, nullptr, "MAIN MENU",										NO_ACTION, nullptr, credits_to_menu);
+	Label* lcredits_to_menu = (Label*)CreateElement(LABEL, iPoint(0, 0), { 0,0,0,0 }, nullptr, "RETURN",										NO_ACTION, nullptr, credits_to_menu);
 	Label* lcredits			= (Label*)CreateElement(LABEL, iPoint(0, 0), { 0,0,0,0 }, nullptr, "Game developed by Oscar Pons and Oriol Sabate", NO_ACTION, nullptr, credits_ui);
 
 	website_button->Center(0, 70);
+	//credits_to_menu->Center(0, 140);
 	lwebsite_button->Center();
 	lcredits_to_menu->Center();
 	lcredits->Center();

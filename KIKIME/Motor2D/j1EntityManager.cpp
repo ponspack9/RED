@@ -385,7 +385,6 @@ void j1EntityManager::CreateEntities(int player_lifes)
 		}
 	}
 	LOG("CREATED ENTITIES, COUNT: %d ACTIVE: %d", entities.count(),App->collision->active);
-
 }
 
 
@@ -436,7 +435,8 @@ bool j1EntityManager::PostUpdate()
 		
 			LOG("DEAD BY POST UPDATE");
 			if (player_ref->lifes > 0) {
-				player_ref->lifes -= 1;
+				player_ref->lifes--;
+				//heart_list.del(heart_list.end);
 				App->RestartLevel(player_ref->lifes);
 				LOG("LIFES REMAINING: %d", player_ref->lifes);
 			}
@@ -613,6 +613,7 @@ void j1EntityManager::OnCollision(Collider * c1, Collider * c2)
 				break;
 			case HEART:
 				player_ref->lifes++;
+				//heart_list.add(App->gui->heart_ref);
 				ChangeUIAnimation(e);
 				break;
 			default:
@@ -653,6 +654,8 @@ void j1EntityManager::ChangeUIAnimation(Coin* c)
 		App->gui->blue_ref->current_animation = &App->gui->blue_ref->blue_shine;
 	if (c->coin_type == HEART)
 		App->gui->heart_ref->current_animation = &App->gui->heart_ref->heart_blink;
+
+		//heart_list.end->data->current_animation = &App->gui->heart_ref->heart_blink;
 
 	App->gui->anim_timer.Start();
 }

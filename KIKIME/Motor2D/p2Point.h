@@ -68,6 +68,15 @@ public:
 
 		return(r);
 	}
+	p2Point operator + (const TYPE &v) const
+	{
+		p2Point r;
+
+		r.x = x + v;
+		r.y = y + v;
+
+		return(r);
+	}
 	p2Point operator * (const p2Point &v) const
 	{
 		p2Point r;

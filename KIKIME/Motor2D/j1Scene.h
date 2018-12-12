@@ -42,6 +42,7 @@ public:
 private:
 
 	bool		first_load;
+	bool		is_load;
 
 	j1Timer		game_over_timer;
 

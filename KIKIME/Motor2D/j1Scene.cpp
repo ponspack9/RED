@@ -20,6 +20,7 @@ j1Scene::j1Scene() : j1Module()
 	name.create("scene");
 	first_load = true;
 	game_over_transition = false;
+	//is_load = false;
 }
 
 // Destructor
@@ -48,7 +49,9 @@ bool j1Scene::Start()
 		first_load = false;
 	}
 	else {
+		//if (!is_load)
 		App->entitymanager->Restart(App->entitymanager->playerinfo.lifes);
+
 		LOG("ENTITY RESTART");
 		App->gui->last_death->position = { -100,-100 };
 
@@ -66,6 +69,7 @@ bool j1Scene::Start()
 			App->gui->in_game_window->SetVisible();*/
 		}
 	}
+	//is_load = false;
 	return ret;
 }
 
@@ -136,13 +140,17 @@ bool j1Scene::Save(pugi::xml_node & node)
 
 bool j1Scene::Load(pugi::xml_node & node)
 {
-	LOG("Loading SCENE");	   
+	LOG("Loading SCENE");	 
 
 	App->map->current_map->data = node.child("current").attribute("current_map").as_string();
+
+	//App->map->CleanMap();
+	//App->scene->Start();
 
 	App->in_game_timer.sec = node.child("timer").attribute("seconds").as_int();
 	App->in_game_timer.min = node.child("timer").attribute("minutes").as_int();
 
+	//is_load = true;
 	App->game_timer.Start();
 	LOG("Current map: %s", App->map->current_map->data.GetString());
 
