@@ -364,7 +364,7 @@ bool j1Gui::Start()
 	in_game_window	  = (Image*)CreateElement(IMAGE, iPoint(0, 0), SDL_Rect({ 1000,1000,App->render->viewport.w,App->render->viewport.h }), nullptr, nullptr, NO_ACTION, nullptr, nullptr);
 	windows.add(in_game_window);
 
-	in_game_gui = (Image*)CreateElement(IMAGE, iPoint(0, 0), SDL_Rect({ 1000,1000,428,452 }),											nullptr, nullptr, NO_ACTION, nullptr, in_game_window);
+	in_game_gui = (Image*)CreateElement(IMAGE, iPoint(0, 0), SDL_Rect({ 1000,1000,App->render->viewport.w,App->render->viewport.h }), nullptr, nullptr, NO_ACTION, nullptr, in_game_window);
 
 	heart_ref = (Image*)CreateElement(IMAGE, iPoint(10, 10),  heart.rect[IDLE],			&heart,			nullptr, LIFE_SYSTEM,  nullptr, in_game_gui);
 	green_ref = (Image*)CreateElement(IMAGE, iPoint(600, 10), green_diamond.rect[IDLE], &green_diamond, nullptr, DYNAMIC_INFO, nullptr, in_game_gui);
@@ -443,7 +443,7 @@ bool j1Gui::Start()
 
 		////////////////////////////////////// SETTINGS //////////////////////////////////////
 
-	settings_window = (Image*)CreateElement(IMAGE, { App->render->viewport.w / 2 - 250, App->render->viewport.h / 2 - 400 }, SDL_Rect({ 1000,1000,500,800 }), nullptr, nullptr, NO_ACTION, (j1Module*)App, nullptr, false);
+	settings_window = (Image*)CreateElement(IMAGE, { App->render->viewport.w / 2 - 250, App->render->viewport.h / 2 - 400 }, SDL_Rect({ 1000,1000,500,800 }), nullptr, nullptr, NO_ACTION, nullptr, nullptr, false);
 	windows.add(settings_window);
 
 	Button* settings_to_main = (Button*)CreateButton({ 0,0 }, red_button, SETTINGS, nullptr, settings_window);
@@ -514,6 +514,13 @@ void j1Gui::SetWindowsVisible() {
 	for (item; item != nullptr; item = item->next) {
 		item->data->SetVisible();
 	}
+}
+
+void j1Gui::CalculateElementsPosition(const int &w, const int &h) {
+
+	main_menu_ui->initial_pos = { iPoint(w - main_menu_ui->rect[IDLE].w / 2, h - main_menu_ui->rect[IDLE].h / 2) };
+	credits_ui->initial_pos   = { iPoint(w - credits_ui->rect[IDLE].w / 2,   h - credits_ui->rect[IDLE].h / 2) };
+	in_game_gui->initial_pos  = { iPoint(w - in_game_gui->rect[IDLE].w / 2,  h - in_game_gui->rect[IDLE].h / 2) };
 }
 
 // Update all guis

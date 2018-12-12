@@ -96,8 +96,13 @@ bool j1Input::PreUpdate()
 			break;
 
 			case SDL_WINDOWEVENT:
+				
+
 				switch(event.window.event)
 				{
+					case SDL_WINDOWEVENT_SIZE_CHANGED:
+						App->CalculateGuiPositions();
+						break;
 					//case SDL_WINDOWEVENT_LEAVE:
 					case SDL_WINDOWEVENT_HIDDEN:
 					case SDL_WINDOWEVENT_MINIMIZED:

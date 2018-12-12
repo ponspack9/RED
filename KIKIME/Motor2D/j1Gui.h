@@ -32,6 +32,8 @@ public:
 
 	void SetWindowsVisible();
 
+	void CalculateElementsPosition(const int &w, const int &h);
+
 	// Called before all Updates
 	bool PreUpdate();
 
@@ -73,6 +75,9 @@ public:
 	Image*			heart_ref;
 
 	j1Timer			anim_timer;
+
+	p2List<UIElement*>	windows;
+
 private:
 
 	p2List<UIElement*>  elements;
@@ -109,7 +114,6 @@ private:
 	iPoint				mouseClick;
 	iPoint				startDraging;
 
-	p2List<UIElement*>	windows;
 
 };
 
