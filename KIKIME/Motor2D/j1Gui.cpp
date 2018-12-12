@@ -210,7 +210,7 @@ bool j1Gui::Awake(pugi::xml_node& conf)
 
 	// Green diamond
 	n = conf.child("atlas").child("green_diamond");
-	for (SDL_Rect &r : blue_diamond.rect)
+	for (SDL_Rect &r : green_diamond.rect)
 	{
 		r.x = n.attribute("x").as_int();
 		r.y = n.attribute("y").as_int();
@@ -303,7 +303,7 @@ bool j1Gui::Start()
 	Button* continue_button = (Button*)CreateButton({ 0,0 },					 yellow_button,	CONTINUE,	nullptr, main_menu_ui);
 	Button* settings_button = (Button*)CreateButton({ 0,0 },					 green_button,	SETTINGS,	nullptr, main_menu_ui);
 	Button* exit_button		= (Button*)CreateButton({ 0,0 },					 red_button,	EXIT_GAME,	nullptr, main_menu_ui);
-	Button* credits_button  = (Button*)CreateButton(-main_menu_ui->position + 50, red_button,	CREDITS,	nullptr, main_menu_ui);
+	credits_button			= (Button*)CreateButton(-main_menu_ui->position + 50, red_button,	CREDITS,	nullptr, main_menu_ui);
 	
 	start_button	 ->movable = true;	start_button	->Center(0, -140);
 	continue_button	 ->movable = true;	continue_button	->Center(0,-70);
@@ -328,7 +328,7 @@ bool j1Gui::Start()
 
 	credits_ui = (Image*)CreateElement(IMAGE, iPoint(App->render->viewport.w / 2 - 250, App->render->viewport.h / 2 - 400), SDL_Rect({ 1000,1000,500,800 }), nullptr, nullptr, NO_ACTION, (j1Module*)App, main_menu_window, false);
 	
-	Button* credits_to_menu = (Button*)CreateButton(-main_menu_ui->position + 50, red_button,   CREDITS, nullptr, credits_ui);
+	credits_to_menu			= (Button*)CreateButton(-main_menu_ui->position + 50, red_button,   CREDITS, nullptr, credits_ui);
 	Button* website_button	= (Button*)CreateButton({ 50,50 },					  green_button, WEBSITE, nullptr, credits_ui);
 
 	Label* lwebsite_button	= (Label*)CreateElement(LABEL, iPoint(0, 0), { 0,0,0,0 }, nullptr, "Go to website",									NO_ACTION, nullptr, website_button);
@@ -366,9 +366,12 @@ bool j1Gui::Start()
 
 	in_game_gui = (Image*)CreateElement(IMAGE, iPoint(0, 0), SDL_Rect({ 1000,1000,App->render->viewport.w,App->render->viewport.h }), nullptr, nullptr, NO_ACTION, nullptr, in_game_window);
 
+	score  = (Label*)CreateElement(LABEL, iPoint(in_game_gui->rect[IDLE].w - 100, 15), { 0,0,0,0 }, nullptr, "SCORE :",  INFO,  nullptr, in_game_gui);
+	Label* lscore = (Label*)CreateElement(LABEL, iPoint(50, 0),	  { 0,0,0,0 }, nullptr, "",			SCORE, nullptr, score);
+
 	heart_ref = (Image*)CreateElement(IMAGE, iPoint(10, 10),  heart.rect[IDLE],			&heart,			nullptr, LIFE_SYSTEM,  nullptr, in_game_gui);
-	green_ref = (Image*)CreateElement(IMAGE, iPoint(600, 10), green_diamond.rect[IDLE], &green_diamond, nullptr, DYNAMIC_INFO, nullptr, in_game_gui);
-	blue_ref  = (Image*)CreateElement(IMAGE, iPoint(700, 10), blue_diamond.rect[IDLE],	&blue_diamond,	nullptr, DYNAMIC_INFO, nullptr, in_game_gui);
+	green_ref = (Image*)CreateElement(IMAGE, iPoint(-200, 0), green_diamond.rect[IDLE], &green_diamond, nullptr, DYNAMIC_INFO, nullptr, score);
+	blue_ref  = (Image*)CreateElement(IMAGE, iPoint(-300, 0), blue_diamond.rect[IDLE],	 &blue_diamond,	 nullptr, DYNAMIC_INFO, nullptr, score);
 
 	Label* lgreen_ref		= (Label*)CreateElement(LABEL, iPoint(0, 0), { 0,0,0,0 }, nullptr, "X", INFO,			nullptr, green_ref);
 	Label* lblue_ref		= (Label*)CreateElement(LABEL, iPoint(0, 0), { 0,0,0,0 }, nullptr, "X", INFO,			nullptr, blue_ref);
@@ -380,25 +383,15 @@ bool j1Gui::Start()
 	green_ref_count->Center(20, 0);
 	blue_ref_count->Center(20, 0);
 	
-	Label* score  = (Label*)CreateElement(LABEL, iPoint(900, 15), { 0,0,0,0 }, nullptr, "SCORE :",  INFO,  nullptr, in_game_gui);
-	Label* lscore = (Label*)CreateElement(LABEL, iPoint(0, 0),	  { 0,0,0,0 }, nullptr, "",			SCORE, nullptr, score);
 
-	lscore->Center(45, 0);
-
-	Label* timersec		= (Label*)CreateElement(LABEL, iPoint(0, 15), { 0,0,0,0 }, nullptr, ":", INFO,			  nullptr, in_game_gui);
+	timersec			= (Label*)CreateElement(LABEL, iPoint(0, 15), { 0,0,0,0 }, nullptr, ":", INFO,			  nullptr, in_game_gui);
 	Label* time_minutes = (Label*)CreateElement(LABEL, iPoint(0, 0),  { 0,0,0,0 }, nullptr, "",  GAME_TIMER_MINS, nullptr, timersec);
 	Label* time_seconds = (Label*)CreateElement(LABEL, iPoint(0, 0),  { 0,0,0,0 }, nullptr, "",  GAME_TIMER_SECS, nullptr, timersec);
 
-	timersec	->CenterX(400);
+	timersec	->CenterX();
 	time_minutes->Center(-30, 0);		
 	time_seconds->Center(25, 0);
 
-	/*Label* timersec = (Label*)CreateElement(LABEL, iPoint(0, 15), { 0,0,0,0 },nullptr, ":", INFO, nullptr, in_game_ui);
-	Label* tmi = (Label*)CreateElement(LABEL, iPoint(0, 0), { 0,0,0,0 },nullptr, "", GAME_TIMER_MINS, nullptr, timersec);
-	Label* tse = (Label*)CreateElement(LABEL, iPoint(0, 0), { 0,0,0,0 },nullptr, "", GAME_TIMER_SECS, nullptr, timersec);
-	timersec->CenterX(400);
-	tmi->Center(-30, 0);
-	tse->Center(25, 0);*/
 
 	////////////////////////////////////// END IN GAME UI //////////////////////////////////////
 
@@ -524,6 +517,10 @@ void j1Gui::CalculateElementsPosition() {
 	credits_ui		->Center();
 	settings_gui	->Center();
 	in_game_pause_ui->Center();
+	timersec		->CenterX();
+	credits_button	->initial_pos   = -credits_button->parent->initial_pos+ 50;
+	credits_to_menu	->initial_pos   = -credits_to_menu->parent->initial_pos + 50;
+	score			->initial_pos.x = in_game_gui->rect[IDLE].w - 100;
 	//in_game_gui		->CenterX();
 }
 

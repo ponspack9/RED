@@ -75,6 +75,12 @@ public:
 	Image*			blue_ref;
 	Image*			heart_ref;
 
+
+	Button*			credits_button;
+	Button*			credits_to_menu;
+	Label*			score;
+	Label*			timersec;
+
 	j1Timer			anim_timer;
 
 	p2List<UIElement*>	windows;
