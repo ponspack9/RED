@@ -24,6 +24,14 @@ public:
 	// Call before first frame
 	bool Start();
 
+	void PrepareMainMenuGui();
+
+	void PrepareInGameGui();
+
+	void SetWindowsInvisible();
+
+	void SetWindowsVisible();
+
 	// Called before all Updates
 	bool PreUpdate();
 
@@ -43,13 +51,13 @@ public:
 
 	const SDL_Texture* GetAtlas() const;
 
-	Image*			in_game_ui;
+	Image*			in_game_gui;
 	Image*			main_menu_ui;
-	Image*			in_game_pause;
+	Image*			in_game_pause_ui;
 
 	Image*			main_menu_window;
 	Image*			in_game_window;
-	Image*			credits_window;
+	Image*			credits_ui;
 	Image*			settings_window;
 
 	Image*			game_over;
@@ -100,6 +108,8 @@ private:
 	int					moving_speed;
 	iPoint				mouseClick;
 	iPoint				startDraging;
+
+	p2List<UIElement*>	windows;
 
 };
 
