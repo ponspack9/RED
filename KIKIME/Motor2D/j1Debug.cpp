@@ -50,11 +50,17 @@ bool j1Debug::PostUpdate()
 	BROFILER_CATEGORY("Debug->PostUpdate", Profiler::Color::HotPink)
 	bool ret = true;
 
-	if (App->map->current_map != App->map->maps_path.start)
+	if (!App->player_in_main_menu)
 	{
-		if (App->input->GetKey(SDL_SCANCODE_ESCAPE) == KEY_DOWN)
+		if (App->input->GetKey(SDL_SCANCODE_ESCAPE) == KEY_DOWN) {
 			App->TogglePause();
-
+			if (App->gui->settings_window->visible) {
+				App->gui->PrepareInGameGui();
+			}
+			else {
+				App->ShowInGamePause();
+			}
+		}
 	}
 	return ret;
 }

@@ -61,7 +61,7 @@ bool j1Scene::Start()
 		}
 		else {
 			App->player_in_main_menu = false;
-			//App->gui->PrepareInGameGui();
+			App->gui->PrepareInGameGui();
 			/*App->gui->main_menu_window->SetInvisible();
 			App->gui->in_game_window->SetVisible();*/
 		}

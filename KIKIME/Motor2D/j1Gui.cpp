@@ -42,6 +42,7 @@ bool j1Gui::Awake(pugi::xml_node& conf)
 		r.y = n.attribute("y").as_int();
 		r.w = n.attribute("width").as_int();
 		r.h = n.attribute("height").as_int();
+		game_over_image.idle.PushBack(r);
 		if (n.next_sibling("gameOver"))
 			n = n.next_sibling("gameOver");
 	}
@@ -54,6 +55,7 @@ bool j1Gui::Awake(pugi::xml_node& conf)
 		r.y = n.attribute("y").as_int();
 		r.w = n.attribute("width").as_int();
 		r.h = n.attribute("height").as_int();
+		last_death_image.idle.PushBack(r);
 		if (n.next_sibling("lastDeath"))
 			n = n.next_sibling("lastDeath");
 	}
@@ -339,45 +341,6 @@ bool j1Gui::Start()
 
 	////////////////////////////////////// END MAIN MENU //////////////////////////////////////
 
-
-	////////////////////////////////////// SETTINGS //////////////////////////////////////
-
-	settings_window = (Image*)CreateElement(IMAGE, { App->render->viewport.w / 2 - 250, App->render->viewport.h / 2 - 400 }, SDL_Rect({ 1000,1000,500,800 }), nullptr,nullptr, NO_ACTION, (j1Module*)App, nullptr, false);
-	windows.add(settings_window);
-
-	Button* settings_to_main = (Button*)CreateButton({ 0,0 }, red_button, SETTINGS, nullptr, settings_window);
-  settings_to_main->Center(0, 70);
-  
-	Label* lsettings_to_main = (Label*)CreateElement(LABEL, iPoint(0, 0), { 0,0,0,0 }, nullptr, "RETURN", NO_ACTION, nullptr, settings_to_main);
-	lsettings_to_main->Center();
-	
-	// MUSIC
-	Button* music_volume_button = (Button*)CreateButton({ 0,-150 },									green_button,			NO_ACTION,		nullptr, settings_to_main);
-	Button* music_slider		= (Button*)CreateButton({ 0,music_volume_button->rect[IDLE].h+20 }, slider_button,			NO_ACTION,		nullptr, music_volume_button);
-	Button* music_slider_button = (Button*)CreateButton({ SDL_MIX_MAXVOLUME,0 },					slider_pointer_button,	CHANGE_VOLUME,	nullptr, music_slider);
-
-	music_volume_button ->CenterX();
-	music_slider		->CenterX();
-	music_slider_button->movable = true;
-
-	Label* lmusic_volume_button = (Label*)CreateElement(LABEL, iPoint(0, 0), { 0,0,0,0 }, nullptr, "MUSIC VOLUME", NO_ACTION, nullptr, music_volume_button);
-	lmusic_volume_button->Center();
-
-
-	//FX Volume
-	Button* fx_volume_button = (Button*)CreateButton({ 0,-300 },								green_button,		   NO_ACTION,		 nullptr, settings_to_main);
-	Button* fx_slider		 = (Button*)CreateButton({ 0,fx_volume_button->rect[IDLE].h + 20 }, slider_button,		   NO_ACTION,		 nullptr, fx_volume_button);
-	Button* fx_slider_button = (Button*)CreateButton({ SDL_MIX_MAXVOLUME,0 },					slider_pointer_button, CHANGE_VOLUME_FX, nullptr, fx_slider);
-
-	fx_volume_button->CenterX();
-	fx_slider		->CenterX();
-	fx_slider_button->movable = true;
-
-	Label* fx_lvolume_button = (Label*)CreateElement(LABEL, iPoint(0, 0), { 0,0,0,0 }, nullptr, "FX VOLUME", NO_ACTION, nullptr, fx_volume_button);
-	fx_lvolume_button->Center();
-
-	////////////////////////////////////// END SETTINGS //////////////////////////////////////
-
 	////////////////////////////////////// HELP //////////////////////////////////////
 
 	/*Image* greend = (Image*)CreateElement(IMAGE, iPoint(0, 0), green_diamond.rect[IDLE], &green_diamond, nullptr, INFO, nullptr, settings_window);
@@ -405,10 +368,10 @@ bool j1Gui::Start()
 	green_ref = (Image*)CreateElement(IMAGE, iPoint(600, 10), green_diamond.rect[IDLE], &green_diamond, nullptr, DYNAMIC_INFO, nullptr, in_game_gui);
 	blue_ref  = (Image*)CreateElement(IMAGE, iPoint(700, 10), blue_diamond.rect[IDLE],	&blue_diamond,	nullptr, DYNAMIC_INFO, nullptr, in_game_gui);
 
-	Label* lgreen_ref		= (Label*)CreateElement(LABEL, iPoint(0, 0),	 { 0,0,0,0 }, nullptr, "X", INFO,			nullptr, green_ref);
-	Label* lblue_ref		= (Label*)CreateElement(LABEL, iPoint(0, 0),	 { 0,0,0,0 }, nullptr, "X", INFO,			nullptr, blue_ref);
-	Label* green_ref_count	= (Label*)CreateElement(LABEL, iPoint(0, 0),	 { 0,0,0,0 }, nullptr, "",  GREEN_COUNTER,	nullptr, lgreen_ref);
-	Label* blue_ref_count	= (Label*)CreateElement(LABEL, iPoint(845, 15),  { 0,0,0,0 }, nullptr, "",  BLUE_COUNTER,	nullptr, lblue_ref);
+	Label* lgreen_ref		= (Label*)CreateElement(LABEL, iPoint(0, 0), { 0,0,0,0 }, nullptr, "X", INFO,			nullptr, green_ref);
+	Label* lblue_ref		= (Label*)CreateElement(LABEL, iPoint(0, 0), { 0,0,0,0 }, nullptr, "X", INFO,			nullptr, blue_ref);
+	Label* green_ref_count	= (Label*)CreateElement(LABEL, iPoint(0, 0), { 0,0,0,0 }, nullptr, "",  GREEN_COUNTER,	nullptr, lgreen_ref);
+	Label* blue_ref_count	= (Label*)CreateElement(LABEL, iPoint(0, 0), { 0,0,0,0 }, nullptr, "",  BLUE_COUNTER,	nullptr, lblue_ref);
 
 	lgreen_ref->Center(30, 5);
 	lblue_ref->Center(30, 5);
@@ -420,13 +383,13 @@ bool j1Gui::Start()
 
 	lscore->Center(45, 0);
 
-	Label* time_minutes = (Label*)CreateElement(LABEL, iPoint(0, 15), { 0,0,0,0 }, nullptr, "",  GAME_TIMER_MINS, nullptr, in_game_gui);
-	Label* time_seconds = (Label*)CreateElement(LABEL, iPoint(0, 0),  { 0,0,0,0 }, nullptr, "",  GAME_TIMER_SECS, nullptr, time_minutes);
-	Label* timersec		= (Label*)CreateElement(LABEL, iPoint(0, 0),  { 0,0,0,0 }, nullptr, ":", INFO,			  nullptr, time_minutes);
+	Label* timersec		= (Label*)CreateElement(LABEL, iPoint(0, 15), { 0,0,0,0 }, nullptr, ":", INFO,			  nullptr, in_game_gui);
+	Label* time_minutes = (Label*)CreateElement(LABEL, iPoint(0, 0),  { 0,0,0,0 }, nullptr, "",  GAME_TIMER_MINS, nullptr, timersec);
+	Label* time_seconds = (Label*)CreateElement(LABEL, iPoint(0, 0),  { 0,0,0,0 }, nullptr, "",  GAME_TIMER_SECS, nullptr, timersec);
 
-	time_minutes		->CenterX(400);
-	timersec->Center(40, 0);
-	time_seconds		->Center(75, 0);
+	timersec	->CenterX(400);
+	time_minutes->Center(-30, 0);		
+	time_seconds->Center(25, 0);
 
 	/*Label* timersec = (Label*)CreateElement(LABEL, iPoint(0, 15), { 0,0,0,0 },nullptr, ":", INFO, nullptr, in_game_ui);
 	Label* tmi = (Label*)CreateElement(LABEL, iPoint(0, 0), { 0,0,0,0 },nullptr, "", GAME_TIMER_MINS, nullptr, timersec);
@@ -443,7 +406,7 @@ bool j1Gui::Start()
 	
 	game_over  = (Image*)CreateElement(IMAGE, iPoint(App->render->viewport.w / 2 - game_over_image.rect[IDLE].w / 2, App->render->viewport.h / 2 - game_over_image.rect[IDLE].h / 2), game_over_image.rect[IDLE], &game_over_image, nullptr, NO_ACTION, nullptr, nullptr, false);
 	
-	last_death = (Image*)CreateElement(IMAGE, iPoint(-20, -20), last_death_image.rect[IDLE],&last_death_image, nullptr, LAST_DEATH, nullptr, nullptr, true);
+	last_death = (Image*)CreateElement(IMAGE, iPoint(-20, -20), last_death_image.rect[IDLE],&last_death_image,nullptr, LAST_DEATH, nullptr, nullptr, true);
 
 	////////////////////////////////////// END MISC //////////////////////////////////////
 
@@ -476,6 +439,44 @@ bool j1Gui::Start()
 
 	////////////////////////////////////// END PAUSE MENU //////////////////////////////////////
 
+		////////////////////////////////////// SETTINGS //////////////////////////////////////
+
+	settings_window = (Image*)CreateElement(IMAGE, { App->render->viewport.w / 2 - 250, App->render->viewport.h / 2 - 400 }, SDL_Rect({ 1000,1000,500,800 }), nullptr, nullptr, NO_ACTION, (j1Module*)App, nullptr, false);
+	windows.add(settings_window);
+
+	Button* settings_to_main = (Button*)CreateButton({ 0,0 }, red_button, SETTINGS, nullptr, settings_window);
+	settings_to_main->Center(0, 70);
+
+	Label* lsettings_to_main = (Label*)CreateElement(LABEL, iPoint(0, 0), { 0,0,0,0 }, nullptr, "RETURN", NO_ACTION, nullptr, settings_to_main);
+	lsettings_to_main->Center();
+
+	// MUSIC
+	Button* music_volume_button = (Button*)CreateButton({ 0,-150 }, green_button, NO_ACTION, nullptr, settings_to_main);
+	Button* music_slider = (Button*)CreateButton({ 0,music_volume_button->rect[IDLE].h + 20 }, slider_button, NO_ACTION, nullptr, music_volume_button);
+	Button* music_slider_button = (Button*)CreateButton({ SDL_MIX_MAXVOLUME,0 }, slider_pointer_button, CHANGE_VOLUME, nullptr, music_slider);
+
+	music_volume_button->CenterX();
+	music_slider->CenterX();
+	music_slider_button->movable = true;
+
+	Label* lmusic_volume_button = (Label*)CreateElement(LABEL, iPoint(0, 0), { 0,0,0,0 }, nullptr, "MUSIC VOLUME", NO_ACTION, nullptr, music_volume_button);
+	lmusic_volume_button->Center();
+
+
+	//FX Volume
+	Button* fx_volume_button = (Button*)CreateButton({ 0,-300 }, green_button, NO_ACTION, nullptr, settings_to_main);
+	Button* fx_slider = (Button*)CreateButton({ 0,fx_volume_button->rect[IDLE].h + 20 }, slider_button, NO_ACTION, nullptr, fx_volume_button);
+	Button* fx_slider_button = (Button*)CreateButton({ SDL_MIX_MAXVOLUME,0 }, slider_pointer_button, CHANGE_VOLUME_FX, nullptr, fx_slider);
+
+	fx_volume_button->CenterX();
+	fx_slider->CenterX();
+	fx_slider_button->movable = true;
+
+	Label* fx_lvolume_button = (Label*)CreateElement(LABEL, iPoint(0, 0), { 0,0,0,0 }, nullptr, "FX VOLUME", NO_ACTION, nullptr, fx_volume_button);
+	fx_lvolume_button->Center();
+
+	////////////////////////////////////// END SETTINGS //////////////////////////////////////
+
 
 	// The very first load of the game, preparing main menu
 	PrepareMainMenuGui();
@@ -483,7 +484,7 @@ bool j1Gui::Start()
 	/* Note
 	To input text check the keyobard state then make a bool matrix or something similar then update if changed the specific key true
 	*/
- 
+	last_death->SetVisible();
 	return true;
 }
 void j1Gui::PrepareMainMenuGui() {
@@ -496,6 +497,7 @@ void j1Gui::PrepareMainMenuGui() {
 void j1Gui::PrepareInGameGui() {
 	SetWindowsInvisible();
 	in_game_window->SetVisible();
+	in_game_pause_ui->SetInvisible();
 }
 
 void j1Gui::SetWindowsInvisible() {

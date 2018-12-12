@@ -43,6 +43,7 @@ void Button::HandleAction()
 		break;
 	case PAUSE:
 		App->TogglePause();
+		App->ShowInGamePause();
 		break;
 	case CONTINUE:
 		App->LoadGame();
