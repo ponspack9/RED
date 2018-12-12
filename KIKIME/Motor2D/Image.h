@@ -17,4 +17,6 @@ public:
 	Animation	blue_shine;
 	Animation	green_shine;
 	Animation	heart_blink;
+
+	bool last_iteration;
 };

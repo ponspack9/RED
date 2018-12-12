@@ -16,7 +16,7 @@
   </renderer>
 
   <window>
-    <resolution width="1280" height="720" scale="1"/>
+    <resolution width="1120" height="560" scale="1"/>
     <fullscreen value="false"/>
     <borderless value="false"/>
     <resizable value="true"/>
