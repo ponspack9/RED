@@ -64,10 +64,6 @@ public:
 	//TO BE IMPLEMENTED
 	void GetSaveGames(p2List<p2SString>& list_to_fill) const;
 
-	void GoToMainMenu();
-
-	void GameOver();
-
 	void Exit();
 
 	//Load XML, LOGs the result also returning it
@@ -76,13 +72,17 @@ public:
 	//Restarts the game from the very first level
 	bool RestartGame();
 
-	void TogglePause();
-
-
 	//Restarts the current level
 	bool RestartLevel(int player_lifes = 0);
 
 	bool NextLevel();
+
+
+	void TogglePause();
+
+	void GoToMainMenu();
+
+	void GameOver();
 
 	void ShowCredits();
 
@@ -92,7 +92,7 @@ public:
 
 	void ChangeFXVolume(int value);
 
-	void ShowSettingsInGame();
+	//void ShowSettingsInGame();
 
 
 	//Saving iteration ONLY SAVING ACTIVE MODULES
@@ -149,6 +149,7 @@ public:
 	bool				pause;
 	bool				game_over;
 	bool				to_exit;
+	bool				player_in_main_menu;
 
 	float				dt;
 	mutable p2SString	save_path;

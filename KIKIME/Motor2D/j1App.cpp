@@ -69,6 +69,8 @@ j1App::j1App(int argc, char* args[]) : argc(argc), args(args)
 
 	LOG("App constructor takes %u ms", timer.Read());
 	LOG("App constructor takes %u micro secs", perf_timer.ReadMs());
+
+	player_in_main_menu = true;
 }
 
 // Destructor
@@ -464,11 +466,12 @@ void j1App::GoToMainMenu() {
 	map->current_map = App->map->maps_path.start;
 	LOG("CURRENTMAP FROM TRANSITION: %s", App->map->current_map->data.GetString());
 	fade->FadeToBlack(App->scene, App->scene);
-	gui->in_game_ui->SetInvisible();
-	gui->credits_window->SetInvisible();
-	gui->settings_window->SetInvisible();
-	gui->in_game_pause->SetInvisible();
-	//gui->main_menu_window->SetVisible();
+
+	//gui->in_game_ui->SetInvisible();
+	//gui->credits_window->SetInvisible();
+	//gui->settings_window->SetInvisible();
+	//gui->in_game_pause->SetInvisible();
+	////gui->main_menu_window->SetVisible();
 	UnPauseGame();
 }
 
@@ -476,9 +479,10 @@ void j1App::GameOver() {
 	game_over = true;
 	map->current_map = App->map->maps_path.start;
 	fade->FadeToBlack(App->scene, App->scene);
-	gui->in_game_ui->SetInvisible();
+
+	/*gui->in_game_ui->SetInvisible();
 	gui->last_death->SetInvisible();
-	gui->game_over->SetVisible();
+	gui->game_over->SetVisible();*/
 	LOG("GAME OVER");
 }
 
@@ -508,12 +512,12 @@ void j1App::TogglePause() {
 	}
 	else UnPauseGame();
 
-	if (!gui->in_game_pause->visible && strcmp(App->map->current_map->data.GetString(), App->map->maps_path.start->data.GetString()) != 0) {
+	/*if (!gui->in_game_pause->visible && strcmp(App->map->current_map->data.GetString(), App->map->maps_path.start->data.GetString()) != 0) {
 		gui->in_game_pause->SetVisible();
 	}
 	else {
 		gui->in_game_pause->SetInvisible();
-	}
+	}*/
 }
 
 void j1App::PauseGame()
@@ -564,9 +568,17 @@ bool j1App::NextLevel() {
 	App->fade->FadeToBlack(App->scene, App->scene);
 	return true;
 }
-
+//It can only be triggered from the main menu, if it's shown, hide. If it's hidden, show
 void j1App::ShowCredits() {
-	if (!App->gui->credits_window->visible) 
+	if (!gui->credits_ui->visible) {
+		gui->credits_ui->SetVisible();
+		gui->main_menu_ui->SetInvisible();
+	}
+	else {
+		gui->credits_ui->SetInvisible();
+		gui->main_menu_ui->SetVisible();
+	}
+	/*if (!App->gui->credits_window->visible) 
 	{
 		App->gui->main_menu_ui->SetInvisible();
 		App->gui->settings_window->SetInvisible();
@@ -577,12 +589,39 @@ void j1App::ShowCredits() {
 	{
 		App->gui->credits_window->SetInvisible();
 		App->gui->main_menu_ui->SetVisible();
-	}
+	}*/
 }
-
+//Can be reached from everywhere, we need to know where we are
 void j1App::ShowSettings()
 {
-	if (!App->gui->settings_window->visible && App->gui->main_menu_ui->visible)
+	
+	if (player_in_main_menu) {
+		if (!gui->settings_window->visible) {
+			// player is in main menu and settings window is not visible
+			gui->settings_window->SetVisible();
+			gui->main_menu_ui->SetInvisible();
+		}
+		else {
+			gui->settings_window->SetInvisible();
+			gui->main_menu_ui->SetVisible();
+		}
+	}
+	else {
+		//Coming from ESC pause menu
+		if (!gui->settings_window->visible) {
+			// player is in main menu and settings window is not visible
+			gui->settings_window->SetVisible();
+			gui->in_game_pause_ui->SetInvisible();
+		}
+		else {
+			gui->settings_window->SetInvisible();
+			gui->in_game_pause_ui->SetVisible();
+		}
+
+	}
+
+
+	/*if (!App->gui->settings_window->visible && App->gui->main_menu_ui->visible)
 	{
 		App->gui->main_menu_ui->SetInvisible();
 		App->gui->settings_window->SetVisible();
@@ -601,7 +640,7 @@ void j1App::ShowSettings()
 	{
 		App->gui->settings_window->SetInvisible();
 		App->gui->main_menu_ui->SetVisible();
-	}
+	}*/
 }
 
 void j1App::ChangeMusicVolume(int value)
@@ -614,17 +653,17 @@ void j1App::ChangeFXVolume(int value)
 	Mix_Volume(-1,value);
 }
 
-void j1App::ShowSettingsInGame()
-{
-	if (!App->gui->settings_window->visible)
-	{
-		App->gui->in_game_pause->SetInvisible();
-		App->gui->settings_window->SetVisible();
-	}
-	else
-	{
-		App->gui->settings_window->SetInvisible();
-		App->gui->in_game_pause->SetVisible();
-	}
-}
+//void j1App::ShowSettingsInGame()
+//{
+//	if (!App->gui->settings_window->visible)
+//	{
+//		App->gui->in_game_pause->SetInvisible();
+//		App->gui->settings_window->SetVisible();
+//	}
+//	else
+//	{
+//		App->gui->settings_window->SetInvisible();
+//		App->gui->in_game_pause->SetVisible();
+//	}
+//}
 

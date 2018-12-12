@@ -65,7 +65,7 @@ public:
 	UIElement(UIType type, UIElement* parent, bool visible) { 
 		this->type = type; 
 		this->parent = parent;
-		this->visible = visible;
+		this->visible = false;
 		movable = false;
 		is_moving = false;
 	}

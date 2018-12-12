@@ -15,6 +15,10 @@ Label::Label(ActionType action, iPoint pos, UIType type, p2SString string, UIEle
 
 	text = App->font->Print(string.GetString(), { 0,0,0,255 }, App->font->default);
 	App->font->CalcSize(string.GetString(), rect[IDLE].w, rect[IDLE].h, App->font->default);
+
+	this->rect[HOVER] = rect[IDLE];
+	this->rect[CLICK_DOWN] = rect[IDLE];
+	this->rect[CLICK_UP] = rect[IDLE];
 }
 
 bool Label::PreUpdate()

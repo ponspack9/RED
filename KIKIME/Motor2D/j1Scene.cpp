@@ -53,13 +53,17 @@ bool j1Scene::Start()
 		App->gui->last_death->position = { -100,-100 };
 
 		if (strcmp(App->map->current_map->data.GetString(), App->map->maps_path.start->data.GetString()) == 0) {
-			App->gui->main_menu_window->SetVisible();
+			App->player_in_main_menu = true;
+			App->gui->PrepareMainMenuGui();
+			/*App->gui->main_menu_window->SetVisible();
 			App->gui->credits_window->SetInvisible();
-			App->gui->settings_window->SetInvisible();
+			App->gui->settings_window->SetInvisible();*/
 		}
 		else {
-			App->gui->main_menu_window->SetInvisible();
-			App->gui->in_game_window->SetVisible();
+			App->player_in_main_menu = false;
+			//App->gui->PrepareInGameGui();
+			/*App->gui->main_menu_window->SetInvisible();
+			App->gui->in_game_window->SetVisible();*/
 		}
 	}
 	return ret;
