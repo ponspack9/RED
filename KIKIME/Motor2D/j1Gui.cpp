@@ -303,7 +303,7 @@ bool j1Gui::Start()
 	Button* continue_button = (Button*)CreateButton({ 0,0 },					 yellow_button,	CONTINUE,	nullptr, main_menu_ui);
 	Button* settings_button = (Button*)CreateButton({ 0,0 },					 green_button,	SETTINGS,	nullptr, main_menu_ui);
 	Button* exit_button		= (Button*)CreateButton({ 0,0 },					 red_button,	EXIT_GAME,	nullptr, main_menu_ui);
-	Button* credits_button = (Button*)CreateButton(-main_menu_ui->position + 50, red_button,	CREDITS,	nullptr, main_menu_ui);
+	Button* credits_button  = (Button*)CreateButton(-main_menu_ui->position + 50, red_button,	CREDITS,	nullptr, main_menu_ui);
 	
 	start_button	 ->movable = true;	start_button	->Center(0, -140);
 	continue_button	 ->movable = true;	continue_button	->Center(0,-70);
@@ -414,7 +414,7 @@ bool j1Gui::Start()
 
 	////////////////////////////////////// PAUSE MENU //////////////////////////////////////
 
-	in_game_pause_ui = (Image*)CreateElement(IMAGE, iPoint(App->render->viewport.w / 2 - 120, App->render->viewport.h / 2 - 166), white_window.rect[IDLE], &white_window, nullptr, NO_ACTION, nullptr,in_game_window);	
+	in_game_pause_ui = (Image*)CreateElement(IMAGE, iPoint(App->render->viewport.w / 2 - white_window.rect[IDLE].w/2, App->render->viewport.h / 2 - white_window.rect[IDLE].h/2), white_window.rect[IDLE], &white_window, nullptr, NO_ACTION, nullptr,in_game_window);
 
 	Label* title_pause = (Label*)CreateElement(LABEL, iPoint(0, 15), { 0,0,0,0 },nullptr, "PAUSE MENU", NO_ACTION, nullptr, in_game_pause_ui);
 	title_pause->CenterX();
@@ -443,10 +443,12 @@ bool j1Gui::Start()
 
 		////////////////////////////////////// SETTINGS //////////////////////////////////////
 
-	settings_window = (Image*)CreateElement(IMAGE, { App->render->viewport.w / 2 - 250, App->render->viewport.h / 2 - 400 }, SDL_Rect({ 1000,1000,500,800 }), nullptr, nullptr, NO_ACTION, nullptr, nullptr, false);
+	settings_window = (Image*)CreateElement(IMAGE, { 0,0}, SDL_Rect({ 1000,1000,App->render->viewport.w,App->render->viewport.h }), nullptr, nullptr, NO_ACTION, nullptr, nullptr, false);
 	windows.add(settings_window);
 
-	Button* settings_to_main = (Button*)CreateButton({ 0,0 }, red_button, SETTINGS, nullptr, settings_window);
+	settings_gui = (Image*)CreateElement(IMAGE, { App->render->viewport.w / 2 - 250, App->render->viewport.h / 2 - 400 }, SDL_Rect({ 1000,1000,500,800 }), nullptr, nullptr, NO_ACTION, nullptr, settings_window, false);
+
+	Button* settings_to_main = (Button*)CreateButton({ 0,0 }, red_button, SETTINGS, nullptr, settings_gui);
 	settings_to_main->Center(0, 70);
 
 	Label* lsettings_to_main = (Label*)CreateElement(LABEL, iPoint(0, 0), { 0,0,0,0 }, nullptr, "RETURN", NO_ACTION, nullptr, settings_to_main);
@@ -516,11 +518,13 @@ void j1Gui::SetWindowsVisible() {
 	}
 }
 
-void j1Gui::CalculateElementsPosition(const int &w, const int &h) {
+void j1Gui::CalculateElementsPosition() {
 
-	main_menu_ui->initial_pos = { iPoint(w - main_menu_ui->rect[IDLE].w / 2, h - main_menu_ui->rect[IDLE].h / 2) };
-	credits_ui->initial_pos   = { iPoint(w - credits_ui->rect[IDLE].w / 2,   h - credits_ui->rect[IDLE].h / 2) };
-	in_game_gui->initial_pos  = { iPoint(w - in_game_gui->rect[IDLE].w / 2,  h - in_game_gui->rect[IDLE].h / 2) };
+	main_menu_ui	->Center();
+	credits_ui		->Center();
+	settings_gui	->Center();
+	in_game_pause_ui->Center();
+	//in_game_gui		->CenterX();
 }
 
 // Update all guis

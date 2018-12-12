@@ -615,10 +615,12 @@ void j1App::ChangeFXVolume(int value)
 
 void j1App::CalculateGuiPositions() {
 	LOG("Recalculating gui elements position");
+
 	// Recalculating window size
 	SDL_GetWindowSize(App->win->window, &win->width, &win->height);
 	fade->screen = { 0, 0,  int(win->width * App->win->GetScale()), int(win->height * App->win->GetScale()) };
 
+	//Translating the new window size to the windows
 	p2List_item<UIElement*>* item = gui->windows.start;
 	for (item; item != nullptr; item = item->next) {
 		for (SDL_Rect &r : item->data->rect)
@@ -628,7 +630,14 @@ void j1App::CalculateGuiPositions() {
 		}
 	}
 
-	gui->CalculateElementsPosition(win->width/2, win->height/2);
+	//in_game_gui is a special case
+	for (SDL_Rect &r : gui->in_game_gui->rect)
+	{
+		r.w = win->width;
+		r.h = win->height;
+	}
+	
+	gui->CalculateElementsPosition();
 }
 
 

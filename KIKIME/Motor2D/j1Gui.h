@@ -32,7 +32,7 @@ public:
 
 	void SetWindowsVisible();
 
-	void CalculateElementsPosition(const int &w, const int &h);
+	void CalculateElementsPosition();
 
 	// Called before all Updates
 	bool PreUpdate();
@@ -56,6 +56,7 @@ public:
 	Image*			in_game_gui;
 	Image*			main_menu_ui;
 	Image*			in_game_pause_ui;
+	Image*			settings_gui;
 
 	Image*			main_menu_window;
 	Image*			in_game_window;
