@@ -17,21 +17,22 @@ Player::Player(iPoint pos, Player * e) : Entity(pos, e)
 	
 	speed.x = e->speed.x;
 	speed.y = 0;
-	jump_speed = e->speed.y;
+	jump_speed	= e->speed.y;
 	smash_speed = e->smash_speed;
+	max_speed	= e->max_speed;
 	
 	god_speed = e->god_speed;
-	gravity = e->gravity;
-	god_mode = e->god_mode;
+	gravity	  = e->gravity;
+	god_mode  = e->god_mode;
 	
-	idle = e->idle;
-	fall = e->fall;
-	walk = e->walk;
+	idle  = e->idle;
+	fall  = e->fall;
+	walk  = e->walk;
 	death = e->death;
-	jump = e->jump;
-	doublejump = e->doublejump;
-	god = e->god;
+	jump  = e->jump;
+	god	  = e->god;
 	smash = e->smash;
+	doublejump = e->doublejump;
 
 	def_anim_speed = e->def_anim_speed;
 
@@ -216,7 +217,8 @@ void Player::Smash()
 
 void Player::Move(float dt)
 {
-	float max_speed = 400.0f;
+	int dx = 0;
+	int dy = 0;
 
 	if (want_right)
 	{
@@ -228,9 +230,8 @@ void Player::Move(float dt)
 		pos3 = App->map->WorldToMap(pos3.x, pos3.y);
 
 		if (App->pathfinding->IsWalkable(pos) && App->pathfinding->IsWalkable(pos2) && App->pathfinding->IsWalkable(pos3)) {
-			position.x += (int)(speed.x * dt);
-			//Animation
-			//going_right = true;
+			dx = (int)(speed.x * dt);
+			//position.x += (int)(speed.x * dt);
 		}
 		want_right = false;
 	}
@@ -244,9 +245,8 @@ void Player::Move(float dt)
 		pos3 = App->map->WorldToMap(pos3.x, pos3.y);
 
 		if (App->pathfinding->IsWalkable(pos) && App->pathfinding->IsWalkable(pos2) && App->pathfinding->IsWalkable(pos3)) {
-			position.x -= (int)(speed.x * dt);
-			//Animation
-			//going_left = true;
+			dx = -(int)(speed.x * dt);
+			//position.x -= (int)(speed.x * dt);
 		}
 		want_left = false;
 	}
@@ -262,9 +262,8 @@ void Player::Move(float dt)
 		pos3 = App->map->WorldToMap(pos3.x, pos3.y);
 
 		if (App->pathfinding->IsWalkable(pos) && App->pathfinding->IsWalkable(pos2) && App->pathfinding->IsWalkable(pos3)) {
-			position.y += (int)(speed.y * dt);
-			//Animation
-			//going_up = true;
+			dy = (int)(speed.y * dt);
+			//position.y += (int)(speed.y * dt);
 		}
 		else { speed.y = (int)(gravity * dt); }
 		want_up = false;
@@ -280,12 +279,14 @@ void Player::Move(float dt)
 		pos3 = App->map->WorldToMap(pos3.x, pos3.y);
 
 		if (App->pathfinding->IsWalkable(pos) && App->pathfinding->IsWalkable(pos2) && App->pathfinding->IsWalkable(pos3)) {
-			position.y += (int)(speed.y * dt);
+			dy = (int)(speed.y * dt);
+			//position.y += (int)(speed.y * dt);
 			//Animation
 			going_down = true;
 		}
 		else {
-			//position.y = pos.y - position.y + collider->rect.h -5;
+			//position.y  = pos.y - position.y + collider->rect.h -5;
+			dy = pos.y - position.y + collider->rect.h -1;
 			jumping			= false;
 			double_jumping	= false;
 			smashing		= false;
@@ -298,6 +299,9 @@ void Player::Move(float dt)
 		speed.y += (int)(gravity * dt);
 		if (speed.y > max_speed) speed.y = max_speed;
 	}
+
+	if (abs(dx) < App->map->data.tile_width)  position.x += dx;
+	if (abs(dy) < App->map->data.tile_height) position.y += dy;
 }
 
 void Player::MoveFree(float dt)
