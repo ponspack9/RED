@@ -32,6 +32,8 @@ public:
 
 	void SetWindowsVisible();
 
+	void CalculateElementsPosition();
+
 	// Called before all Updates
 	bool PreUpdate();
 
@@ -54,6 +56,7 @@ public:
 	Image*			in_game_gui;
 	Image*			main_menu_ui;
 	Image*			in_game_pause_ui;
+	Image*			settings_gui;
 
 	Image*			main_menu_window;
 	Image*			in_game_window;
@@ -72,7 +75,16 @@ public:
 	Image*			blue_ref;
 	Image*			heart_ref;
 
+
+	Button*			credits_button;
+	Button*			credits_to_menu;
+	Label*			score;
+	Label*			timersec;
+
 	j1Timer			anim_timer;
+
+	p2List<UIElement*>	windows;
+
 private:
 
 	p2List<UIElement*>  elements;
@@ -109,7 +121,6 @@ private:
 	iPoint				mouseClick;
 	iPoint				startDraging;
 
-	p2List<UIElement*>	windows;
 
 };
 

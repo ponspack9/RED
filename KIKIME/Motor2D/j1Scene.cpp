@@ -51,6 +51,7 @@ bool j1Scene::Start()
 	else {
 		//if (!is_load)
 		App->entitymanager->Restart(App->entitymanager->playerinfo.lifes);
+		App->gui->game_over->SetInvisible();
 
 		LOG("ENTITY RESTART");
 		App->gui->last_death->position = { -100,-100 };

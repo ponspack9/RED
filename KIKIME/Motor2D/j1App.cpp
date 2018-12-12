@@ -60,10 +60,10 @@ j1App::j1App(int argc, char* args[]) : argc(argc), args(args)
 	AddModule(debug);
 	AddModule(collision);
 	AddModule(entitymanager);
-	AddModule(fade);
 	AddModule(pathfinding);
 	AddModule(font);
 	AddModule(gui);
+	AddModule(fade);
 
 	AddModule(render);
 
@@ -471,6 +471,7 @@ void j1App::GoToMainMenu() {
 
 void j1App::GameOver() {
 	game_over = true;
+	gui->game_over->SetVisible();
 	map->current_map = App->map->maps_path.start;
 	fade->FadeToBlack(App->scene, App->scene);
 
@@ -610,6 +611,33 @@ void j1App::ChangeMusicVolume(int value)
 void j1App::ChangeFXVolume(int value)
 {
 	Mix_Volume(-1,value);
+}
+
+void j1App::CalculateGuiPositions() {
+	LOG("Recalculating gui elements position");
+
+	// Recalculating window size
+	SDL_GetWindowSize(App->win->window, &win->width, &win->height);
+	fade->screen = { 0, 0,  int(win->width * App->win->GetScale()), int(win->height * App->win->GetScale()) };
+
+	//Translating the new window size to the windows
+	p2List_item<UIElement*>* item = gui->windows.start;
+	for (item; item != nullptr; item = item->next) {
+		for (SDL_Rect &r : item->data->rect)
+		{
+			r.w = win->width;
+			r.h = win->height;
+		}
+	}
+
+	//in_game_gui is a special case
+	for (SDL_Rect &r : gui->in_game_gui->rect)
+	{
+		r.w = win->width;
+		r.h = win->height;
+	}
+	
+	gui->CalculateElementsPosition();
 }
 
 

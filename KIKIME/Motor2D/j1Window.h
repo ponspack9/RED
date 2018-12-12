@@ -40,8 +40,8 @@ public:
 	//The surface contained by the window
 	SDL_Surface* screen_surface;
 
-	uint		width;
-	uint		height;
+	int		width;
+	int		height;
 
 private:
 	p2SString	title;

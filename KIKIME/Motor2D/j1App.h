@@ -94,6 +94,8 @@ public:
 
 	void ChangeFXVolume(int value);
 
+	void CalculateGuiPositions();
+
 	//void ShowSettingsInGame();
 
 
