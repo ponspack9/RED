@@ -549,7 +549,7 @@ bool j1Gui::PreUpdate()
 
 
 // Called after all Updates
-bool j1Gui::PostUpdate()
+bool j1Gui::Update(float dt)
 {
 	BROFILER_CATEGORY("GUI->PostUpdate", Profiler::Color::Khaki)
 
@@ -558,9 +558,8 @@ bool j1Gui::PostUpdate()
 	while (item != NULL)
 	{
 		if (item->data->visible) {
-			if (item->data->type == BUTTON)
-				int a = 1;
-			item->data->PostUpdate();
+
+			item->data->Update();
 
 			if (item->data->type == BUTTON) {
 				Button* b = (Button*)item->data;

@@ -72,7 +72,7 @@ public:
 
 	virtual bool PreUpdate() { return true; }
 
-	virtual bool PostUpdate() {
+	virtual bool Update() {
 		
 		if (parent != nullptr)
 		{

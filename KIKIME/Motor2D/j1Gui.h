@@ -37,8 +37,7 @@ public:
 	// Called before all Updates
 	bool PreUpdate();
 
-	// Called after all Updates
-	bool PostUpdate();
+	bool Update(float dt);
 
 	// Called before quitting
 	bool CleanUp();
