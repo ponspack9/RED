@@ -5,6 +5,7 @@
 #include "j1FadeToBlack.h"
 #include "j1Render.h"
 #include "j1Window.h"
+#include "j1Map.h"
 #include "SDL/include/SDL_render.h"
 #include "SDL/include/SDL_timer.h"
 
@@ -49,12 +50,19 @@ bool j1FadeToBlack::Update(float dt)
 				to_disable->Disable();
 				to_enable->Enable();
 			}
-			total_time += total_time;
-			start_time = SDL_GetTicks();
-			current_step = fade_step::fade_from_black;
+			current_step = fade_step::wait;
 		}
 	} break;
 
+	case fade_step::wait:
+	{
+		if (App->map->map_loaded) {
+			total_time += total_time;
+			start_time = SDL_GetTicks();
+			current_step = fade_from_black;
+		}
+	}
+	break;
 	case fade_step::fade_from_black:
 	{
 		normalized = 1.0f - normalized;

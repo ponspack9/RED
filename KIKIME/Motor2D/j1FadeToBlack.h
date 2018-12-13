@@ -21,7 +21,8 @@ public:
 	{
 		none,
 		fade_to_black,
-		fade_from_black
+		fade_from_black,
+		wait,
 	} current_step = fade_step::none;
 
 public:
