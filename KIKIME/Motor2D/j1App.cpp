@@ -493,7 +493,7 @@ bool j1App::RestartGame()
 		UnPauseGame();
 	}
 	map->current_map = App->map->maps_path.start->next;
-	scene->current_track = map->maps_path.start->next;
+	scene->current_track = audio->tracks_path.start->next;
 	fade->FadeToBlack(App->scene, App->scene);
 	in_game_timer.sec = 0;
 	in_game_timer.min = 0;
@@ -554,7 +554,7 @@ bool j1App::NextLevel() {
 	else
 	{
 		App->map->current_map = App->map->maps_path.start->next;
-
+		scene->current_track = audio->tracks_path.start->next;
 	}
 
 	LOG("Next level: %s", App->map->current_map->data.GetString());
