@@ -39,6 +39,7 @@ public:
 
 	
 	bool		game_over_transition;
+	p2List_item<p2SString>* current_track;
 private:
 
 	bool		first_load;
@@ -46,7 +47,6 @@ private:
 
 	j1Timer		game_over_timer;
 
-	p2List_item<p2SString>* current_track;
 };
 
 #endif // __j1SCENE_H__

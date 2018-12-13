@@ -463,7 +463,8 @@ void j1App::GetSaveGames(p2List<p2SString>& list_to_fill) const
 }
 
 void j1App::GoToMainMenu() {
-	map->current_map = App->map->maps_path.start;
+	map->current_map = map->maps_path.start;
+	scene->current_track = audio->tracks_path.start;
 	LOG("CURRENTMAP FROM TRANSITION: %s", App->map->current_map->data.GetString());
 	fade->FadeToBlack(App->scene, App->scene);
 	UnPauseGame();
@@ -473,6 +474,8 @@ void j1App::GameOver() {
 	game_over = true;
 	gui->game_over->SetVisible();
 	map->current_map = App->map->maps_path.start;
+	scene->current_track = audio->tracks_path.start;
+
 	fade->FadeToBlack(App->scene, App->scene);
 
 	LOG("GAME OVER");
@@ -490,6 +493,7 @@ bool j1App::RestartGame()
 		UnPauseGame();
 	}
 	map->current_map = App->map->maps_path.start->next;
+	scene->current_track = map->maps_path.start->next;
 	fade->FadeToBlack(App->scene, App->scene);
 	in_game_timer.sec = 0;
 	in_game_timer.min = 0;
@@ -513,6 +517,7 @@ void j1App::PauseGame()
 		collision->to_pause		= true;
 		map->to_pause			= true;
 		pathfinding->to_pause	= true;
+		audio->to_pause			= true;
 	}
 	else LOG("Game already paused");
 }
@@ -520,6 +525,7 @@ void j1App::UnPauseGame()
 {
 	if (pause) {
 		pause = false;
+		audio->to_pause = false;
 		entitymanager->to_pause = false;
 		collision->to_pause		= false;
 		map->to_pause			= false;
@@ -543,10 +549,12 @@ bool j1App::NextLevel() {
 	if (App->map->current_map->next != NULL)
 	{
 		App->map->current_map = App->map->current_map->next;
+		scene->current_track = scene->current_track->next;
 	}
 	else
 	{
 		App->map->current_map = App->map->maps_path.start->next;
+
 	}
 
 	LOG("Next level: %s", App->map->current_map->data.GetString());

@@ -34,22 +34,16 @@
     <music>
       <folder>audio/music</folder>
       <track>music_sadpiano.ogg</track>
-      <track>music_happypiano.ogg</track>
-      <!--Does not exist, just for testing-->
-      <track>music_guitar.ogg</track>
-      <!--Does not exist, just for testing-->
+      <track>Queen.ogg</track>
+      <track>Queen2.ogg</track>
       <track>music_violin.ogg</track>
-      <!--Does not exist, just for testing-->
     </music>
     <fx>
       <folder>audio/fx</folder>
       <sound name="hello">hello_man.wav</sound>
       <sound name="shoot">pew.wav</sound>
-      <!--Does not exist, just for testing-->
       <sound name="life">lifeup.wav</sound>
-      <!--Does not exist, just for testing-->
       <sound name="die">die.wav</sound>
-      <!--Does not exist, just for testing-->
     </fx>
   </audio>
   <gui moving_elements_speed="50">
