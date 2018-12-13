@@ -54,17 +54,8 @@ void Image::Draw(SDL_Texture * sprites)
 
 		for (int i = 0; i < App->entitymanager->player_ref->lifes; i++)
 		{
-			//if (last_iteration && App->entitymanager->GetAnimTimer() < 1.5f)
-			//	current_animation = &heart_blink;
-			//else
-			//	current_animation = &idle;
-			//	last_iteration = false;
-
 			App->render->Blit(sprites, position.x, position.y, &current_animation->GetCurrentFrame(), 0);
 			position.x += phi;
-
-			//if (i == App->entitymanager->player_ref->lifes - 1)
-			//	last_iteration = true;
 		}
 
 		position.x = temp;

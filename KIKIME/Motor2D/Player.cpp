@@ -199,11 +199,13 @@ void Player::Jump()
 		speed.y = -jump_speed;
 		jumping = true;
 		going_down = false;
+		//App->audio->PlayFx(fx_name);
 	}
 	else if (!double_jumping) {
 		speed.y = -jump_speed;
 		double_jumping = true;
 		going_down = false;
+		//App->audio->PlayFx(fx_name);
 	}
 }
 
@@ -212,6 +214,7 @@ void Player::Smash()
 	if (!smashing) {
 		speed.y = smash_speed;
 		smashing = true;
+		//App->audio->PlayFx(fx_name);
 	}
 }
 

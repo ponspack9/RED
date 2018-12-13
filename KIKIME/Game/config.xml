@@ -60,9 +60,9 @@ ASK RIC:
     <fx>
       <folder>audio/fx</folder>
       <sound name="hello">hello_man.wav</sound>
-      <sound name="shoot">pew.wav</sound>
+      <sound name="jump">jump.wav</sound>
       <sound name="life">lifeup.wav</sound>
-      <sound name="die">die.wav</sound>
+      <sound name="die">dead.wav</sound>
     </fx>
   </audio>
   <gui moving_elements_speed="50">
@@ -181,11 +181,11 @@ ASK RIC:
       <SubTexture height="36" width="38" y="469" x="147" name="grey_boxCheckmark.png"/>
       <SubTexture height="36" width="38" y="433" x="185" name="grey_boxCross.png"/>
       <SubTexture height="36" width="36" y="198" x="190" name="grey_boxTick.png"/>
-      <button height="45" width="190" y="143" x="0" name="grey_button00.png"/>
-      <button height="49" width="190" y="237" x="0" name="grey_button15.png"/>
-      <button height="49" width="190" y="188" x="0" name="grey_button01.png"/>
-      <button height="45" width="190" y="98" x="0" name="grey_button02.png"/>
-      <SubTexture height="49" width="190" y="331" x="0" name="grey_button03.png"/>
+      <button height="48" width="189" y="237" x="0" name="grey_button15.png"/>
+      <button height="44" width="189" y="143" x="0" name="grey_button00.png"/>
+      <button height="48" width="189" y="188" x="0" name="grey_button01.png"/>
+      <button height="48" width="189" y="331" x="0" name="grey_button03.png"/>
+      <SubTexture height="45" width="190" y="98" x="0" name="grey_button02.png"/>
       <SubTexture height="45" width="190" y="286" x="0" name="grey_button04.png"/>
       <SubTexture height="49" width="195" y="0" x="0" name="grey_button05.png"/>
       <SubTexture height="49" width="191" y="49" x="0" name="grey_button06.png"/>

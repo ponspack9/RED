@@ -88,7 +88,10 @@ void Label::Draw(SDL_Texture* sprites)
 
 void Label::ChangeText(const char * string)
 {
-	App->tex->UnLoad(text);
+	if (text != nullptr)
+	{
+		App->tex->UnLoad(text);
+	}
 
 	text = App->font->Print(string, { 0,0,0,255 }, App->font->default);
 	App->font->CalcSize(string, rect[state].w, rect[state].h, App->font->default);
