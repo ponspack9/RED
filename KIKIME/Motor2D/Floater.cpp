@@ -45,19 +45,19 @@ bool Floater::UpdateLogic(iPoint pos)
 
 		if (speed.x < 0 && desired_position.x >= position.x) {
 			speed = (iPoint(path->At(1)->x, path->At(1)->y) - p) * speed_mult;
-			LOG("Speed changedX-:[%d,%d]", speed.x, speed.y);
+			//LOG("Speed changedX-:[%d,%d]", speed.x, speed.y);
 		}
 		else if (speed.x > 0 && desired_position.x <= position.x) 	{
 			speed = (iPoint(path->At(1)->x, path->At(1)->y) - p) * speed_mult;
-			LOG("Speed changedX+:[%d,%d]", speed.x, speed.y);
+			//LOG("Speed changedX+:[%d,%d]", speed.x, speed.y);
 		}
 		if (speed.y < 0 && desired_position.y >= position.y) 		{
 			speed = (iPoint(path->At(1)->x, path->At(1)->y) - p) * speed_mult;
-			LOG("Speed changedY-:[%d,%d]", speed.x, speed.y);
+			//LOG("Speed changedY-:[%d,%d]", speed.x, speed.y);
 		}
 		else if (speed.y > 0 && desired_position.y <= position.y) 	{
 			speed = (iPoint(path->At(1)->x, path->At(1)->y) - p) * speed_mult;
-			LOG("Speed changedY+:[%d,%d]", speed.x, speed.y);
+			//LOG("Speed changedY+:[%d,%d]", speed.x, speed.y);
 		}
 		desired_position = App->map->MapToWorld(p.x, p.y);
 
@@ -68,7 +68,7 @@ bool Floater::UpdateLogic(iPoint pos)
 			desired_position = App->map->MapToWorld(p.x, p.y + 1);
 		}
 
-		LOG("position [%d,%d] D:[%d,%d] S:[%d,%d]", position.x, position.y, desired_position.x, desired_position.y, speed.x, speed.y);
+		//LOG("position [%d,%d] D:[%d,%d] S:[%d,%d]", position.x, position.y, desired_position.x, desired_position.y, speed.x, speed.y);
 		
 		/*if (path->Count() > 2) {
 			next_speed = iPoint(path->At(2)->x, path->At(2)->y) - iPoint(path->At(1)->x, path->At(1)->y);

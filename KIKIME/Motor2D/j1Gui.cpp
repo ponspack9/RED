@@ -605,6 +605,11 @@ bool j1Gui::CleanUp()
 
 	while (item != nullptr)
 	{
+		if (item->data->type == LABEL) {
+			Label* l = (Label*)item->data;
+			if (l->text != nullptr)
+				App->tex->UnLoad(l->text);
+		}
 		delete item->data;
 
 		item = item->next;

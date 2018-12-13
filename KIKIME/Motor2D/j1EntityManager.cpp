@@ -390,18 +390,29 @@ void j1EntityManager::CreateEntities(int player_lifes)
 
 bool j1EntityManager::PreUpdate()
 {
-	BROFILER_CATEGORY("Entities->PreUpdate", Profiler::Color::BlueViolet)
+	BROFILER_CATEGORY("Entities->PreUpdate", Profiler::Color::BlueViolet);
 
-		if (player_ref->alive)
-			player_ref->PreUpdate();
-		else if (!is_started && !App->game_over)
-		{
-			LOG("IS STARTED == FALSE");
-			timer_death.Start();
-			is_started = true;
-			App->gui->last_death->position = player_ref->position;
-			player_ref->current_animation = &player_ref->death;
+	p2List_item<Entity*>* item;
+	for (item = entities.start; item != nullptr; item = item->next)
+	{
+		if (!item->data->alive) {
+			item->data->collider->to_delete = true;
+			entities.del(item);
+			
 		}
+	}
+
+	if (player_ref->alive)
+		player_ref->PreUpdate();
+	else if (!is_started && !App->game_over)
+	{
+		LOG("IS STARTED == FALSE");
+		timer_death.Start();
+		is_started = true;
+		App->gui->last_death->position = player_ref->position;
+		App->gui->last_death->SetInvisible();
+		player_ref->current_animation = &player_ref->death;
+	}
 
 	return true;
 }
@@ -584,7 +595,6 @@ void j1EntityManager::OnCollision(Collider * c1, Collider * c2)
 			Entity* e = FindEntityByCollider(c2);
 			if (e) {
 				e->alive = false;
-				e->collider->to_delete = true;
 			}
 			else {
 				player_ref->alive = false;
@@ -621,7 +631,7 @@ void j1EntityManager::OnCollision(Collider * c1, Collider * c2)
 				break;
 			}
 			e->picked = true;
-			e->collider->to_delete = true;
+			e->alive = false;
 		}
 	}
 

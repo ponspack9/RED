@@ -69,6 +69,8 @@ public:
 		idle = e->idle;
 		current_animation = &idle;
 		def_anim_speed = e->def_anim_speed;
+
+		bool to_delete = false;
 		
 		LOG("Entity %s created at [%d, %d]", name.GetString(), position.x, position.y);
 	}
@@ -99,6 +101,7 @@ public:
 	p2SString		name;
 
 	bool			alive;
+	bool			to_delete;
 
 	float			def_anim_speed;
 
