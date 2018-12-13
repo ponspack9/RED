@@ -3,6 +3,7 @@
 
 #include "j1Module.h"
 
+struct SDL_Texture;
 
 class j1Debug :	public j1Module
 {

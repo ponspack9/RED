@@ -447,7 +447,6 @@ bool j1EntityManager::PostUpdate()
 			LOG("DEAD BY POST UPDATE");
 			if (player_ref->lifes > 0) {
 				player_ref->lifes--;
-				//heart_list.del(heart_list.end);
 				App->RestartLevel(player_ref->lifes);
 				LOG("LIFES REMAINING: %d", player_ref->lifes);
 			}

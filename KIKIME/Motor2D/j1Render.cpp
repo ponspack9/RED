@@ -3,19 +3,20 @@
 #include "j1App.h"
 #include "j1Window.h"
 #include "j1Render.h"
-#include "Player.h"
 #include "j1Map.h"
 #include "j1EntityManager.h"
+//#include "Player.h"
 
 #define VSYNC false
 
 j1Render::j1Render() : j1Module()
 {
 	name.create("renderer");
-	background.r = 0;
-	background.g = 0;
-	background.b = 0;
-	background.a = 0;
+
+	renderer	= NULL;
+	camera		= { 0,0,0,0 };
+	viewport	= { 0,0,0,0 };
+	background  = { 0,0,0,0 };
 }
 
 // Destructor

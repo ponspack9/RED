@@ -472,6 +472,7 @@ void j1App::GoToMainMenu() {
 
 void j1App::GameOver() {
 	game_over = true;
+	//audio->PlayMusic()
 	gui->game_over->SetVisible();
 	map->current_map = App->map->maps_path.start;
 	scene->current_track = audio->tracks_path.start;
