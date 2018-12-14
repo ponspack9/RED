@@ -627,8 +627,9 @@ void j1App::CalculateGuiPositions() {
 	LOG("Recalculating gui elements position");
 
 	// Recalculating window size
-	SDL_GetWindowSize(App->win->window, &win->width, &win->height);
-	fade->screen = { 0, 0,  int(win->width * App->win->GetScale()), int(win->height * App->win->GetScale()) };
+	SDL_GetWindowSize(win->window, &win->width, &win->height);
+	SDL_UpdateWindowSurface(win->window);
+	fade->screen = { 0, 0,  int(win->width * win->GetScale()), int(win->height * win->GetScale()) };
 
 	//Translating the new window size to the windows
 	p2List_item<UIElement*>* item = gui->windows.start;

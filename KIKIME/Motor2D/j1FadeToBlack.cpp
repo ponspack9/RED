@@ -1,4 +1,3 @@
-#include "j1FadeToBlack.h"
 #include <math.h>
 #include "p2Log.h"
 #include "j1App.h"
