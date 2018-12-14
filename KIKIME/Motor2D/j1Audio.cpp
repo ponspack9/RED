@@ -14,6 +14,8 @@ j1Audio::j1Audio() : j1Module()
 
 	folder_music = nullptr;
 	folder_fx	 = nullptr;
+
+	current_volume = SDL_MIX_MAXVOLUME;
 }
 
 // Destructor
@@ -82,6 +84,18 @@ bool j1Audio::Awake(pugi::xml_node& config)
 		i++;
 	}
 ///////////////////////////////////
+
+	p2List_item<p2SString>* item = fx_path.start;
+
+	while (item != nullptr)
+	{
+		fx_name.add(item->data.GetString());
+		item = item->next;
+
+		int size = LoadFx(PATH(folder_fx.GetString(), item->data.GetString()));
+		item = item->next;
+		LOG("%d", size);
+	}
 	return ret;
 }
 
@@ -207,3 +221,16 @@ bool j1Audio::PlayFx(unsigned int id, int repeat)
 
 	return ret;
 }
+
+void j1Audio::ToggleMusicPause()
+{
+	if (Mix_PausedMusic() > 0)
+	{
+		Mix_ResumeMusic();
+	}
+	else
+	{
+		Mix_PauseMusic();
+	}
+}
+

@@ -7,13 +7,6 @@
 #include "j1Map.h"
 #include "j1EntityManager.h"
 #include "j1Gui.h"
-//#include "j1Debug.h"
-//#include "Entity.h"
-//#include "Player.h"
-//#include "j1FadeToBlack.h"
-//#include "j1Render.h"
-//#include "j1Window.h"
-//#include "j1Textures.h"
 
 j1Scene::j1Scene() : j1Module() 
 {
@@ -150,3 +143,4 @@ bool j1Scene::Load(pugi::xml_node & node)
 
 	return true;
 }
+

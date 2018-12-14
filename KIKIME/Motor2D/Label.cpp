@@ -33,29 +33,32 @@ Label::Label(ActionType action, iPoint pos, UIType type, p2SString string, UIEle
 
 bool Label::PreUpdate()
 {
-	if (action == GAME_TIMER_SECS)
+	if (!App->pause)
 	{
-		char game_time_secs[50];
-		if (App->GetTimerReadSec() >= 1)
+		if (action == GAME_TIMER_SECS)
 		{
-			App->in_game_timer.sec++;
-			App->game_timer.Start();
-		}
-		sprintf_s(game_time_secs, "%d", App->in_game_timer.sec);
+			char game_time_secs[50];
+			if (App->GetTimerReadSec() >= 1)
+			{
+				App->in_game_timer.sec++;
+				App->game_timer.Start();
+			}
+			sprintf_s(game_time_secs, "%d", App->in_game_timer.sec);
 
-		ChangeText(game_time_secs);
-	}
-	if (action == GAME_TIMER_MINS)
-	{
-		char game_time_mins[50];
-		if (App->in_game_timer.sec == 60)
+			ChangeText(game_time_secs);
+		}
+		if (action == GAME_TIMER_MINS)
 		{
-			App->in_game_timer.min++;
-			App->in_game_timer.sec = 0;
-		}
-		sprintf_s(game_time_mins, "%d", App->in_game_timer.min);
+			char game_time_mins[50];
+			if (App->in_game_timer.sec == 60)
+			{
+				App->in_game_timer.min++;
+				App->in_game_timer.sec = 0;
+			}
+			sprintf_s(game_time_mins, "%d", App->in_game_timer.min);
 
-		ChangeText(game_time_mins);
+			ChangeText(game_time_mins);
+		}
 	}
 	if (action == SCORE)
 	{

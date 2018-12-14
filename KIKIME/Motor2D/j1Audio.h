@@ -32,6 +32,8 @@ public:
 	// Play a previously loaded WAV
 	bool PlayFx(unsigned int fx, int repeat = 0);
 
+	void ToggleMusicPause();
+
 public:
 
 	//TODO : see module map for reference
@@ -39,6 +41,9 @@ public:
 	p2SString			folder_fx;
 	p2List<p2SString>	tracks_path;
 	p2List<p2SString>	fx_path;
+	p2List<const char*>	fx_name;
+
+	int					current_volume;
 	
 private:
 

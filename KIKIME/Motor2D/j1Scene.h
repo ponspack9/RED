@@ -37,9 +37,13 @@ public:
 
 	bool Load(pugi::xml_node& node);
 
+	void GameOverFX();
+
 	
 	bool		game_over_transition;
 	p2List_item<p2SString>* current_track;
+	p2List_item<p2SString>* current_fx;
+
 private:
 
 	bool		first_load;

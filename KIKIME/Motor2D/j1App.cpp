@@ -276,6 +276,10 @@ void j1App::FinishUpdate()
 	{
 		SDL_Delay(abs((float)(1000 / framerate_cap) - last_frame_ms));
 	}
+	else
+	{
+		SDL_Delay(abs((float)(1000 / 98) - last_frame_ms));
+	}
 }
 
 bool j1App::SaveGameFile() 
@@ -480,18 +484,27 @@ void j1App::GetSaveGames(p2List<p2SString>& list_to_fill) const
 
 }
 
-void j1App::GoToMainMenu() {
+void j1App::GoToMainMenu() 
+{
 	map->current_map = map->maps_path.start;
 	scene->current_track = audio->tracks_path.start;
+
 	LOG("CURRENTMAP FROM TRANSITION: %s", App->map->current_map->data.GetString());
+
 	fade->FadeToBlack(App->scene, App->scene);
+
 	UnPauseGame();
 }
 
-void j1App::GameOver() {
+void j1App::GameOver() 
+{
 	game_over = true;
-	//audio->PlayMusic()
-	gui->game_over->SetVisible();
+	//gui->game_over->SetVisible();
+
+	scene->current_track = audio->tracks_path.end;
+	audio->PlayMusic(scene->current_track->data.GetString(), 0.5);
+
+
 	map->current_map = App->map->maps_path.start;
 	scene->current_track = audio->tracks_path.start;
 
@@ -513,15 +526,19 @@ bool j1App::RestartGame()
 	}
 	map->current_map = App->map->maps_path.start->next;
 	scene->current_track = audio->tracks_path.start->next;
+
 	fade->FadeToBlack(App->scene, App->scene);
+
 	in_game_timer.sec = 0;
 	in_game_timer.min = 0;
+
 	game_timer.Start();
 
 	return true;
 }
 
-void j1App::TogglePause() {
+void j1App::TogglePause()
+{
 	if (!pause) {
 		PauseGame();
 	}
@@ -549,6 +566,7 @@ void j1App::UnPauseGame()
 		collision->to_pause		= false;
 		map->to_pause			= false;
 		pathfinding->to_pause	= false;
+		game_timer.Start();
 	}
 	else LOG("Game is not paused");
 }
@@ -556,9 +574,13 @@ bool j1App::RestartLevel(int player_lifes)
 {
 	BROFILER_CATEGORY("App->RestartLevel", Profiler::Color::Red);
 
+	entitymanager->aux_score = 0;
+	Mix_VolumeMusic(App->audio->current_volume);
+
 	gui->last_death->SetVisible();
 	render->ResetCamera();
 	entitymanager->Restart(player_lifes);
+
 	game_over = false;
 	
 	return true;

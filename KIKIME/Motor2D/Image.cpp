@@ -63,7 +63,7 @@ void Image::Draw(SDL_Texture * sprites)
 		if (App->entitymanager->aux_score >= App->entitymanager->score_powUp)
 		{
 			App->entitymanager->player_ref->lifes++;
-			App->entitymanager->aux_score = 0;
+			App->entitymanager->aux_score = App->entitymanager->aux_score - App->entitymanager->score_powUp;
 			App->entitymanager->ChangeUIAnimation(&App->entitymanager->heart);
 		}
 

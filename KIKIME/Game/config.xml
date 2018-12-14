@@ -1,14 +1,14 @@
 <!-- Config file for the game -->
-<!-- 
+<!--
+URGENTEMENTE URGENTE
+  Implement Continue
+  
 TO DO
-  Implement music 
-  Implement Continue 
-  Add music sounds
+  Add music sounds (missing fx but implemented the functionality)
   Add coins in lvl2
   Make game logo
   Make website
   Make video gameplay
-  Move positions of buttons in config.xml to match its rectangle [IDLE...]
   Save buttons positions(?)
   Readme
 
@@ -20,7 +20,7 @@ ASK RIC:
   
 -->
 <config>
-  <app framerate_cap ="60">
+  <app framerate_cap ="30">
     <title>RED2</title>
     <organization>ORISO</organization>
   </app>
@@ -56,7 +56,7 @@ ASK RIC:
       <track>music_sadpiano.ogg</track>
       <track>Queen.ogg</track>
       <track>Queen2.ogg</track>
-      <track>music_violin.ogg</track>
+      <track>GameOver.ogg</track>
     </music>
     <fx>
       <folder>audio/fx</folder>
@@ -66,6 +66,7 @@ ASK RIC:
       <sound name="die">dead.wav</sound>
     </fx>
   </audio>
+  
   <gui moving_elements_speed="50">
     <atlas file="gui/atlas.png">
       <gameOver height="272" width="440" y="448" x="0"></gameOver>
@@ -332,6 +333,10 @@ ASK RIC:
       <heart x="722" y="275" width="28" height="28"></heart>
     </other>
   </entitymanager>
+
+  <fonts>
+    <default_font file="fonts/zorque/zorque.ttf" size="15"/>    
+  </fonts>
 
 
 </config>

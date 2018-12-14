@@ -6,6 +6,7 @@
 #include "j1Input.h"
 #include "j1Gui.h"
 #include "j1Window.h"
+#include "j1Audio.h"
 
 j1Gui::j1Gui() : j1Module()
 {
@@ -286,7 +287,9 @@ bool j1Gui::Start()
 	Label* lsettings_button = (Label*)CreateElement(LABEL, iPoint(0, 0), { 0,0,0,0 }, nullptr, "SETTINGS",	NO_ACTION, nullptr, settings_button);
 	Label* lexit_button		= (Label*)CreateElement(LABEL, iPoint(0, 0), { 0,0,0,0 }, nullptr, "EXIT GAME", NO_ACTION, nullptr, exit_button);
 	Label* lcredits_button	= (Label*)CreateElement(LABEL, iPoint(0, 0), { 0,0,0,0 }, nullptr, "CREDITS",	NO_ACTION, nullptr, credits_button);
+	Label* ltitle			= (Label*)CreateElement(LABEL, iPoint(0, 0), { 0,0,0,0 }, nullptr, "RED2",		NO_ACTION, nullptr, main_menu_ui);
 
+	ltitle			->Center(0, -200); // de moment esta aqui
 	lstart_button	->Center();
 	lcontinue_button->Center();
 	lsettings_button->Center();
@@ -312,22 +315,6 @@ bool j1Gui::Start()
 
 	////////////////////////////////////// END MAIN MENU //////////////////////////////////////
 
-	////////////////////////////////////// HELP //////////////////////////////////////
-
-	/*Image* greend = (Image*)CreateElement(IMAGE, iPoint(0, 0), green_diamond.rect[IDLE], &green_diamond, nullptr, INFO, nullptr, settings_window);
-	Label* gl = (Label*)CreateElement(LABEL, iPoint(0, 0), { 0,0,0,0 },nullptr, "X 50", INFO, nullptr, greend);
-	
-	greend->Center(-60, -20);
-	gl->Center(45, 5);
-	
-	Image* blued = (Image*)CreateElement(IMAGE, iPoint(0, 0), blue_diamond.rect[IDLE],&blue_diamond, nullptr, INFO, nullptr, settings_window);
-	Label* bl = (Label*)CreateElement(LABEL, iPoint(0, 0), { 0,0,0,0 },nullptr, "X 100", INFO, nullptr, blued);
-	
-	blued->Center(20, -20);
-	bl->Center(45, 5);*/
-
-	////////////////////////////////////// END HELP //////////////////////////////////////
-
 	////////////////////////////////////// IN GAME UI //////////////////////////////////////
 
 	in_game_window	  = (Image*)CreateElement(IMAGE, iPoint(0, 0), SDL_Rect({ 1000,1000,App->render->viewport.w,App->render->viewport.h }), nullptr, nullptr, NO_ACTION, nullptr, nullptr);
@@ -335,8 +322,10 @@ bool j1Gui::Start()
 
 	in_game_gui = (Image*)CreateElement(IMAGE, iPoint(0, 0), SDL_Rect({ 1000,1000,App->render->viewport.w,App->render->viewport.h }), nullptr, nullptr, NO_ACTION, nullptr, in_game_window);
 
-	score  = (Label*)CreateElement(LABEL, iPoint(in_game_gui->rect[IDLE].w - 100, 15), { 0,0,0,0 }, nullptr, "SCORE :",  INFO,  nullptr, in_game_gui);
-	Label* lscore = (Label*)CreateElement(LABEL, iPoint(50, 0),	  { 0,0,0,0 }, nullptr, "",			SCORE, nullptr, score);
+	score  = (Label*)CreateElement(LABEL, iPoint(in_game_gui->rect[IDLE].w - 200, 15), { 0,0,0,0 }, nullptr, "SCORE :",  INFO,  nullptr, in_game_gui);
+	Label* lscore = (Label*)CreateElement(LABEL, iPoint(0, 0),	  { 0,0,0,0 }, nullptr, "",	SCORE, nullptr, score);
+
+	lscore->Center(50, 0);
 
 	heart_ref = (Image*)CreateElement(IMAGE, iPoint(10, 10),  heart.rect[IDLE],			&heart,			nullptr, LIFE_SYSTEM,  nullptr, in_game_gui);
 	green_ref = (Image*)CreateElement(IMAGE, iPoint(-200, 0), green_diamond.rect[IDLE], &green_diamond, nullptr, DYNAMIC_INFO, nullptr, score);
@@ -366,7 +355,7 @@ bool j1Gui::Start()
 
 	////////////////////////////////////// MISC //////////////////////////////////////
 	
-	Label* pl_name = (Label*)CreateElement(LABEL, iPoint(App->entitymanager->player_ref->position.x + App->entitymanager->player_ref->rect.w / 2, App->entitymanager->player_ref->position.y - 50), { 0,0,0,0 },nullptr, "--Kikime--", PLAYER_NAME, nullptr, in_game_gui);
+	//Label* pl_name = (Label*)CreateElement(LABEL, iPoint(App->entitymanager->player_ref->position.x + App->entitymanager->player_ref->rect.w / 2, App->entitymanager->player_ref->position.y - 50), { 0,0,0,0 },nullptr, "--Kikime--", PLAYER_NAME, nullptr, in_game_gui);
 	
 	game_over  = (Image*)CreateElement(IMAGE, iPoint(App->render->viewport.w / 2 - game_over_image.rect[IDLE].w / 2, App->render->viewport.h / 2 - game_over_image.rect[IDLE].h / 2), game_over_image.rect[IDLE], &game_over_image, nullptr, NO_ACTION, nullptr, nullptr, false);
 	
@@ -689,9 +678,16 @@ bool j1Gui::HandleInput(UIElement* element)
 
 			if (element->action == CHANGE_VOLUME) App->ChangeMusicVolume(element->initial_pos.x);
 			else App->ChangeFXVolume(element->initial_pos.x );
+
+			App->audio->current_volume = element->initial_pos.x;
 		}
 		else element->initial_pos = mouse - mouseClick + startDraging;
 	}
+	
+	if(element->state == CLICK_DOWN)
+		App->audio->PlayFx(App->audio->fx_name.find("hello"));
+
+	LOG("FIND :::: %d", App->audio->fx_name.find("hello"));
 
 	return is_changing && element->type != LABEL;
 }

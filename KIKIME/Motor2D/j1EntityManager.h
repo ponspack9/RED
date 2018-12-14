@@ -15,9 +15,8 @@
 
 
 
-//class Entity;
 struct SDL_Texture;
-//struct Collider;
+struct Mix_Chunk;
 
 class j1EntityManager : public j1Module 
 {
@@ -90,5 +89,7 @@ public:
 	int				aux_score;
 	int				blue_counter;
 	int				green_counter;
+
+	p2List<Mix_Chunk*> entities_fx;
 };
 

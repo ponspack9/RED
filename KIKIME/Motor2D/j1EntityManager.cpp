@@ -8,6 +8,9 @@
 #include "Player.h"
 #include "j1Gui.h"
 #include "j1EntityManager.h"
+#include "j1Audio.h"
+
+#include "SDL_mixer\include\SDL_mixer.h"
 
 j1EntityManager::j1EntityManager()
 {
@@ -15,7 +18,7 @@ j1EntityManager::j1EntityManager()
 	is_started = false;
 
 	green_counter = blue_counter = score = aux_score = 0;
-	score_powUp = 100;
+	score_powUp = 100;	
 }
 
 j1EntityManager::~j1EntityManager()
@@ -397,6 +400,7 @@ bool j1EntityManager::PreUpdate()
 	for (item = entities.start; item != nullptr; item = item->next)
 	{
 		if (!item->data->alive) {
+			App->audio->PlayFx(App->audio->fx_name.find("DieEnemy"));
 			item->data->collider->to_delete = true;
 			entities.del(item);
 			
@@ -443,15 +447,23 @@ bool j1EntityManager::PostUpdate()
 	BROFILER_CATEGORY("Entities->PostUpdate", Profiler::Color::BlueViolet)
 	bool ret = false;
 	
+	if (!player_ref->alive && player_ref->lifes == 0)
+	{
+		App->gui->game_over->SetVisible();
+	}
+
 	if (!player_ref->alive && timer_death.ReadSec() >= 0.5f && !App->game_over) {
 		
 			LOG("DEAD BY POST UPDATE");
 			if (player_ref->lifes > 0) {
 				player_ref->lifes--;
+				Mix_VolumeMusic(SDL_MIX_MAXVOLUME - 78);
+				App->audio->PlayFx(App->audio->fx_name.find("gameover"));
 				App->RestartLevel(player_ref->lifes);
 				LOG("LIFES REMAINING: %d", player_ref->lifes);
 			}
-			else {
+			else 
+			{
 				App->GameOver();
 				player_ref->lifes = playerinfo.lifes;
 				
@@ -623,7 +635,6 @@ void j1EntityManager::OnCollision(Collider * c1, Collider * c2)
 				break;
 			case HEART:
 				player_ref->lifes++;
-				//heart_list.add(App->gui->heart_ref);
 				ChangeUIAnimation(e);
 				break;
 			default:
@@ -634,7 +645,10 @@ void j1EntityManager::OnCollision(Collider * c1, Collider * c2)
 			e->alive = false;
 		}
 	}
-
+	else if (c1->type == COLLIDER_PLAYER && c2->type == COLLIDER_END)
+	{
+		App->NextLevel();
+	}
 }
 
 Entity* j1EntityManager::FindEntityByCollider(Collider * c)
@@ -659,12 +673,20 @@ Coin* j1EntityManager::FindCoinByCollider(Collider * c)
 void j1EntityManager::ChangeUIAnimation(Coin* c)
 {
 	if (c->coin_type == GREEN_DIAMOND)
+	{
 		App->gui->green_ref->current_animation = &App->gui->green_ref->green_shine;
+		App->audio->PlayFx(App->audio->fx_name.find("coinup"));
+	}
 	if (c->coin_type == BLUE_DIAMOND)
+	{
 		App->gui->blue_ref->current_animation = &App->gui->blue_ref->blue_shine;
+		App->audio->PlayFx(App->audio->fx_name.find("coinup"));
+	}
 	if (c->coin_type == HEART)
+	{
 		App->gui->heart_ref->current_animation = &App->gui->heart_ref->heart_blink;
-
+		App->audio->PlayFx(App->audio->fx_name.find("lifeup"));
+	}
 		//heart_list.end->data->current_animation = &App->gui->heart_ref->heart_blink;
 
 	App->gui->anim_timer.Start();
