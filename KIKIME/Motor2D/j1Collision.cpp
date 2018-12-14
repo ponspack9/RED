@@ -1,7 +1,5 @@
 #include "j1App.h"
-#include "j1Input.h"
 #include "j1Render.h"
-#include "j1Scene.h"
 #include "j1Collision.h"
 #include "j1Debug.h"
 #include "p2Log.h"

@@ -8,7 +8,6 @@
 #include "SDL/include/SDL.h"
 #include "j1Module.h"
 #include "p2Point.h"
-#include "p2List.h"
 
 
 
