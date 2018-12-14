@@ -75,8 +75,6 @@ bool j1Audio::Awake(pugi::xml_node& config)
 
 	i = 0;
 	for (fx_node; fx_node; fx_node = fx_node.next_sibling("sound")) {
-
-		fx_path.add(fx_node.attribute("name").as_string());
 		
 		fx_path.add(fx_node.child_value());
 
@@ -89,12 +87,8 @@ bool j1Audio::Awake(pugi::xml_node& config)
 
 	while (item != nullptr)
 	{
-		fx_name.add(item->data.GetString());
+		LoadFx(PATH(folder_fx.GetString(), item->data.GetString()));
 		item = item->next;
-
-		int size = LoadFx(PATH(folder_fx.GetString(), item->data.GetString()));
-		item = item->next;
-		LOG("%d", size);
 	}
 	return ret;
 }

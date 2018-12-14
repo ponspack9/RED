@@ -399,11 +399,14 @@ bool j1EntityManager::PreUpdate()
 	p2List_item<Entity*>* item;
 	for (item = entities.start; item != nullptr; item = item->next)
 	{
-		if (!item->data->alive) {
-			App->audio->PlayFx(App->audio->fx_name.find("DieEnemy"));
-			item->data->collider->to_delete = true;
-			entities.del(item);
-			
+		if (item->data->type != PLAYER)
+		{
+			if (!item->data->alive) {
+				App->audio->PlayFx(dieEnemy);
+				item->data->collider->to_delete = true;
+				entities.del(item);
+
+			}
 		}
 	}
 
@@ -417,6 +420,8 @@ bool j1EntityManager::PreUpdate()
 		App->gui->last_death->position = player_ref->position;
 		App->gui->last_death->SetInvisible();
 		player_ref->current_animation = &player_ref->death;
+		App->audio->ToggleMusicPause();
+		App->audio->PlayFx(die);
 	}
 
 	return true;
@@ -457,16 +462,13 @@ bool j1EntityManager::PostUpdate()
 			LOG("DEAD BY POST UPDATE");
 			if (player_ref->lifes > 0) {
 				player_ref->lifes--;
-				Mix_VolumeMusic(SDL_MIX_MAXVOLUME - 78);
-				App->audio->PlayFx(App->audio->fx_name.find("gameover"));
 				App->RestartLevel(player_ref->lifes);
 				LOG("LIFES REMAINING: %d", player_ref->lifes);
 			}
 			else 
 			{
 				App->GameOver();
-				player_ref->lifes = playerinfo.lifes;
-				
+				player_ref->lifes = playerinfo.lifes;				
 			}
 			player_ref->ResetPlayer();
 			is_started = false;
@@ -675,17 +677,17 @@ void j1EntityManager::ChangeUIAnimation(Coin* c)
 	if (c->coin_type == GREEN_DIAMOND)
 	{
 		App->gui->green_ref->current_animation = &App->gui->green_ref->green_shine;
-		App->audio->PlayFx(App->audio->fx_name.find("coinup"));
+		App->audio->PlayFx(coin);
 	}
 	if (c->coin_type == BLUE_DIAMOND)
 	{
 		App->gui->blue_ref->current_animation = &App->gui->blue_ref->blue_shine;
-		App->audio->PlayFx(App->audio->fx_name.find("coinup"));
+		App->audio->PlayFx(coin);
 	}
 	if (c->coin_type == HEART)
 	{
 		App->gui->heart_ref->current_animation = &App->gui->heart_ref->heart_blink;
-		App->audio->PlayFx(App->audio->fx_name.find("lifeup"));
+		App->audio->PlayFx(lifeup);
 	}
 		//heart_list.end->data->current_animation = &App->gui->heart_ref->heart_blink;
 

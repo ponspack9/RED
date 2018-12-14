@@ -4,6 +4,7 @@
 #include "j1Collision.h"
 #include "Animation.h"
 #include "Entity.h"
+#include "j1Audio.h"
 
 class Player : public Entity
 {

@@ -8,6 +8,18 @@
 struct _Mix_Music;
 struct Mix_Chunk;
 
+enum FXtype
+{
+	click = 1,
+	sjump,
+	djump,
+	airsmash,
+	die,
+	dieEnemy,
+	lifeup,
+	coin
+};
+
 class j1Audio : public j1Module
 {
 public:
@@ -41,7 +53,6 @@ public:
 	p2SString			folder_fx;
 	p2List<p2SString>	tracks_path;
 	p2List<p2SString>	fx_path;
-	p2List<const char*>	fx_name;
 
 	int					current_volume;
 	

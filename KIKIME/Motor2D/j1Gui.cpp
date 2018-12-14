@@ -684,10 +684,10 @@ bool j1Gui::HandleInput(UIElement* element)
 		else element->initial_pos = mouse - mouseClick + startDraging;
 	}
 	
-	if(element->state == CLICK_DOWN)
-		App->audio->PlayFx(App->audio->fx_name.find("hello"));
+	if (element->type == BUTTON && element->state == CLICK_DOWN && element->visible)
+		App->audio->PlayFx(click);
 
-	LOG("FIND :::: %d", App->audio->fx_name.find("hello"));
+	//LOG("FIND :::: %d", App->audio->fx_name.find("hello"));
 
 	return is_changing && element->type != LABEL;
 }

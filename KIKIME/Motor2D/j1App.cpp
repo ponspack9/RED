@@ -501,8 +501,8 @@ void j1App::GameOver()
 	game_over = true;
 	//gui->game_over->SetVisible();
 
-	scene->current_track = audio->tracks_path.end;
-	audio->PlayMusic(scene->current_track->data.GetString(), 0.5);
+	//scene->current_track = audio->tracks_path.end;
+	//audio->PlayMusic(scene->current_track->data.GetString(), 0.5);
 
 
 	map->current_map = App->map->maps_path.start;
@@ -575,12 +575,13 @@ bool j1App::RestartLevel(int player_lifes)
 	BROFILER_CATEGORY("App->RestartLevel", Profiler::Color::Red);
 
 	entitymanager->aux_score = 0;
-	Mix_VolumeMusic(App->audio->current_volume);
 
 	gui->last_death->SetVisible();
 	render->ResetCamera();
 	entitymanager->Restart(player_lifes);
 
+	if (Mix_PausedMusic > 0)
+		Mix_ResumeMusic();
 	game_over = false;
 	
 	return true;
