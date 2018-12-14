@@ -3,17 +3,19 @@
 #include "j1App.h"
 #include "j1Render.h"
 #include "j1Textures.h"
-#include "j1Input.h"
 #include "j1Map.h"
 #include "j1Collision.h"
 #include "Brofiler/Brofiler.h"
-#include "j1Debug.h"
 #include "j1Pathfinding.h"
 #include <cmath>
 
 j1Map::j1Map() : j1Module(), map_loaded(false)
 {
 	name.create("map");
+
+	world_limits	= { 0,0 };
+	start_collider	= nullptr;
+	end_collider	= nullptr;
 }
 
 j1Map::~j1Map()
@@ -677,29 +679,29 @@ iPoint j1Map::WorldToMap(int x, int y) const
 	return ret;
 }
 
-p2SString j1Map::DebugToString() const
-{
-	BROFILER_CATEGORY("Map->DebugToString", Profiler::Color::LightCyan)
-	int x, y;
-	App->input->GetMousePosition(x, y);
-	iPoint map_pos = WorldToMap(x, y);
-	
-	//int map_id  = data.map_layers.start->data->GetMapId(map_pos.x, map_pos.y);
-	//int tile_id = data.map_layers.start->data->data[map_id + abs(App->render->camera.x/data.tile_width)];
-
-	// Loading info to title FLASHES WINDOW ICON IN TASK BAR
-	p2SString ret_string("Map: %dx%d Tiles: %dx%d Tilesets: %d Mouse [%d,%d] Rect [%d,%d] Camera.x: %d offsetX: %d",
-		data.width, data.height,
-		data.tile_width, data.tile_height,
-		data.tilesets.count(),
-		x, y,
-		map_pos.x,map_pos.y, 
-		//map_id,tile_id, MapID: %d TilesetID: %d
-		App->render->camera.x,
-		(data.tile_width > 0) ? abs(App->render->camera.x / data.tile_width): -5000);
-
-	return ret_string;
-}
+//p2SString j1Map::DebugToString() const
+//{
+//	BROFILER_CATEGORY("Map->DebugToString", Profiler::Color::LightCyan)
+//	int x, y;
+//	App->input->GetMousePosition(x, y);
+//	iPoint map_pos = WorldToMap(x, y);
+//	
+//	//int map_id  = data.map_layers.start->data->GetMapId(map_pos.x, map_pos.y);
+//	//int tile_id = data.map_layers.start->data->data[map_id + abs(App->render->camera.x/data.tile_width)];
+//
+//	// Loading info to title FLASHES WINDOW ICON IN TASK BAR
+//	p2SString ret_string("Map: %dx%d Tiles: %dx%d Tilesets: %d Mouse [%d,%d] Rect [%d,%d] Camera.x: %d offsetX: %d",
+//		data.width, data.height,
+//		data.tile_width, data.tile_height,
+//		data.tilesets.count(),
+//		x, y,
+//		map_pos.x,map_pos.y, 
+//		//map_id,tile_id, MapID: %d TilesetID: %d
+//		App->render->camera.x,
+//		(data.tile_width > 0) ? abs(App->render->camera.x / data.tile_width): -5000);
+//
+//	return ret_string;
+//}
 
 void j1Map::CleanMap()
 {

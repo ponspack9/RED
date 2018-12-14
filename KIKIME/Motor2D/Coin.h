@@ -12,9 +12,10 @@ enum coinType {
 class Coin : public Entity
 {
 public:
-	Coin() {
+	Coin() 
+	{
 		coin_type = coinType::NOTYPE;
-		points = -123;
+		points = 0;
 	}
 
 	Coin(iPoint pos, Coin* e) : Entity(pos, e) {

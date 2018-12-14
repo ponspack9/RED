@@ -141,7 +141,6 @@ public:
 
 	iPoint		position;
 	iPoint		initial_pos;
-
 	UIType		type;
 	UIState		state;
 	ActionType	action;

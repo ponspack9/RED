@@ -70,7 +70,25 @@ j1App::j1App(int argc, char* args[]) : argc(argc), args(args)
 	LOG("App constructor takes %u ms", timer.Read());
 	LOG("App constructor takes %u micro secs", perf_timer.ReadMs());
 
-	player_in_main_menu = true;
+	player_in_main_menu		= true;
+	framerate_cap			= 0;
+	frame_count				= 0;
+	frames_on_last_update	= 0;
+	aux_frames_counter		= 0; 
+	last_sec_fcount			= 0;
+
+	delay_is_active			= true;
+	want_to_load			= false;
+	want_to_save			= false;
+	
+	pause					= false;
+	game_over				= false;
+	to_exit					= false;
+
+	dt						= 0;
+	save_path				= nullptr;
+	load_path				= nullptr;
+	init_state_path			= nullptr;
 }
 
 // Destructor

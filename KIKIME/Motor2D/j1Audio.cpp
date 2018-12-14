@@ -1,7 +1,6 @@
 #include "p2Defs.h"
 #include "p2Log.h"
 #include "j1App.h"
-#include "j1FileSystem.h"
 #include "j1Audio.h"
 
 #include "SDL/include/SDL.h"
@@ -12,6 +11,9 @@ j1Audio::j1Audio() : j1Module()
 {
 	music = NULL;
 	name.create("audio");
+
+	folder_music = nullptr;
+	folder_fx	 = nullptr;
 }
 
 // Destructor

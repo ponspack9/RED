@@ -129,9 +129,6 @@
     <ClInclude Include="Player.h">
       <Filter>ENTITIES</Filter>
     </ClInclude>
-    <ClInclude Include="Path.h">
-      <Filter>ENTITIES</Filter>
-    </ClInclude>
     <ClInclude Include="Roller.h">
       <Filter>ENTITIES</Filter>
     </ClInclude>

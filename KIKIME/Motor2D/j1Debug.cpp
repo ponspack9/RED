@@ -2,14 +2,8 @@
 #include "p2Log.h"
 #include "j1App.h"
 #include "j1Input.h"
-#include "j1Window.h"
-#include "j1Render.h"
-#include "j1Map.h"
 #include "j1Collision.h"
-#include "j1Scene.h"
 #include "j1FadeToBlack.h"
-#include "j1Textures.h"
-#include "Player.h"
 #include "j1Debug.h"
 #include "j1EntityManager.h"
 #include "j1Gui.h"
@@ -19,6 +13,22 @@
 j1Debug::j1Debug()
 {
 	name.create("debug");
+
+	not = nullptr;
+	debug_path = nullptr;
+
+	not_tex = nullptr;
+	debug_tex = nullptr;
+
+	camera_motion = { 0,0 };
+	last_motion = { 0,0 };
+	zero = { 0,0 };
+
+	show_colliders = false;
+	start_motion = false;
+	free_camera = false;
+	debug_bool = false;
+
 }
 
 

@@ -70,11 +70,6 @@ bool j1Gui::Awake(pugi::xml_node& conf)
 		r.h = n.attribute("height").as_int();
 		n = n.next_sibling("button");
 	}
-	blue_button.type	 = UIType::BUTTON;
-	blue_button.action	 = NO_ACTION;
-	blue_button.parent	 = nullptr;
-	blue_button.callback = nullptr;
-	blue_button.visible	 = true;
 	blue_button.color	 = BLUE;
 
 
@@ -88,12 +83,8 @@ bool j1Gui::Awake(pugi::xml_node& conf)
 		r.h = n.attribute("height").as_int();
 		n = n.next_sibling("button");
 	}
-	red_button.type		= UIType::BUTTON;
-	red_button.action	= NO_ACTION;
-	red_button.parent	= nullptr;
-	red_button.callback = nullptr;
-	red_button.visible	= true;
 	red_button.color	= RED;
+
 
 	// Creating a green button
 	n = conf.child("green").child("button");
@@ -105,12 +96,8 @@ bool j1Gui::Awake(pugi::xml_node& conf)
 		r.h = n.attribute("height").as_int();
 		n = n.next_sibling("button");
 	}
-	green_button.type = UIType::BUTTON;
-	green_button.action = NO_ACTION;
-	green_button.parent = nullptr;
-	green_button.callback = nullptr;
-	green_button.visible = true;
 	green_button.color = GREEN;
+
 
 	//Creating slider pointer image (Green)
 	n = conf.child("green").child("slider_pointer");
@@ -123,12 +110,8 @@ bool j1Gui::Awake(pugi::xml_node& conf)
 		if (n.next_sibling("slider_pointer"))
 			n = n.next_sibling("slider_pointer");
 	}
-	slider_pointer_button.type = UIType::BUTTON;
-	slider_pointer_button.action = NO_ACTION;
-	slider_pointer_button.parent = nullptr;
-	slider_pointer_button.callback = nullptr;
-	slider_pointer_button.visible = true;
 	slider_pointer_button.color = GREEN;
+
 
 	//Creating slider image
 	n = conf.child("green").child("slider");
@@ -141,12 +124,8 @@ bool j1Gui::Awake(pugi::xml_node& conf)
 		if (n.next_sibling("slider"))
 			n = n.next_sibling("slider");
 	}
-	slider_button.type = UIType::BUTTON;
-	slider_button.action = NO_ACTION;
-	slider_button.parent = nullptr;
-	slider_button.callback = nullptr;
-	slider_button.visible = true;
 	slider_button.color = GREEN;
+
 
 	// Creating a yellow button
 	n = conf.child("yellow").child("button");
@@ -158,12 +137,8 @@ bool j1Gui::Awake(pugi::xml_node& conf)
 		r.h = n.attribute("height").as_int();
 		n = n.next_sibling("button");
 	}
-	yellow_button.type = UIType::BUTTON;
-	yellow_button.action = NO_ACTION;
-	yellow_button.parent = nullptr;
-	yellow_button.callback = nullptr;
-	yellow_button.visible = true;
 	yellow_button.color = YELLOW;
+
 
 	// Creating a grey button
 	n = conf.child("grey").child("button");
@@ -175,12 +150,6 @@ bool j1Gui::Awake(pugi::xml_node& conf)
 		r.h = n.attribute("height").as_int();
 		n = n.next_sibling("button");
 	}
-	grey_button.type = UIType::BUTTON;
-	grey_button.action = NO_ACTION;
-	grey_button.parent = nullptr;
-	grey_button.callback = nullptr;
-	grey_button.visible = true;
-	grey_button.color = GREY;
 
 	//pause window menu
 	n = conf.child("atlas").child("window");
@@ -371,7 +340,7 @@ bool j1Gui::Start()
 
 	heart_ref = (Image*)CreateElement(IMAGE, iPoint(10, 10),  heart.rect[IDLE],			&heart,			nullptr, LIFE_SYSTEM,  nullptr, in_game_gui);
 	green_ref = (Image*)CreateElement(IMAGE, iPoint(-200, 0), green_diamond.rect[IDLE], &green_diamond, nullptr, DYNAMIC_INFO, nullptr, score);
-	blue_ref  = (Image*)CreateElement(IMAGE, iPoint(-300, 0), blue_diamond.rect[IDLE],	 &blue_diamond,	 nullptr, DYNAMIC_INFO, nullptr, score);
+	blue_ref  = (Image*)CreateElement(IMAGE, iPoint(-300, 0), blue_diamond.rect[IDLE],  &blue_diamond,	 nullptr, DYNAMIC_INFO, nullptr, score);
 
 	Label* lgreen_ref		= (Label*)CreateElement(LABEL, iPoint(0, 0), { 0,0,0,0 }, nullptr, "X", INFO,			nullptr, green_ref);
 	Label* lblue_ref		= (Label*)CreateElement(LABEL, iPoint(0, 0), { 0,0,0,0 }, nullptr, "X", INFO,			nullptr, blue_ref);
@@ -633,17 +602,13 @@ UIElement* j1Gui::CreateElement(UIType type, iPoint pos, SDL_Rect rect, Image* i
 
 	switch (type)
 	{
-  case IMAGE:
+	case IMAGE:
       
 		elem = new Image(action,pos, rect, img, type, parent,visible);
 		break;
 	case LABEL:
 
 		elem = new Label(action, pos, type, string, parent, visible);
-		break;
-	case BUTTON:
-
-		elem = new Button(action, pos, rect, type, callback, parent, visible);
 		break;
 	default:
 

@@ -13,6 +13,9 @@ j1EntityManager::j1EntityManager()
 {
 	name.create("entitymanager");
 	is_started = false;
+
+	green_counter = blue_counter = score = aux_score = 0;
+	score_powUp = 100;
 }
 
 j1EntityManager::~j1EntityManager()
@@ -58,7 +61,6 @@ bool j1EntityManager::Awake(pugi::xml_node & config)
 	rollerinfo.vision_range = r_enem.child("range").attribute("value").as_int();
 			  
 	rollerinfo.alive = r_enem.child("alive").attribute("value").as_bool();
-
 
 	//reading animations
 
@@ -338,8 +340,7 @@ void j1EntityManager::CreateEntities(int player_lifes)
 {
 	LOG("CREATING ENTITIES, COUNT: %d", entities.count());
 	Entity* e = nullptr;
-	green_counter = blue_counter = score = aux_score = 0;
-	score_powUp = 100;
+	
 	//Creating all entities
 	for (int i = 0; i<App->collision->active; i++)
 	{

@@ -1,16 +1,32 @@
 #include "Image.h"
 
+Image::Image()
+{
+	position	= { 0,0 };
+	initial_pos = { 0,0 };
+
+	state		= IDLE;
+	type		= UIType::IMAGE;
+	action		= NO_ACTION;
+	parent		= nullptr;
+	callback	= nullptr;
+	visible		= true;
+	movable		= false;
+	is_moving	= false;
+
+	current_animation = nullptr;
+}
+
 Image::Image(ActionType action,iPoint pos, SDL_Rect rect, Image* img,UIType type, UIElement* parent, bool visible) : UIElement(type, parent, visible)
 
 {
+	this->position = pos;
 	this->initial_pos = pos;
+
 	this->rect[IDLE] = rect;
 	this->rect[HOVER] = rect;
 	this->rect[CLICK_DOWN] = rect;
 	this->rect[CLICK_UP] = rect;
-
-	this->position = pos;
-	this->type = type;
 
 	this->state = IDLE;
 	this->action = action;
@@ -23,7 +39,6 @@ Image::Image(ActionType action,iPoint pos, SDL_Rect rect, Image* img,UIType type
 		this->heart_blink = img->heart_blink;
 		this->current_animation = &idle;
 	}
-	//last_iteration = false;	
 }
 
 void Image::Draw(SDL_Texture * sprites)

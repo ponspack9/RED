@@ -1,10 +1,20 @@
 #include "Label.h"
 
+Label::Label()
+{
+	initial_pos		 = { 0,0 };
+	position		 = { 0,0 };
+
+	state			 = IDLE;
+
+	string			 = nullptr;
+	action			 = NO_ACTION;
+}
+
 Label::Label(ActionType action, iPoint pos, UIType type, p2SString string, UIElement* parent, bool visible) : UIElement(type, parent,visible)
 {
 	this->initial_pos = pos;
 	this->position = pos;
-	this->type = type;
 	this->state = IDLE;
 
 	this->rect[IDLE].x = position.x;
@@ -90,10 +100,10 @@ void Label::ChangeText(const char * string)
 {
 	if (text != nullptr)
 	{
-		App->tex->UnLoad(text);
+		App->tex->UnLoad(this->text);
 	}
 
-	text = App->font->Print(string, { 0,0,0,255 }, App->font->default);
+	this->text = App->font->Print(string, { 0,0,0,255 }, App->font->default);
 	App->font->CalcSize(string, rect[state].w, rect[state].h, App->font->default);
 
 	this->string = string;	

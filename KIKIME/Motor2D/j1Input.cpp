@@ -18,6 +18,11 @@ j1Input::j1Input() : j1Module()
 	for (int i = 0; i < WE_COUNT; i++) {
 		windowEvents[i] = false;
 	}
+
+	mouse_motion_x	= NULL;
+	mouse_motion_y	= NULL;
+	mouse_x			= NULL;
+	mouse_y			= NULL;
 }
 
 // Destructor

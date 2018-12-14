@@ -36,10 +36,7 @@ public:
 	bool			show_colliders;
 	bool			start_motion;
 	bool			free_camera;
-	bool			debug_bool = false;
-
-	Collider*		debug_col;
-
+	bool			debug_bool;
 };
 
 #endif
