@@ -133,17 +133,12 @@ bool j1Scene::Load(pugi::xml_node & node)
 {
 	LOG("Loading SCENE");	 
 
-	//App->map->current_map->data = node.child("current").attribute("current_map").as_string();
 	int index = App->map->maps_path.find(node.child("current").attribute("current_map").as_string());
-
 	App->map->current_map = App->map->maps_path.At(index);
-	//App->map->CleanMap();
-	//App->scene->Start();
 
 	App->in_game_timer.sec = node.child("timer").attribute("seconds").as_int();
 	App->in_game_timer.min = node.child("timer").attribute("minutes").as_int();
 
-	//is_load = true;
 	App->game_timer.Start();
 	LOG("Current map: %s", App->map->current_map->data.GetString());
 
