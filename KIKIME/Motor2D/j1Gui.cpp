@@ -161,7 +161,8 @@ bool j1Gui::Awake(pugi::xml_node& conf)
 		r.y = n.attribute("y").as_int();
 		r.w = n.attribute("width").as_int();
 		r.h = n.attribute("height").as_int();
-		n = n.next_sibling("button");
+		if (n.next_sibling("button"))
+			n = n.next_sibling("button");
 	}
 
 	//pause window menu
@@ -282,18 +283,18 @@ bool j1Gui::Start()
 	main_menu_ui = (Image*)CreateElement(IMAGE, iPoint(App->render->viewport.w / 2 - 250, App->render->viewport.h / 2 - 400), SDL_Rect({ 1000,1000,500,800 }), nullptr, nullptr, NO_ACTION, (j1Module*)App, main_menu_window, true);
 
 	Button* start_button	= (Button*)CreateButton({ 0,0 },					 blue_button,	START,		nullptr, main_menu_ui);
-	Button* continue_button = (Button*)CreateButton({ 0,0 },					 yellow_button,	CONTINUE,	nullptr, main_menu_ui);
+		    continue_button = (Button*)CreateButton({ 0,0 },					 grey_button,	CONTINUE,	nullptr, main_menu_ui);
 	Button* settings_button = (Button*)CreateButton({ 0,0 },					 green_button,	SETTINGS,	nullptr, main_menu_ui);
 	Button* exit_button		= (Button*)CreateButton({ 0,0 },					 red_button,	EXIT_GAME,	nullptr, main_menu_ui);
 	credits_button			= (Button*)CreateButton(-main_menu_ui->position + 50, red_button,	CREDITS,	nullptr, main_menu_ui);
 	help_button				= (Button*)CreateButton({main_menu_ui->position.x + main_menu_ui->rect->w + red_button.rect->w + 100, 50}, red_button, HELP, nullptr, main_menu_ui);
 	
-	start_button	 ->movable = true;	start_button	->Center(0, -140);
-	continue_button	 ->movable = true;	continue_button	->Center(0,-70);
-	settings_button	 ->movable = true;	settings_button	->Center();
-	exit_button    	 ->movable = true;	exit_button		->Center(0, 70);
-	credits_button	 ->movable = true;
-	help_button		 ->movable = true;
+	start_button	->Center(0, -140);
+	continue_button	->Center(0,-70);
+  settings_button	->Center();
+	exit_button		->Center(0, 70);
+
+
 
 
 	Label* lstart_button	= (Label*)CreateElement(LABEL, iPoint(0, 0), { 0,0,0,0 }, nullptr, "PLAY GAME", NO_ACTION, nullptr, start_button);
@@ -466,7 +467,37 @@ bool j1Gui::Start()
 	To input text check the keyobard state then make a bool matrix or something similar then update if changed the specific key true
 	*/
 	last_death->SetVisible();
+
+	CheckContinue();
 	return true;
+}
+void j1Gui::CheckContinue()
+{
+	if (App->ExistsSaveGame()) {
+		continue_button->color = YELLOW;
+		int i = 0;
+		for (SDL_Rect &r : continue_button->rect)
+		{
+			r.x = yellow_button.rect[i].x;
+			r.y = yellow_button.rect[i].y;
+			r.w = yellow_button.rect[i].w;
+			r.h = yellow_button.rect[i].h;
+			i++;
+		}
+	}
+	else {
+		App->gui->continue_button->color = GREY;
+		int i = 0;
+		for (SDL_Rect &r : continue_button->rect)
+		{
+			r.x = grey_button.rect[i].x;
+			r.y = grey_button.rect[i].y;
+			r.w = grey_button.rect[i].w;
+			r.h = grey_button.rect[i].h;
+			i++;
+		}
+		//App->gui->continue_button->rect
+	}
 }
 void j1Gui::PrepareMainMenuGui() {
 	SetWindowsInvisible();

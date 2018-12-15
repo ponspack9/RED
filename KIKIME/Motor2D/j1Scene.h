@@ -45,7 +45,6 @@ public:
 	p2List_item<p2SString>* current_track;
 	p2List_item<p2SString>* current_fx;
 
-	iPoint			player_load_position;
 
 private:
 

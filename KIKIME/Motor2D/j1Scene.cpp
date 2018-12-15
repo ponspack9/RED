@@ -13,8 +13,6 @@ j1Scene::j1Scene() : j1Module()
 	name.create("scene");
 	first_load = true;
 	game_over_transition = false;
-	player_load_position = { -1,-1 };
-	//is_load = false;
 }
 
 // Destructor
@@ -45,9 +43,8 @@ bool j1Scene::Start()
 		first_load = false;
 	}
 	else {
-		//if (!is_load)
-		App->entitymanager->Restart(App->entitymanager->playerinfo.lifes,player_load_position);
-		player_load_position = { -1,-1 };
+		App->gui->CheckContinue();
+		App->entitymanager->Restart(App->entitymanager->playerinfo.lifes, { -1,-1 });
 		App->gui->game_over->SetInvisible();
 
 		LOG("ENTITY RESTART");
@@ -60,7 +57,6 @@ bool j1Scene::Start()
 			App->gui->PrepareInGameGui();
 		}
 	}
-	//is_load = false;
 	return ret;
 }
 

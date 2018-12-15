@@ -61,8 +61,6 @@ public:
 
 	void LoadGame();
 	void SaveGame() const;
-	//TO BE IMPLEMENTED
-	void GetSaveGames(p2List<p2SString>& list_to_fill) const;
 
 	void Exit();
 
@@ -98,14 +96,13 @@ public:
 
 	void CalculateGuiPositions();
 
-	//void ShowSettingsInGame();
-
-
 	//Saving iteration ONLY SAVING ACTIVE MODULES
 	bool SaveGameFile();
 
 	//Loading iteration ONLY LOADING ACTIVE MODULES
 	bool LoadGameFile();
+
+	bool ExistsSaveGame();
   
 private:
 

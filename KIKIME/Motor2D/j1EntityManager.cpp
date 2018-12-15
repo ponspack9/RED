@@ -522,7 +522,8 @@ void j1EntityManager::CleanEntities()
 bool j1EntityManager::Restart(int player_lifes, iPoint player_pos)
 {
 	CleanEntities();
-	CreateEntities(player_lifes, player_pos);
+	CreateEntities(player_lifes, player_load_position);
+	player_load_position = { -1,-1 };
 	return true;
 }
 
