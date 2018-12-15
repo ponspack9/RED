@@ -14,6 +14,7 @@ which are very fast and annoying.
 We have used a tree hierarchy system to implement the user's interface, getting from
 a cathegory designation to manage the functionalities of all the elements of the user's 
 interface.
+
 To innovate, we have removed all colliders of the map and we have used a walkability map 
 manage all the collisions between player and enviroment.
 
