@@ -1,6 +1,6 @@
-![title](https://github.com/urisabate/Kikime/blob/master/KIKIME/Game/gui/redLogo.png)
+![title](https://github.com/urisabate/RED/blob/master/docs/redLogo.png)
 
-https://github.com/urisabate/Kikime
+https://github.com/urisabate/RED
 
 MIT License
 
