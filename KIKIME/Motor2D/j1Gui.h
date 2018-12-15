@@ -63,6 +63,7 @@ public:
 	Image*			in_game_window;
 	Image*			credits_ui;
 	Image*			settings_window;
+	Image*			help_window;
 
 	Image*			game_over;
 	Image*			last_death;
@@ -79,6 +80,8 @@ public:
 	Button*			continue_button;
 	Button*			credits_button;
 	Button*			credits_to_menu;
+	Button*			help_button;
+	Button*			help_to_menu;
 	Label*			score;
 	Label*			timersec;
 

@@ -64,6 +64,7 @@ TO DO
       <gameOver height="272" width="440" y="448" x="0"></gameOver>
       <lastDeath height="56" width="48" y="390" x="0"></lastDeath>
       <window x="769" y="0" width="306" height="348"/>
+      <!--help x="" y="" width="" height="" />-->
       <green_diamond x="591" y="211" width="36" height="28"></green_diamond>
       <blue_diamond x="463" y="211" width="36" height="28"></blue_diamond>
       <yellow_diamond x="526" y="210" width="36" height="28"></yellow_diamond>

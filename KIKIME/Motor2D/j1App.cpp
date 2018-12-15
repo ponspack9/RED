@@ -653,6 +653,20 @@ void j1App::ShowInGamePause() {
 		gui->in_game_pause_ui->SetInvisible();
 	}
 }
+void j1App::ShowHelp()
+{
+	if (!gui->help_window->visible)
+	{
+		gui->help_window->SetVisible();
+		gui->main_menu_ui->SetInvisible();
+	}
+	else
+	{
+		gui->help_window->SetInvisible();
+		gui->main_menu_ui->SetVisible();
+	}
+}
+
 void j1App::ChangeMusicVolume(int value)
 {
 	Mix_VolumeMusic(value);

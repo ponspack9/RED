@@ -53,6 +53,7 @@ enum ActionType
 	BLUE_COUNTER,
 	GREEN_COUNTER,
 	LAST_DEATH,
+	HELP,
 
 	NO_ACTION
 };
