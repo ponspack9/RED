@@ -1,4 +1,4 @@
-<img src="redLogo.png" alt="Logo" width="1280" height="720">
+<img src="redLogo.png" alt="Logo" width="1280" height="700">
 
 ***
 Overview
