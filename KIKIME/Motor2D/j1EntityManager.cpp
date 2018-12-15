@@ -662,6 +662,11 @@ void j1EntityManager::OnCollision(Collider * c1, Collider * c2)
 	}
 }
 
+void j1EntityManager::OnCollisionLine()
+{
+	player_ref->alive = false;
+}
+
 Entity* j1EntityManager::FindEntityByCollider(Collider * c)
 {
 	for (int i = 0; i < entities.count(); ++i) {

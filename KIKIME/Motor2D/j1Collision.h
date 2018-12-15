@@ -1,9 +1,9 @@
 #ifndef __j1COLLISION_H__
 #define __j1COLLISION_H__
 
-#define MAX_COLLIDERS	350
-#define MAX_LINES		256
-#define MAX_LINE_LENGTH 50
+#define MAX_COLLIDERS	200
+#define MAX_LINES		128
+#define MAX_LINE_LENGTH 10
 
 #include "SDL/include/SDL.h"
 #include "j1Module.h"
@@ -59,10 +59,10 @@ struct Collider
 	}
 
 	bool CheckCollision(const SDL_Rect& r) const;
-	//bool CheckRectLineCollision(int x1, int y1, int x2, int y2) const;
+	bool CheckRectLineCollision(int x1, int y1, int x2, int y2) const;
 };
 
-	//bool CheckLineLine(int x1, int y1, int x2, int y2, int x3, int y3, int x4, int y4);
+	bool CheckLineLine(int x1, int y1, int x2, int y2, int x3, int y3, int x4, int y4);
 
 
 class j1Collision : public j1Module

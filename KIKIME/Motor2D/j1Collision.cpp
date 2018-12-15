@@ -17,6 +17,7 @@ j1Collision::j1Collision()
 	matrix[COLLIDER_PLAYER][COLLIDER_COIN]	 = true;
 	//matrix[COLLIDER_DEBUG][COLLIDER_D]
 
+	CleanPolylines();
 
 	name.create("collisions");
 	active = 0;
@@ -75,7 +76,26 @@ bool j1Collision::PreUpdate()
 			}
 
 		}
+		if (c1->type == COLLIDER_PLAYER) {
+
+			for (int i = 0; i < n_lines; i++) {
+				int offx = App->render->camera.x;
+				int offy = App->render->camera.y;
+
+				for (int j = 0; j <= n_lines_col[i]; j += 2) {
+					if (c1->CheckRectLineCollision(polylines[i][j] + offx, polylines[i][j + 1] + offy,
+						polylines[i][j + 2] + offx, polylines[i][j + 3] + offy)) {
+						c1->callback->OnCollisionLine();
+						//LOG("ONCOLLISIONLINE %f,", SDL_GetTicks());
+						//c1->type == COLLIDER_COIN;
+						//AddCollider(c1->rect, COLLIDER_COIN);
+						break;
+					}
+				}
+			}
+		}
 	}
+
 
 	return true;
 }
@@ -176,20 +196,6 @@ bool Collider::CheckCollision(const SDL_Rect& r) const
 
 /// POLYLINES -------------------------------------------------
 
-//void j1Collision::DrawPolylines() {
-//	SDL_SetRenderDrawColor(App->render->renderer, 255, 0, 0, SDL_ALPHA_OPAQUE);
-//
-//	for (int i = 0; i < n_lines; i++) {
-//		int offx = polylines[i][0] + App->render->camera.x;
-//		int offy = polylines[i][1] + App->render->camera.y;
-//
-//		for (int j = 2; j < n_lines_col[i]; j += 2) {
-//			SDL_RenderDrawLine(App->render->renderer,
-//				polylines[i][j] + offx, polylines[i][j + 1] + offy,
-//				polylines[i][j + 2] + offx, polylines[i][j + 3] + offy);
-//		}
-//	}
-//}
 void j1Collision::DrawPolylines() {
 	SDL_SetRenderDrawColor(App->render->renderer, 0, 0, 255, SDL_ALPHA_OPAQUE);
 
@@ -238,6 +244,7 @@ void j1Collision::AddPolyLine(int startX, int startY, const char* line)
 			buffer[j++] = line[i];
 		}
 	}
+
 	n_lines_col[n_lines] = (it%2==0)?it/2:it/2 +1;
 	n_lines += 1;
 	RELEASE_ARRAY(buffer);
@@ -247,41 +254,39 @@ void j1Collision::AddPolyLine(int startX, int startY, const char* line)
 void j1Collision::CleanPolylines()
 {
 	n_lines = 0;
-	for (int i = 0; i < n_lines; ++i) {
-		for (int j = 0; j < n_lines_col[i]; ++j)
+	for (int i = 0; i < MAX_LINES; ++i) {
+		for (int j = 0; j < MAX_LINE_LENGTH; ++j)
 			polylines[i][j] = 0;
 	}
 }
 
 
-/*
-//bool Collider::CheckRectLineCollision(int x1, int y1, int x2, int y2) const
-//{
-//	// check if the line has hit any of the rectectangle's sides
-//	boolean left =   CheckLineLine(x1, y1, x2, y2, rect.x, rect.y, rect.x, rect.y + rect.h);
-//	boolean right =  CheckLineLine(x1, y1, x2, y2, rect.x + rect.w, rect.y, rect.x + rect.w, rect.y + rect.h);
-//	boolean top =    CheckLineLine(x1, y1, x2, y2, rect.x, rect.y, rect.x + rect.w, rect.y);
-//	boolean bottom = CheckLineLine(x1, y1, x2, y2, rect.x, rect.y + rect.h, rect.x + rect.w, rect.y + rect.h);
-//
-//	// if ANY of the above are true, the line
-//	// has hit the rectectangle
-//	if (left || right || top || bottom) {
-//		return true;
-//	}
-//	return false;
-//}
-//
-//bool CheckLineLine(int x1, int y1, int x2, int y2, int x3, int y3, int x4, int y4)
-//{
-//	float uADiv = ((y4 - y3)*(x2 - x1) - (x4 - x3)*(y2 - y1));
-//	float uBDiv = ((y4 - y3)*(x2 - x1) - (x4 - x3)*(y2 - y1));
-//
-//	float uA = (uADiv == 0) ? 0 : ((x4 - x3)*(y1 - y3) - (y4 - y3)*(x1 - x3)) / uADiv;
-//	float uB = (uBDiv == 0) ? 0 : ((x2 - x1)*(y1 - y3) - (y2 - y1)*(x1 - x3)) / uBDiv;
-//	
-//
-//	// if uA and uB are between 0-1, lines are colliding
-//	if (uA >= 0 && uA <= 1 && uB >= 0 && uB <= 1) return true;
-//	return false;
-//}
-*/
+
+bool Collider::CheckRectLineCollision(int x1, int y1, int x2, int y2) const
+{
+	int offx = App->render->camera.x;
+	int offy = App->render->camera.y;
+	// check if the line has hit any of the rectectangle's sides
+	bool left =   CheckLineLine(x1, y1, x2, y2, rect.x+offx, rect.y+offy, rect.x + offx, rect.y + rect.h + offy);
+	bool right =  CheckLineLine(x1, y1, x2, y2, rect.x + rect.w + offx, rect.y + offy, rect.x + rect.w + offx, rect.y + rect.h + offy);
+	bool top =    CheckLineLine(x1, y1, x2, y2, rect.x + offx, rect.y + offy, rect.x + rect.w + offx, rect.y + offy);
+	bool bottom = CheckLineLine(x1, y1, x2, y2, rect.x + offx, rect.y + rect.h + offy, rect.x + rect.w + offx, rect.y + rect.h + offy);
+
+	// if ANY of the above are true, the line
+	// has hit the rectectangle
+
+	return left || right || top || bottom;
+}
+
+bool CheckLineLine(int x1, int y1, int x2, int y2, int x3, int y3, int x4, int y4)
+{
+	float uADiv = ((y4 - y3)*(x2 - x1) - (x4 - x3)*(y2 - y1));
+	float uBDiv = ((y4 - y3)*(x2 - x1) - (x4 - x3)*(y2 - y1));
+	float uA = (uADiv == 0) ? 0 : ((x4 - x3)*(y1 - y3) - (y4 - y3)*(x1 - x3)) / uADiv;
+	float uB = (uBDiv == 0) ? 0 : ((x2 - x1)*(y1 - y3) - (y2 - y1)*(x1 - x3)) / uBDiv;
+
+	// if uA and uB are between 0-1, lines are colliding
+	
+	return uA >= 0 && uA <= 1 && uB >= 0 && uB <= 1;
+}
+
