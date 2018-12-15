@@ -139,8 +139,6 @@ public:
 
 	TileSet * GetTilesetFromTileId(int id) const;
 
-	p2SString DebugToString() const;
-
 	void CleanMap();
 
 private:

@@ -35,6 +35,8 @@ bool j1Scene::Start()
 	App->game_over = false;
 
 	App->audio->PlayMusic(PATH(App->audio->folder_music.GetString(), current_track->data.GetString()));
+	LOG("starting scene");
+
 	App->map->Load(App->map->current_map->data.GetString());
 	App->render->ResetCamera();
 

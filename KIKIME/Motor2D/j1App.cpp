@@ -82,7 +82,6 @@ j1App::j1App(int argc, char* args[]) : argc(argc), args(args)
 	want_to_save			= false;
 	
 	pause					= false;
-	game_over				= false;
 	to_exit					= false;
 
 	dt						= 0;
@@ -499,14 +498,12 @@ void j1App::GoToMainMenu()
 void j1App::GameOver() 
 {
 	game_over = true;
-	//gui->game_over->SetVisible();
-
-	//scene->current_track = audio->tracks_path.end;
-	//audio->PlayMusic(scene->current_track->data.GetString(), 0.5);
-
 
 	map->current_map = App->map->maps_path.start;
 	scene->current_track = audio->tracks_path.start;
+
+	if (Mix_PausedMusic > 0)
+		Mix_ResumeMusic();
 
 	fade->FadeToBlack(App->scene, App->scene);
 
