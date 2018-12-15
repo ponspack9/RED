@@ -1,4 +1,4 @@
-<img src="redLogo.jpg" alt="Logo" width="400" height="300">
+<img src="redLogo.png" alt="Logo" width="1280" height="720">
 
 https://github.com/urisabate/RED
 
