@@ -357,7 +357,7 @@ bool j1Gui::Start()
 	
 	//Label* pl_name = (Label*)CreateElement(LABEL, iPoint(App->entitymanager->player_ref->position.x + App->entitymanager->player_ref->rect.w / 2, App->entitymanager->player_ref->position.y - 50), { 0,0,0,0 },nullptr, "--Kikime--", PLAYER_NAME, nullptr, in_game_gui);
 	
-	game_over  = (Image*)CreateElement(IMAGE, iPoint(App->render->viewport.w / 2 - game_over_image.rect[IDLE].w / 2, App->render->viewport.h / 2 - game_over_image.rect[IDLE].h / 2), game_over_image.rect[IDLE], &game_over_image, nullptr, NO_ACTION, nullptr, nullptr, false);
+	game_over  = (Image*)CreateElement(IMAGE, iPoint(App->render->viewport.w / 2 - game_over_image.rect[IDLE].w / 2, App->render->viewport.h / 2 - game_over_image.rect[IDLE].h / 2), game_over_image.rect[IDLE], &game_over_image, nullptr, NO_ACTION, nullptr,in_game_window, false);
 	
 	last_death = (Image*)CreateElement(IMAGE, iPoint(-20, -20), last_death_image.rect[IDLE],&last_death_image,nullptr, LAST_DEATH, nullptr, nullptr, true);
 
@@ -453,6 +453,7 @@ void j1Gui::PrepareInGameGui() {
 	SetWindowsInvisible();
 	in_game_window->SetVisible();
 	in_game_pause_ui->SetInvisible();
+	game_over->SetInvisible();
 }
 
 void j1Gui::SetWindowsInvisible() {
@@ -479,6 +480,7 @@ void j1Gui::CalculateElementsPosition() {
 	credits_button	->initial_pos   = -credits_button->parent->initial_pos+ 50;
 	credits_to_menu	->initial_pos   = -credits_to_menu->parent->initial_pos + 50;
 	score			->initial_pos.x = in_game_gui->rect[IDLE].w - 100;
+	game_over		->Center();
 	//in_game_gui		->CenterX();
 }
 

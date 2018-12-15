@@ -457,7 +457,7 @@ bool j1EntityManager::PostUpdate()
 		App->gui->game_over->SetVisible();
 	}
 
-	if (!player_ref->alive && timer_death.ReadSec() >= 0.5f && !App->game_over) {
+	if (!player_ref->alive && timer_death.ReadSec() >= 1.5f && !App->game_over) {
 		
 			LOG("DEAD BY POST UPDATE");
 			if (player_ref->lifes > 0) {
