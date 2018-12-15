@@ -90,6 +90,8 @@ public:
 
 	void ShowInGamePause();
 
+	void ShowHelp();
+
 	void ChangeMusicVolume(int value);
 
 	void ChangeFXVolume(int value);

@@ -48,6 +48,18 @@ bool j1Gui::Awake(pugi::xml_node& conf)
 			n = n.next_sibling("gameOver");
 	}
 
+	//HELP WINDOW
+	//n = conf.child("atlas").child("help");
+	//for (SDL_Rect &r : white_window.rect)
+	//{
+	//	r.x = n.attribute("x").as_int();
+	//	r.y = n.attribute("y").as_int();
+	//	r.w = n.attribute("width").as_int();
+	//	r.h = n.attribute("height").as_int();
+	//	if (n.next_sibling("help"))
+	//		n = n.next_sibling("help");
+	//}
+
 	//Creating last death image
 	n = conf.child("atlas").child("lastDeath");
 	for (SDL_Rect &r : last_death_image.rect)
@@ -274,12 +286,14 @@ bool j1Gui::Start()
 	Button* settings_button = (Button*)CreateButton({ 0,0 },					 green_button,	SETTINGS,	nullptr, main_menu_ui);
 	Button* exit_button		= (Button*)CreateButton({ 0,0 },					 red_button,	EXIT_GAME,	nullptr, main_menu_ui);
 	credits_button			= (Button*)CreateButton(-main_menu_ui->position + 50, red_button,	CREDITS,	nullptr, main_menu_ui);
+	help_button				= (Button*)CreateButton({main_menu_ui->position.x + main_menu_ui->rect->w + red_button.rect->w + 100, 50}, red_button, HELP, nullptr, main_menu_ui);
 	
 	start_button	 ->movable = true;	start_button	->Center(0, -140);
 	continue_button	 ->movable = true;	continue_button	->Center(0,-70);
 	settings_button	 ->movable = true;	settings_button	->Center();
 	exit_button    	 ->movable = true;	exit_button		->Center(0, 70);
-	credits_button	 ->movable = true;  
+	credits_button	 ->movable = true;
+	help_button		 ->movable = true;
 
 
 	Label* lstart_button	= (Label*)CreateElement(LABEL, iPoint(0, 0), { 0,0,0,0 }, nullptr, "PLAY GAME", NO_ACTION, nullptr, start_button);
@@ -287,12 +301,14 @@ bool j1Gui::Start()
 	Label* lsettings_button = (Label*)CreateElement(LABEL, iPoint(0, 0), { 0,0,0,0 }, nullptr, "SETTINGS",	NO_ACTION, nullptr, settings_button);
 	Label* lexit_button		= (Label*)CreateElement(LABEL, iPoint(0, 0), { 0,0,0,0 }, nullptr, "EXIT GAME", NO_ACTION, nullptr, exit_button);
 	Label* lcredits_button	= (Label*)CreateElement(LABEL, iPoint(0, 0), { 0,0,0,0 }, nullptr, "CREDITS",	NO_ACTION, nullptr, credits_button);
+	Label* lhelp_button		= (Label*)CreateElement(LABEL, iPoint(0, 0), { 0,0,0,0 }, nullptr, "HELP",		NO_ACTION, nullptr, help_button);
 
 	lstart_button	->Center();
 	lcontinue_button->Center();
 	lsettings_button->Center();
 	lexit_button	->Center();
 	lcredits_button	->Center();
+	lhelp_button	->Center();
 
 	//Credits window
 
@@ -306,12 +322,24 @@ bool j1Gui::Start()
 	Label* lcredits			= (Label*)CreateElement(LABEL, iPoint(0, 0), { 0,0,0,0 }, nullptr, "Game developed by Oscar Pons and Oriol Sabate", NO_ACTION, nullptr, credits_ui);
 
 	website_button->Center(0, 70);
-	//credits_to_menu->Center(0, 140);
 	lwebsite_button->Center();
 	lcredits_to_menu->Center();
 	lcredits->Center();
 
 	////////////////////////////////////// END MAIN MENU //////////////////////////////////////
+
+	//////////////////////////////////////HELP WINDOW////////////////////////////////////////
+	help_window = (Image*)CreateElement(IMAGE, iPoint(0, 0), SDL_Rect({ 1000,1000,App->render->viewport.w,App->render->viewport.h }), nullptr, nullptr, NO_ACTION, (j1Module*)App, nullptr, true);
+	windows.add(help_window);
+
+	Image* help = (Image*)CreateElement(IMAGE, iPoint(0, 0), game_over_image.rect[IDLE], &game_over_image, nullptr, NO_ACTION, nullptr, help_window, false);	
+	help_to_menu = (Button*)CreateButton({ main_menu_ui->position.x + main_menu_ui->rect->w + red_button.rect->w + 100, 50 }, red_button, HELP, nullptr, help_window);
+
+	Label* lhelptomenu= (Label*)CreateElement(LABEL, iPoint(0, 0), { 0,0,0,0 }, nullptr, "RETURN", NO_ACTION, nullptr, help_to_menu);
+
+	lhelptomenu->Center();
+	help->Center();
+	/////////////////////////////////////END HELP////////////////////////////////////////////
 
 	////////////////////////////////////// IN GAME UI //////////////////////////////////////
 
@@ -392,7 +420,7 @@ bool j1Gui::Start()
 
 		////////////////////////////////////// SETTINGS //////////////////////////////////////
 
-	settings_window = (Image*)CreateElement(IMAGE, { 0,0}, white_window.rect[IDLE], &white_window, nullptr, NO_ACTION, nullptr, nullptr, false);
+	settings_window = (Image*)CreateElement(IMAGE, { 0,0}, SDL_Rect({ 1000,1000,App->render->viewport.w,App->render->viewport.h }), nullptr, nullptr, NO_ACTION, nullptr, nullptr, false);
 	windows.add(settings_window);
 
 	settings_gui = (Image*)CreateElement(IMAGE, { App->render->viewport.w / 2 - 250, App->render->viewport.h / 2 - 350 }, SDL_Rect({ 1000,1000,500,800 }), nullptr, nullptr, NO_ACTION, nullptr, settings_window, false);
@@ -475,10 +503,14 @@ void j1Gui::CalculateElementsPosition() {
 	settings_gui	->Center();
 	in_game_pause_ui->Center();
 	timersec		->CenterX();
-	credits_button	->initial_pos   = -credits_button->parent->initial_pos+ 50;
+	credits_button	->initial_pos   = -credits_button->parent->initial_pos + 50;
 	credits_to_menu	->initial_pos   = -credits_to_menu->parent->initial_pos + 50;
 	score			->initial_pos.x = in_game_gui->rect[IDLE].w - 100;
 	game_over		->Center();
+	help_button		->initial_pos.x = help_button->parent->initial_pos.x + help_button->parent->rect->w - help_button->rect->w - 50;
+	help_button		->initial_pos.y = help_button->parent->initial_pos.y + 50;
+	help_to_menu	->initial_pos.x	= help_button->parent->initial_pos.x + help_button->parent->rect->w - help_to_menu->rect->w - 50;
+	help_to_menu	->initial_pos.y = help_button->parent->initial_pos.y + 50;
 	//in_game_gui		->CenterX();
 }
 

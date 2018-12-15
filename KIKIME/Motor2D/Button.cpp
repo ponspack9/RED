@@ -63,5 +63,9 @@ void Button::HandleAction()
 		break;
 	case START:
 		App->RestartGame();
+		break;
+	case HELP:
+		App->ShowHelp();
+		break;
 	}
 }
