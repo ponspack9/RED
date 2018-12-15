@@ -114,6 +114,7 @@ bool j1Render::Load(pugi::xml_node& node)
 
 	return true;
 }
+
 bool j1Render::Save(pugi::xml_node& node)
 {
 	LOG("Saving RENDER");

@@ -401,11 +401,10 @@ bool j1EntityManager::PreUpdate()
 	{
 		if (item->data->type != PLAYER)
 		{
-			if (!item->data->alive) {
-				App->audio->PlayFx(dieEnemy);
-				item->data->collider->to_delete = true;
-				entities.del(item);
+			if (!item->data->alive && item->data->type != COIN && !item->data->collider->to_delete) {
 
+				item->data->collider->to_delete = true;
+				//entities.del(item);
 			}
 		}
 	}
@@ -609,12 +608,15 @@ void j1EntityManager::OnCollision(Collider * c1, Collider * c2)
 			Entity* e = FindEntityByCollider(c2);
 			if (e) {
 				e->alive = false;
+				App->audio->PlayFx(dieEnemy);
 			}
-			else {
+			else 
+			{
 				player_ref->alive = false;
 			}
 		}
-		else {
+		else 
+		{
 			player_ref->alive = false;
 		}
 	}
@@ -644,7 +646,7 @@ void j1EntityManager::OnCollision(Collider * c1, Collider * c2)
 				break;
 			}
 			e->picked = true;
-			e->alive = false;
+			//e->alive = false;
 		}
 	}
 	else if (c1->type == COLLIDER_PLAYER && c2->type == COLLIDER_END)
@@ -739,7 +741,8 @@ bool j1EntityManager::Save(pugi::xml_node & node)
 		{
 			pugi::xml_node n = node.append_child("enemy");
 
-			n.append_attribute("type") = item->data->name.GetString();
+			n.append_attribute("name") = item->data->name.GetString(); // for debug purposes
+			n.append_attribute("type") = item->data->type;
 			n.append_attribute("alive") = item->data->alive;
 
 			if (item->data->alive)
@@ -806,6 +809,7 @@ bool j1EntityManager::Load(pugi::xml_node & node)
 			{
 				item->data->position.x = Enode.attribute("x").as_int();
 				item->data->position.y = Enode.attribute("y").as_int();
+				item->data->type = (entityType)Enode.attribute("type").as_uint();
 			}
 			else
 			{
