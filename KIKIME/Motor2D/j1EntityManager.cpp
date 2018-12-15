@@ -404,7 +404,7 @@ bool j1EntityManager::PreUpdate()
 			if (!item->data->alive && !item->data->collider->to_delete) 
 			{
 				item->data->collider->to_delete = true;
-				//entities.del(item);
+				entities.del(item);
 			}
 		}
 	}
