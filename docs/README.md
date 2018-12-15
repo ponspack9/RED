@@ -1,6 +1,14 @@
-![title](https://github.com/urisabate/Kikime/blob/master/KIKIME/Game/gui/redLogo.png)
+![title](https://github.com/urisabate/RED/blob/master/docs/redLogo.png)
 
-https://github.com/urisabate/Kikime
+https://github.com/urisabate/RED
+
+Red is a platformer game where the player, as Red, has to avoid the pursuers black 
+niggas to reach the final door and get to the end and keep avoiding black niggas
+which are very fast and annoying.
+For the Assignment 2 we have implemented its pathfinding and the core object of these 
+enemies among other things.
+
+by Òscar Pons Gallart & Oriol Sabaté Solé
 
 MIT License
 
@@ -24,16 +32,7 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 
-##Overview
-
-Red is a platformer game where the player, as Red, has to avoid the pursuers black 
-niggas to reach the final door and get to the end and keep avoiding black niggas
-which are very fast and annoying.
-For the Assignment 2 we have implemented its pathfinding and the core object of these 
-enemies among other things.
-
-
-<====================================================================>
+***
 
 
 ##Controls
@@ -67,9 +66,8 @@ F10 --------> ENABLE AND DISABLE PLAYER'S GODMODE
 F11 --------> CAMERA FOLLOWS PLAYER/DRAG AND RELEASE MOUSE TO FREELY MOVE THE CAMERA
 
 
-<====================================================================>
+***
 
-by Òscar Pons Gallart & Oriol Sabaté Solé
 
 
 
