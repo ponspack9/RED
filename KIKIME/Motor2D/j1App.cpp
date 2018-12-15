@@ -343,7 +343,8 @@ bool j1App::LoadGameFile()
 		else
 			LOG("...loading process interrupted with error on module %s", (item != NULL) ? item->data->name.GetString() : "unknown -> NULL pointer");
 	}
-
+	scene->player_load_position = entitymanager->player_ref->position;
+	fade->FadeToBlack(scene, scene);
 	want_to_load = false;
 	return ret;
 }
@@ -575,7 +576,7 @@ bool j1App::RestartLevel(int player_lifes)
 
 	gui->last_death->SetVisible();
 	render->ResetCamera();
-	entitymanager->Restart(player_lifes);
+	entitymanager->Restart(player_lifes, { -1,-1 });
 
 	if (Mix_PausedMusic > 0)
 		Mix_ResumeMusic();

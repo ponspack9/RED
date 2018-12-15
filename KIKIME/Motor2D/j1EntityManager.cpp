@@ -333,13 +333,13 @@ bool j1EntityManager::Start()
 	enemyTex = App->tex->Load(enemyPath.GetString());
 	otherTex = App->tex->Load(otherPath.GetString());
 
-	CreateEntities(playerinfo.lifes);
+	CreateEntities(playerinfo.lifes, { -1,-1 });
 
 
 	return true;
 }
 
-void j1EntityManager::CreateEntities(int player_lifes)
+void j1EntityManager::CreateEntities(int player_lifes, iPoint player_pos)
 {
 	LOG("CREATING ENTITIES, COUNT: %d", entities.count());
 	Entity* e = nullptr;
@@ -386,6 +386,9 @@ void j1EntityManager::CreateEntities(int player_lifes)
 			player_ref = (Player*)CreateEntity(PLAYER, pos);
 			player_ref->collider = App->collision->AddCollider(player_ref->rect, COLLIDER_PLAYER, this);
 			player_ref->lifes = player_lifes;
+			if (player_pos.x != -1) {
+				player_ref->position = player_pos;
+			}
 		}
 	}
 	LOG("CREATED ENTITIES, COUNT: %d ACTIVE: %d", entities.count(),App->collision->active);
@@ -516,10 +519,10 @@ void j1EntityManager::CleanEntities()
 }
 
 
-bool j1EntityManager::Restart(int player_lifes)
+bool j1EntityManager::Restart(int player_lifes, iPoint player_pos)
 {
 	CleanEntities();
-	CreateEntities(player_lifes);
+	CreateEntities(player_lifes, player_pos);
 	return true;
 }
 
@@ -757,6 +760,7 @@ bool j1EntityManager::Save(pugi::xml_node & node)
 
 bool j1EntityManager::Load(pugi::xml_node & node)
 {
+	Restart(player_ref->lifes, { -1,-1 });
 	p2List_item<Entity*>* item;
 
 	pugi::xml_node Enode = node.child("enemy");

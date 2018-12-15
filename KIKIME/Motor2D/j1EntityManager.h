@@ -39,9 +39,9 @@ public:
 	bool CleanUp();
 
 	//Controllers
-	void CreateEntities(int player_lifes);
+	void CreateEntities(int player_lifes,iPoint player_pos);
 	void CleanEntities();
-	bool Restart(int player_lifes);
+	bool Restart(int player_lifes, iPoint player_pos);
 
 	bool Save(pugi::xml_node &node);
 	bool Load(pugi::xml_node &node);
