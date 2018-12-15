@@ -105,8 +105,8 @@ bool j1EntityManager::Awake(pugi::xml_node & config)
 
 	//ROLLER IDLE
 
-	n = config.child("enemies").child("enemyanimations").child("Walk");
-	for (n; n; n = n.next_sibling("Walk"))
+	n = config.child("enemies").child("enemyanimations").child("Spikey");
+	for (n; n; n = n.next_sibling("Spikey"))
 	{
 		r.x = n.attribute("x").as_int();
 		r.y = n.attribute("y").as_int();
@@ -609,7 +609,8 @@ void j1EntityManager::OnCollision(Collider * c1, Collider * c2)
 	if (c1->type == COLLIDER_PLAYER && c2->type == COLLIDER_DEATH) {
 		if (player_ref->smashing) {
 			Entity* e = FindEntityByCollider(c2);
-			if (e) {
+			if (e && e->type != ROLLER) 
+			{
 				e->alive = false;
 				App->audio->PlayFx(dieEnemy);
 			}

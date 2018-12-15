@@ -39,7 +39,7 @@ public:
 	bool CleanUp();
 
 	//Controllers
-	void CreateEntities(int player_lifes,iPoint player_pos);
+	void CreateEntities(int player_lifes, iPoint player_pos);
 	void CleanEntities();
 	bool Restart(int player_lifes, iPoint player_pos);
 

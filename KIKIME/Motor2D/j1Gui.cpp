@@ -287,9 +287,7 @@ bool j1Gui::Start()
 	Label* lsettings_button = (Label*)CreateElement(LABEL, iPoint(0, 0), { 0,0,0,0 }, nullptr, "SETTINGS",	NO_ACTION, nullptr, settings_button);
 	Label* lexit_button		= (Label*)CreateElement(LABEL, iPoint(0, 0), { 0,0,0,0 }, nullptr, "EXIT GAME", NO_ACTION, nullptr, exit_button);
 	Label* lcredits_button	= (Label*)CreateElement(LABEL, iPoint(0, 0), { 0,0,0,0 }, nullptr, "CREDITS",	NO_ACTION, nullptr, credits_button);
-	Label* ltitle			= (Label*)CreateElement(LABEL, iPoint(0, 0), { 0,0,0,0 }, nullptr, "RED2",		NO_ACTION, nullptr, main_menu_ui);
 
-	ltitle			->Center(0, -200); // de moment esta aqui
 	lstart_button	->Center();
 	lcontinue_button->Center();
 	lsettings_button->Center();
@@ -394,10 +392,10 @@ bool j1Gui::Start()
 
 		////////////////////////////////////// SETTINGS //////////////////////////////////////
 
-	settings_window = (Image*)CreateElement(IMAGE, { 0,0}, SDL_Rect({ 1000,1000,App->render->viewport.w,App->render->viewport.h }), nullptr, nullptr, NO_ACTION, nullptr, nullptr, false);
+	settings_window = (Image*)CreateElement(IMAGE, { 0,0}, white_window.rect[IDLE], &white_window, nullptr, NO_ACTION, nullptr, nullptr, false);
 	windows.add(settings_window);
 
-	settings_gui = (Image*)CreateElement(IMAGE, { App->render->viewport.w / 2 - 250, App->render->viewport.h / 2 - 400 }, SDL_Rect({ 1000,1000,500,800 }), nullptr, nullptr, NO_ACTION, nullptr, settings_window, false);
+	settings_gui = (Image*)CreateElement(IMAGE, { App->render->viewport.w / 2 - 250, App->render->viewport.h / 2 - 350 }, SDL_Rect({ 1000,1000,500,800 }), nullptr, nullptr, NO_ACTION, nullptr, settings_window, false);
 
 	Button* settings_to_main = (Button*)CreateButton({ 0,0 }, red_button, SETTINGS, nullptr, settings_gui);
 	settings_to_main->Center(0, 70);
@@ -406,7 +404,7 @@ bool j1Gui::Start()
 	lsettings_to_main->Center();
 
 	// MUSIC
-	Button* music_volume_button = (Button*)CreateButton({ 0,-150 }, green_button, NO_ACTION, nullptr, settings_to_main);
+	Button* music_volume_button = (Button*)CreateButton({ 0,-125 }, green_button, NO_ACTION, nullptr, settings_to_main);
 	Button* music_slider = (Button*)CreateButton({ 0,music_volume_button->rect[IDLE].h + 20 }, slider_button, NO_ACTION, nullptr, music_volume_button);
 	Button* music_slider_button = (Button*)CreateButton({ SDL_MIX_MAXVOLUME,0 }, slider_pointer_button, CHANGE_VOLUME, nullptr, music_slider);
 
@@ -419,7 +417,7 @@ bool j1Gui::Start()
 
 
 	//FX Volume
-	Button* fx_volume_button = (Button*)CreateButton({ 0,-300 }, green_button, NO_ACTION, nullptr, settings_to_main);
+	Button* fx_volume_button = (Button*)CreateButton({ 0,-250 }, green_button, NO_ACTION, nullptr, settings_to_main);
 	Button* fx_slider = (Button*)CreateButton({ 0,fx_volume_button->rect[IDLE].h + 20 }, slider_button, NO_ACTION, nullptr, fx_volume_button);
 	Button* fx_slider_button = (Button*)CreateButton({ SDL_MIX_MAXVOLUME,0 }, slider_pointer_button, CHANGE_VOLUME_FX, nullptr, fx_slider);
 

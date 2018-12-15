@@ -1,22 +1,10 @@
 <!-- Config file for the game -->
 <!--
-URGENTEMENTE URGENTE
-  Implement Continue
   
 TO DO
-  Add music sounds (missing fx but implemented the functionality)
-  Add coins in lvl2
-  Make game logo
-  Make website
-  Make video gameplay
-  Save buttons positions(?)
-  Readme
 
-ASK RIC:
-  can main menu be a map with the game logo as background?
-  movement without frame cap
-  
-  
+  Make website ( FET PERO FALTA GAMEPLAY I LA COSA AQUESTA TAN NAZI DE DIR QUE HA FET CADASCU)
+  Save buttons positions(?)  
   
 -->
 <config>
@@ -94,158 +82,35 @@ ASK RIC:
       <heart_blink x="722" y="275" width="28" height="28" />
     </UIanimations>
     <blue file="gui/blueSheet.png">
-      <SubTexture height="36" width="38" y="36" x="380" name="blue_boxCheckmark.png"/>
-      <SubTexture height="36" width="38" y="0" x="380" name="blue_boxCross.png"/>
-      <SubTexture height="36" width="36" y="210" x="386" name="blue_boxTick.png"/>
       <button height="48" width="189" y="94" x="0" name="blue_button00.png"/>
       <button height="44" width="189" y="49" x="190" name="blue_button01.png"/>
       <button height="48" width="189" y="0" x="190" name="blue_button02.png"/>
       <button height="48" width="189" y="0" x="0" name="blue_button04.png"/>
-      <SubTexture height="45" width="190" y="49" x="0" name="blue_button03.png"/>
-      <SubTexture height="45" width="190" y="192" x="0" name="blue_button05.png"/>
-      <SubTexture height="49" width="49" y="194" x="288" name="blue_button06.png"/>
-      <SubTexture height="49" width="49" y="194" x="239" name="blue_button07.png"/>
-      <SubTexture height="45" width="49" y="194" x="190" name="blue_button08.png"/>
-      <SubTexture height="49" width="49" y="94" x="339" name="blue_button09.png"/>
-      <SubTexture height="45" width="49" y="94" x="290" name="blue_button10.png"/>
-      <SubTexture height="49" width="49" y="184" x="337" name="blue_button11.png"/>
-      <SubTexture height="45" width="49" y="139" x="290" name="blue_button12.png"/>
-      <SubTexture height="49" width="190" y="143" x="0" name="blue_button13.png"/>
-      <SubTexture height="20" width="21" y="233" x="337" name="blue_checkmark.png"/>
-      <SubTexture height="36" width="36" y="174" x="386" name="blue_circle.png"/>
-      <SubTexture height="18" width="18" y="237" x="0" name="blue_cross.png"/>
-      <SubTexture height="100" width="100" y="94" x="190" name="blue_panel.png"/>
-      <SubTexture height="42" width="28" y="72" x="416" name="blue_sliderDown.png"/>
-      <SubTexture height="31" width="39" y="143" x="339" name="blue_sliderLeft.png"/>
-      <SubTexture height="31" width="39" y="143" x="378" name="blue_sliderRight.png"/>
-      <SubTexture height="42" width="28" y="72" x="388" name="blue_sliderUp.png"/>
-      <SubTexture height="17" width="17" y="239" x="18" name="blue_tick.png"/>
     </blue>
-
     <red file="gui/redSheet.png">
-      <SubTexture height="36" width="38" y="0" x="380" name="red_boxCheckmark.png"/>
-      <SubTexture height="36" width="38" y="36" x="380" name="red_boxCross.png"/>
-      <SubTexture height="36" width="36" y="178" x="386" name="red_boxTick.png"/>
-      <SubTexture height="45" width="190" y="0" x="0" name="red_button00.png"/>
-      <SubTexture height="45" width="190" y="94" x="0" name="red_button02.png"/>
       <button height="48" width="189" y="0" x="190" name="red_button11.png"/>
       <button height="44" width="189" y="188" x="0" name="red_button12.png"/>
       <button height="48" width="189" y="139" x="0" name="red_button13.png"/>
       <button height="48" width="189" y="45" x="0" name="red_button01.png"/>
-      <fdgafdzsb height="49" width="49" y="188" x="337" name="red_button03.png"/>
-      <vsdds height="49" width="49" y="98" x="339" name="red_button04.png"/>
-      <SubTexture height="45" width="49" y="98" x="290" name="red_button05.png"/>
-      <SubTexture height="49" width="49" y="198" x="288" name="red_button06.png"/>
-      <SubTexture height="45" width="49" y="143" x="290" name="red_button07.png"/>
-      <SubTexture height="49" width="49" y="198" x="239" name="red_button08.png"/>
-      <SubTexture height="45" width="49" y="198" x="190" name="red_button09.png"/>
-      <SubTexture height="49" width="190" y="49" x="190" name="red_button10.png"/>
       <tick height="20" width="21" y="233" x="0" name="red_checkmark.png"/>
-      <SubTexture height="36" width="36" y="214" x="386" name="red_circle.png"/>
-      <SubTexture height="18" width="18" y="233" x="21" name="red_cross.png"/>
-      <SubTexture height="100" width="100" y="98" x="190" name="red_panel.png"/>
-      <SubTexture height="42" width="28" y="72" x="388" name="red_sliderDown.png"/>
-      <SubTexture height="31" width="39" y="147" x="339" name="red_sliderLeft.png"/>
-      <SubTexture height="31" width="39" y="147" x="378" name="red_sliderRight.png"/>
-      <SubTexture height="42" width="28" y="72" x="416" name="red_sliderUp.png"/>
-      <SubTexture height="17" width="17" y="233" x="39" name="red_tick.png"/>
     </red>
     <green file="gui/greenSheet.png">
-      <SubTexture height="36" width="38" y="0" x="380" name="green_boxCheckmark.png"/>
-      <SubTexture height="36" width="38" y="36" x="380" name="green_boxCross.png"/>
       <slider_pointer height="36" width="36" y="220" x="386" name="green_boxTick.png"/>
       <button height="48" width="189" y="0" x="0" name="green_button00.png"/>
       <button height="44" width="189" y="49" x="0" name="green_button01.png"/>
       <button height="48" width="189" y="94" x="0" name="green_button02.png"/>
       <button height="48" width="189" y="0" x="190" name="green_button04.png"/>
-      <SubTexture height="45" width="190" y="192" x="0" name="green_button03.png"/>
-      <SubTexture height="45" width="190" y="49" x="190" name="green_button05.png"/>
-      <SubTexture height="49" width="49" y="184" x="337" name="green_button06.png"/>
-      <SubTexture height="49" width="49" y="94" x="339" name="green_button07.png"/>
-      <SubTexture height="45" width="49" y="139" x="290" name="green_button08.png"/>
-      <SubTexture height="49" width="49" y="194" x="190" name="green_button09.png"/>
-      <SubTexture height="45" width="49" y="94" x="290" name="green_button10.png"/>
-      <SubTexture height="49" width="49" y="194" x="288" name="green_button11.png"/>
-      <SubTexture height="45" width="49" y="194" x="239" name="green_button12.png"/>
-      <SubTexture height="49" width="190" y="143" x="0" name="green_button13.png"/>
-      <SubTexture height="20" width="21" y="233" x="337" name="green_checkmark.png"/>
       <slider_pointer height="36" width="36" y="184" x="386" name="green_circle.png"/>
-      <SubTexture height="18" width="18" y="237" x="0" name="green_cross.png"/>
-      <SubTexture height="100" width="100" y="94" x="190" name="green_panel.png"/>
-      <SubTexture height="42" width="28" y="72" x="388" name="green_sliderDown.png"/>
-      <SubTexture height="31" width="39" y="143" x="378" name="green_sliderLeft.png"/>
-      <SubTexture height="31" width="39" y="143" x="339" name="green_sliderRight.png"/>
-      <SubTexture height="42" width="28" y="72" x="416" name="green_sliderUp.png"/>
       <slider height="36" width="164" y="144" x="339" name="green_tick.png"/>
     </green>
     <grey file="gui/greySheet.png">
-      <SubTexture height="10" width="15" y="498" x="78" name="grey_arrowDownGrey.png"/>
-      <SubTexture height="10" width="15" y="496" x="123" name="grey_arrowDownWhite.png"/>
-      <SubTexture height="10" width="15" y="498" x="108" name="grey_arrowUpGrey.png"/>
-      <SubTexture height="10" width="15" y="498" x="93" name="grey_arrowUpWhite.png"/>
-      <SubTexture height="36" width="38" y="433" x="147" name="grey_box.png"/>
-      <SubTexture height="36" width="38" y="469" x="147" name="grey_boxCheckmark.png"/>
-      <SubTexture height="36" width="38" y="433" x="185" name="grey_boxCross.png"/>
-      <SubTexture height="36" width="36" y="198" x="190" name="grey_boxTick.png"/>
-      <button height="48" width="189" y="237" x="0" name="grey_button15.png"/>
-      <button height="44" width="189" y="143" x="0" name="grey_button00.png"/>
-      <button height="48" width="189" y="188" x="0" name="grey_button01.png"/>
-      <button height="48" width="189" y="331" x="0" name="grey_button03.png"/>
-      <SubTexture height="45" width="190" y="98" x="0" name="grey_button02.png"/>
-      <SubTexture height="45" width="190" y="286" x="0" name="grey_button04.png"/>
-      <SubTexture height="49" width="195" y="0" x="0" name="grey_button05.png"/>
-      <SubTexture height="49" width="191" y="49" x="0" name="grey_button06.png"/>
-      <SubTexture height="49" width="49" y="0" x="195" name="grey_button07.png"/>
-      <SubTexture height="49" width="49" y="49" x="240" name="grey_button08.png"/>
-      <SubTexture height="45" width="49" y="433" x="98" name="grey_button09.png"/>
-      <SubTexture height="49" width="49" y="49" x="191" name="grey_button10.png"/>
-      <SubTexture height="45" width="49" y="433" x="0" name="grey_button11.png"/>
-      <SubTexture height="49" width="49" y="0" x="244" name="grey_button12.png"/>
-      <SubTexture height="45" width="49" y="433" x="49" name="grey_button13.png"/>
-      <SubTexture height="49" width="190" y="384" x="0" name="grey_button14.png"/>
-      <SubTexture height="20" width="21" y="478" x="99" name="grey_checkmarkGrey.png"/>
-      <SubTexture height="20" width="21" y="478" x="78" name="grey_checkmarkWhite.png"/>
-      <SubTexture height="36" width="36" y="469" x="185" name="grey_circle.png"/>
-      <SubTexture height="18" width="18" y="478" x="120" name="grey_crossGrey.png"/>
-      <SubTexture height="18" width="18" y="318" x="190" name="grey_crossWhite.png"/>
-      <SubTexture height="100" width="100" y="98" x="190" name="grey_panel.png"/>
-      <SubTexture height="42" width="28" y="234" x="190" name="grey_sliderDown.png"/>
-      <SubTexture height="10" width="8" y="478" x="138" name="grey_sliderEnd.png"/>
-      <SubTexture height="4" width="190" y="380" x="0" name="grey_sliderHorizontal.png"/>
-      <SubTexture height="31" width="39" y="478" x="0" name="grey_sliderLeft.png"/>
-      <SubTexture height="31" width="39" y="478" x="39" name="grey_sliderRight.png"/>
-      <SubTexture height="42" width="28" y="276" x="190" name="grey_sliderUp.png"/>
-      <SubTexture height="100" width="4" y="318" x="208" name="grey_sliderVertical.png"/>
-      <SubTexture height="17" width="17" y="336" x="190" name="grey_tickGrey.png"/>
-      <SubTexture height="17" width="17" y="353" x="190" name="grey_tickWhite.png"/>
+      <button height="44" width="189" y="98" x="0" name="grey_button02.png"/>
     </grey>
     <yellow file="gui/yellowSheet.png">
-      <SubTexture height="36" width="38" y="36" x="380" name="yellow_boxCheckmark.png"/>
-      <SubTexture height="36" width="38" y="0" x="380" name="yellow_boxCross.png"/>
-      <SubTexture height="36" width="36" y="174" x="386" name="yellow_boxTick.png"/>
-      <SubTexture height="45" width="190" y="49" x="0" name="yellow_button03.png"/>
-      <SubTexture height="45" width="190" y="0" x="190" name="yellow_button01.png"/>
       <button height="48" width="189" y="45" x="190" name="yellow_button00.png"/>
       <button height="44" width="189" y="94" x="0" name="yellow_button05.png"/>
       <button height="48" width="189" y="188" x="0" name="yellow_button02.png"/>
       <button height="48" width="189" y="139" x="0" name="yellow_button04.png"/>
-      <SubTexture height="49" width="49" y="194" x="190" name="yellow_button06.png"/>
-      <SubTexture height="49" width="49" y="194" x="239" name="yellow_button07.png"/>
-      <SubTexture height="45" width="49" y="143" x="290" name="yellow_button08.png"/>
-      <SubTexture height="49" width="49" y="94" x="290" name="yellow_button09.png"/>
-      <SubTexture height="45" width="49" y="188" x="337" name="yellow_button10.png"/>
-      <SubTexture height="49" width="49" y="94" x="339" name="yellow_button11.png"/>
-      <SubTexture height="45" width="49" y="194" x="288" name="yellow_button12.png"/>
-      <SubTexture height="49" width="190" y="0" x="0" name="yellow_button13.png"/>
-      <SubTexture height="20" width="21" y="233" x="337" name="yellow_checkmark.png"/>
-      <SubTexture height="36" width="36" y="210" x="386" name="yellow_circle.png"/>
-      <SubTexture height="18" width="18" y="237" x="0" name="yellow_cross.png"/>
-      <SubTexture height="100" width="100" y="94" x="190" name="yellow_panel.png"/>
-      <SubTexture height="42" width="28" y="72" x="388" name="yellow_sliderDown.png"/>
-      <SubTexture height="31" width="39" y="143" x="339" name="yellow_sliderLeft.png"/>
-      <SubTexture height="31" width="39" y="143" x="378" name="yellow_sliderRight.png"/>
-      <SubTexture height="42" width="28" y="72" x="416" name="yellow_sliderUp.png"/>
-      <SubTexture height="17" width="17" y="237" x="18" name="yellow_tick.png"/>
     </yellow>    
   </gui>
 
@@ -283,9 +148,6 @@ ASK RIC:
         <death height="46" width="39" y="60" x="173"  name="player_24"/>
         <god height="40" width="40" y="221" x="123"   name="player_52"/>
         <smash height="50" width="39" y="0" x="125"   name="players_30"/>
-        <SubTexture height="34" width="56" y="96" x="0"     name="player_40"/>
-        <SubTexture height="42" width="49" y="48" x="66"    name="player_16"/>
-        <SubTexture height="38" width="64" y="0" x="0"      name="player_01"/>
       </playeranimations>
     </player>
     <enemies>
@@ -307,7 +169,7 @@ ASK RIC:
         <FloatIdle   name="enemyFloating_3.png"	  x="96"	y="32"	width="32"	height="32"/>
         <FloatFollow   name="enemyFloating_1.png"	x="64"	y="32"	width="32"	height="32"/>
         <FloatFollow   name="enemyFloating_4.png"	x="96"	y="0"	  width="32"	height="32"/>
-        <FloatDead   name="enemyFloating_2.png"	x="128"	y="0"	width="32"	height="32"/>
+        <FloatDead   name="enemyFloating_2.png"	x="128"	y="0"   	width="32"	height="32"/>
         <FlyAlt  name="enemyFlyingAlt_1.png"	x="0"	y="203"	      width="32"	height="32"/>
         <FlyAlt  name="enemyFlyingAlt_2.png"	x="0"	y="122"	      width="32"	height="32"/>
         <FlyAlt  name="enemyFlyingAlt_3.png"	x="53"	y="203"	    width="32"	height="32"/>
@@ -316,8 +178,8 @@ ASK RIC:
         <Fly     name="enemyFlying_2.png"	x="0"	y="44"	          width="32"	height="32"/>
         <Fly     name="enemyFlying_3.png"	x="0"	y="0"	            width="32"	height="32"/>
         <Fly     name="enemyFlying_4.png"	x="0"	y="147"	          width="32"	height="32"/>
-        <Spikey  name="enemySpikey_1.png"	x="0"	y="32"	          width="32"	height="32"/>
-        <Spikey  name="enemySpikey_2.png"	x="0"	y="0"	        width="32"	height="32"/>
+       <!-- <Spikey  name="enemySpikey_1.png"	x="0"	y="32"	          width="32"	height="32"/>-->
+        <Spikey  name="enemySpikey_2.png"	x="0"	y="0"	            width="32"	height="32"/>
         <!--<Spikey  name="enemySpikey_3.png"	x="153"	y="41"	        width="32"	height="32"/>
         <Spikey  name="enemySpikey_4.png"	x="151"	y="196"	        width="32"	height="32"/>-->
         <Swim    name="enemySwimming_1.png"	x="65"	y="105"	      width="32"	height="32"/>
