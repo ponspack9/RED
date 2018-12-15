@@ -10,6 +10,9 @@ enemies among other things.
 
 by Òscar Pons Gallart & Oriol Sabaté Solé
 
+<img src="TeamPhoto.jpg" alt="Us" height="976" width="1968">
+
+
 MIT License
 
 Copyright (c) [2018] [Òscar Pons Gallart and Oriol Sabaté Solé]
