@@ -3,6 +3,7 @@
 
 #include "j1Module.h"
 #include "j1Timer.h"
+#include "p2Point.h"
 
 struct SDL_Texture;
 
@@ -43,6 +44,8 @@ public:
 	bool		game_over_transition;
 	p2List_item<p2SString>* current_track;
 	p2List_item<p2SString>* current_fx;
+
+	iPoint			player_load_position;
 
 private:
 

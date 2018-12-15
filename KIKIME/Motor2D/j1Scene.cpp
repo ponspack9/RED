@@ -13,6 +13,7 @@ j1Scene::j1Scene() : j1Module()
 	name.create("scene");
 	first_load = true;
 	game_over_transition = false;
+	player_load_position = { -1,-1 };
 	//is_load = false;
 }
 
@@ -45,7 +46,8 @@ bool j1Scene::Start()
 	}
 	else {
 		//if (!is_load)
-		App->entitymanager->Restart(App->entitymanager->playerinfo.lifes);
+		App->entitymanager->Restart(App->entitymanager->playerinfo.lifes,player_load_position);
+		player_load_position = { -1,-1 };
 		App->gui->game_over->SetInvisible();
 
 		LOG("ENTITY RESTART");
@@ -131,8 +133,10 @@ bool j1Scene::Load(pugi::xml_node & node)
 {
 	LOG("Loading SCENE");	 
 
-	App->map->current_map->data = node.child("current").attribute("current_map").as_string();
+	//App->map->current_map->data = node.child("current").attribute("current_map").as_string();
+	int index = App->map->maps_path.find(node.child("current").attribute("current_map").as_string());
 
+	App->map->current_map = App->map->maps_path.At(index);
 	//App->map->CleanMap();
 	//App->scene->Start();
 
