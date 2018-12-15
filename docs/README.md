@@ -6,13 +6,16 @@ Overview
 https://github.com/urisabate/RED
 
 Red is a platformer game where the player, as Red, has to avoid the pursuers black 
-niggas to reach the final door and get to the end and keep avoiding black niggas
+niggas to reach the final door and get to the end and keep on avoiding black niggas
 which are very fast and annoying.
-For the Assignment 2 we have implemented its pathfinding and the core object of these 
-enemies among other things.
 
-by Òscar Pons Gallart & Oriol Sabaté Solé
 
+
+Red is developed by a couple of CITM's students for a Game Development subject
+
+[Òscar Pons Gallart](https://github.com/ponspack9)
+
+[Oriol Sabaté Solé](https://github.com/urisabate)
 ***
 
 <img src="TeamPhoto.jpg" alt="Us" width="576" height="868">
@@ -54,8 +57,13 @@ Debug Keys
 **F11** --------> CAMERA FOLLOWS PLAYER/DRAG AND RELEASE MOUSE TO FREELY MOVE THE CAMERA
 
 ***
+MIT License
+===========
 
+Copyright (c) [2018]
 
+Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
 
+The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 
-
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
