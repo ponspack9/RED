@@ -691,7 +691,6 @@ void j1EntityManager::ChangeUIAnimation(Coin* c)
 		App->gui->heart_ref->current_animation = &App->gui->heart_ref->heart_blink;
 		App->audio->PlayFx(lifeup);
 	}
-		//heart_list.end->data->current_animation = &App->gui->heart_ref->heart_blink;
 
 	App->gui->anim_timer.Start();
 }
