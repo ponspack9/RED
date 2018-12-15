@@ -41,7 +41,7 @@ public:
 	//Controllers
 	void CreateEntities(int player_lifes, iPoint player_pos);
 	void CleanEntities();
-	bool Restart(int player_lifes, iPoint player_pos);
+	bool Restart(int player_lifes);
 
 	bool Save(pugi::xml_node &node);
 	bool Load(pugi::xml_node &node);

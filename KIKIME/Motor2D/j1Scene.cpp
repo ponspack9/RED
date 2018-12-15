@@ -44,7 +44,7 @@ bool j1Scene::Start()
 	}
 	else {
 		App->gui->CheckContinue();
-		App->entitymanager->Restart(App->entitymanager->playerinfo.lifes, { -1,-1 });
+		App->entitymanager->Restart(App->entitymanager->playerinfo.lifes);
 		App->gui->game_over->SetInvisible();
 
 		LOG("ENTITY RESTART");

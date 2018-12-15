@@ -19,6 +19,8 @@ j1EntityManager::j1EntityManager()
 
 	green_counter = blue_counter = score = aux_score = 0;
 	score_powUp = 100;	
+
+	player_load_position = { -1,-1 };
 }
 
 j1EntityManager::~j1EntityManager()
@@ -386,7 +388,7 @@ void j1EntityManager::CreateEntities(int player_lifes, iPoint player_pos)
 			player_ref = (Player*)CreateEntity(PLAYER, pos);
 			player_ref->collider = App->collision->AddCollider(player_ref->rect, COLLIDER_PLAYER, this);
 			player_ref->lifes = player_lifes;
-			if (player_pos.x != -1) {
+			if (player_pos.x != -1 && player_pos.y != -1) {
 				player_ref->position = player_pos;
 			}
 		}
@@ -519,7 +521,7 @@ void j1EntityManager::CleanEntities()
 }
 
 
-bool j1EntityManager::Restart(int player_lifes, iPoint player_pos)
+bool j1EntityManager::Restart(int player_lifes)
 {
 	CleanEntities();
 	CreateEntities(player_lifes, player_load_position);
@@ -762,7 +764,7 @@ bool j1EntityManager::Save(pugi::xml_node & node)
 
 bool j1EntityManager::Load(pugi::xml_node & node)
 {
-	Restart(player_ref->lifes, { -1,-1 });
+	Restart(player_ref->lifes);
 	p2List_item<Entity*>* item;
 
 	pugi::xml_node Enode = node.child("enemy");

@@ -526,7 +526,7 @@ bool j1App::RestartGame()
 	map->current_map = App->map->maps_path.start->next;
 	scene->current_track = audio->tracks_path.start->next;
 
-	fade->FadeToBlack(App->scene, App->scene);
+	fade->FadeToBlack(scene, scene);
 
 	in_game_timer.sec = 0;
 	in_game_timer.min = 0;
@@ -577,7 +577,7 @@ bool j1App::RestartLevel(int player_lifes)
 
 	gui->last_death->SetVisible();
 	render->ResetCamera();
-	entitymanager->Restart(player_lifes, { -1,-1 });
+	entitymanager->Restart(player_lifes);
 
 	if (Mix_PausedMusic > 0)
 		Mix_ResumeMusic();
