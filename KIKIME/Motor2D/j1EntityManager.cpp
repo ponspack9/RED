@@ -401,8 +401,8 @@ bool j1EntityManager::PreUpdate()
 	{
 		if (item->data->type != PLAYER)
 		{
-			if (!item->data->alive && item->data->type != COIN && !item->data->collider->to_delete) {
-
+			if (!item->data->alive && !item->data->collider->to_delete) 
+			{
 				item->data->collider->to_delete = true;
 				//entities.del(item);
 			}
@@ -646,7 +646,7 @@ void j1EntityManager::OnCollision(Collider * c1, Collider * c2)
 				break;
 			}
 			e->picked = true;
-			//e->alive = false;
+			e->alive = false;
 		}
 	}
 	else if (c1->type == COLLIDER_PLAYER && c2->type == COLLIDER_END)
