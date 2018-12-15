@@ -756,4 +756,5 @@ void j1Map::CleanMap()
 
 	map_doc.reset();
 	map_loaded = false;
+	LOG("CLEANING MAP DONE");
 }

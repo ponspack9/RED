@@ -20,14 +20,14 @@ ASK RIC:
   
 -->
 <config>
-  <app framerate_cap ="60">
+  <app framerate_cap ="30">
     <title>RED2</title>
     <organization>ORISO</organization>
   </app>
   <debug>
     <debugtexture>maps/path3.png</debugtexture>
     <nottexture>maps/not.png</nottexture>
-    <showlogic value="true"/>
+    <showlogic value="false"/>
     <free_camera value="false"/>
   </debug>
 

@@ -12,13 +12,7 @@
  <imagelayer name="bg_fade">
   <image source="bgMainMenufade.png" width="3200" height="1280"/>
   <properties>
-   <property name="parallax_speed" type="float" value="0.5"/>
-  </properties>
- </imagelayer>
- <imagelayer name="bg_buildings">
-  <image source="bgMainMenu_buildings.png" width="3200" height="1280"/>
-  <properties>
-   <property name="parallax_speed" type="float" value="0.8"/>
+   <property name="parallax_speed" type="float" value="1"/>
   </properties>
  </imagelayer>
  <layer name="Platforms" width="100" height="40">
@@ -4026,7 +4020,7 @@
   </data>
  </layer>
  <objectgroup name="Collider_start">
-  <object id="1103" x="1110.33" y="336.667" width="60" height="62.6667"/>
+  <object id="1103" x="1564.88" y="242.728" width="60" height="62.6667"/>
  </objectgroup>
  <layer name="Walkability" width="100" height="40">
   <data>
