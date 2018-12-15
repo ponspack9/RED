@@ -90,6 +90,8 @@ public:
 	int				blue_counter;
 	int				green_counter;
 
+	iPoint			player_load_position;
+
 	p2List<Mix_Chunk*> entities_fx;
 };
 

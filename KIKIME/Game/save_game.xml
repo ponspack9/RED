@@ -6,19 +6,37 @@
 	<audio />
 	<map />
 	<scene>
-		<current current_map="MainMenu.tmx" />
-		<timer seconds="0" minutes="0" />
+		<current current_map="MapLvl1.tmx" />
+		<timer seconds="23" minutes="0" />
 	</scene>
 	<debug />
 	<collisions />
 	<entitymanager bluespicked="0" greenspicked="0" score="0">
-		<player x="1564" y="906" speed_Y="400" lives="1" />
+		<player x="361" y="654" speed_Y="400" lives="3" />
+		<enemy name="floater" type="0" alive="true" x="832" y="384" />
+		<enemy name="floater" type="0" alive="true" x="1344" y="416" />
+		<enemy name="roller" type="1" alive="true" x="2752" y="608" />
+		<enemy name="roller" type="1" alive="true" x="1410" y="674" />
+		<enemy name="floater" type="0" alive="true" x="576" y="352" />
+		<enemy name="floater" type="0" alive="true" x="2368" y="352" />
+		<enemy name="floater" type="0" alive="true" x="1792" y="736" />
+		<enemy name="floater" type="0" alive="true" x="2944" y="416" />
+		<coins x="54" y="782" coin_type="0" picked="false" />
+		<coins x="512" y="736" coin_type="0" picked="false" />
+		<coins x="1120" y="736" coin_type="1" picked="false" />
+		<coins x="1408" y="960" coin_type="0" picked="false" />
+		<coins x="1455" y="1167" coin_type="2" picked="false" />
+		<coins x="2402" y="544" coin_type="0" picked="false" />
+		<coins x="2832" y="692" coin_type="1" picked="false" />
+		<coins x="1712" y="532" coin_type="2" picked="false" />
+		<coins x="1710" y="754" coin_type="1" picked="false" />
+		<coins x="736" y="320" coin_type="2" picked="false" />
 	</entitymanager>
 	<pathfinding />
 	<fonts />
 	<gui />
 	<fade />
 	<renderer>
-		<camera x="-1191" y="-626" />
+		<camera x="0" y="-374" />
 	</renderer>
 </save>

@@ -24,6 +24,8 @@ public:
 	// Call before first frame
 	bool Start();
 
+	void CheckContinue();
+
 	void PrepareMainMenuGui();
 
 	void PrepareInGameGui();
@@ -74,7 +76,7 @@ public:
 	Image*			blue_ref;
 	Image*			heart_ref;
 
-
+	Button*			continue_button;
 	Button*			credits_button;
 	Button*			credits_to_menu;
 	Label*			score;

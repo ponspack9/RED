@@ -343,10 +343,19 @@ bool j1App::LoadGameFile()
 		else
 			LOG("...loading process interrupted with error on module %s", (item != NULL) ? item->data->name.GetString() : "unknown -> NULL pointer");
 	}
-	scene->player_load_position = entitymanager->player_ref->position;
+	entitymanager->player_load_position = entitymanager->player_ref->position;
 	fade->FadeToBlack(scene, scene);
 	want_to_load = false;
 	return ret;
+}
+
+
+bool j1App::ExistsSaveGame()
+{
+	pugi::xml_document		save_game_doc;
+	pugi::xml_parse_result	result = LoadXML(save_game_doc, load_path.GetString());
+
+	return result != NULL;
 }
 
 // Call modules before each loop iteration
@@ -463,26 +472,18 @@ float j1App::GetTimerReadSec()
 
 void j1App::LoadGame()
 {
-	// we should be checking if that file actually exist
-	// from the "GetSaveGames" list
+	if (!ExistsSaveGame()) return;
+
 	want_to_load = true;
 }
 
 void j1App::SaveGame() const
 {
-	// we should be checking if that file actually exist
-	// from the "GetSaveGames" list ... should we overwrite ?
-	//p2List<p2SString> saved_games;
-	//GetSaveGames(saved_games);
+	if (map->current_map == map->maps_path.start) return;
 
 	want_to_save = true;
 }
 
-void j1App::GetSaveGames(p2List<p2SString>& list_to_fill) const
-{
-	// need to add functionality to file_system module for this to work
-
-}
 
 void j1App::GoToMainMenu() 
 {

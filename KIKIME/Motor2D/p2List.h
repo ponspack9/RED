@@ -19,8 +19,8 @@ struct p2List_item
 		next = prev = NULL;
 	}
 
-	~p2List_item()
-	{}
+	//~p2List_item()
+	//{}
 };
 
 /**
