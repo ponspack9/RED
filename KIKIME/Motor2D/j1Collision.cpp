@@ -124,7 +124,7 @@ void j1Collision::Draw()
 			}
 	}
 
-	//DrawPolylines();
+	DrawPolylines();
 }
 
 // Called before quitting
@@ -135,7 +135,7 @@ bool j1Collision::CleanUp()
 
 	CleanColliders();
 
-	//CleanPolylines();
+	CleanPolylines();
 
 	return true;
 }
@@ -175,7 +175,7 @@ bool Collider::CheckCollision(const SDL_Rect& r) const
 }
 
 /// POLYLINES -------------------------------------------------
-/*
+
 //void j1Collision::DrawPolylines() {
 //	SDL_SetRenderDrawColor(App->render->renderer, 255, 0, 0, SDL_ALPHA_OPAQUE);
 //
@@ -190,58 +190,71 @@ bool Collider::CheckCollision(const SDL_Rect& r) const
 //		}
 //	}
 //}
+void j1Collision::DrawPolylines() {
+	SDL_SetRenderDrawColor(App->render->renderer, 0, 0, 255, SDL_ALPHA_OPAQUE);
 
-//void j1Collision::AddPolyLine(int startX, int startY, const char* line)
-//{
-//	if (n_lines >= MAX_LINES) {
-//		LOG("MAX LINES ACHIEVED");
-//		return;
-//	}
-//	char* buffer = new char[6];
-//	int point;
-//	int j = 0;
-//	int it = 0;
-//
-//	polylines[n_lines][it++] = startX;
-//	polylines[n_lines][it++] = startY;
-//
-//	for (uint i = 0; i <= strlen(line); i++) {
-//		char k = line[i];
-//
-//		if (k == ',') {				// Had finished parsing x point, time to add it
-//			polylines[n_lines][it++] = atoi(buffer);
-//			while (j > 0) {				// Reset buffer and j
-//				buffer[--j] = 0;
-//			}
-//		}
-//		else if (k == ' ' || k == '\0') {			// Had finished parsing y point, time to add it
-//			polylines[n_lines][it++] = atoi(buffer);// +offy;
-//			while (j > 0) {				// Reset buffer and j
-//				buffer[--j] = 0;
-//			}
-//		}
-//		else {							// Parsing number
-//			buffer[j++] = line[i];
-//		}
-//	}
-//	n_lines_col[n_lines] = it - 1;
-//	n_lines += 1;
-//	
-//}
+	for (int i = 0; i < n_lines; i++) {
+		int offx = App->render->camera.x;
+		int offy = App->render->camera.y;
+
+		for (int j = 0; j <= n_lines_col[i]; j += 2) {
+			SDL_RenderDrawLine(App->render->renderer,
+				polylines[i][j] + offx, polylines[i][j + 1] + offy,
+				polylines[i][j + 2] + offx, polylines[i][j + 3] + offy);
+		}
+	}
+}
+
+void j1Collision::AddPolyLine(int startX, int startY, const char* line)
+{
+	if (n_lines >= MAX_LINES) {
+		LOG("MAX LINES ACHIEVED");
+		return;
+	}
+	char* buffer = new char[6];
+	int point;
+	int j = 0;
+	int it = 0;
+
+	polylines[n_lines][it++] = startX;
+	polylines[n_lines][it++] = startY;
+
+	for (uint i = 4; i <= strlen(line); i++) {
+		char k = line[i];
+
+		if (k == ',') {				// Had finished parsing x point, time to add it
+			polylines[n_lines][it++] = atoi(buffer) + startX;
+			while (j > 0) {				// Reset buffer and j
+				buffer[--j] = 0;
+			}
+		}
+		else if (k == ' ' || k == '\0') {			// Had finished parsing y point, time to add it
+			polylines[n_lines][it++] = atoi(buffer) + startY;// +offy;
+			while (j > 0) {				// Reset buffer and j
+				buffer[--j] = 0;
+			}
+		}
+		else {							// Parsing number
+			buffer[j++] = line[i];
+		}
+	}
+	n_lines_col[n_lines] = (it%2==0)?it/2:it/2 +1;
+	n_lines += 1;
+	RELEASE_ARRAY(buffer);
+	
+}
+
+void j1Collision::CleanPolylines()
+{
+	n_lines = 0;
+	for (int i = 0; i < n_lines; ++i) {
+		for (int j = 0; j < n_lines_col[i]; ++j)
+			polylines[i][j] = 0;
+	}
+}
 
 
-
-
-
-//void j1Collision::CleanPolylines()
-//{
-//	n_lines = 0;
-//	for (int i = 0; i < n_lines; ++i) {
-//		for (int j = 0; j < n_lines_col[i]; ++j)
-//			polylines[i][j] = 0;
-//	}
-//}
-
+/*
 //bool Collider::CheckRectLineCollision(int x1, int y1, int x2, int y2) const
 //{
 //	// check if the line has hit any of the rectectangle's sides

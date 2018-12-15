@@ -15,7 +15,7 @@ TO DO
   <debug>
     <debugtexture>maps/path3.png</debugtexture>
     <nottexture>maps/not.png</nottexture>
-    <showlogic value="false"/>
+    <showlogic value="true"/>
     <free_camera value="false"/>
   </debug>
 

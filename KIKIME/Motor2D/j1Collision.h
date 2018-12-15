@@ -78,16 +78,16 @@ public:
 	bool CleanUp();
 
 	void CleanColliders();
-	//void CleanPolylines();
+	void CleanPolylines();
 
 	Collider* AddCollider(SDL_Rect rect, COLLIDER_TYPE type, j1Module* callback = nullptr);
-	//void AddPolyLine(int startX, int startY, const char * c);
+	void AddPolyLine(int startX, int startY, const char * c);
 	void Draw();
-	//void DrawPolylines();
+	void DrawPolylines();
 
-	//int polylines[MAX_LINES][MAX_LINE_LENGTH];
-	//int n_lines = 0;
-	//int n_lines_col[MAX_LINES];
+	int polylines[MAX_LINES][MAX_LINE_LENGTH];
+	int n_lines = 0;
+	int n_lines_col[MAX_LINES];
 public:
 
 	Collider * colliders[MAX_COLLIDERS];

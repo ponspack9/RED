@@ -275,9 +275,9 @@ bool j1Map::Load(const char* file_name)
 				//It's a Polyline
 
 				//Deal with the string to find each point
-				//const char* c = polyobject.attribute("points").as_string();
+				const char* c = polyobject.attribute("points").as_string();
 
-				//App->collision->AddPolyLine(object.attribute("x").as_int(), object.attribute("y").as_int(),c);
+				App->collision->AddPolyLine(object.attribute("x").as_int(), object.attribute("y").as_int(),c);
 
 				// END DEALING OBJECT NODE
 			}
