@@ -1,3 +1,5 @@
+![title](https://github.com/urisabate/Kikime/blob/master/KIKIME/Game/gui/redLogo.png)
+
 https://github.com/urisabate/Kikime
 
 MIT License
@@ -25,7 +27,7 @@ SOFTWARE.
 ##Overview
 
 Red is a platformer game where the player, as Red, has to avoid the pursuers black 
-niggas to reach the final door and get to the next level and keep avoiding black niggas
+niggas to reach the final door and get to the end and keep avoiding black niggas
 which are very fast and annoying.
 For the Assignment 2 we have implemented its pathfinding and the core object of these 
 enemies among other things.
