@@ -1,9 +1,11 @@
-<img src="redLogo.png" alt="Logo" width="1280" height="700">
+<img src="redLogo.png" alt="Logo" width="580" height="300">
 
 ***
+
+https://github.com/urisabate/RED
+
 Overview
 ========
-https://github.com/urisabate/RED
 
 Red is a platformer game where the player, as Red, has to avoid the pursuers black 
 niggas to reach the final door and get to the end and keep on avoiding black niggas
