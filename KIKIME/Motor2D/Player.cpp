@@ -234,7 +234,6 @@ void Player::Move(float dt)
 
 		if (App->pathfinding->IsWalkable(pos) && App->pathfinding->IsWalkable(pos2) && App->pathfinding->IsWalkable(pos3)) {
 			dx = (int)(speed.x * dt);
-			//position.x += (int)(speed.x * dt);
 		}
 		want_right = false;
 	}
@@ -249,7 +248,6 @@ void Player::Move(float dt)
 
 		if (App->pathfinding->IsWalkable(pos) && App->pathfinding->IsWalkable(pos2) && App->pathfinding->IsWalkable(pos3)) {
 			dx = -(int)(speed.x * dt);
-			//position.x -= (int)(speed.x * dt);
 		}
 		want_left = false;
 	}
@@ -266,7 +264,6 @@ void Player::Move(float dt)
 
 		if (App->pathfinding->IsWalkable(pos) && App->pathfinding->IsWalkable(pos2) && App->pathfinding->IsWalkable(pos3)) {
 			dy = (int)(speed.y * dt);
-			//position.y += (int)(speed.y * dt);
 		}
 		else { speed.y = (int)(gravity * dt); }
 		want_up = false;
@@ -275,7 +272,9 @@ void Player::Move(float dt)
 	else if (speed.y > 0)
 	{
 		iPoint pos = App->render->ScreenToWorld(position.x + App->render->camera.x, position.y + App->render->camera.y + collider->rect.h + (int)(speed.y * dt));
+		iPoint p = App->render->ScreenToWorld(position.x + App->render->camera.x, position.y + App->render->camera.y + collider->rect.h);
 		pos = App->map->WorldToMap(pos.x, pos.y);
+
 		iPoint pos2 = App->render->ScreenToWorld(position.x + App->render->camera.x + collider->rect.w/2, position.y + App->render->camera.y + collider->rect.h + (int)(speed.y * dt));
 		pos2 = App->map->WorldToMap(pos2.x, pos2.y);
 		iPoint pos3 = App->render->ScreenToWorld(position.x + App->render->camera.x + collider->rect.w, position.y + App->render->camera.y + collider->rect.h + (int)(speed.y * dt));
@@ -283,12 +282,15 @@ void Player::Move(float dt)
 
 		if (App->pathfinding->IsWalkable(pos) && App->pathfinding->IsWalkable(pos2) && App->pathfinding->IsWalkable(pos3)) {
 			dy = (int)(speed.y * dt);
-			//position.y += (int)(speed.y * dt);
 			//Animation
 			going_down = true;
 		}
 		else {
-			//position.y  = pos.y - position.y + collider->rect.h -5;
+			iPoint a = App->map->MapToWorld(pos.x, pos.y);
+			//LOG("player %d,%d  p %d,%d pos %d, %d", position.x, position.y, p.x, p.y, a.x,a.y);
+			if (going_down) {
+				position.y += a.y - p.y - 2;
+			}
 			dy = pos.y - position.y + collider->rect.h -1;
 			jumping			= false;
 			double_jumping	= false;
