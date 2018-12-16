@@ -15,10 +15,6 @@ We have used a tree hierarchy system to implement the user's interface, using a 
 designation to manage the functionalities of all the elements of the user's 
 interface.
 
-To innovate, we have removed all colliders of the ground platforms and we have used a walkability map 
-manage all the collisions between player and enviroment, and also, we have declared all the colliders
-of the spikes along the game as polylines.
-
 Red is developed by a couple of CITM's students for a Game Development subject
 
 [Òscar Pons Gallart](https://github.com/ponspack9)
@@ -82,18 +78,27 @@ Debug Keys
 
 
 ***
+
 Work distribution
 -----------
+
 Oscar:
-Player main core and physics with the map. Enemy pathfinding port from oriol's base code. Game cycle and gui cycle. Main menu, settings, pause menu and help gui and implementation. Level smooth transitions. Game adapting to make it adapt to fullscreen, except from camera. Polylines and walkability map (see innovation section). Coins and buttons parsing and reading. Logo.
+
+Player main core and physics with the map. Enemy pathfinding port from oriol's base code. Game cycle and GUI cycle. Main menu, settings, pause menu and help gui and implementation. Level smooth transitions. Game adapting to make it adapt to fullscreen, except from camera. Polylines and walkability map (see innovation section). Coins and buttons parsing and reading. Logo.
+
+Oriol:
+
+Entities controller main core. Base code of enemies pathfinding. Main core of the GUI controller, functionalities assingment system of the elements of the GUI; game timer system, score system and life system among others. Animations in the GUI. All the stuff related to framerate control. Game music and sound fx, music and sound fx transitions using Oscar's base code of game cycle. Parsing and reading enemies sprites. Testing and bug searching.
 
 ***
+
 Innovation
 -----------
 
 - A new system of collisions is made with the player, the map does not have any collider wrapping the
 walls neither the floor, player uses the same walkable map enemies use, so there's an improvement in 
 the number of colliders loaded. 
+
     (see Player.cpp, more accurately, Move() function)
 
 - Spikes collision are precisely done with a polyline collision mapping, no square colliders that
