@@ -161,8 +161,6 @@ public:
 	Collider*					start_collider;
 	Collider*					end_collider;
 
-	bool						map_loaded;
-
 private:
 
 	pugi::xml_document	map_doc;

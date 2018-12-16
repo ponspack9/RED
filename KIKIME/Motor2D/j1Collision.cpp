@@ -86,9 +86,6 @@ bool j1Collision::PreUpdate()
 					if (c1->CheckRectLineCollision(polylines[i][j] + offx, polylines[i][j + 1] + offy,
 						polylines[i][j + 2] + offx, polylines[i][j + 3] + offy)) {
 						c1->callback->OnCollisionLine();
-						//LOG("ONCOLLISIONLINE %f,", SDL_GetTicks());
-						//c1->type == COLLIDER_COIN;
-						//AddCollider(c1->rect, COLLIDER_COIN);
 						break;
 					}
 				}

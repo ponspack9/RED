@@ -4,7 +4,6 @@
 #include "j1FadeToBlack.h"
 #include "j1Render.h"
 #include "j1Window.h"
-#include "j1Map.h"
 #include "SDL/include/SDL_render.h"
 #include "SDL/include/SDL_timer.h"
 
@@ -55,7 +54,7 @@ bool j1FadeToBlack::Update(float dt)
 
 	case fade_step::wait:
 	{
-		if (App->map->map_loaded) {
+		if (App->map_loaded) {
 			total_time += total_time;
 			start_time = SDL_GetTicks();
 			current_step = fade_from_black;
