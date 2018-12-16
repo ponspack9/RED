@@ -70,7 +70,8 @@ TO DO
       <blue_diamond x="463" y="211" width="36" height="28"></blue_diamond>
       <yellow_diamond x="526" y="210" width="36" height="28"></yellow_diamond>
       <red_diamond x="654" y="210" width="36" height="28"></red_diamond>
-      <heart x="722" y="275" width="28" height="28"></heart>      
+      <heart x="722" y="275" width="28" height="28"></heart>
+      <help x="779" y="388" width="500" height="332"></help>
     </atlas>
     <UIanimations animSpeed ="0.5">
       <blue_shine x="526" y="211" width="36" height="28" />
@@ -203,7 +204,7 @@ TO DO
   </entitymanager>
 
   <fonts>
-    <default_font file="fonts/zorque/zorque.ttf" size="15"/>    
+    <default_font file="fonts/Modia-NonCommercial.otf" size="15"/>    
   </fonts>
 
 

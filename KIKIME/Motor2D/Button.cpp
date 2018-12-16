@@ -59,7 +59,7 @@ void Button::HandleAction()
 		App->ShowCredits();
 		break;
 	case WEBSITE:
-		ShellExecuteA(NULL, "open", "www.google.com", NULL, NULL, SW_SHOWNORMAL);
+		ShellExecuteA(NULL, "open", "https://urisabate.github.io/RED/", NULL, NULL, SW_SHOWNORMAL);
 		break;
 	case START:
 		App->RestartGame();

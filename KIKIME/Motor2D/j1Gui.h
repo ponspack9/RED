@@ -118,6 +118,7 @@ private:
 
 	Image				game_over_image;
 	Image				last_death_image;
+	Image				help_image;
 
 	//bool				moving_element;
 	iPoint				last_element_motion;

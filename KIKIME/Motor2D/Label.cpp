@@ -23,7 +23,7 @@ Label::Label(ActionType action, iPoint pos, UIType type, p2SString string, UIEle
 	this->string = string;
 	this->action = action;
 
-	text = App->font->Print(string.GetString(), { 0,0,0,255 }, App->font->default);
+	text = App->font->Print(string.GetString(), { 255,255,255,255 }, App->font->default);
 	App->font->CalcSize(string.GetString(), rect[IDLE].w, rect[IDLE].h, App->font->default);
 
 	this->rect[HOVER] = rect[IDLE];
@@ -106,7 +106,7 @@ void Label::ChangeText(const char * string)
 		App->tex->UnLoad(this->text);
 	}
 
-	this->text = App->font->Print(string, { 0,0,0,255 }, App->font->default);
+	this->text = App->font->Print(string, { 255,255,255,255 }, App->font->default);
 	App->font->CalcSize(string, rect[state].w, rect[state].h, App->font->default);
 
 	this->string = string;	
