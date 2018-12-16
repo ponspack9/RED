@@ -2,9 +2,9 @@
 
 https://github.com/urisabate/RED
 
-MIT License
+## License
 
-Copyright (c) [2018] [Òscar Pons Gallart and Oriol Sabaté Solé]
+MIT License
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
@@ -24,19 +24,14 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 
-##Overview
+Copyright (c) [2018] [Òscar Pons Gallart and Oriol Sabaté Solé]
 
-Red is a platformer game where the player, as Red, has to avoid the pursuers black 
-niggas to reach the final door and get to the end and keep avoiding black niggas
-which are very fast and annoying.
-For the Assignment 2 we have implemented its pathfinding and the core object of these 
-enemies among other things.
+## Overview
 
+Red is a 2D platformer game where the player, as Red, a nice red square that can 
+move, has to avoid the pursuers to reach the final door and get to the end.
 
-<====================================================================>
-
-
-##Controls
+## Controls
 
 W , Space --> JUMP and DOUBLEJUMP / MOVING UP (GODMODE)
 
@@ -46,7 +41,7 @@ D ----------> MOVING RIGHT
 
 S ----------> SMASH ENEMIES / MOVING DOWN (GODMODE)
 
-##Debug Keys
+## Debug Keys
 
 F1 ---------> RESTART GAME
 
@@ -67,7 +62,12 @@ F10 --------> ENABLE AND DISABLE PLAYER'S GODMODE
 F11 --------> CAMERA FOLLOWS PLAYER/DRAG AND RELEASE MOUSE TO FREELY MOVE THE CAMERA
 
 
-<====================================================================>
+## Assets
+
+Assets provided by https://kenney.nl given with CC0 1.0 Universal (CC0 1.0) Public Domain Dedication
+
+
+
 
 by Òscar Pons Gallart & Oriol Sabaté Solé
 
