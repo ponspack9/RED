@@ -91,11 +91,8 @@ overbounds them are used, there's a triangle spike so it is the collision with i
 
 Assets provided by https://kenney.nl licensed under CC0 1.0 Universal (CC0 1.0) Public Domain Dedication
 
+Music provided by [8 bit Universe](https://www.youtube.com/channel/UCn4HDI02U4f3VEsghRX7dRw)
 
-
+Font used Modia-NonCommercial
 
 by Òscar Pons Gallart & Oriol Sabaté Solé
-
-
-
-
