@@ -9,6 +9,7 @@
 #include "j1Gui.h"
 #include "j1EntityManager.h"
 #include "j1Audio.h"
+#include "j1Map.h"
 
 #include "SDL_mixer\include\SDL_mixer.h"
 
@@ -16,6 +17,7 @@ j1EntityManager::j1EntityManager()
 {
 	name.create("entitymanager");
 	is_started = false;
+	changing_level = false;
 
 	green_counter = blue_counter = score = aux_score = 0;
 	score_powUp = 100;	
@@ -418,7 +420,7 @@ bool j1EntityManager::PreUpdate()
 		player_ref->PreUpdate();
 	else if (!is_started && !App->game_over)
 	{
-		LOG("IS STARTED == FALSE");
+		LOG("Player died first check on PreUpdate");
 		timer_death.Start();
 		is_started = true;
 		App->gui->last_death->position = player_ref->position;
@@ -508,14 +510,15 @@ bool j1EntityManager::CleanUp()
 void j1EntityManager::CleanEntities()
 {
 	LOG("CLEANING ENTITIES");
-	p2List_item<Entity*>* item;
+	App->collision->CleanColliders();
+	/*p2List_item<Entity*>* item;
 	for (item = entities.start; item != nullptr; item = item->next)
 	{
 		if (item->data->collider)
 		{
 			item->data->collider->to_delete = true;
 		}
-	}
+	}*/
 	entities.clear();
 	LOG("ENTITIES CLEANED, COUNT: %d", entities.count());
 }
@@ -524,8 +527,10 @@ void j1EntityManager::CleanEntities()
 bool j1EntityManager::Restart(int player_lifes)
 {
 	CleanEntities();
+	App->map->LoadColliders();
 	CreateEntities(player_lifes, player_load_position);
 	player_load_position = { -1,-1 };
+	changing_level = false;
 	return true;
 }
 
@@ -656,9 +661,10 @@ void j1EntityManager::OnCollision(Collider * c1, Collider * c2)
 			e->alive = false;
 		}
 	}
-	else if (c1->type == COLLIDER_PLAYER && c2->type == COLLIDER_END)
+	else if (c1->type == COLLIDER_PLAYER && c2->type == COLLIDER_END && !changing_level)
 	{
 		App->NextLevel();
+		changing_level = true;
 	}
 }
 

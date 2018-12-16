@@ -132,6 +132,8 @@ public:
 	// Load new map
 	bool Load(const char* path);
 
+	void LoadColliders();
+
 	// Translates x,y coordinates from map positions to world positions
 	iPoint MapToWorld(int x, int y) const;
 

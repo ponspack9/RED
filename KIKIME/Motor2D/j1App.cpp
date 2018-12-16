@@ -575,7 +575,6 @@ bool j1App::RestartLevel(int player_lifes)
 	BROFILER_CATEGORY("App->RestartLevel", Profiler::Color::Red);
 
 	entitymanager->aux_score = 0;
-
 	gui->last_death->SetVisible();
 	render->ResetCamera();
 	entitymanager->Restart(player_lifes);

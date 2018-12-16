@@ -216,77 +216,7 @@ bool j1Map::Load(const char* file_name)
 
 		//BEGIN DEALING WITH MAP OBJECTS
 
-		pugi::xml_node objectgroup = map_doc.child("map").child("objectgroup");
-		int death_colliders = 0;
-		int coin_colliders = 0;
-		int enemies_colliders = 0;
-		Collider* c = nullptr;
-		for (objectgroup; objectgroup; objectgroup = objectgroup.next_sibling("objectgroup"))
-		{
-			p2SString group_name ( objectgroup.attribute("name").as_string());
-			//LOG("OBJECTGROUP NAME: %s", objectgroup.attribute("name").as_string());
-
-			pugi::xml_node object = objectgroup.child("object");
-			pugi::xml_node polyobject = object.child("polygon");
-
-			for (object; object; object = object.next_sibling("object")) {
-
-				polyobject = object.child("polyline");
-
-				if (polyobject == NULL) {
-					polyobject = object.child("polygon");
-
-					if (polyobject == NULL) {
-						polyobject = object.child("ellipse");
-
-						if (polyobject == NULL) {
-							//ITS A QUAD
-							SDL_Rect r = { object.attribute("x").as_int() , object.attribute("y").as_int() ,
-										   object.attribute("width").as_int() ,object.attribute("height").as_int() };
-							
-							if (group_name == "Colliders_death")
-							{
-								c = App->collision->AddCollider(r, COLLIDER_DEATH);
-								c->to_delete = false;
-								death_colliders++;
-							}
-							else if (group_name == "Collider_start") {
-								start_collider = App->collision->AddCollider(r, COLLIDER_START);
-							}
-							else if (group_name == "Collider_end") {
-								end_collider = App->collision->AddCollider(r, COLLIDER_END);
-							}
-							else if (group_name == "Enemy_spawns") {
-								c = App->collision->AddCollider(r, COLLIDER_SPAWN);
-								c->to_delete = false;
-								enemies_colliders++;
-							}
-							else if (group_name == "Coin_spawns") {
-								c = App->collision->AddCollider(r, COLLIDER_SPAWN_COIN);
-								c->to_delete = false;
-								coin_colliders++;
-							}
-							continue;
-						}
-						//ellipse
-
-					}
-				}
-				//It's a Polyline
-
-				//Deal with the string to find each point
-				const char* c = polyobject.attribute("points").as_string();
-
-				App->collision->AddPolyLine(object.attribute("x").as_int(), object.attribute("y").as_int(),c);
-
-				// END DEALING OBJECT NODE
-			}
-		}
-
-	LOG("COLLIDERS");
-	LOG("DEATH: %d", death_colliders);
-	LOG("COIN: %d", coin_colliders);
-	LOG("ENEMY: %d", enemies_colliders);
+		LoadColliders();
 	}
 	App->map_loaded = ret;
 
@@ -326,6 +256,87 @@ bool j1Map::Load(const char* file_name)
 	}
 
 	return App->map_loaded;
+}
+
+void j1Map::LoadColliders()
+{
+	pugi::xml_node objectgroup = map_doc.child("map").child("objectgroup");
+	int death_colliders = 0;
+	int coin_colliders = 0;
+	int enemies_colliders = 0;
+	int start_colliders = 0;
+	int end_colliders = 0;
+	Collider* c = nullptr;
+	for (objectgroup; objectgroup; objectgroup = objectgroup.next_sibling("objectgroup"))
+	{
+		p2SString group_name(objectgroup.attribute("name").as_string());
+		//LOG("OBJECTGROUP NAME: %s", objectgroup.attribute("name").as_string());
+
+		pugi::xml_node object = objectgroup.child("object");
+		pugi::xml_node polyobject = object.child("polygon");
+
+		for (object; object; object = object.next_sibling("object")) {
+
+			polyobject = object.child("polyline");
+
+			if (polyobject == NULL) {
+				polyobject = object.child("polygon");
+
+				if (polyobject == NULL) {
+					polyobject = object.child("ellipse");
+
+					if (polyobject == NULL) {
+						//ITS A QUAD
+						SDL_Rect r = { object.attribute("x").as_int() , object.attribute("y").as_int() ,
+							object.attribute("width").as_int() ,object.attribute("height").as_int() };
+
+						if (group_name == "Colliders_death")
+						{
+							c = App->collision->AddCollider(r, COLLIDER_DEATH);
+							c->to_delete = false;
+							death_colliders++;
+						}
+						else if (group_name == "Collider_start") {
+							start_collider = App->collision->AddCollider(r, COLLIDER_START);
+							start_colliders++;
+						}
+						else if (group_name == "Collider_end") {
+							end_collider = App->collision->AddCollider(r, COLLIDER_END);
+							end_collider++;
+						}
+						else if (group_name == "Enemy_spawns") {
+							c = App->collision->AddCollider(r, COLLIDER_SPAWN);
+							c->to_delete = false;
+							enemies_colliders++;
+						}
+						else if (group_name == "Coin_spawns") {
+							c = App->collision->AddCollider(r, COLLIDER_SPAWN_COIN);
+							c->to_delete = false;
+							coin_colliders++;
+						}
+						continue;
+					}
+					//ellipse
+
+				}
+			}
+			//It's a Polyline
+
+			//Deal with the string to find each point
+			const char* c = polyobject.attribute("points").as_string();
+
+			App->collision->AddPolyLine(object.attribute("x").as_int(), object.attribute("y").as_int(), c);
+
+			// END DEALING OBJECT NODE
+		}
+	}
+
+	LOG("COLLIDERS");
+	LOG("DEATH: %d", death_colliders);
+	LOG("COIN: %d", coin_colliders);
+	LOG("ENEMY: %d", enemies_colliders);
+	LOG("START: %d", start_colliders);
+	LOG("END: %d", end_colliders);
 }
 
 int Properties::Get(const char* value, int default_value) const

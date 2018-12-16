@@ -32,6 +32,8 @@ bool j1Collision::PreUpdate()
 	// Remove all colliders scheduled for deletion
 	for (uint i = 0; i < active; ++i)
 	{
+		//if (colliders[i] != nullptr)
+		//LOG("TYPE: %d   TO_DELETE %d", colliders[i]->type, colliders[i]->to_delete);
 		if (colliders[i] != nullptr && colliders[i]->to_delete == true)
 		{
 			delete colliders[i];
@@ -113,6 +115,15 @@ bool j1Collision::Update(float dt)
 void j1Collision::Draw()
 {
 	Uint8 alpha = 80;
+
+	int death_colliders = 0;
+	int coin_colliders = 0;
+	int enemies_colliders = 0;
+	int start_colliders = 0;
+	int end_colliders = 0;
+	int player_colliders = 0;
+	int none_colliders = 0;
+
 	for (uint i = 0; i < active; ++i)
 	{
 		if (colliders[i] == nullptr)
@@ -122,25 +133,37 @@ void j1Collision::Draw()
 			{
 			case COLLIDER_NONE:
 				App->render->DrawQuad(colliders[i]->rect, 0, 255, 255, alpha);
+				none_colliders++;
 				break;
 			case COLLIDER_PLAYER:
 				App->render->DrawQuad(colliders[i]->rect, 255, 0, 0, alpha);
+				player_colliders++;
 				break;
 			case COLLIDER_DEATH:
 				App->render->DrawQuad(colliders[i]->rect, 255, 0, 255, alpha);
+				death_colliders++;
 				break;
 			case COLLIDER_START:
 				App->render->DrawQuad(colliders[i]->rect, 255, 255, 255, alpha);
+				start_colliders++;
 				break;
 			case COLLIDER_END:
 				App->render->DrawQuad(colliders[i]->rect, 0, 0, 0, alpha);
+				end_colliders++;
 				break;
 			case COLLIDER_COIN:
 				App->render->DrawQuad(colliders[i]->rect, 0, 255, 255, alpha);
+				coin_colliders++;
 				break;
 			}
 	}
-
+	/*LOG("COLLIDERS COLLISION");
+	LOG("DEATH: %d", death_colliders);
+	LOG("COIN: %d", coin_colliders);
+	LOG("START: %d", start_colliders);
+	LOG("END: %d", end_colliders);
+	LOG("PLAYER: %d", player_colliders);
+	LOG("NONE: %d", none_colliders);*/
 	DrawPolylines();
 }
 
