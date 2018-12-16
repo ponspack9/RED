@@ -116,13 +116,13 @@ void j1Collision::Draw()
 {
 	Uint8 alpha = 80;
 
-	int death_colliders = 0;
+	/*int death_colliders = 0;
 	int coin_colliders = 0;
 	int enemies_colliders = 0;
 	int start_colliders = 0;
 	int end_colliders = 0;
 	int player_colliders = 0;
-	int none_colliders = 0;
+	int none_colliders = 0;*/
 
 	for (uint i = 0; i < active; ++i)
 	{
@@ -133,27 +133,27 @@ void j1Collision::Draw()
 			{
 			case COLLIDER_NONE:
 				App->render->DrawQuad(colliders[i]->rect, 0, 255, 255, alpha);
-				none_colliders++;
+				//none_colliders++;
 				break;
 			case COLLIDER_PLAYER:
 				App->render->DrawQuad(colliders[i]->rect, 255, 0, 0, alpha);
-				player_colliders++;
+				//player_colliders++;
 				break;
 			case COLLIDER_DEATH:
 				App->render->DrawQuad(colliders[i]->rect, 255, 0, 255, alpha);
-				death_colliders++;
+				//death_colliders++;
 				break;
 			case COLLIDER_START:
 				App->render->DrawQuad(colliders[i]->rect, 255, 255, 255, alpha);
-				start_colliders++;
+				//start_colliders++;
 				break;
 			case COLLIDER_END:
 				App->render->DrawQuad(colliders[i]->rect, 0, 0, 0, alpha);
-				end_colliders++;
+				//end_colliders++;
 				break;
 			case COLLIDER_COIN:
 				App->render->DrawQuad(colliders[i]->rect, 0, 255, 255, alpha);
-				coin_colliders++;
+				//coin_colliders++;
 				break;
 			}
 	}
@@ -286,14 +286,12 @@ bool Collider::CheckRectLineCollision(int x1, int y1, int x2, int y2) const
 {
 	int offx = App->render->camera.x;
 	int offy = App->render->camera.y;
-	// check if the line has hit any of the rectectangle's sides
+
+	// check if the line has hit any of the rectangle's sides
 	bool left =   CheckLineLine(x1, y1, x2, y2, rect.x+offx, rect.y+offy, rect.x + offx, rect.y + rect.h + offy);
 	bool right =  CheckLineLine(x1, y1, x2, y2, rect.x + rect.w + offx, rect.y + offy, rect.x + rect.w + offx, rect.y + rect.h + offy);
 	bool top =    CheckLineLine(x1, y1, x2, y2, rect.x + offx, rect.y + offy, rect.x + rect.w + offx, rect.y + offy);
 	bool bottom = CheckLineLine(x1, y1, x2, y2, rect.x + offx, rect.y + rect.h + offy, rect.x + rect.w + offx, rect.y + rect.h + offy);
-
-	// if ANY of the above are true, the line
-	// has hit the rectectangle
 
 	return left || right || top || bottom;
 }
