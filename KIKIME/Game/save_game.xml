@@ -7,12 +7,12 @@
 	<map />
 	<scene>
 		<current current_map="MapLvl1.tmx" />
-		<timer seconds="10" minutes="0" />
+		<timer seconds="4" minutes="0" />
 	</scene>
 	<debug />
 	<collisions />
 	<entitymanager bluespicked="0" greenspicked="0" score="0">
-		<player x="1509" y="1070" speed_Y="400" lives="3" />
+		<player x="97" y="718" speed_Y="400" lives="3" />
 		<enemy name="floater" type="0" alive="true" x="832" y="384" />
 		<enemy name="floater" type="0" alive="true" x="1344" y="416" />
 		<enemy name="roller" type="1" alive="true" x="2752" y="608" />
@@ -37,6 +37,6 @@
 	<gui />
 	<fade />
 	<renderer>
-		<camera x="-1136" y="-720" />
+		<camera x="0" y="-438" />
 	</renderer>
 </save>

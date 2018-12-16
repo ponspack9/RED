@@ -275,6 +275,7 @@ void j1Collision::CleanPolylines()
 {
 	n_lines = 0;
 	for (int i = 0; i < MAX_LINES; ++i) {
+		n_lines_col[i] = 0;
 		for (int j = 0; j < MAX_LINE_LENGTH; ++j)
 			polylines[i][j] = 0;
 	}

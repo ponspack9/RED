@@ -1,8 +1,8 @@
 #ifndef __j1COLLISION_H__
 #define __j1COLLISION_H__
 
-#define MAX_COLLIDERS	100
-#define MAX_LINES		250
+#define MAX_COLLIDERS	125
+#define MAX_LINES		275
 #define MAX_LINE_LENGTH 10
 
 #include "SDL/include/SDL.h"
