@@ -33,7 +33,7 @@ Red is developed by a couple of CITM's students for a Game Development subject
 Game Controls
 =============
 
-W , Space ---> JUMP and DOUBLEJUMP / MOVING UP (GODMODE)
+**W , Space** ---> JUMP and DOUBLEJUMP / MOVING UP (GODMODE)
 
 **A** ---> MOVING LEFT
 
@@ -57,6 +57,8 @@ Debug Keys
 **F5** ---> SAVE THE CURRENT GAME STATE
 
 **F6** ---> LOAD THE PREVIOUSLY SAVED GAME STATE
+
+**F8** ---> SHOW AND HIDE DEBUG UI
 
 **F9** ---> SHOW AND HIDE LOGIC (COLLIDERS & WALKABILITY MAP & ENEMIES' PATH)
 
