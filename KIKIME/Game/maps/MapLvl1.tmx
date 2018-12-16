@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.0" orientation="orthogonal" renderorder="right-down" width="100" height="40" tilewidth="32" tileheight="32" nextobjectid="1291">
+<map version="1.0" orientation="orthogonal" renderorder="right-down" width="100" height="40" tilewidth="32" tileheight="32" nextobjectid="1320">
  <properties>
   <property name="Collider" type="bool" value="true"/>
  </properties>
@@ -422,7 +422,7 @@
    <tile gid="0"/>
    <tile gid="0"/>
    <tile gid="0"/>
-   <tile gid="233"/>
+   <tile gid="177"/>
    <tile gid="121"/>
    <tile gid="122"/>
    <tile gid="119"/>
@@ -522,7 +522,7 @@
    <tile gid="0"/>
    <tile gid="0"/>
    <tile gid="0"/>
-   <tile gid="261"/>
+   <tile gid="205"/>
    <tile gid="149"/>
    <tile gid="150"/>
    <tile gid="147"/>
@@ -922,7 +922,7 @@
    <tile gid="0"/>
    <tile gid="0"/>
    <tile gid="0"/>
-   <tile gid="233"/>
+   <tile gid="177"/>
    <tile gid="149"/>
    <tile gid="150"/>
    <tile gid="3221225753"/>
@@ -1022,7 +1022,7 @@
    <tile gid="0"/>
    <tile gid="0"/>
    <tile gid="0"/>
-   <tile gid="261"/>
+   <tile gid="205"/>
    <tile gid="2684354707"/>
    <tile gid="2684354679"/>
    <tile gid="0"/>
@@ -1422,7 +1422,7 @@
    <tile gid="0"/>
    <tile gid="0"/>
    <tile gid="0"/>
-   <tile gid="233"/>
+   <tile gid="177"/>
    <tile gid="2684354707"/>
    <tile gid="2684354679"/>
    <tile gid="235"/>
@@ -1522,7 +1522,7 @@
    <tile gid="0"/>
    <tile gid="0"/>
    <tile gid="0"/>
-   <tile gid="261"/>
+   <tile gid="205"/>
    <tile gid="2684354708"/>
    <tile gid="2684354680"/>
    <tile gid="263"/>
@@ -1922,7 +1922,7 @@
    <tile gid="1610613045"/>
    <tile gid="14"/>
    <tile gid="0"/>
-   <tile gid="233"/>
+   <tile gid="177"/>
    <tile gid="2684354869"/>
    <tile gid="2684354841"/>
    <tile gid="0"/>
@@ -2022,8 +2022,8 @@
    <tile gid="0"/>
    <tile gid="42"/>
    <tile gid="0"/>
-   <tile gid="261"/>
-   <tile gid="234"/>
+   <tile gid="205"/>
+   <tile gid="178"/>
    <tile gid="0"/>
    <tile gid="0"/>
    <tile gid="0"/>
@@ -2123,7 +2123,7 @@
    <tile gid="70"/>
    <tile gid="0"/>
    <tile gid="0"/>
-   <tile gid="262"/>
+   <tile gid="206"/>
    <tile gid="0"/>
    <tile gid="0"/>
    <tile gid="0"/>
@@ -2422,7 +2422,7 @@
    <tile gid="43"/>
    <tile gid="44"/>
    <tile gid="0"/>
-   <tile gid="233"/>
+   <tile gid="177"/>
    <tile gid="0"/>
    <tile gid="0"/>
    <tile gid="0"/>
@@ -2522,7 +2522,7 @@
    <tile gid="0"/>
    <tile gid="72"/>
    <tile gid="0"/>
-   <tile gid="261"/>
+   <tile gid="205"/>
    <tile gid="0"/>
    <tile gid="0"/>
    <tile gid="0"/>
@@ -2922,7 +2922,7 @@
    <tile gid="0"/>
    <tile gid="0"/>
    <tile gid="0"/>
-   <tile gid="233"/>
+   <tile gid="177"/>
    <tile gid="261"/>
    <tile gid="205"/>
    <tile gid="261"/>
@@ -3022,7 +3022,7 @@
    <tile gid="0"/>
    <tile gid="0"/>
    <tile gid="0"/>
-   <tile gid="261"/>
+   <tile gid="205"/>
    <tile gid="233"/>
    <tile gid="233"/>
    <tile gid="262"/>
@@ -4426,8 +4426,8 @@
    <tile gid="0"/>
    <tile gid="0"/>
    <tile gid="0"/>
-   <tile gid="0"/>
    <tile gid="393"/>
+   <tile gid="393"/>
    <tile gid="0"/>
    <tile gid="0"/>
    <tile gid="0"/>
@@ -4435,7 +4435,6 @@
    <tile gid="0"/>
    <tile gid="0"/>
    <tile gid="393"/>
-   <tile gid="0"/>
    <tile gid="0"/>
    <tile gid="0"/>
    <tile gid="0"/>
@@ -4528,6 +4527,7 @@
    <tile gid="0"/>
    <tile gid="0"/>
    <tile gid="393"/>
+   <tile gid="393"/>
    <tile gid="0"/>
    <tile gid="0"/>
    <tile gid="0"/>
@@ -4835,7 +4835,6 @@
    <tile gid="0"/>
    <tile gid="393"/>
    <tile gid="393"/>
-   <tile gid="0"/>
    <tile gid="0"/>
    <tile gid="0"/>
    <tile gid="0"/>
@@ -4929,13 +4928,13 @@
    <tile gid="0"/>
    <tile gid="393"/>
    <tile gid="393"/>
+   <tile gid="393"/>
    <tile gid="0"/>
    <tile gid="0"/>
    <tile gid="0"/>
    <tile gid="0"/>
    <tile gid="393"/>
    <tile gid="393"/>
-   <tile gid="0"/>
    <tile gid="0"/>
    <tile gid="0"/>
    <tile gid="0"/>
@@ -5029,6 +5028,7 @@
    <tile gid="0"/>
    <tile gid="393"/>
    <tile gid="393"/>
+   <tile gid="393"/>
    <tile gid="0"/>
    <tile gid="0"/>
    <tile gid="0"/>
@@ -5426,7 +5426,7 @@
    <tile gid="0"/>
    <tile gid="0"/>
    <tile gid="0"/>
-   <tile gid="0"/>
+   <tile gid="393"/>
    <tile gid="393"/>
    <tile gid="393"/>
    <tile gid="0"/>
@@ -5526,7 +5526,7 @@
    <tile gid="0"/>
    <tile gid="0"/>
    <tile gid="0"/>
-   <tile gid="0"/>
+   <tile gid="393"/>
    <tile gid="393"/>
    <tile gid="393"/>
    <tile gid="0"/>
@@ -5926,7 +5926,7 @@
    <tile gid="0"/>
    <tile gid="393"/>
    <tile gid="0"/>
-   <tile gid="0"/>
+   <tile gid="393"/>
    <tile gid="0"/>
    <tile gid="0"/>
    <tile gid="0"/>
@@ -6026,8 +6026,8 @@
    <tile gid="0"/>
    <tile gid="393"/>
    <tile gid="0"/>
-   <tile gid="0"/>
-   <tile gid="0"/>
+   <tile gid="393"/>
+   <tile gid="393"/>
    <tile gid="0"/>
    <tile gid="0"/>
    <tile gid="0"/>
@@ -6125,9 +6125,9 @@
    <tile gid="0"/>
    <tile gid="0"/>
    <tile gid="393"/>
-   <tile gid="0"/>
    <tile gid="0"/>
    <tile gid="0"/>
+   <tile gid="393"/>
    <tile gid="0"/>
    <tile gid="0"/>
    <tile gid="0"/>
@@ -6425,8 +6425,8 @@
    <tile gid="393"/>
    <tile gid="393"/>
    <tile gid="393"/>
-   <tile gid="0"/>
    <tile gid="0"/>
+   <tile gid="393"/>
    <tile gid="0"/>
    <tile gid="0"/>
    <tile gid="0"/>
@@ -6526,7 +6526,7 @@
    <tile gid="0"/>
    <tile gid="393"/>
    <tile gid="0"/>
-   <tile gid="0"/>
+   <tile gid="393"/>
    <tile gid="0"/>
    <tile gid="0"/>
    <tile gid="0"/>
@@ -6926,7 +6926,7 @@
    <tile gid="0"/>
    <tile gid="0"/>
    <tile gid="0"/>
-   <tile gid="0"/>
+   <tile gid="393"/>
    <tile gid="393"/>
    <tile gid="393"/>
    <tile gid="393"/>
@@ -7026,7 +7026,7 @@
    <tile gid="0"/>
    <tile gid="0"/>
    <tile gid="0"/>
-   <tile gid="0"/>
+   <tile gid="393"/>
    <tile gid="393"/>
    <tile gid="0"/>
    <tile gid="0"/>
@@ -8391,5 +8391,17 @@
   <object id="1030" x="3200" y="992">
    <polyline points="0,0 -35.6667,14.6667 0,32"/>
   </object>
+ </objectgroup>
+ <objectgroup name="Colliders_death">
+  <object id="1302" x="1440" y="1248" width="64" height="32"/>
+  <object id="1304" x="1505" y="1187" width="64" height="64"/>
+  <object id="1305" x="1568" y="1248" width="64" height="32"/>
+  <object id="1306" x="2467" y="676" width="60" height="57"/>
+  <object id="1307" x="2757" y="739" width="54" height="55"/>
+  <object id="1315" x="745" y="713" width="47" height="47"/>
+  <object id="1316" x="390" y="803" width="51" height="54"/>
+  <object id="1317" x="102" y="261" width="47" height="52"/>
+  <object id="1318" x="2340" y="1059.33" width="52.6667" height="56"/>
+  <object id="1319" x="2305.33" y="1253.33" width="123.333" height="24"/>
  </objectgroup>
 </map>
