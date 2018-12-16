@@ -49,7 +49,8 @@ bool j1Scene::Start()
 		if (strcmp(App->map->current_map->data.GetString(),saved_map.GetString()) != 0){
 			App->gui->saving_point->SetInvisible();
 		}
-		else {
+		else 
+		{
 			App->gui->saving_point->SetVisible();
 		}
 
@@ -140,6 +141,7 @@ bool j1Scene::Load(pugi::xml_node & node)
 
 	int index = App->map->maps_path.find(node.child("current").attribute("current_map").as_string());
 	App->map->current_map = App->map->maps_path.At(index);
+	current_track = App->audio->tracks_path.At(index);
 
 	App->in_game_timer.sec = node.child("timer").attribute("seconds").as_int();
 	App->in_game_timer.min = node.child("timer").attribute("minutes").as_int();
