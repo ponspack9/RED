@@ -72,6 +72,7 @@ TO DO
       <red_diamond x="654" y="210" width="36" height="28"></red_diamond>
       <heart x="722" y="275" width="28" height="28"></heart>
       <help x="779" y="388" width="500" height="332"></help>
+      <save x="56" y="390" width="35" height="33"></save>
     </atlas>
     <UIanimations animSpeed ="0.5">
       <blue_shine x="526" y="211" width="36" height="28" />

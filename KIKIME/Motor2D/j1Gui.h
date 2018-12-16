@@ -65,6 +65,7 @@ public:
 	Image*			settings_window;
 	Image*			help_window;
 
+	Image*			saving_point;
 	Image*			game_over;
 	Image*			last_death;
 	Image			white_window;
@@ -119,6 +120,7 @@ private:
 	Image				game_over_image;
 	Image				last_death_image;
 	Image				help_image;
+	Image				saving_point_image;
 
 	//bool				moving_element;
 	iPoint				last_element_motion;

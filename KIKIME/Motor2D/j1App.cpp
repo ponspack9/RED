@@ -312,6 +312,9 @@ bool j1App::SaveGameFile()
 		LOG("...saving process interrupted with error on module %s", (item != NULL) ? item->data->name.GetString() : "unknown -> NULL pointer");
 	audio->PlayFx(save);
 	
+	//gui->saving_point->initial_pos = { 0,0 };
+	gui->saving_point->position.x = entitymanager->player_ref->position.x;
+	gui->saving_point->position.y = entitymanager->player_ref->position.y + 18;
 	save_game_doc.reset();
 	want_to_save = false;
 	return ret;

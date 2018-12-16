@@ -60,6 +60,19 @@ bool j1Gui::Awake(pugi::xml_node& conf)
 			n = n.next_sibling("help");
 	}
 
+	//Creating saving point image
+	n = conf.child("atlas").child("save");
+	for (SDL_Rect &r : saving_point_image.rect)
+	{
+		r.x = n.attribute("x").as_int();
+		r.y = n.attribute("y").as_int();
+		r.w = n.attribute("width").as_int();
+		r.h = n.attribute("height").as_int();
+		saving_point_image.idle.PushBack(r);
+		if (n.next_sibling("save"))
+			n = n.next_sibling("save");
+	}
+
 	//Creating last death image
 	n = conf.child("atlas").child("lastDeath");
 	for (SDL_Rect &r : last_death_image.rect)
@@ -394,9 +407,11 @@ bool j1Gui::Start()
 	
 	//Label* pl_name = (Label*)CreateElement(LABEL, iPoint(App->entitymanager->player_ref->position.x + App->entitymanager->player_ref->rect.w / 2, App->entitymanager->player_ref->position.y - 50), { 0,0,0,0 },nullptr, "--Kikime--", PLAYER_NAME, nullptr, in_game_gui);
 	
-	game_over  = (Image*)CreateElement(IMAGE, iPoint(App->render->viewport.w / 2 - game_over_image.rect[IDLE].w / 2, App->render->viewport.h / 2 - game_over_image.rect[IDLE].h / 2), game_over_image.rect[IDLE], &game_over_image, nullptr, NO_ACTION, nullptr,in_game_window, false);
-	
 	last_death = (Image*)CreateElement(IMAGE, iPoint(-20, -20), last_death_image.rect[IDLE],&last_death_image,nullptr, LAST_DEATH, nullptr, nullptr, true);
+	
+	saving_point = (Image*)CreateElement(IMAGE, iPoint(-20, -20), saving_point_image.rect[IDLE], &saving_point_image, nullptr, LAST_DEATH, nullptr, nullptr, true);
+
+	game_over  = (Image*)CreateElement(IMAGE, iPoint(App->render->viewport.w / 2 - game_over_image.rect[IDLE].w / 2, App->render->viewport.h / 2 - game_over_image.rect[IDLE].h / 2), game_over_image.rect[IDLE], &game_over_image, nullptr, NO_ACTION, nullptr,in_game_window, false);
 
 	////////////////////////////////////// END MISC //////////////////////////////////////
 
@@ -477,7 +492,7 @@ bool j1Gui::Start()
 	To input text check the keyobard state then make a bool matrix or something similar then update if changed the specific key true
 	*/
 	last_death->SetVisible();
-
+	saving_point->SetVisible();
 	CheckContinue();
 	return true;
 }
@@ -506,6 +521,7 @@ void j1Gui::CheckContinue()
 			r.h = grey_button.rect[i].h;
 			i++;
 		}
+		saving_point->position = { -50,-50 };
 		//App->gui->continue_button->rect
 	}
 }
