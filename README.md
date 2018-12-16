@@ -39,6 +39,7 @@ We have used a tree hierarchy system to implement the user's interface, using a 
 designation to manage the functionalities of all the elements of the user's 
 interface.
 
+
 ## Controls
 
 **W , Space** ---> JUMP and DOUBLEJUMP / MOVING UP (GODMODE)
@@ -75,6 +76,20 @@ interface.
 
 **F11** ---> MANUALLY ENABLE AND DISABLE THE FRAMERATE CAP TO 30 FPS
 
+***
+
+Work distribution
+-----------
+
+**Oscar:**
+
+Player main core and physics with the map. Enemy pathfinding port from oriol's base code. Game cycle and GUI cycle. Main menu, settings, pause menu and help gui and implementation. Level smooth transitions. Game adapting to make it adapt to fullscreen, except from camera. Polylines and walkability map (see innovation section). Coins and buttons parsing and reading. Logo.
+
+**Oriol:**
+
+Entities controller main core. Base code of enemies pathfinding. Main core of the GUI controller, functionalities assingment system of the elements of the GUI; game timer system, score system and life system among others. Animations in the GUI. All the stuff related to framerate control. Game music and sound fx, music and sound fx transitions using Oscar's base code of game cycle. Parsing and reading enemies sprites. Testing and bug searching. Level desing and adjustments.
+
+***
 
 ## Innovation
 
