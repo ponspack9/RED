@@ -2,7 +2,7 @@
 
 ***
 
-https://github.com/urisabate/RED
+[Link to the repository](https://github.com/urisabate/RED)
 
 Overview
 ========
