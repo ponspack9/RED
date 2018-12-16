@@ -506,9 +506,6 @@ void j1App::GameOver()
 	map->current_map = App->map->maps_path.start;
 	scene->current_track = audio->tracks_path.start;
 
-	if (Mix_PausedMusic > 0)
-		Mix_ResumeMusic();
-
 	fade->FadeToBlack(App->scene, App->scene);
 
 	LOG("GAME OVER");

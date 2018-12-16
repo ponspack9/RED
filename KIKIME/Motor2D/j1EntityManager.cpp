@@ -10,6 +10,7 @@
 #include "j1EntityManager.h"
 #include "j1Audio.h"
 #include "j1Map.h"
+#include "j1Scene.h"
 
 #include "SDL_mixer\include\SDL_mixer.h"
 
@@ -461,6 +462,10 @@ bool j1EntityManager::PostUpdate()
 	if (!player_ref->alive && player_ref->lifes == 0)
 	{
 		App->gui->game_over->SetVisible();
+		App->scene->current_track = App->audio->tracks_path.end;
+		if (Mix_PausedMusic() > 0)
+			Mix_ResumeMusic();
+		App->audio->PlayMusic(PATH(App->audio->folder_music.GetString(), App->scene->current_track->data.GetString()), 0.2f);
 	}
 
 	if (!player_ref->alive && timer_death.ReadSec() >= 1.5f && !App->game_over) {
