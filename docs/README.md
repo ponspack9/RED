@@ -29,6 +29,14 @@ Red is developed by a couple of CITM's students for a Game Development subject
 <img src="TeamPhoto.jpg" alt="Us" width="576" height="868">
 
 ***
+Gameplay
+============
+
+
+
+
+
+***
 
 Game Controls
 =============
@@ -65,6 +73,30 @@ Debug Keys
 **F10** ---> ENABLE AND DISABLE PLAYER'S GODMODE
 
 **F11** ---> CAMERA FOLLOWS PLAYER/DRAG AND RELEASE MOUSE TO FREELY MOVE THE CAMERA
+
+
+***
+Work distribution
+-----------
+Oscar:
+Player main core and physics with the map. Enemy pathfinding port from oriol's base code. Game cycle and gui cycle. Main menu, settings, pause menu and help gui and implementation. Level smooth transitions. Game adapting to make it adapt to fullscreen, except from camera. Polylines and walkability map (see innovation section). Coins and buttons parsing and reading. Logo.
+
+***
+Innovation
+-----------
+
+- A new system of collisions is made with the player, the map does not have any collider wrapping the
+walls neither the floor, player uses the same walkable map enemies use, so there's an improvement in 
+the number of colliders loaded. 
+    (see Player.cpp, more accurately, Move() function)
+
+- Spikes collision are precisely done with a polyline collision mapping, no square colliders that
+overbounds them are used, there's a triangle spike so it is the collision with it.
+
+    (see j1Map.cpp for line parsing, LoadColliders() function)
+    (see j1Collision for line adding, collision checking and debug drawing. 
+     AddPolyline(), CheckRectLineCollision(), DrawPolyLines(), respectively)
+
 
 ***
 MIT License
