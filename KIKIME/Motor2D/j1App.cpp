@@ -169,6 +169,7 @@ bool j1App::Awake()
 bool j1App::Start()
 {
 	BROFILER_CATEGORY("App->Start", Profiler::Color::Aqua)
+	App->win->SetTitle("RED");
 	perf_timer.Start();
 	timer.Start();
 	aux_timer.Start();
@@ -260,7 +261,7 @@ void j1App::FinishUpdate()
 	uint32 last_frame_ms = frame_time.Read();
 	frames_on_last_update = last_sec_fcount;
 
-	int x, y;
+	/*int x, y;
 	App->input->GetMousePosition(x, y);
 	iPoint map_coordinates = App->map->WorldToMap(x - App->render->camera.x, y - App->render->camera.y);
 	static char title[256];
@@ -270,7 +271,7 @@ void j1App::FinishUpdate()
 		App->map->data.tile_width, App->map->data.tile_height,
 		App->map->data.tilesets.count(),
 		map_coordinates.x, map_coordinates.y);
-	App->win->SetTitle(title);
+	App->win->SetTitle(title);*/
 
 	if (delay_is_active)
 	{
