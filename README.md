@@ -4,6 +4,8 @@
 
 [Link to the website](https://urisabate.github.io/RED/)
 
+[Link to the Release](https://github.com/urisabate/RED/releases)
+
 ## License
 
 MIT License
