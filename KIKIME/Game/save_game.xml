@@ -7,20 +7,20 @@
 	<map />
 	<scene>
 		<current current_map="MapLvl1.tmx" />
-		<timer seconds="16" minutes="0" />
+		<timer seconds="27" minutes="1" />
 	</scene>
 	<debug />
 	<collisions />
-	<entitymanager bluespicked="0" greenspicked="0" score="0">
-		<player x="601" y="526" speed_Y="400" lives="0" />
-		<enemy name="floater" type="0" alive="true" x="733" y="384" />
+	<entitymanager bluespicked="0" greenspicked="1" score="50">
+		<player x="403" y="590" speed_Y="400" lives="2" />
+		<enemy name="floater" type="0" alive="true" x="832" y="384" />
 		<enemy name="floater" type="0" alive="true" x="1344" y="416" />
 		<enemy name="roller" type="1" alive="true" x="2752" y="608" />
 		<enemy name="roller" type="1" alive="true" x="1410" y="674" />
+		<enemy name="floater" type="0" alive="true" x="474" y="460" />
 		<enemy name="floater" type="0" alive="true" x="2368" y="352" />
 		<enemy name="floater" type="0" alive="true" x="1792" y="736" />
 		<enemy name="floater" type="0" alive="true" x="2944" y="416" />
-		<coins x="54" y="782" coin_type="0" picked="false" />
 		<coins x="512" y="736" coin_type="0" picked="false" />
 		<coins x="1108" y="736" coin_type="1" picked="false" />
 		<coins x="1408" y="960" coin_type="0" picked="false" />
@@ -36,6 +36,6 @@
 	<gui />
 	<fade />
 	<renderer>
-		<camera x="-228" y="-246" />
+		<camera x="-30" y="-310" />
 	</renderer>
 </save>

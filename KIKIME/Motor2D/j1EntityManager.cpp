@@ -22,7 +22,7 @@ j1EntityManager::j1EntityManager()
 	first_gameover = true;
 
 	green_counter = blue_counter = score = aux_score = 0;
-	score_powUp = 100;	
+	score_powUp = 0;	
 
 	player_load_position = { -1,-1 };
 }
@@ -35,6 +35,8 @@ j1EntityManager::~j1EntityManager()
 bool j1EntityManager::Awake(pugi::xml_node & config)
 {
 	//reading all info
+	score_powUp = config.child("player").child("lifeup").attribute("value").as_int();
+
 	current_time = config.child("timer").attribute("currenttime").as_float();
 
 	enemyPath = (config.child("enemypath").attribute("path").as_string());

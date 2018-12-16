@@ -150,33 +150,33 @@ bool j1Debug::Update(float dt)
 	y -= App->render->camera.y;
 
 	//Spawining Entities
-	if (App->input->GetKey(SDL_SCANCODE_G) == KEY_DOWN)
-	{
-		Entity* e = App->entitymanager->CreateEntity(COIN, { x,y }, GREEN_DIAMOND);
-		e->collider = App->collision->AddCollider(e->rect, COLLIDER_COIN);
-
-	}
-	if (App->input->GetKey(SDL_SCANCODE_B) == KEY_DOWN)
-	{
-		Entity* e = App->entitymanager->CreateEntity(COIN, { x,y }, BLUE_DIAMOND);
-		e->collider = App->collision->AddCollider(e->rect, COLLIDER_COIN);
-
-	}
-	if (App->input->GetKey(SDL_SCANCODE_H) == KEY_DOWN)
-	{
-		Entity* e = App->entitymanager->CreateEntity(COIN, { x,y },HEART);
-		e->collider = App->collision->AddCollider(e->rect, COLLIDER_COIN);
-
-	}
-	if (App->input->GetKey(SDL_SCANCODE_E) == KEY_DOWN) {
-		Entity* e = App->entitymanager->CreateEntity(FLOATER, { x,y });
-		e->collider = App->collision->AddCollider(e->rect, COLLIDER_DEATH);
-	}
-
-	if (App->input->GetKey(SDL_SCANCODE_R) == KEY_DOWN) {
-		Entity* e = App->entitymanager->CreateEntity(ROLLER, { x,y });
-		e->collider = App->collision->AddCollider(e->rect, COLLIDER_DEATH);
-	}
+	//if (App->input->GetKey(SDL_SCANCODE_G) == KEY_DOWN)
+	//{
+	//	Entity* e = App->entitymanager->CreateEntity(COIN, { x,y }, GREEN_DIAMOND);
+	//	e->collider = App->collision->AddCollider(e->rect, COLLIDER_COIN);
+	//
+	//}
+	//if (App->input->GetKey(SDL_SCANCODE_B) == KEY_DOWN)
+	//{
+	//	Entity* e = App->entitymanager->CreateEntity(COIN, { x,y }, BLUE_DIAMOND);
+	//	e->collider = App->collision->AddCollider(e->rect, COLLIDER_COIN);
+	//
+	//}
+	//if (App->input->GetKey(SDL_SCANCODE_H) == KEY_DOWN)
+	//{
+	//	Entity* e = App->entitymanager->CreateEntity(COIN, { x,y },HEART);
+	//	e->collider = App->collision->AddCollider(e->rect, COLLIDER_COIN);
+	//
+	//}
+	//if (App->input->GetKey(SDL_SCANCODE_E) == KEY_DOWN) {
+	//	Entity* e = App->entitymanager->CreateEntity(FLOATER, { x,y });
+	//	e->collider = App->collision->AddCollider(e->rect, COLLIDER_DEATH);
+	//}
+	//
+	//if (App->input->GetKey(SDL_SCANCODE_R) == KEY_DOWN) {
+	//	Entity* e = App->entitymanager->CreateEntity(ROLLER, { x,y });
+	//	e->collider = App->collision->AddCollider(e->rect, COLLIDER_DEATH);
+	//}
 
 	// Camera drag through mouse click
 	if (free_camera) {

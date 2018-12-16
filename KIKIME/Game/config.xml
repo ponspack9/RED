@@ -129,6 +129,7 @@ TO DO
     <enemypath path="textures/enemies/spritesheet32.png"/>
     <playerpath path="textures/player/sprites.png"/>
     <player>
+      <lifeup value="500"/>
       <lifes lifes="1"/>
       <rect width="64" height="64"/>
       <speed scrollspeed="200" jumpspeed="500" smashspeed="900" maxspeed="400"/>
