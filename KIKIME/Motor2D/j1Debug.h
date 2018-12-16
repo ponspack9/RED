@@ -34,6 +34,7 @@ public:
 	iPoint			zero;
 
 	bool			show_colliders;
+	bool			show_debug_ui;
 	bool			start_motion;
 	bool			free_camera;
 	bool			debug_bool;

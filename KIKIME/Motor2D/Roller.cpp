@@ -47,7 +47,7 @@ bool Roller::UpdateLogic(iPoint pos)
 		}
 
 		if (speed.x < 0 && desired_position.x >= position.x) 		speed = (iPoint(path->At(1)->x, path->At(1)->y) - p) * speed_mult;
-		else if (speed.x > 0 && desired_position.x <= position.x) 	speed = (iPoint(path->At(1)->x, path->At(1)->y) - p) * speed_mult;
+		else if (speed.x > 0 && desired_position.x <= position.x + collider->rect.w) 	speed = (iPoint(path->At(1)->x, path->At(1)->y) - p) * speed_mult;
 		if (speed.y < 0 && desired_position.y >= position.y) 		speed = (iPoint(path->At(1)->x, path->At(1)->y) - p) * speed_mult;
 		else if (speed.y > 0 && desired_position.y <= position.y) 	speed = (iPoint(path->At(1)->x, path->At(1)->y) - p) * speed_mult;
 

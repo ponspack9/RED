@@ -608,7 +608,7 @@ bool j1Gui::Update(float dt)
 			}
 
 			item->data->Draw(sprites);
-			if (App->debug->show_colliders) item->data->DrawRect();
+			if (App->debug->show_debug_ui) item->data->DrawRect();
 		}
 		item = item->next;
 	}
