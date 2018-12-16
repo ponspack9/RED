@@ -29,7 +29,7 @@ Red is developed by a couple of CITM's students for a Game Development subject
 Gameplay
 ============
 
-<video src="Red Gameplay.mp4" poster="redLogo.png" width="320" height="200" controls preload></video>
+<iframe width="560" height="315" src="https://www.youtube.com/embed/hVHUxKmVtmU" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
 
 ***
 
