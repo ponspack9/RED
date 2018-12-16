@@ -62,6 +62,8 @@ TO DO
   
   <gui moving_elements_speed="50">
     <atlas file="gui/atlas.png">
+      <black r="0" g="0" b="0" a="255"/>
+      <white r="255" g="255" b="255" a="255"/>
       <gameOver height="272" width="440" y="448" x="0"></gameOver>
       <lastDeath height="56" width="48" y="390" x="0"></lastDeath>
       <window x="769" y="0" width="306" height="348"/>

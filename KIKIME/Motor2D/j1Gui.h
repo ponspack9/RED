@@ -47,7 +47,7 @@ public:
 
 	// Gui creation functions
 	//UIElement* CreateElement(UIType type, iPoint pos, SDL_Rect rect, p2SString string = nullptr, ActionType action = NO_ACTION, j1Module* callback = nullptr, UIElement* parent = nullptr, bool visible = true);
-	UIElement* CreateElement(UIType type, iPoint pos, SDL_Rect rect, Image* img = nullptr, p2SString string = nullptr, ActionType action = NO_ACTION, j1Module* callback = nullptr, UIElement* parent = nullptr, bool visible = true);
+	UIElement* CreateElement(UIType type, iPoint pos, SDL_Rect rect, Image* img = nullptr, p2SString string = nullptr, ActionType action = NO_ACTION, j1Module* callback = nullptr, UIElement* parent = nullptr, bool visible = true, SDL_Color color = { 0,0,0,0 });
 	UIElement * CreateButton(iPoint pos, const Button & b, ActionType action, j1Module * callback, UIElement * parent);
 	
 	bool HandleInput(UIElement* element);
@@ -87,6 +87,8 @@ public:
 	Label*			timersec;
 
 	j1Timer			anim_timer;
+	SDL_Color		white;
+	SDL_Color		black;
 
 	p2List<UIElement*>	windows;
 

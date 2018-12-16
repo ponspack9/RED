@@ -7,7 +7,7 @@ class Label :public UIElement
 public:
 
 	Label();
-	Label(ActionType action, iPoint pos, UIType type, p2SString string, UIElement* parent, bool visible);
+	Label(ActionType action, iPoint pos, UIType type, p2SString string, UIElement* parent, bool visible, SDL_Color color);
 
 	bool PreUpdate();
 
@@ -20,4 +20,5 @@ public:
 public:
 
 	SDL_Texture* text;
+	SDL_Color	 color;
 };
