@@ -534,7 +534,6 @@ void j1Gui::CheckContinue()
 			i++;
 		}
 		saving_point->position = { -50,-50 };
-		//App->gui->continue_button->rect
 	}
 }
 void j1Gui::PrepareMainMenuGui() {
@@ -568,21 +567,16 @@ void j1Gui::SetWindowsVisible() {
 
 void j1Gui::CalculateElementsPosition() {
 
-	main_menu_ui	->Center();
-	credits_ui		->Center();
-	settings_gui	->Center();
+	main_menu_ui->Center();
+	credits_ui->Center();
+	settings_gui->Center();
 	in_game_pause_ui->Center();
-	timersec		->CenterX();
-	credits_button	->initial_pos   = -credits_button->parent->initial_pos + 50;
-	credits_to_menu	->initial_pos   = -credits_to_menu->parent->initial_pos + 50;
-	score			->initial_pos.x = in_game_gui->rect[IDLE].w - 140;
-	game_over		->Center();
-	help_window		->Center();
-	/*help_button		->initial_pos.x = help_button->parent->initial_pos.x + help_button->parent->rect->w - help_button->rect->w - 50;
-	help_button		->initial_pos.y = help_button->parent->initial_pos.y + 50;
-	help_to_menu	->initial_pos.x	= help_button->parent->initial_pos.x + help_button->parent->rect->w - help_to_menu->rect->w - 50;
-	help_to_menu	->initial_pos.y = help_button->parent->initial_pos.y + 50;*/
-	//in_game_gui		->CenterX();
+	timersec->CenterX();
+	credits_button->initial_pos = -credits_button->parent->initial_pos + 50;
+	credits_to_menu->initial_pos = -credits_to_menu->parent->initial_pos + 50;
+	score->initial_pos.x = in_game_gui->rect[IDLE].w - 140;
+	game_over->Center();
+	help_window->Center();
 }
 
 // Update all guis
@@ -613,7 +607,6 @@ bool j1Gui::PreUpdate()
 
 		item = item->prev;
 	}
-
 	return true;
 }
 
