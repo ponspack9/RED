@@ -45,6 +45,8 @@ public:
 	p2List_item<p2SString>* current_track;
 	p2List_item<p2SString>* current_fx;
 
+	p2SString saved_map;
+
 
 private:
 

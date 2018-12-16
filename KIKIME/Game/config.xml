@@ -1,11 +1,4 @@
 <!-- Config file for the game -->
-<!--
-  
-TO DO
-
-  Make website ( FET PERO FALTA GAMEPLAY I LA COSA AQUESTA TAN NAZI DE DIR QUE HA FET CADASCU)
-  
--->
 <config>
   <app framerate_cap ="30">
     <title>RED2</title>
@@ -68,7 +61,6 @@ TO DO
       <gameOver height="272" width="440" y="448" x="0"></gameOver>
       <lastDeath height="56" width="48" y="390" x="0"></lastDeath>
       <window x="769" y="0" width="306" height="348"/>
-      <!--help x="" y="" width="" height="" />-->
       <green_diamond x="591" y="211" width="36" height="28"></green_diamond>
       <blue_diamond x="463" y="211" width="36" height="28"></blue_diamond>
       <yellow_diamond x="526" y="210" width="36" height="28"></yellow_diamond>
@@ -186,18 +178,13 @@ TO DO
         <Fly     name="enemyFlying_2.png"	x="0"	y="44"	          width="32"	height="32"/>
         <Fly     name="enemyFlying_3.png"	x="0"	y="0"	            width="32"	height="32"/>
         <Fly     name="enemyFlying_4.png"	x="0"	y="147"	          width="32"	height="32"/>
-       <!-- <Spikey  name="enemySpikey_1.png"	x="0"	y="32"	          width="32"	height="32"/>-->
         <Spikey  name="enemySpikey_2.png"	x="0"	y="0"	            width="32"	height="32"/>
-        <!--<Spikey  name="enemySpikey_3.png"	x="153"	y="41"	        width="32"	height="32"/>
-        <Spikey  name="enemySpikey_4.png"	x="151"	y="196"	        width="32"	height="32"/>-->
         <Swim    name="enemySwimming_1.png"	x="65"	y="105"	      width="32"	height="32"/>
         <Swim    name="enemySwimming_2.png"	x="106"	y="203"	      width="32"	height="32"/>
         <Swim    name="enemySwimming_3.png"	x="65"	y="39"	      width="32"	height="32"/>
         <Swim    name="enemySwimming_4.png"	x="65"	y="72"	      width="32"	height="32"/>
         <Walk    name="enemyWalking_1.png"	x="64"	y="0"	      width="32"	height="32"/>
         <Walk    name="enemyWalking_2.png"	x="32"	y="32"	      width="32"	height="32"/>
-        <!--<Walk    name="enemyWalking_3.png"	x="65"	y="0"	        width="32"	height="32"/>
-        <Walk    name="enemyWalking_4.png"	x="117"	y="154"	      width="32"	height="32"/>-->
       </enemyanimations>
     </enemies>
     <other>

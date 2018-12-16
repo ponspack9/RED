@@ -80,10 +80,6 @@ bool j1Debug::PostUpdate()
 bool j1Debug::Update(float dt)
 {
 	BROFILER_CATEGORY("Debug->Update", Profiler::Color::HotPink);
-	if (App->input->GetKey(SDL_SCANCODE_P) == KEY_DOWN)
-	{
-		App->TogglePause();
-	}
 
 	if (App->input->GetKey(SDL_SCANCODE_F1) == KEY_DOWN)
 	{
@@ -99,11 +95,11 @@ bool j1Debug::Update(float dt)
 		if (App->fade->current_step == App->fade->fade_step::none)  
 			App->NextLevel();
 	}
+
 	if (App->input->GetKey(SDL_SCANCODE_F4) == KEY_DOWN)
 	{
-		App->delay_is_active = !App->delay_is_active;
+		free_camera = !free_camera;
 	}
-
 	if (App->input->GetKey(SDL_SCANCODE_F5) == KEY_DOWN)
 	{
 		App->SaveGame();
@@ -146,7 +142,12 @@ bool j1Debug::Update(float dt)
 	}
 	if (App->input->GetKey(SDL_SCANCODE_F11) == KEY_DOWN)
 	{
-		free_camera = !free_camera;
+		App->delay_is_active = !App->delay_is_active;
+	}
+	if (App->input->GetKey(SDL_SCANCODE_F12) == KEY_DOWN)
+	{
+		//Do not crash
+		int a = 1;
 	}
 
 	int x;

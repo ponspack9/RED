@@ -7,7 +7,7 @@
 	<map />
 	<scene>
 		<current current_map="MapLvl1.tmx" />
-		<timer seconds="2" minutes="0" />
+		<timer seconds="3" minutes="0" />
 	</scene>
 	<debug />
 	<collisions />

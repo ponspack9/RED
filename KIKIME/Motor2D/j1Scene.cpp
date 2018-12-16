@@ -13,6 +13,7 @@ j1Scene::j1Scene() : j1Module()
 	name.create("scene");
 	first_load = true;
 	game_over_transition = false;
+	saved_map.create("MapLvl1.tmx");
 }
 
 // Destructor
@@ -44,6 +45,14 @@ bool j1Scene::Start()
 	}
 	else {
 		App->gui->CheckContinue();
+
+		if (strcmp(App->map->current_map->data.GetString(),saved_map.GetString()) != 0){
+			App->gui->saving_point->SetInvisible();
+		}
+		else {
+			App->gui->saving_point->SetVisible();
+		}
+
 		App->entitymanager->Restart(App->entitymanager->playerinfo.lifes);
 		App->gui->game_over->SetInvisible();
 

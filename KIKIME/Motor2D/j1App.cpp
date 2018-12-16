@@ -314,6 +314,7 @@ bool j1App::SaveGameFile()
 	audio->PlayFx(save);
 	
 	//gui->saving_point->initial_pos = { 0,0 };
+	scene->saved_map = map->current_map->data.GetString();
 	gui->saving_point->position.x = entitymanager->player_ref->position.x;
 	gui->saving_point->position.y = entitymanager->player_ref->position.y + 18;
 	save_game_doc.reset();
