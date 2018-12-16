@@ -117,7 +117,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 ## Credits
 
-Assets provided by https://kenney.nl licensed under CC0 1.0 Universal (CC0 1.0) Public Domain Dedication
+Assets provided by [Kenney](https://kenney.nl) licensed under CC0 1.0 Universal (CC0 1.0) Public Domain Dedication
 
 Music provided by [8 bit Universe](https://www.youtube.com/channel/UCn4HDI02U4f3VEsghRX7dRw)
 
