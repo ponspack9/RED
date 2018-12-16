@@ -11,12 +11,13 @@ Red is a platformer game where the player, as Red, has to avoid the pursuers bla
 niggas to reach the final door and get to the end and keep on avoiding black niggas
 which are very fast and annoying.
 
-We have used a tree hierarchy system to implement the user's interface, getting from
-a cathegory designation to manage the functionalities of all the elements of the user's 
+We have used a tree hierarchy system to implement the user's interface, using a cathegory 
+designation to manage the functionalities of all the elements of the user's 
 interface.
 
-To innovate, we have removed all colliders of the map and we have used a walkability map 
-manage all the collisions between player and enviroment.
+To innovate, we have removed all colliders of the ground platforms and we have used a walkability map 
+manage all the collisions between player and enviroment, and also, we have declared all the colliders
+of the spikes along the game as polylines.
 
 Red is developed by a couple of CITM's students for a Game Development subject
 
@@ -32,9 +33,14 @@ Red is developed by a couple of CITM's students for a Game Development subject
 Gameplay
 ============
 
+<html>
+<body>
 
+<iframe width="600" height="420" src="???" frameborder="0" allowfullscreen>
+</iframe>
 
-
+</body>
+</html>
 
 ***
 
