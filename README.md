@@ -33,49 +33,56 @@ move, has to avoid the pursuers to reach the final door and get to the end.
 
 ## Controls
 
-W , Space --> JUMP and DOUBLEJUMP / MOVING UP (GODMODE)
+**W , Space** ---> JUMP and DOUBLEJUMP / MOVING UP (GODMODE)
 
-A ----------> MOVING LEFT
+**A** ---> MOVING LEFT
 
-D ----------> MOVING RIGHT
+**D** ---> MOVING RIGHT
 
-S ----------> SMASH ENEMIES / MOVING DOWN (GODMODE)
+**S** ---> SMASH ENEMIES / MOVING DOWN (GODMODE)
+
+**Esc** ---> TO PAUSE THE GAME
 
 ## Debug Keys
 
-F1 ---------> RESTART GAME
+**F1** ---> RESTART GAME
 
-F2 ---------> RESTART CURRENT LEVEL
+**F2** ---> RESTART CURRENT LEVEL
 
-F3 ---------> GO TO NEXT LEVEL
+**F3** ---> GO TO NEXT LEVEL
 
-F4 ---------> MANUALLY ENABLE AND DISABLE THE FRAMERATE CAP TO 30 FPS
+**F4** ---> MANUALLY ENABLE AND DISABLE THE FRAMERATE CAP TO 30 FPS
 
-F5 ---------> SAVE THE CURRENT GAME STATE
+**F5** ---> SAVE THE CURRENT GAME STATE
 
-F6 ---------> LOAD THE PREVIOUSLY SAVED GAME STATE
+**F6** ---> LOAD THE PREVIOUSLY SAVED GAME STATE
 
-F8 ---------> SHOW AND HIDE DEBUG UI
+**F8** ---> SHOW AND HIDE DEBUG UI
 
-F9 ---------> SHOW AND HIDE LOGIC (COLLIDERS & WALKABILITY MAP & ENEMIES' PATH)
+**F9** ---> SHOW AND HIDE LOGIC (COLLIDERS & WALKABILITY MAP & ENEMIES' PATH)
 
-F10 --------> ENABLE AND DISABLE PLAYER'S GODMODE
+**F10** ---> ENABLE AND DISABLE PLAYER'S GODMODE
 
-F11 --------> CAMERA FOLLOWS PLAYER/DRAG AND RELEASE MOUSE TO FREELY MOVE THE CAMERA
+**F11** ---> CAMERA FOLLOWS PLAYER/DRAG AND RELEASE MOUSE TO FREELY MOVE THE CAMERA
 
 ## Innovation
 
-A new system of collisions is made with the player, the map does not have any collider wrapping the
+- A new system of collisions is made with the player, the map does not have any collider wrapping the
 walls neither the floor, player uses the same walkable map enemies use, so there's an improvement in 
-the number of colliders loaded.
+the number of colliders loaded. 
+    (see Player.cpp, more accurately, Move() function)
 
-Spikes collision are precisely done with a polyline collision mapping, no square colliders that
+- Spikes collision are precisely done with a polyline collision mapping, no square colliders that
 overbounds them are used, there's a triangle spike so it is the collision with it.
+
+    (see j1Map.cpp for line parsing, LoadColliders() function)
+    (see j1Collision for line adding, collision checking and debug drawing. 
+     AddPolyline(), CheckRectLineCollision(), DrawPolyLines(), respectively)
 
 
 ## Credits
 
-Assets provided by https://kenney.nl given with CC0 1.0 Universal (CC0 1.0) Public Domain Dedication
+Assets provided by https://kenney.nl licensed under CC0 1.0 Universal (CC0 1.0) Public Domain Dedication
 
 
 
