@@ -310,6 +310,7 @@ bool j1App::SaveGameFile()
 	}
 	else
 		LOG("...saving process interrupted with error on module %s", (item != NULL) ? item->data->name.GetString() : "unknown -> NULL pointer");
+	audio->PlayFx(save);
 	
 	save_game_doc.reset();
 	want_to_save = false;
@@ -502,6 +503,7 @@ void j1App::GoToMainMenu()
 void j1App::GameOver() 
 {
 	game_over = true;
+	entitymanager->first_gameover = true;
 
 	map->current_map = App->map->maps_path.start;
 	scene->current_track = audio->tracks_path.start;

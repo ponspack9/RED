@@ -87,6 +87,7 @@ public:
 	j1Timer		    timer_death;
 	bool			is_started;
 	bool			changing_level;
+	bool			first_gameover;
 	int				score;
 	int				score_powUp;
 	int				aux_score;

@@ -19,6 +19,7 @@ j1EntityManager::j1EntityManager()
 	name.create("entitymanager");
 	is_started = false;
 	changing_level = false;
+	first_gameover = true;
 
 	green_counter = blue_counter = score = aux_score = 0;
 	score_powUp = 100;	
@@ -459,13 +460,14 @@ bool j1EntityManager::PostUpdate()
 	BROFILER_CATEGORY("Entities->PostUpdate", Profiler::Color::BlueViolet)
 	bool ret = false;
 	
-	if (!player_ref->alive && player_ref->lifes == 0)
+	if (!player_ref->alive && player_ref->lifes == 0 && first_gameover)
 	{
 		App->gui->game_over->SetVisible();
 		App->scene->current_track = App->audio->tracks_path.end;
 		if (Mix_PausedMusic() > 0)
 			Mix_ResumeMusic();
 		App->audio->PlayMusic(PATH(App->audio->folder_music.GetString(), App->scene->current_track->data.GetString()), 0.2f);
+		first_gameover = false;
 	}
 
 	if (!player_ref->alive && timer_death.ReadSec() >= 1.5f && !App->game_over) {

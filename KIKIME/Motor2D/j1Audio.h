@@ -17,7 +17,8 @@ enum FXtype
 	die,
 	dieEnemy,
 	lifeup,
-	coin
+	coin,
+	save
 };
 
 class j1Audio : public j1Module

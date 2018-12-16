@@ -8043,7 +8043,6 @@
   <object id="1585" x="128" y="64" width="64" height="32"/>
   <object id="1587" x="1024" y="192" width="64" height="32"/>
   <object id="1588" x="1312" y="384" width="62" height="32"/>
-  <object id="1590" x="832" y="512" width="32" height="64"/>
   <object id="1591" x="2048" y="576" width="32" height="62"/>
   <object id="1592" x="1728" y="640" width="64" height="32"/>
   <object id="1593" x="2400" y="416" width="32" height="62"/>
@@ -8062,7 +8061,7 @@
   <object id="1619" x="1312" y="320" width="32" height="64"/>
   <object id="1620" x="1088" y="384" width="64" height="32"/>
   <object id="1621" x="2016" y="768" width="32" height="32"/>
-  <object id="1622" x="1504" y="160" width="32" height="64"/>
+  <object id="1622" x="1440" y="160" width="32" height="64"/>
   <object id="1623" x="1792" y="512" width="64" height="32"/>
   <object id="1624" x="2336" y="352" width="64" height="32"/>
   <object id="1625" x="2688" y="192" width="64" height="32"/>
