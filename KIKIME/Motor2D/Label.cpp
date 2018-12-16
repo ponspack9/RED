@@ -92,7 +92,8 @@ bool Label::PreUpdate()
 	if (action == FPS) 
 	{ 
 		char curr_score[50]; 
-		sprintf_s(curr_score, "%d", App->frames_on_last_update); 
+		sprintf_s(curr_score, "%f", App->GetAvFPS()); 
+
 		ChangeText(curr_score); 
 		return true; 
 	}

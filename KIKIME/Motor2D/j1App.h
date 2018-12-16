@@ -103,6 +103,8 @@ public:
 	bool LoadGameFile();
 
 	bool ExistsSaveGame();
+
+	float GetAvFPS();
   
 private:
 
@@ -181,6 +183,7 @@ private:
 
 	
 	//Framerate control
+	float				avg_fps;
 	j1Timer				timer;
 	j1Timer				aux_timer; //to control the amount of frames in the last second
 	j1Timer				frame_time;

@@ -77,6 +77,7 @@ j1App::j1App(int argc, char* args[]) : argc(argc), args(args)
 	frames_on_last_update	= 0;
 	aux_frames_counter		= 0; 
 	last_sec_fcount			= 0;
+	avg_fps					= 0;
 
 	delay_is_active			= true;
 	want_to_load			= false;
@@ -256,7 +257,7 @@ void j1App::FinishUpdate()
 		aux_timer.Start();
 	}
 
-	float avg_fps = float(frame_count) / timer.ReadSec();
+	avg_fps = float(frame_count) / timer.ReadSec();
 	float seconds_since_startup = timer.ReadSec();
 	uint32 last_frame_ms = frame_time.Read();
 	frames_on_last_update = last_sec_fcount;
@@ -362,6 +363,11 @@ bool j1App::ExistsSaveGame()
 	pugi::xml_parse_result	result = LoadXML(save_game_doc, load_path.GetString());
 
 	return result != NULL;
+}
+
+float j1App::GetAvFPS()
+{
+	return avg_fps;
 }
 
 // Call modules before each loop iteration

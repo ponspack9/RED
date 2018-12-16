@@ -399,8 +399,7 @@ bool j1Gui::Start()
 	lgreen_ref->Center(30, 5);
 	lblue_ref->Center(30, 5);
 	green_ref_count->Center(20, 0);
-	blue_ref_count->Center(20, 0);
-	
+	blue_ref_count->Center(20, 0);	
 
 	timersec			= (Label*)CreateElement(LABEL, iPoint(0, 15), { 0,0,0,0 }, nullptr, ":", INFO,			  nullptr, in_game_gui, false, white);
 	Label* time_minutes = (Label*)CreateElement(LABEL, iPoint(0, 0),  { 0,0,0,0 }, nullptr, "",  GAME_TIMER_MINS, nullptr, timersec   , false, white);
@@ -421,7 +420,7 @@ bool j1Gui::Start()
 	
 	saving_point = (Image*)CreateElement(IMAGE, iPoint(-20, -20), saving_point_image.rect[IDLE], &saving_point_image, nullptr, LAST_DEATH, nullptr, nullptr, true);
 
-	fps = (Label*)CreateElement(LABEL, iPoint(0, 50), { 0,0,0,0 }, nullptr, "0000000000000000", FPS, nullptr, nullptr);
+	fps = (Label*)CreateElement(LABEL, iPoint(20, 50), { 0,0,0,0 }, nullptr, "0", FPS, nullptr, in_game_gui, false, white);
 
 	game_over  = (Image*)CreateElement(IMAGE, iPoint(App->render->viewport.w / 2 - game_over_image.rect[IDLE].w / 2, App->render->viewport.h / 2 - game_over_image.rect[IDLE].h / 2), game_over_image.rect[IDLE], &game_over_image, nullptr, NO_ACTION, nullptr,in_game_window, false);
 
@@ -596,6 +595,15 @@ bool j1Gui::PreUpdate()
 
 	while (item != nullptr)
 	{
+		if (App->debug->show_fps == false && in_game_gui->visible)
+		{
+			fps->SetInvisible();
+		}
+		else if(App->debug->show_fps == true && in_game_gui->visible)
+		{
+			fps->SetVisible();
+		}
+
 		if (item->data->visible) {
 
 			item->data->PreUpdate();
