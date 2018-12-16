@@ -421,7 +421,10 @@ bool j1Gui::Start()
 	
 	saving_point = (Image*)CreateElement(IMAGE, iPoint(-20, -20), saving_point_image.rect[IDLE], &saving_point_image, nullptr, LAST_DEATH, nullptr, nullptr, true);
 
+	fps = (Label*)CreateElement(LABEL, iPoint(0, 50), { 0,0,0,0 }, nullptr, "0000000000000000", FPS, nullptr, nullptr);
+
 	game_over  = (Image*)CreateElement(IMAGE, iPoint(App->render->viewport.w / 2 - game_over_image.rect[IDLE].w / 2, App->render->viewport.h / 2 - game_over_image.rect[IDLE].h / 2), game_over_image.rect[IDLE], &game_over_image, nullptr, NO_ACTION, nullptr,in_game_window, false);
+
 
 	////////////////////////////////////// END MISC //////////////////////////////////////
 

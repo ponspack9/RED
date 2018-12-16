@@ -38,6 +38,7 @@ public:
 	bool			start_motion;
 	bool			free_camera;
 	bool			debug_bool;
+	bool			show_fps;
 };
 
 #endif

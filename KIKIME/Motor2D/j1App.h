@@ -167,6 +167,7 @@ public:
 	}in_game_timer;
 
 	j1Timer				game_timer;
+	uint32				frames_on_last_update = 0;
 
 
 private:
@@ -188,7 +189,6 @@ private:
 
 	uint				framerate_cap;
 	uint64				frame_count = 0;
-	uint32				frames_on_last_update = 0;
 	uint32				aux_frames_counter = 0; //to control the amount of frames in the last second
 	uint32				last_sec_fcount = 0;	
 };

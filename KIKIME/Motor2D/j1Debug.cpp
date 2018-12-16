@@ -43,6 +43,7 @@ bool j1Debug::Awake(pugi::xml_node & config)
 	show_colliders = config.child("showlogic").attribute("value").as_bool();
 	show_debug_ui = config.child("showdebugui").attribute("value").as_bool();
 	free_camera = config.child("free_camera").attribute("value").as_bool();
+	show_fps = config.child("showfps").attribute("value").as_bool();
 	debug_path.create(config.child("debugtexture").child_value());
 	not.create(config.child("nottexture").child_value());
 	
@@ -111,6 +112,11 @@ bool j1Debug::Update(float dt)
 	if (App->input->GetKey(SDL_SCANCODE_F6) == KEY_DOWN)
 	{
 		App->LoadGame();
+	}
+
+	if (App->input->GetKey(SDL_SCANCODE_F7) == KEY_DOWN)
+	{
+		show_fps = !show_fps;
 	}
 
 	if (App->input->GetKey(SDL_SCANCODE_F8) == KEY_DOWN)

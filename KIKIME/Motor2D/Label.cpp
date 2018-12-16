@@ -89,7 +89,13 @@ bool Label::PreUpdate()
 
 		return true;
 	}
-
+	if (action == FPS) 
+	{ 
+		char curr_score[50]; 
+		sprintf_s(curr_score, "%d", App->frames_on_last_update); 
+		ChangeText(curr_score); 
+		return true; 
+	}
 	return true;
 }
 

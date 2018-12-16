@@ -85,6 +85,7 @@ public:
 	Button*			help_to_menu;
 	Label*			score;
 	Label*			timersec;
+	Label*			fps;
 
 	j1Timer			anim_timer;
 	SDL_Color		white;
