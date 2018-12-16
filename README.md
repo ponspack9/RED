@@ -31,6 +31,10 @@ Copyright (c) [2018] [Òscar Pons Gallart and Oriol Sabaté Solé]
 Red is a 2D platformer game where the player, as Red, a nice red square that can 
 move, has to avoid the pursuers to reach the final door and get to the end.
 
+We have used a tree hierarchy system to implement the user's interface, using a cathegory 
+designation to manage the functionalities of all the elements of the user's 
+interface.
+
 ## Controls
 
 **W , Space** ---> JUMP and DOUBLEJUMP / MOVING UP (GODMODE)
