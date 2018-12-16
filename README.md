@@ -55,14 +55,25 @@ F5 ---------> SAVE THE CURRENT GAME STATE
 
 F6 ---------> LOAD THE PREVIOUSLY SAVED GAME STATE
 
+F8 ---------> SHOW AND HIDE DEBUG UI
+
 F9 ---------> SHOW AND HIDE LOGIC (COLLIDERS & WALKABILITY MAP & ENEMIES' PATH)
 
 F10 --------> ENABLE AND DISABLE PLAYER'S GODMODE
 
 F11 --------> CAMERA FOLLOWS PLAYER/DRAG AND RELEASE MOUSE TO FREELY MOVE THE CAMERA
 
+## Innovation
 
-## Assets
+A new system of collisions is made with the player, the map does not have any collider wrapping the
+walls neither the floor, player uses the same walkable map enemies use, so there's an improvement in 
+the number of colliders loaded.
+
+Spikes collision are precisely done with a polyline collision mapping, no square colliders that
+overbounds them are used, there's a triangle spike so it is the collision with it.
+
+
+## Credits
 
 Assets provided by https://kenney.nl given with CC0 1.0 Universal (CC0 1.0) Public Domain Dedication
 
