@@ -32,7 +32,8 @@ Gameplay
 <html>
 <body>
 
-<iframe width="600" height="420" src="???" frameborder="0" allowfullscreen>
+<iframe width="600" height="420" src="https://github.com/urisabate/RED/blob/master/docs/Red%20Gameplay.mp4" frameborder="0" allowfullscreen>
+    
 </iframe>
 
 </body>
