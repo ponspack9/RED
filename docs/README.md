@@ -7,9 +7,8 @@
 Overview
 ========
 
-Red is a platformer game where the player, as Red, has to avoid the pursuers black 
-niggas to reach the final door and get to the end and keep on avoiding black niggas
-which are very fast and annoying.
+Red is a 2D platformer game where the player, as Red, a nice red square that can move, has 
+to avoid the pursuers to reach the final door and get to the end.
 
 We have used a tree hierarchy system to implement the user's interface, using a cathegory 
 designation to manage the functionalities of all the elements of the user's 
@@ -26,13 +25,14 @@ Red is developed by a couple of CITM's students for a Game Development subject
 <img src="TeamPhoto.jpg" alt="Us" width="576" height="868">
 
 ***
+
 Gameplay
 ============
 
 <html>
 <body>
 
-<iframe width="600" height="420" src="https://github.com/urisabate/RED/blob/master/docs/Red%20Gameplay.mp4" frameborder="0" allowfullscreen>
+<iframe width="600" height="420" src="https://youtu.be/hVHUxKmVtmU" frameborder="0" allowfullscreen>
     
 </iframe>
 
