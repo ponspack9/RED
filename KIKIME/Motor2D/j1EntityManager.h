@@ -56,6 +56,8 @@ public:
 	
 	void OnCollision(Collider * c1, Collider * c2);
 
+	void OnCollisionLine();
+
 	Entity * FindEntityByCollider(Collider * c);
 
 	Coin* FindCoinByCollider(Collider* c);
@@ -84,6 +86,7 @@ public:
 
 	j1Timer		    timer_death;
 	bool			is_started;
+	bool			changing_level;
 	int				score;
 	int				score_powUp;
 	int				aux_score;

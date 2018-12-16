@@ -132,6 +132,8 @@ public:
 	// Load new map
 	bool Load(const char* path);
 
+	void LoadColliders();
+
 	// Translates x,y coordinates from map positions to world positions
 	iPoint MapToWorld(int x, int y) const;
 
@@ -160,8 +162,6 @@ public:
 	iPoint						world_limits;
 	Collider*					start_collider;
 	Collider*					end_collider;
-
-	bool						map_loaded;
 
 private:
 

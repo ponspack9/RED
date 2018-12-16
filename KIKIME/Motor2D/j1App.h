@@ -148,6 +148,7 @@ public:
 	bool				delay_is_active = true;
 	bool				want_to_load;
 	mutable bool		want_to_save;
+	bool				map_loaded;
 
 	bool				pause;
 	bool				game_over;

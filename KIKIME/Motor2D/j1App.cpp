@@ -32,6 +32,7 @@ j1App::j1App(int argc, char* args[]) : argc(argc), args(args)
 	want_to_save = want_to_load = false;
 	game_over = false;
 	to_exit = false;
+	map_loaded = false;
 
 	input			= new j1Input();
 	win				= new j1Window();
@@ -574,7 +575,6 @@ bool j1App::RestartLevel(int player_lifes)
 	BROFILER_CATEGORY("App->RestartLevel", Profiler::Color::Red);
 
 	entitymanager->aux_score = 0;
-
 	gui->last_death->SetVisible();
 	render->ResetCamera();
 	entitymanager->Restart(player_lifes);
@@ -595,8 +595,8 @@ bool j1App::NextLevel() {
 	}
 	else
 	{
-		App->map->current_map = App->map->maps_path.start->next;
-		scene->current_track = audio->tracks_path.start->next;
+		App->map->current_map = App->map->maps_path.start;
+		scene->current_track = audio->tracks_path.start;
 	}
 
 	LOG("Next level: %s", App->map->current_map->data.GetString());

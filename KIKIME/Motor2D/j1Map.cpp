@@ -9,7 +9,7 @@
 #include "j1Pathfinding.h"
 #include <cmath>
 
-j1Map::j1Map() : j1Module(), map_loaded(false)
+j1Map::j1Map() : j1Module()
 {
 	name.create("map");
 
@@ -106,7 +106,7 @@ bool j1Map::Awake(pugi::xml_node& config)
 void j1Map::Draw()
 {
 	BROFILER_CATEGORY("Map->Draw", Profiler::Color::LightCyan)
-	if(!map_loaded)
+	if(!App->map_loaded)
 		return;
 
 	//Draw background
@@ -216,82 +216,12 @@ bool j1Map::Load(const char* file_name)
 
 		//BEGIN DEALING WITH MAP OBJECTS
 
-		pugi::xml_node objectgroup = map_doc.child("map").child("objectgroup");
-		int death_colliders = 0;
-		int coin_colliders = 0;
-		int enemies_colliders = 0;
-		Collider* c = nullptr;
-		for (objectgroup; objectgroup; objectgroup = objectgroup.next_sibling("objectgroup"))
-		{
-			p2SString group_name ( objectgroup.attribute("name").as_string());
-			//LOG("OBJECTGROUP NAME: %s", objectgroup.attribute("name").as_string());
-
-			pugi::xml_node object = objectgroup.child("object");
-			pugi::xml_node polyobject = object.child("polygon");
-
-			for (object; object; object = object.next_sibling("object")) {
-
-				polyobject = object.child("polyline");
-
-				if (polyobject == NULL) {
-					polyobject = object.child("polygon");
-
-					if (polyobject == NULL) {
-						polyobject = object.child("ellipse");
-
-						if (polyobject == NULL) {
-							//ITS A QUAD
-							SDL_Rect r = { object.attribute("x").as_int() , object.attribute("y").as_int() ,
-										   object.attribute("width").as_int() ,object.attribute("height").as_int() };
-							
-							if (group_name == "Colliders_death")
-							{
-								c = App->collision->AddCollider(r, COLLIDER_DEATH);
-								c->to_delete = false;
-								death_colliders++;
-							}
-							else if (group_name == "Collider_start") {
-								start_collider = App->collision->AddCollider(r, COLLIDER_START);
-							}
-							else if (group_name == "Collider_end") {
-								end_collider = App->collision->AddCollider(r, COLLIDER_END);
-							}
-							else if (group_name == "Enemy_spawns") {
-								c = App->collision->AddCollider(r, COLLIDER_SPAWN);
-								c->to_delete = false;
-								enemies_colliders++;
-							}
-							else if (group_name == "Coin_spawns") {
-								c = App->collision->AddCollider(r, COLLIDER_SPAWN_COIN);
-								c->to_delete = false;
-								coin_colliders++;
-							}
-							continue;
-						}
-						//ellipse
-
-					}
-				}
-				//It's a Polyline
-
-				//Deal with the string to find each point
-				//const char* c = polyobject.attribute("points").as_string();
-
-				//App->collision->AddPolyLine(object.attribute("x").as_int(), object.attribute("y").as_int(),c);
-
-				// END DEALING OBJECT NODE
-			}
-		}
-
-	LOG("COLLIDERS");
-	LOG("DEATH: %d", death_colliders);
-	LOG("COIN: %d", coin_colliders);
-	LOG("ENEMY: %d", enemies_colliders);
+		LoadColliders();
 	}
-	 map_loaded = ret;
+	App->map_loaded = ret;
 
 	// Logs => data has been loaded properly
-	if(map_loaded)
+	if(App->map_loaded)
 	{
 		world_limits = { data.width * data.tile_width, data.height * data.tile_width };
 		//Logging map info
@@ -325,7 +255,88 @@ bool j1Map::Load(const char* file_name)
 		item_layer->~p2List_item();
 	}
 
-	return map_loaded;
+	return App->map_loaded;
+}
+
+void j1Map::LoadColliders()
+{
+	pugi::xml_node objectgroup = map_doc.child("map").child("objectgroup");
+	int death_colliders = 0;
+	int coin_colliders = 0;
+	int enemies_colliders = 0;
+	int start_colliders = 0;
+	int end_colliders = 0;
+	Collider* c = nullptr;
+	for (objectgroup; objectgroup; objectgroup = objectgroup.next_sibling("objectgroup"))
+	{
+		p2SString group_name(objectgroup.attribute("name").as_string());
+		//LOG("OBJECTGROUP NAME: %s", objectgroup.attribute("name").as_string());
+
+		pugi::xml_node object = objectgroup.child("object");
+		pugi::xml_node polyobject = object.child("polygon");
+
+		for (object; object; object = object.next_sibling("object")) {
+
+			polyobject = object.child("polyline");
+
+			if (polyobject == NULL) {
+				polyobject = object.child("polygon");
+
+				if (polyobject == NULL) {
+					polyobject = object.child("ellipse");
+
+					if (polyobject == NULL) {
+						//ITS A QUAD
+						SDL_Rect r = { object.attribute("x").as_int() , object.attribute("y").as_int() ,
+							object.attribute("width").as_int() ,object.attribute("height").as_int() };
+
+						if (group_name == "Colliders_death")
+						{
+							c = App->collision->AddCollider(r, COLLIDER_DEATH);
+							c->to_delete = false;
+							death_colliders++;
+						}
+						else if (group_name == "Collider_start") {
+							start_collider = App->collision->AddCollider(r, COLLIDER_START);
+							start_colliders++;
+						}
+						else if (group_name == "Collider_end") {
+							end_collider = App->collision->AddCollider(r, COLLIDER_END);
+							end_collider++;
+						}
+						else if (group_name == "Enemy_spawns") {
+							c = App->collision->AddCollider(r, COLLIDER_SPAWN);
+							c->to_delete = false;
+							enemies_colliders++;
+						}
+						else if (group_name == "Coin_spawns") {
+							c = App->collision->AddCollider(r, COLLIDER_SPAWN_COIN);
+							c->to_delete = false;
+							coin_colliders++;
+						}
+						continue;
+					}
+					//ellipse
+
+				}
+			}
+			//It's a Polyline
+
+			//Deal with the string to find each point
+			const char* c = polyobject.attribute("points").as_string();
+
+			App->collision->AddPolyLine(object.attribute("x").as_int(), object.attribute("y").as_int(), c);
+
+			// END DEALING OBJECT NODE
+		}
+	}
+
+	LOG("COLLIDERS");
+	LOG("DEATH: %d", death_colliders);
+	LOG("COIN: %d", coin_colliders);
+	LOG("ENEMY: %d", enemies_colliders);
+	LOG("START: %d", start_colliders);
+	LOG("END: %d", end_colliders);
 }
 
 int Properties::Get(const char* value, int default_value) const
@@ -623,7 +634,7 @@ bool j1Map::CleanUp()
 
 
 	map_doc.reset();
-	map_loaded = false;
+	App->map_loaded = false;
 
 	return true;
 }
@@ -679,30 +690,6 @@ iPoint j1Map::WorldToMap(int x, int y) const
 	return ret;
 }
 
-//p2SString j1Map::DebugToString() const
-//{
-//	BROFILER_CATEGORY("Map->DebugToString", Profiler::Color::LightCyan)
-//	int x, y;
-//	App->input->GetMousePosition(x, y);
-//	iPoint map_pos = WorldToMap(x, y);
-//	
-//	//int map_id  = data.map_layers.start->data->GetMapId(map_pos.x, map_pos.y);
-//	//int tile_id = data.map_layers.start->data->data[map_id + abs(App->render->camera.x/data.tile_width)];
-//
-//	// Loading info to title FLASHES WINDOW ICON IN TASK BAR
-//	p2SString ret_string("Map: %dx%d Tiles: %dx%d Tilesets: %d Mouse [%d,%d] Rect [%d,%d] Camera.x: %d offsetX: %d",
-//		data.width, data.height,
-//		data.tile_width, data.tile_height,
-//		data.tilesets.count(),
-//		x, y,
-//		map_pos.x,map_pos.y, 
-//		//map_id,tile_id, MapID: %d TilesetID: %d
-//		App->render->camera.x,
-//		(data.tile_width > 0) ? abs(App->render->camera.x / data.tile_width): -5000);
-//
-//	return ret_string;
-//}
-
 void j1Map::CleanMap()
 {
 	BROFILER_CATEGORY("Map->CleanMap", Profiler::Color::LightCyan)
@@ -751,10 +738,10 @@ void j1Map::CleanMap()
 
 	//Removes all colliders
 	App->collision->CleanColliders();
-		//App->collision->CleanPolylines();
+	App->collision->CleanPolylines();
 	
 
 	map_doc.reset();
-	map_loaded = false;
+	App->map_loaded = false;
 	LOG("CLEANING MAP DONE");
 }
