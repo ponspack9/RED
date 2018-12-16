@@ -10,7 +10,7 @@
     <showlogic value="false"/>
     <showdebugui value="false"/>
     <free_camera value="false"/>
-    <showfps value="true"></showfps>
+    <showfps value="false"></showfps>
   </debug>
 
   <renderer>
