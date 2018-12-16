@@ -130,7 +130,7 @@ TO DO
     <playerpath path="textures/player/sprites.png"/>
     <player>
       <lifeup value="500"/>
-      <lifes lifes="1"/>
+      <lifes lifes="3"/>
       <rect width="64" height="64"/>
       <speed scrollspeed="200" jumpspeed="500" smashspeed="900" maxspeed="400"/>
       <gravity value="1150"/>
