@@ -43,51 +43,51 @@ Image::Image(ActionType action,iPoint pos, SDL_Rect rect, Image* img,UIType type
 
 void Image::Draw(SDL_Texture * sprites)
 {
-	int phi;
-	int temp;
+	//int phi;
+	//int temp;
 	switch (this->action)
 	{
 	case INFO:
 
-		App->render->Blit(sprites, position.x, position.y, &current_animation->GetCurrentFrame() ,0);
+		App->render->Blit(sprites, position.x, position.y, &current_animation->GetCurrentFrame());
 		break;
 
-	case LIFE_SYSTEM:
-
-		phi = 40;
-		temp = position.x;
-
-		if (App->entitymanager->GetAnimTimer() >= 1.5f)
-			current_animation = &idle;
-
-		if (App->entitymanager->aux_score >= App->entitymanager->score_powUp)
-		{
-			App->entitymanager->player_ref->lifes++;
-			App->entitymanager->aux_score = App->entitymanager->aux_score - App->entitymanager->score_powUp;
-			App->entitymanager->ChangeUIAnimation(&App->entitymanager->heart);
-		}
-
-		for (int i = 0; i < App->entitymanager->player_ref->lifes; i++)
-		{
-			App->render->Blit(sprites, position.x, position.y, &current_animation->GetCurrentFrame(), 0);
-			position.x += phi;
-		}
-
-		position.x = temp;
-		break;
-	case LAST_DEATH:
-
-		App->render->Blit(sprites, position.x, position.y, &rect[state], 1);
-		break;
-	case DYNAMIC_INFO:
-		
-		App->render->Blit(sprites, position.x, position.y, &current_animation->GetCurrentFrame(), 0);
-		if (App->entitymanager->GetAnimTimer() >= 1.0f)
-			current_animation = &idle;
-
-		break;
+	//case LIFE_SYSTEM:
+	//
+	//	phi = 40;
+	//	temp = position.x;
+	//
+	//	if (App->entitymanager->GetAnimTimer() >= 1.5f)
+	//		current_animation = &idle;
+	//
+	//	if (App->entitymanager->aux_score >= App->entitymanager->score_powUp)
+	//	{
+	//		App->entitymanager->player_ref->lifes++;
+	//		App->entitymanager->aux_score = App->entitymanager->aux_score - App->entitymanager->score_powUp;
+	//		App->entitymanager->ChangeUIAnimation(&App->entitymanager->heart);
+	//	}
+	//
+	//	for (int i = 0; i < App->entitymanager->player_ref->lifes; i++)
+	//	{
+	//		App->render->Blit(sprites, position.x, position.y, &current_animation->GetCurrentFrame(), 0);
+	//		position.x += phi;
+	//	}
+	//
+	//	position.x = temp;
+	//	break;
+	//case LAST_DEATH:
+	//
+	//	App->render->Blit(sprites, position.x, position.y, &rect[state], 1);
+	//	break;
+	//case DYNAMIC_INFO:
+	//	
+	//	App->render->Blit(sprites, position.x, position.y, &current_animation->GetCurrentFrame(), 0);
+	//	if (App->entitymanager->GetAnimTimer() >= 1.0f)
+	//		current_animation = &idle;
+	//
+	//	break;
 	default:
-		App->render->Blit(sprites, position.x, position.y, &rect[state], 0);
+		App->render->Blit(sprites, position.x, position.y, &rect[state]);
 		break;
 	}
 }

@@ -5,8 +5,7 @@
 #include "j1App.h"
 #include "j1Render.h"
 #include "j1Fonts.h"
-#include "j1EntityManager.h"
-
+#include "Animation.h"
 
 enum UIColor {
 	BLUE,
