@@ -1,5 +1,6 @@
 #include "UIElement.h"
 #include "j1Textures.h"
+#include "j1EntityManager.h"
 #include <string>
 
 class Label :public UIElement
